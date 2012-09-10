@@ -189,9 +189,24 @@ We used the following components in our circuits:
 
 \subsection*{e} Physical implementation.
 
-\subsection*{f}
+\subsection*{f} \xxx{John}
+
+\subsection*{g} \xxx{John}
+
+\subsection*{h} 
+The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t_a)\sin(\omega_b t_b) $. We can use trigonometric identities as follows to rearrange this sinusoidal product as a sum as follows:
+$$\sin(\omega_a t)\sin(\omega_b t) = \frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2}$$
+We use the product-to-sum identities to break up he product of the $\sin$s
+$$$$
 
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{problem2_h.png}
+\end{center}
+\caption{The LabView front-end of a system that produces $\sin(\omega_a t_a)\sin(\omega_b t_b) $.}
+\label{q2_a}
+\end{figure}
 \end{document}
 
 
