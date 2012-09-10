@@ -1,0 +1,72 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1187
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Cambria;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat7\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Lab 1 Notes\
+\
+Test Circuit\
+\
+\pard\pardeftab720\ri720
+
+\f1 \cf0 Gain in voltage 3 fold.  Saturates at 11 volts\
+\
+Using NI PCI/ 6230 data acquisition card\
+\
+Problem 1\
+\
+The known resistances were chosen and the unknown values computed from them using pickComponents.m\
+\
+where the desired transfer function is:\
+G(s) = 5 * (s + 10) * (s + 0.2) \
+	----------------------------\
+	(s + 100) * (s + 0.1)\
+\
+Clead = 2.109e-6 F (known)\
+R1lead = 47.416 kOhm\
+R2lead = 5.2684 kOhm\
+\
+Clag = 2.145e-6 F (known)\
+R1lag = R2lag = 2.331 MOhm\
+\
+R1amp = 1464 Ohm (known)\
+R2amp = 13.176 kOhm\
+\
+Note since we used a 2MOhm capacitor for R1lag and R2 lag, under DC conditions Clag sees an effective resistance >4MOhm when discharging which means that the system has a very long time constant for DC signals causing  an unexpected signal. \
+\
+Problem 2\
+\
+Choose Rf and Rg as arbitrary resistances, large enough to make sure that other resistances in the circuit were large enough.\
+\
+Rf = 9.88 kOhm  \
+Rg = 9.96 kOhm\
+\
+Then using these particular values, used non-linear least squares to solve for resistances R1,R2, R3, R4 in the circuit to obtain the desired \
+\
+a = [1; 2; 3; 4]\
+\
+R = [R1; R2; R3; R4; Rf; Rg];\
+R = [49.3; 24.65; 3.293; 2.470; 9.880;  9.860] kOhm\
+\
+Using the LM741 Op amp \
+\
+Note that we had trouble with AI0, analog input seems unresponsive.  \
+\
+h.\
+\
+Used product to sum trig identity and used a matlab simulation of a sum of sines to simulate the expected result before running it on the circuit.\
+\
+Wa = 1\
+Wb =10\
+\
+\pard\pardeftab720\li720\fi-360\ri720
+\ls1\ilvl0\cf0 frequency = [-9; 0; 11; 0]\
+amplitude = [3; 0; 1; 0]\
+offset = [0; 0; 0; 0]\
+phase = [pi/2; 0; pi/2; 0]\
+\pard\pardeftab720\ri720
+\cf0 \
+}
