@@ -149,13 +149,48 @@ $$\implies V_{out} =V^- \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) - \Big
 We also know that for an ideal op-amp, $V^+ = V^-$, hence we get:
 $$ V_{out} = \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big) V_1 + \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) V_2 - \Big( \frac{R_f}{R_3}\Big)V_3 - \Big( \frac{ R_f}{R_4}\Big)V_4$$
 
-This is equation is the mathematical representation of the required problem which was; $V_{out} = a_1V_1 + a_2 V_2 - a_3 V_3 - a_4 V_4$, i.e. :
+This is equation is the mathematical representation of the problem statement which which required $V_{out} = a_1V_1 + a_2 V_2 - a_3 V_3 - a_4 V_4$, i.e. :
 $$a_1 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big)$$
 $$a_2 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) $$
 $$a_3 = \Big( \frac{R_f}{R_3}\Big)$$
 $$a_4 = \Big( \frac{ R_f}{R_4}\Big)$$
 
 \subsection*{c}
+\xxx{[DO WE HAVE ANY MORE??]}\\
+While building this circuit, we made the following assumptions:
+\begin{itemize}
+\item We are using an ideal op-amp, i.e. the input impedance is infinite and the output impedance is negligible. This implies that the op-amp does not load it's input circuit and loading effects are not seen on the op-amps output terminal.
+
+\item The voltage at the non-inverting terminal is equal to the voltage at the non-inverting terminal.
+
+\item The open loop op-amp gain is infinite.
+
+\item The op-amp will operate in an ideal manner when the output is not saturated above or below its supply limits.
+
+\end{itemize}
+
+\subsection*{d}
+We used the following components in our circuits:
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Component Name} & \textbf{Component Type} & \textbf{Component Specification} \\ \hline
+       $ R_f  $                  & \text{Resistor}         & $9.880 \ K\Omega            $        \\ 
+       $ R_g $                    & \text{Resistor}         & $9.860 \ K\Omega        $            \\ 
+       $ R_1$                     & \text{Resistor}         & $49.3 \ K\Omega        $             \\ 
+       $ R_2 $                   & \text{Resistor}         & $24.65 \ K\Omega     $               \\ 
+       $ R_3 $                   & \text{Resistor}         & $3.293 \ K\Omega   $                 \\ 
+       $ R_4$                     & \text{Resistor}         &$ 2.470 \ K\Omega$                    \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\subsection*{e} Physical implementation.
+
+\subsection*{f}
+
 
 \end{document}
 
