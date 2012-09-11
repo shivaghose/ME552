@@ -23,21 +23,55 @@ curGain = - (R4 * R2 * C2 * (R1 * C1 + R3 * C1)) / (R3 * R1 * C1 * (R4 * C2 + R2
 
 ratio = Gain / curGain
 
-Rs = [R1; R2; R3; R4];
+Rs = [R1; R2; R3; R4]
 
+%************************************%
 % try flipping it the other way doesn't work, requires negative resistances
-% % lag component
-% R2 = 1 / (C2 * z2);
-% R1 = 1/ (C1 * p2);
-% 
-% % lead component
-% R3 = 1 / (z1 * C1) - R1;
-% R4 = 1 / (p1 * C2) - R2;
-% 
-% curGain = - (R4 * R2 * C2 * (R1 * C1 + R3 * C1)) / (R3 * R1 * C1 * (R4 * C2 + R2 * C2))
-% 
-% ratio = Gain / curGain
-% 
-% Rs = [R1; R2; R3; R4]
+% lag component
+R2 = 1 / (C2 * z2);
+R1 = 1/ (C1 * p2);
+
+% lead component
+R3 = 1 / (z1 * C1) - R1;
+R4 = 1 / (p1 * C2) - R2;
+
+curGain = - (R4 * R2 * C2 * (R1 * C1 + R3 * C1)) / (R3 * R1 * C1 * (R4 * C2 + R2 * C2))
+
+ratio = Gain / curGain
+
+Rs = [R1; R2; R3; R4]
+
+%**************************************%
+% try another permutation
+% lead component
+R2 = 1 / (C2 * z1);
+R1 = 1/ (C1 * p1);
+
+% lag component
+R3 = 1 / (z1 * C1) - R1;
+R4 = 1 / (p1 * C2) - R2;
+
+curGain = - (R4 * R2 * C2 * (R1 * C1 + R3 * C1)) / (R3 * R1 * C1 * (R4 * C2 + R2 * C2))
+
+ratio = Gain / curGain
+
+Rs = [R1; R2; R3; R4]
+
+%***************************************%
+% last permutation
+% lag component
+R2 = 1 / (C2 * z2);
+R1 = 1/ (C1 * p2);
+
+% lead component
+% lag component
+R3 = 1 / (z2 * C1) - R1;
+R4 = 1 / (p2 * C2) - R2;
+
+curGain = - (R4 * R2 * C2 * (R1 * C1 + R3 * C1)) / (R3 * R1 * C1 * (R4 * C2 + R2 * C2))
+
+ratio = Gain / curGain
+
+Rs = [R1; R2; R3; R4]
 end
 
