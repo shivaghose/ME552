@@ -150,10 +150,11 @@ We also know that for an ideal op-amp, $V^+ = V^-$, hence we get:
 $$ V_{out} = \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big) V_1 + \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) V_2 - \Big( \frac{R_f}{R_3}\Big)V_3 - \Big( \frac{ R_f}{R_4}\Big)V_4$$
 
 This is equation is the mathematical representation of the problem statement which which required $V_{out} = a_1V_1 + a_2 V_2 - a_3 V_3 - a_4 V_4$, i.e. :
-$$a_1 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big)$$
-$$a_2 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) $$
-$$a_3 = \Big( \frac{R_f}{R_3}\Big)$$
-$$a_4 = \Big( \frac{ R_f}{R_4}\Big)$$
+$$a_1 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big) = 1$$
+$$a_2 =  \Big( \frac{R_f}{R_3} + \frac{ R_f}{R_4} + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) = 2$$
+$$a_3 = \Big( \frac{R_f}{R_3}\Big) = 3$$
+$$a_4 = \Big( \frac{ R_f}{R_4}\Big) = 4$$
+
 
 \subsection*{c}
 \xxx{[DO WE HAVE ANY MORE??]}\\
@@ -170,7 +171,23 @@ While building this circuit, we made the following assumptions:
 \end{itemize}
 
 \subsection*{d}
-We used the following components in our circuits:
+We started by choosing $R_f$, $R_g$ and $R_g$ to arbitrary resistances such that they were large enough to make sure that other resistances in the circuit were not small. By this we mean that the values of the other resistances were in the order of Kilo-Ohms. From section \textbf{b}, we can rewrite gains $a_1$ and $a_2$ in terms of $a_3$ and $a_4$ as follows:
+$$a_1 =  \Big( a_3 + a_4 + 1\Big) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big) = 1$$
+$$ =  (8) \Big( \frac{1}{\frac{R_1}{R_g} + \frac{R_1}{R_2} + 1}\Big) = 1$$
+We can rewrite this  as:
+$$8R_2R_g = R_1R_2 + R_1R_g $$
+$$\implies R_g = \frac{R_1R_2}{7R_2 - R_1}$$
+Similarly for $a_2$, we see:
+$$a_2 =  \Big(  a_3 + a_4  + 1\Big) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) = 2$$
+$$ =  ( 8) \Big( \frac{1}{\frac{R_2}{R_g} + \frac{R_2}{R_1} + 1} \Big) = 2$$
+We can re-arrange and re-write the above equations as:
+$$R_g = \frac{R_1R_2}{3R_1 - R_2}$$
+Equating the two equations which equal $R_g$, we get:
+$$ \frac{R_1R_2}{7R_2 - R_1} = \frac{R_1R_2}{3R_1 - R_2}$$
+Thus, we get:
+$$R_2 = \frac{R_1}{2}$$
+Thus we arbitrarily chose $R_f = R_g = 10 \ K\Omega$ and $R_1 = 50 \ K\Omega$
+We ended up using the following components in our circuit:
 \begin{table}[hbt]
 \begin{center}
     \begin{tabular}{|c|c|c|}
@@ -194,18 +211,34 @@ We used the following components in our circuits:
 \subsection*{g} \xxx{John}
 
 \subsection*{h} 
-The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t_a)\sin(\omega_b t_b) $. We can use trigonometric identities as follows to rearrange this sinusoidal product as a sum as follows:
+The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t)\sin(\omega_b t) $. We can use trigonometric identities as follows to rearrange this sinusoidal product as a sum as follows:
 $$\sin(\omega_a t)\sin(\omega_b t) = \frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2}$$
-We use the product-to-sum identities to break up he product of the $\sin$s
-$$$$
+We use the product-to-sum identities to break up the product of the sines into a sum of cosines. We can again rewrite the cosines in terms of sines by taking into account the phase difference.
+$$\frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2} = \frac{\sin((\omega_a t + \omega_b t) + \pi/2)- \sin((\omega_a t + \omega_b t) + \pi/2)}{2}$$
 
+This way, we can achieve a beating signal as a sum of sinusoids. For the purposes of this question, we chose $\omega_a = 1$ and $\omega_b = 10$ The values for each of the output terminals is as follows:
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{|c||c|c|c|c|}
+        \hline
+        ~                 & V1              & V2 & V3              & V4 \\ \hline \hline
+        Amplitude (Volts) & 3               & 0  & 1               & 0  \\ \hline
+        Frequency (Hz)    & -9              & 0  & 11              & 0  \\ \hline
+        Offset (Volts)    & 0               & 0  & 0               & 0  \\ \hline
+        Phase (Radians)            & $\frac{\pi}{2}$ & 0  & $\frac{\pi}{2}$ & 0  \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+The required LabView screen shot can be seen in figure \ref{q2_h}
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=15cm]{problem2_h.png}
 \end{center}
 \caption{The LabView front-end of a system that produces $\sin(\omega_a t_a)\sin(\omega_b t_b) $.}
-\label{q2_a}
+\label{q2_h}
 \end{figure}
 \end{document}
 
