@@ -89,13 +89,35 @@
 % the solution for Problem 
 
 \section*{Question 1}
+\subsection*{a}
+The circuit diagram can be seen in figure \ref{q1_a}.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=10cm]{q1_circuitDiagram.png}
+\end{center}
+\caption{A lead-lag compensator circuit diagram for question 1.}
+\label{q1_a}
+\end{figure}
 
-
+\subsection*{b}
+If we consider the impedance of the group $R_1$, $C_1$ and $R_3$ as $Z_1$ and the impedance of the group  $R_2$, $C_2$ and $R_4$ as $Z_2$, we can get the circuit diagram seen in figure \ref{q1_b}:
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=10cm]{revised-lead-lag-simplified.png}
+\end{center}
+\caption{Simplified lead-lag compensator circuit diagram.}
+\label{q1_b}
+\end{figure}
+ 
+This circuit essentially operates as an inverting amplifier and hence the relationship between the output and input is given as:
+$$\frac{V_{out}(s)}{V_{in}(s)} = - \frac{Z_2}{Z_1}$$
+Where:
+$$Z_1 = $$
 
 \section*{Question 2}
 
 \subsection*{a}
-
+The circuit diagram can be seen in figure \ref{q2_a}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=10cm]{q2_circuitDiagram.png}
@@ -211,9 +233,9 @@ We ended up using the following components in our circuit:
 \subsection*{g} \xxx{John}
 
 \subsection*{h} 
-The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t)\sin(\omega_b t) $. We can use trigonometric identities as follows to rearrange this sinusoidal product as a sum as follows:
+The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t)\sin(\omega_b t) $. We can use trigonometric identities to rearrange this sinusoidal product as a sum as follows:
 $$\sin(\omega_a t)\sin(\omega_b t) = \frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2}$$
-We use the product-to-sum identities to break up the product of the sines into a sum of cosines. We can again rewrite the cosines in terms of sines by taking into account the phase difference.
+We use the product-to-sum identity to break up the product of the sines into a sum of cosines. We can again rewrite the cosines in terms of sines by taking into account the phase difference.
 $$\frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2} = \frac{\sin((\omega_a t + \omega_b t) + \pi/2)- \sin((\omega_a t + \omega_b t) + \pi/2)}{2}$$
 
 This way, we can achieve a beating signal as a sum of sinusoids. For the purposes of this question, we chose $\omega_a = 1$ and $\omega_b = 10$ The values for each of the output terminals is as follows:
