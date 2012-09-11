@@ -15,7 +15,7 @@ Sum = zeros(length(T), 1);
 
 for i = 1: length(T)
     for j = 1 : length(a)
-        value = a(j) * A(j) * sin(frequency(j) * T(i) + phase(j));
+        value = a(j) * A(j) * sin(2*pi*frequency(j) * T(i) + phase(j));
         Sum(i) = Sum(i) + value;
     end
 end
