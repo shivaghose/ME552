@@ -100,7 +100,7 @@ The circuit diagram can be seen in figure \ref{q1_a}.
 \end{figure}
 
 \subsection*{b}
-If we consider the impedance of the group $R_1$, $C_1$ and $R_3$ as $Z_1$ and the impedance of the group  $R_2$, $C_2$ and $R_4$ as $Z_2$, we can get the circuit diagram seen in figure \ref{q1_b}:
+If we consider the impedance of the group $R_1$, $C_1$ and $R_3$ as $Z_1$ and the impedance of the group  $R_2$, $C_2$ and $R_4$ as $Z_2$, we can get the circuit diagram seen in figure \ref{q1_b}.This circuit essentially operates as an inverting amplifier and hence the relationship between the output and input is given as:
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=10cm]{revised-lead-lag-simplified.png}
@@ -109,10 +109,14 @@ If we consider the impedance of the group $R_1$, $C_1$ and $R_3$ as $Z_1$ and th
 \label{q1_b}
 \end{figure}
  
-This circuit essentially operates as an inverting amplifier and hence the relationship between the output and input is given as:
+
 $$\frac{V_{out}(s)}{V_{in}(s)} = - \frac{Z_2}{Z_1}$$
 Where:
-$$Z_1 = $$
+$$Z_1 = \frac{R_3 * (R_1 + (1/sC_1))}{R_3 + (R_1 + (1/sC_1))} = \frac{R_3(sR_1C_1 +1)}{s(R_1C_1 + R_3C_1) + 1} \ \text{, and}$$
+$$Z_2 = \frac{R_4 * (R_2 + (1/sC_2))}{R_4 + (R_2 + (1/sC_2))} = \frac{R_4(sR_2C_2 +1)}{s(R_2C_2 + R_4C_2) + 1}$$
+Thus the gain of the system can now be re-written as:
+$$\frac{V_{out}(s)}{V_{in}(s)} = -  \frac{R_4(sR_2C_2 +1)}{(s(R_2C_2 + R_4C_2) + 1)}\frac{(s(R_1C_1 + R_3C_1) + 1)}{R_3(sR_1C_1 +1)} $$
+$$=  -  \frac{R_4}{R_3}\frac{(sR_2C_2 +1)}{(s(R_2C_2 + R_4C_2) + 1)}\frac{(s(R_1C_1 + R_3C_1) + 1)}{(sR_1C_1 +1)} $$
 
 \section*{Question 2}
 
@@ -189,6 +193,8 @@ While building this circuit, we made the following assumptions:
 \item The open loop op-amp gain is infinite.
 
 \item The op-amp will operate in an ideal manner when the output is not saturated above or below its supply limits.
+
+\item We used potentiometers to tune the resistors to their required value but none of the components used were ideal components. But for the most part we assumed the values of the resistors were accurate and that capacitors had negligible internal resistance.
 
 \end{itemize}
 
