@@ -305,7 +305,7 @@ We ended up using the following components in our circuit:
 To obtain the resistances specified above we used a combination of potentiometers and fixed resistors which were assembled and then tunned to the correct resistance using a multi-meter. 
 
 \subsection*{f} 
-After constructing the circuit as detailed above we began by feeding the following DC signals into our system and measuring the output to confirm its functionality.  These results can be seen in table \ref{q2_t1}.
+After constructing the circuit as detailed above we began by feeding the following DC signals into our system and measuring the output to confirm its functionality.  These results can be seen in table \ref{q2_ft1}.
 
 \begin{table}[hbt]
 \begin{center}
@@ -319,7 +319,7 @@ After constructing the circuit as detailed above we began by feeding the followi
     \end{tabular}
 \end{center}
 \caption{DC inputs, Expected Output, and Actual Output}
-\label{q2_t1}
+\label{q2_ft1}
 \end{table}
 
 The actual voltages in \ref{q2_t1} were obtained by averaging the output voltage for several seconds in matlab.
@@ -343,7 +343,6 @@ Our VI for generating these inputs and reading the outputs is shown in figure \r
 \label{q2_f2}
 \end{figure}
 
-
 %The circuit diagram can be seen in figure \ref{q1_a}.
 %\begin{figure}[h]
 %\begin{center}
@@ -353,7 +352,17 @@ Our VI for generating these inputs and reading the outputs is shown in figure \r
 %\label{q1_a}
 %\end{figure}
 
-\subsection*{g} \xxx{John}
+\subsection*{g}
+After confirming that the circuit functioned correctly on DC signals we moved on to feed in AC signals and record the output.  These inputs are shown in table \ref{q2_gt1}.
+
+%\begin{table}[hbt]
+%\begin{center}
+%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+%\hline
+%Set & Set 1 & & & & Set 2 & & & & Set3 & & & & \\ 
+
+%\end{center}
+%\end{table}
 
 \subsection*{h} 
 The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t)\sin(\omega_b t) $. We can use trigonometric identities to rearrange this sinusoidal product as a sum as follows:
