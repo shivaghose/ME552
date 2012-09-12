@@ -147,13 +147,13 @@ While building this circuit, we made the following assumptions:
 \end{itemize}
 
 \subsection*{d}
-We can determine the ratings of the components by arbitrarily setting $C_1$ and $C_2$. We set the capacitances because the values available to us is limited where as we have significantly more flexibility with choosing resistances. By fixing $C_1$ and $C_2$ we find:
+We can determine the ratings of the components by arbitrarily setting $C_1$ and $C_2$. We set the capacitances because the values available to us is limited whereas we have significantly more flexibility with choosing resistances. By fixing $C_1$ and $C_2$ we find:
 $$R_1 = \frac{0.01}{C_1}$$
 $$R_2 = \frac{5}{C_2}$$
 $$R_3 = \frac{0.09}{C_1} \ \text{,  and}$$
 $$R_4 = R_2$$
 
-We additionally see that the gain of the inverting op-amp lead-lag circuit is proportional to $ \frac{R_4}{R_3}$. We  want to limit this so that the output does not get saturated wile trying to amplify the signal by a large amount. As we need to use an input amplitude of up to 2V in part (\emph{i}), for a input supply of +/- 15V, we would like to limit the op-amp output to +/- 10V. Hence we want the gain,$ \frac{R_4}{R_3} \approx 5$. 
+We additionally see that the gain of the inverting op-amp lead-lag circuit is proportional to $ \frac{R_4}{R_3}$. We  want to limit this so that the output does not get saturated wile trying to amplify the signal by a large amount. As we need to use an input amplitude of up to 2V in part (\emph{i}), for a input supply of +/- 15V, we would like to limit the op-amp output to +/- 10V. Hence we want the gain,$ \frac{R_4}{R_3}, \approx 5$. 
 
 $$\frac{R_4}{R_3} \approx 5 \implies \frac{(5/C_2)}{(0.09/C_1)} \approx 5$$
 $$\therefore \frac{C_1}{C_2} = 0.09$$
@@ -164,7 +164,7 @@ $$\therefore \frac{C_1}{C_2} = 0.09$$
     \begin{tabular}{|c|c|c|}
         \hline
         \textbf{Component Name} & \textbf{Component Type} & \textbf{Component Specification} \\ \hline
-       $ C_1$                     & \text{Electrolytic Capacitor}         & $ \ \mu F       $             \\ 
+       $ C_1$                     & \text{Electrolytic Capacitor}         & $ \ \mu F     $             \\ 
        $ C_2 $                   & \text{Electrolytic Capacitor}         & $ \ \mu F     $               \\ 
        $ R_1  $                  & \text{Resistor}         & $ \ K\Omega            $        \\ 
        $ R_2 $                    & \text{Resistor}         & $ \ K\Omega        $            \\        
