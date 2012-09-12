@@ -322,7 +322,7 @@ After constructing the circuit as detailed above we began by feeding the followi
 \label{q2_ft1}
 \end{table}
 
-The actual voltages in \ref{q2_t1} were obtained by averaging the output voltage for several seconds in matlab.
+The actual voltages in table \ref{q2_ft1} were obtained by averaging the output voltage for several seconds in matlab.
 The inputs and outputs for Set 3 are shown in figure \ref{q2_f1}.
 
 \begin{figure}[h]
@@ -343,26 +343,58 @@ Our VI for generating these inputs and reading the outputs is shown in figure \r
 \label{q2_f2}
 \end{figure}
 
-%The circuit diagram can be seen in figure \ref{q1_a}.
-%\begin{figure}[h]
-%\begin{center}
-%\includegraphics[width=10cm]{q1_circuitDiagram.png}
-%\end{center}
-%\caption{A lead-lag compensator circuit diagram for question 1.}
-%\label{q1_a}
-%\end{figure}
-
 \subsection*{g}
-After confirming that the circuit functioned correctly on DC signals we moved on to feed in AC signals and record the output.  These inputs are shown in table \ref{q2_gt1}.
+After confirming that the circuit functioned correctly on DC signals we moved on to feed in AC signals and record the output.  These inputs are shown in table \ref{q2_gt1}. 
 
-%\begin{table}[hbt]
-%\begin{center}
-%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-%\hline
-%Set & Set 1 & & & & Set 2 & & & & Set3 & & & & \\ 
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+        \hline
+        Set       & Set 1 & ~  & ~  & ~  & Set 2 & ~  & ~  & ~  \\ \hline
+        Inputs    & V1    & V2 & V3 & V4 & V1    & V2 & V3 & V4 \\ 
+        Amplitude (V) & 3     & 6  & 0  & 0  & 0     & 0  & 2  & 3  \\ 
+        Frequency (Hz) & 4     & 4  & 0  & 0  & 0     & 0  & 2  & 2  \\ 
+        Offset    (V) & 0     & 0  & 0  & 0  & 0     & 0  & 2  & 0  \\ 
+        Phase     (Degrees) & 0     & 90 & 0  & 0  & 0     & 0  & 0  & 45 \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Set 1 and Set 2 inputs}
+\label{q2_gt1}
+\end{table}
 
-%\end{center}
-%\end{table}
+Figure \ref{q2_gf1} shows the output for set 1 superimposed on the simulated inputs and the expected output of the system.  
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 15cm]{problem2g_set1.png}
+\caption{Set 1 Input and Output}
+\label{q2_gf1}
+\end{center}
+\end{figure}
+
+Figure \ref{q2_gf2} shows the output for set 2 superimposed on the simulated inputs to the system and the expected output of the system, while figure \ref{q2_gf3} shows this output within labview for confirmation.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 15cm]{problem2g_set2.png}
+\caption{Set 2 Input and Output}
+\label{q2_gf2}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 10cm]{set2partgproblem2.png}
+\caption{Set 2 Output within LabView}
+\label{q2_gf3}
+\end{center}
+\end{figure}
+
+Both figure \ref{q2_gf1} and figure \ref{q2_gf2} show a close correspondence between the actual and expected output with a few notable differences.  The most  obvious difference is the lag between the actual output and the expected output.  When generating these graphs we assume a uniform 1 ms sampling period, which turns out to not be the case when examining real timing data.  This discrepancy is the result of the system requesting a sample, since we are using on demand sampling, but not recieving the sample in time.  As a consequence of this the time difference between some of the output samples are larger than 1 ms, which on a whole cause fewer than 1000 samples to be taken per second.  This compresses the graph along the time axis resulting in a graph that is out of synch with the expected results.  This issue could be easily remedied by storing the sampled amplitude and the sample time and plotting the amplitude against the actual time rather than the theoretical time.  \\
+
+Both figure \ref{q2_gf1} and figure \ref{q2_gf2} also illustrate a saturation effect at $\pm$ 11 volts.  For an ideal op-amp we would expect the output to saturate at the supply voltages which were confirmed to be  $\pm$ 15 volts. However we would not expect a real op-amp, such as our LM741, to output voltages all the way up to the supply voltage, but rather within about 2 volts of the supply.  But this does not explain the saturation at $\pm$ 11 volts.  Examining the data sheet of our DAQ, the NI 6230 reveals a maximum input voltage of $\pm$ 10 volts.  It is likely that the designers are being somewhat conservative in their estimate of input ranges, so a saturation at 11 volts is likely due to the limited range of the DAQ.
+
 
 \subsection*{h} 
 The beating signal is achieved as a sinusoidal wave which has an amplitude that also varies sinusoidally. In effect, the output is $\sin(\omega_a t)\sin(\omega_b t) $. We can use trigonometric identities to rearrange this sinusoidal product as a sum as follows:
@@ -371,7 +403,7 @@ We use the product-to-sum identity to break up the product of the sines into a s
 $$\frac{\cos(\omega_a t + \omega_b t) - \cos(\omega_a t + \omega_b t)}{2} = \frac{\sin((\omega_a t + \omega_b t) + \pi/2)- \sin((\omega_a t + \omega_b t) + \pi/2)}{2}$$
 
 This way, we can achieve a beating signal as a sum of sinusoids. For the purposes of this question, we chose $\omega_a = 1$ and $\omega_b = 10$ The values for each of the output terminals is as follows:
-\begin{table}[h]
+\begin{table}[hbt]
 \begin{center}
     \begin{tabular}{|c||c|c|c|c|}
         \hline
@@ -385,16 +417,28 @@ This way, we can achieve a beating signal as a sum of sinusoids. For the purpose
 \end{center}
 \end{table}
 
-The required LabView screen shot can be seen in figure \ref{q2_h}
+The required LabView screen shot can be seen in figure \ref{q2_h1} while the graph itself may be seen in figure \ref{q2_h2}
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=15cm]{problem2_h.png}
 \end{center}
 \caption{The LabView front-end of a system that produces $\sin(\omega_a t_a)\sin(\omega_b t_b) $.}
-\label{q2_h}
+\label{q2_h1}
 \end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 15cm]{problem2h_plot.png}
+\end{center}
+\caption{Problem 2h recieved signal}
+\label{q2_h2}
+\end{figure}
+
 \end{document}
+
+
+
 
 
 \def\therefore{\boldsymbol{\text{ }
