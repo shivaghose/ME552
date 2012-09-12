@@ -118,6 +118,75 @@ Thus the gain of the system can now be re-written as:
 $$\frac{V_{out}(s)}{V_{in}(s)} = -  \frac{R_4(sR_2C_2 +1)}{(s(R_2C_2 + R_4C_2) + 1)}\frac{(s(R_1C_1 + R_3C_1) + 1)}{R_3(sR_1C_1 +1)} $$
 $$=  -  \frac{R_4}{R_3}\frac{(sR_2C_2 +1)}{(s(R_2C_2 + R_4C_2) + 1)}\frac{(s(R_1C_1 + R_3C_1) + 1)}{(sR_1C_1 +1)} $$
 
+We see that the op-amp operates as an inverting amplifier. In order to match the required transfer function, we need to account for the additional $-\frac{R_4}{R_3}$ gain, which we can do by passing the output of the circuit through another inverting amplifier which has a gain of $-\frac{R_3}{R_4}$\footnote{For practical purposes this second op-amp is implemented in LabView as a negative gain.}. Comparing our final transfer function with what is asked in the question, we get:
+
+$$\Big( -  \frac{R_4}{R_3} \times -\frac{R_3}{R_4} \Big)\frac{(sR_2C_2 +1)}{(s(R_2C_2 + R_4C_2) + 1)}\frac{(s(R_1C_1 + R_3C_1) + 1)}{(sR_1C_1 +1)}  = \frac{(1+0.1s)(1 + 5s)}{(1+0.01s)(1 + 10s)}$$
+
+Comparing the LHS and the RHS, we see:
+$$R_1C_1 = 0.01$$
+$$R_2C_2 = 5$$
+$$R_1C_1 + R_3C_1 = 0.01 + R_3C_1 = 0.1$$
+$$\implies R_3C_1 = 0.09$$
+$$R_2C_2 + R_4C_2 = 5 + R_4C_2 = 10$$
+$$\implies R_4C_2 = 5$$
+$$\therefore R_4 = R_2$$
+
+\subsection*{c}
+While building this circuit, we made the following assumptions:
+\begin{itemize}
+\item We are using an ideal op-amp, i.e. the input impedance is infinite and the output impedance is negligible. This implies that the op-amp does not load it's input circuit and loading effects are not seen on the op-amps output terminal.
+
+\item The voltage at the non-inverting terminal is equal to the voltage at the non-inverting terminal.
+
+\item The open loop op-amp gain is infinite.
+
+\item The op-amp will operate in an ideal manner when the output is not saturated above or below its supply limits.
+
+\item We used potentiometers to tune the resistors to their required value but none of the components used were ideal components. But for the most part we assumed the values of the resistors were accurate and that capacitors had negligible internal resistance.
+
+\end{itemize}
+
+\subsection*{d}
+We can determine the ratings of the components by arbitrarily setting $C_1$ and $C_2$. We set the capacitances because the values available to us is limited where as we have significantly more flexibility with choosing resistances. By fixing $C_1$ and $C_2$ we find:
+$$R_1 = \frac{0.01}{C_1}$$
+$$R_2 = \frac{5}{C_2}$$
+$$R_3 = \frac{0.09}{C_1} \ \text{,  and}$$
+$$R_4 = R_2$$
+
+We additionally see that the gain of the inverting op-amp lead-lag circuit is proportional to $ \frac{R_4}{R_3}$. We  want to limit this so that the output does not get saturated wile trying to amplify the signal by a large amount. As we need to use an input amplitude of up to 2V in part (\emph{i}), for a input supply of +/- 15V, we would like to limit the op-amp output to +/- 10V. Hence we want the gain,$ \frac{R_4}{R_3} \approx 5$. 
+
+$$\frac{R_4}{R_3} \approx 5 \implies \frac{(5/C_2)}{(0.09/C_1)} \approx 5$$
+$$\therefore \frac{C_1}{C_2} = 0.09$$
+
+\xxx{For this circuit we chose $C_1$ = BLALALALAL}, hence ratings of the other components became:
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Component Name} & \textbf{Component Type} & \textbf{Component Specification} \\ \hline
+       $ C_1$                     & \text{Electrolytic Capacitor}         & $ \ \mu F       $             \\ 
+       $ C_2 $                   & \text{Electrolytic Capacitor}         & $ \ \mu F     $               \\ 
+       $ R_1  $                  & \text{Resistor}         & $ \ K\Omega            $        \\ 
+       $ R_2 $                    & \text{Resistor}         & $ \ K\Omega        $            \\        
+       $ R_3 $                   & \text{Resistor}         & $\ K\Omega   $                 \\ 
+       $ R_4$                     & \text{Resistor}         &$ \ K\Omega$                    \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\subsection*{e} Physical implementation.
+
+\subsection*{f}
+
+\subsection*{g}
+
+\subsection*{h}
+
+\subsection*{i}
+
+\subsection*{j}
+
 \section*{Question 2}
 
 \subsection*{a}
