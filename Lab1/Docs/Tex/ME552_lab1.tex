@@ -301,9 +301,57 @@ We ended up using the following components in our circuit:
 \end{center}
 \end{table}
 
-\subsection*{e} Physical implementation.
+\subsection*{e} 
+To obtain the resistances specified above we used a combination of potentiometers and fixed resistors which were assembled and then tunned to the correct resistance using a multi-meter. 
 
-\subsection*{f} \xxx{John}
+\subsection*{f} 
+After constructing the circuit as detailed above we began by feeding the following DC signals into our system and measuring the output to confirm its functionality.  These results can be seen in table \ref{q2_t1}.
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        Set & V1 (VDC) & V2 (VDC) & V3 (VDC) & V4 (VDC) & Expected Vout (VDC) & Actual Vout (Avg V) \\ \hline
+        1 & 2        & 4        & 1        & 3        & -5                  & -4.9177             \\ 
+        2 & 6        & 4        & 2        & 1        & 4                   & 4.0988              \\ 
+        3 & 6        & 7        & 2        & 3        & 2                   & 2.17                \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{DC inputs, Expected Output, and Actual Output}
+\label{q2_t1}
+\end{table}
+
+The actual voltages in \ref{q2_t1} were obtained by averaging the output voltage for several seconds in matlab.
+The inputs and outputs for Set 3 are shown in figure \ref{q2_f1}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=10cm]{problem2f_set3.png}
+\end{center}
+\caption{Set 3 Inputs and Outputs};
+\label{q2_f1}
+\end{figure}
+
+Our VI for generating these inputs and reading the outputs is shown in figure \ref{q2_f2}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 10cm]{set3problem2.png}
+\end{center}
+\caption{Set 3 VI};
+\label{q2_f2}
+\end{figure}
+
+
+%The circuit diagram can be seen in figure \ref{q1_a}.
+%\begin{figure}[h]
+%\begin{center}
+%\includegraphics[width=10cm]{q1_circuitDiagram.png}
+%\end{center}
+%\caption{A lead-lag compensator circuit diagram for question 1.}
+%\label{q1_a}
+%\end{figure}
 
 \subsection*{g} \xxx{John}
 
