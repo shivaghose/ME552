@@ -64,12 +64,13 @@ aRdB = 20*log10(AmplitudeRatio);
 % now plot our data
 figure;
 handle = subplot(2,1,1);
-get(handle)
 hold on
 plot(F,aRdB);
 plot(W,MdB,'--');
 xlabel('Frequency (rad/s)');
 ylabel('Magnitude (dB)');
+title('Bode Diagram: Experimental vs Theoretical');
+set(handle,'XMinorTick','on');
 set(handle,'XScale','log');
 hold off;
 
@@ -79,5 +80,8 @@ semilogx(F,exPhase);
 semilogx(W,P,'--');
 xlabel('Frequency (rad/s)');
 ylabel('Phase (deg)');
+set(handle,'XMinorTick','on');
 set(handle,'XScale','log');
 hold off;
+
+% note that need to drag it larger to see the minor ticks
