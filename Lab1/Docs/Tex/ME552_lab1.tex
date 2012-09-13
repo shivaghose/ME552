@@ -182,10 +182,57 @@ $$\therefore \frac{C_1}{C_2} = 0.09$$
 \subsection*{g}
 
 \subsection*{h}
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 17cm]{bodeplot.png}
+\caption{Bode Plot of Theoretical System and Actual System}
+\label{q1_fh}
+\end{center}
+\end{figure}
 
 \subsection*{i}
 
+Table \ref{q1_it} shows the output phase and amplitude ratios obtained when varying the input amplitude from 0.5 V to 2 V at 1Hz and 2Hz input sine waves.  Theoretically we would expect the output phase and amplitude ratio to remain constant at a given frequency for any input amplitude.  The magnitude of the bode plot gives the ratio of the output to input at a particular frequency while the phase portion gives the phase at that frequency and both are independent of the input amplitude.  Across different frequencies we would expect the phase and amplitude ratios to vary according to the bode plot.  \\
+
+Experimentally this seems to be the case at a 1Hz input, but it is not the case for the 100 Hz input.  We can notice that at 1Hz the input amplitudes choosen avoid saturating the system, while the 100Hz signal saturates the system such that output can not increase with increasing input voltage \xxx{What voltage do we expect to saturate at given the sillyness with that multiplier Shiva?}
+
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Input Frequency (Hz) & Input Amplitude (V) & Output Phase (degrees) & Output Magnitude Ratio \\ \hline
+        1                    & 0.5             & 21.0959                & 0.548067               \\ 
+        1                    & 1               & 19.8599                & 0.548165               \\ 
+        1                    & 2               & 21.1367                & 0.549704               \\ 
+        100                  & 0.5             & -24.2329               & 4.83643                \\ 
+        100                  & 1               & -23.8303               & 2.61935                \\ 
+        100                  & 2               & -24.7609               & 1.23915                \\
+        \hline
+    \end{tabular}
+\end{center}
+\label{q1_it}
+\end{table}
+
 \subsection*{j}
+
+We generated the Bode Diagram by using a pair of Tone Measurement blocks to extract the amplitude and phase of the input and output signals and then subtract these phases to yield the phase difference and divide the output amplitude by the input amplitude to generate the magnitude ratio.  We selected a range of frequencies running the system at each frequency and then making note of the resulting phase and amplitude ratio by hand.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 17cm]{blockDiagram.png}
+\caption{LabView Block Diagram for Extracting Phase and Magnitude Ratio}
+\label{q1_j1}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width = 10cm]{frontPannel.png}
+\caption{LabView Front Panel for extracting Phase and Magnitude Ratio}
+\label{q1_j2}
+\end{center}
+\end{figure}
 
 \section*{Question 2}
 
