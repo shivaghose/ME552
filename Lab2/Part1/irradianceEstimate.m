@@ -13,6 +13,9 @@ function [irradianceRatio] = irradianceEstimate(rbeam, rblock, d)
 
 % details at http://mathworld.wolfram.com/Circle-CircleIntersection.html
 
+% estimated rblock = 6.35 mm
+% estimated rbeam as = 2.3650 mm radius of the phototransistor
+
 assert((rbeam >= 0) && (rblock >= 0), 'The radii should be non-negative');
 
 r1 = rbeam;
