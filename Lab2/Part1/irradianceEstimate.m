@@ -13,6 +13,8 @@ function [irradianceRatio] = irradianceEstimate(rbeam, rblock, d)
 
 % details at http://mathworld.wolfram.com/Circle-CircleIntersection.html
 
+assert((rbeam >= 0) && (rblock >= 0), 'The radii should be non-negative');
+
 r1 = rbeam;
 r2 = rblock;
 
