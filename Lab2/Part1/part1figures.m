@@ -5,6 +5,7 @@
 % observed data
 
 rbeam = 2.3650; % units in mm
+rbeam = 1.5048;
 rblock = 6.350;
 
 % actual data follows
