@@ -85,7 +85,7 @@
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
-\solutions{}{2}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Wenjian Bai, @baiwenji}
+\solutions{}{2}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Peter Turpel, @pturpel\\ Chan-Rong Lin, @pmelin}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\renewcommand{\theproblem}{\arabic{problem}} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -98,11 +98,16 @@
 \section*{Question 1}
 \subsection*{a.}
 \subsection*{b.}
+\xxx{The bias voltage helps compensate for the steady state errors in the system. In order to control the position of the ball, we have implemented a lead compensator through a $PD$ controller. The differentiating action of the controller does not account for the steady state errors as the differential of a constant is zero. Thus we manually compensate for the constant errors using the bias voltage.}
 \subsection*{c.}
-The photo-transistor passes a current proportional to the amount of light falling on it.  However, our data acquisition card can only measure voltages, rather than currents, so we must convert this current signal into a voltage signal for the card to read. 
-\xxx{Diagram of the of the circuit}
+The photo-transistor passes a current proportional to the amount of light falling on it.  However, our data acquisition card can only measure voltages, rather than currents, so we must convert this current signal into a voltage signal for the card to read. \\
+
+\xxx{Diagram of the of the circuit}\\
+
 \xxx{Do we need the op-amp, could we just use the resistor by itself, look at input impedance of pci card would it be alright, need to worry about how much current we might send to the card}
-\xxx{Something about wanting to scale the voltage to the amount that the card reads card can read from 0 - 10v but we want our circuit to make use of this full resolution}
+\xxx{Something about wanting to scale the voltage to the amount that the card reads card can read from 0 - 10v but we want our circuit to make use of this full resolution}\\
+
+\xxx{The op-amp is set up as a voltage follower circuit. We do so in order to prevent any down-stream set-up from drawing excessive power from the sensor setup. In this particular case, I don't think we need the buffer op-amp because our ADC is supposed to have high input impedance, thereby preventing any load effects to be seen across the sensor. - Shiva}
 \subsection*{d.}
 \subsection*{e.}
 \subsection*{f.}
