@@ -1,6 +1,6 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1187
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 ArialMT;}
+{\colortbl;\red255\green255\blue255;\red26\green26\blue26;}
 \margl1440\margr1440\vieww10800\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
@@ -9,8 +9,18 @@
 IR LED has a loose connection making it unreliable - appears to be within the insulated red section\
 \
 Resistances\
-18.43 kOhms in the Phototransistor circuit\
-1.041 kOhms in the IR LED circuit\
+Phototransistor Circuit\
+18.43 kOhms \
+\
+LED Circuit\
+1.041 kOhms\
+\
+Driver Circuit\
+46.2 kOhms\
+999 Ohms\
+0.5 Ohms\
+Don't need magnet resistance\
+14.91 kOhm current limiting resistance\
 \
 Ball mass = 10g\
 Ball diameter = 12.7 mm\
@@ -39,18 +49,18 @@ Steps to do\
 Sensing\
 X model sensor\
 X collect data relating ball position to sensor voltage/ current\
-O fit data to model to determine function\
-O make circuit lab diagram\
+X fit data to model to determine function\
+X make circuit lab diagram\
 O signal filtering circuit\
 \
 Actuation\
-O compute transfer function of driver circuit want Imagnet / Vin\
-O make circuit lab diagram\
+X compute transfer function of driver circuit want Imagnet / Vin\
+X make circuit lab diagram\
 \
 Magnet\
 X collect data to determine constant in force exerted by electromagnet\
 X determine force constant 1.0286e-4 using meters for x\
-O collect more data nearby to give us the slope of distance vs voltage so we have that conversion for the controller\
+X collect more data nearby to give us the slope of distance vs voltage so we have that conversion for the controller\
 \
 Circuit\
 X construct circuit\
@@ -61,12 +71,22 @@ X construct circuit\
 Computer Controller\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 \cf0 X create vi skeleton\
-O decide whether to control in distance domain or in some sort of voltage domain\
-O finalize vi \
-	o confirm that offsets are integrated \
-	o units are consistent\
-	o make sure that we have negative feedback\
-O model system and estimate parameters (simulink?)\
-O tune system and make it work\
+X decide whether to control in distance domain or in some sort of voltage domain\
+X finalize vi \
+	x confirm that offsets are integrated \
+	x units are consistent\
+	x make sure that we have negative feedback\
+X model system and estimate parameters (simulink?)\
+X tune system and make it work\
 \
+\
+Working system: Lead controller version\
+\pard\pardeftab720
+
+\f1\fs26 \cf2 Working values are:\
+Set Point = 2.195\
+Lead Gain = .37\
+Gain (after TF) = 5500\
+Sensor Bias = .052
+\f0\fs24 \cf0 \
 }
