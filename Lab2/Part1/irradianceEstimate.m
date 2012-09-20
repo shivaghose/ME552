@@ -16,6 +16,8 @@ function [irradianceRatio] = irradianceEstimate(rbeam, rblock, d)
 % estimated rblock = 6.35 mm
 % estimated rbeam as = 2.3650 mm radius of the phototransistor
 
+% regressed rbeam = 1.5048
+
 assert((rbeam >= 0) && (rblock >= 0), 'The radii should be non-negative');
 
 r1 = rbeam;
