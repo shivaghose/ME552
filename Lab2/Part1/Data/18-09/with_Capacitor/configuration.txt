@@ -1,0 +1,10 @@
+Configuration data
+Interface
+Set Point (mm) 2.195
+Lead Gain : 0.37
+Sensor bias (V): 0.052
+Gain (V/m): 5500
+Block Diagram: 
+Sensor gain: 0.000308
+Output Bias (V): 2
+transfer function: -(s + 20) / (s + 80)
