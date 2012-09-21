@@ -188,12 +188,13 @@ We require the voltage following amplifier to avoid loading the sensor circuit w
 
 
 \subsection*{d.}
-The minimum resistance that can be used in the emitter circuit is dictated by the maximum amount of current that the IR LED can draw, in steady state, without burning out.  \xxx{finish explanation below}
-\xxx{finish equations}
+The minimum resistance that can be used in the emitter circuit is dictated by the maximum amount of current that the IR LED can draw, in steady state, without burning out.  
 
-$$ \Sigma{V} = 15 - 1.6 - V_0 $$
-
-
+\begin{center}
+$$ V_{LED}=1.6 \hspace{0.1cm} V \hspace{1cm} I_{max} = 0.2 \hspace{0.1cm} A $$ \\
+$$ \Sigma{V} = V_{supply} - V_{LED} - V_0 = 15 - 1.6 - V_0 = 0 \hspace{1cm} V_0=13.4=IR $$\\
+$$ V_0=I_{max}R_{min} \hspace{1cm} R_{min}=\frac{V_0}{I_{max}}=\frac{13.4 \hspace{0.1cm} V}{0.2 \hspace{0.1cm} A} = 67\hspace{0.1cm} \Omega$$\\
+\end{center}
 
 \begin{figure}[h]
 \begin{center}
@@ -203,7 +204,7 @@ $$ \Sigma{V} = 15 - 1.6 - V_0 $$
 \label{q1_b}
 \end{figure}
 
-A lower resistance should allow the circuit to pass more current which result in a brighter IR beam. This brighter beam will result in a higher signal to noise ratio, because this extra brightness will help to overpower ambient IR sources. It does not effect the full scale range of our detector circuit because this resistance has been tunned to ensure that range between the unblocked beam \xxx{with the magnet present and blocking part of it} and the fully blocked beam is 10 volts. \\  
+A lower resistance allows the circuit to pass more current resulting in a brighter IR beam. This brighter beam results in a higher signal to noise ratio, because this extra brightness will help to overpower ambient IR sources. It does not effect the full scale range of our detector circuit because this resistance has been tunned to ensure that range between the unblocked beam and the fully occluded beam is 10 volts.  \\  
 
 \subsection*{e.}
 It depends on the nature of the failure. 
