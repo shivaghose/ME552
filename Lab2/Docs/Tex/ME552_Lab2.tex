@@ -263,15 +263,25 @@ Assumptions \\
 \end{itemize}
 As a consequence of these two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow casted by the sphere is then simply the circle with radius equal to the radius of the sphere.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions. \\
 
-%\begin{algorithm}
-%\IF{r_{beam} + \abs{d} < r_{sphere}
-%\ENDIF
-%\end{algorithm}
+\[
+  Radiance \hspace{0.1cm} Fraction = \left\{
+  \begin{array}{l l}
+    \frac{A_{beam} - A_{sphere}}{A_{beam}} & \quad \text{if } r_{sphere} + |d| < r_{beam} \\
+    0 & \quad \text{if } r_{beam} + |d| < r_{sphere} \\
+    1 & \quad \text{if } |d| < r_{beam} + r_{sphere} \\
+    \frac{A_{beam} - A_{Overlap}}{A_{beam}} & \quad \text{if } |d| < r_{sphere} + r_{beam} \\
+  \end{array} \right.
+\]
 
- %\begin{center}
-%$$Power Fraction = PF = \frac{A_{beam} - A_{blocked}}{A_{beam}} $$ \\
-
-%\end{center}
+\xxx{Format this part to look a bit nicer} \\
+\textbf{Where:}
+\begin{center}
+$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ \\
+$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$ \\
+$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ \\
+$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$ \\
+$$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$ \\
+\end{center}
 
 \subsubsection{Electro Magnet}
 
