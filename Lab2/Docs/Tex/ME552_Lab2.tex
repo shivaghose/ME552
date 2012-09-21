@@ -85,7 +85,7 @@
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
-\solutions{}{2(A): MagLev}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Peter Turpel, @pturpel\\ Chan-Rong Lin, @pmelin}
+\solutions{}{2: MagLev}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Peter Turpel, @pturpel\\ Chan-Rong Lin, @pmelin}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\renewcommand{\theproblem}{\arabic{problem}} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,8 +137,11 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \newpage
 
+\begin{center}
+\section*{Part A}
+\end{center}
 
-\section*{Part 1 Question 1}
+\section*{Question 1}
 \subsection*{a.}
 The system can be represented as a block diagram as shown in figure \ref{q1_a1}. The individual subsystems can be seen in figure \ref{q1_a2}
 \begin{figure}[h]
@@ -190,11 +193,10 @@ We require the voltage following amplifier to avoid loading the sensor circuit w
 \subsection*{d.}
 The minimum resistance that can be used in the emitter circuit is dictated by the maximum amount of current that the IR LED can draw, in steady state, without burning out.  
 
-\begin{center}
-$$ V_{LED}=1.6 \hspace{0.1cm} V \hspace{1cm} I_{max} = 0.2 \hspace{0.1cm} A $$ \\
-$$ \Sigma{V} = V_{supply} - V_{LED} - V_0 = 15 - 1.6 - V_0 = 0 \hspace{1cm} V_0=13.4=IR $$\\
-$$ V_0=I_{max}R_{min} \hspace{1cm} R_{min}=\frac{V_0}{I_{max}}=\frac{13.4 \hspace{0.1cm} V}{0.2 \hspace{0.1cm} A} = 67\hspace{0.1cm} \Omega$$\\
-\end{center}
+$$ V_{LED}=1.6 \hspace{0.1cm} V \hspace{1cm} I_{max} = 0.2 \hspace{0.1cm} A $$ 
+$$ \Sigma{V} = V_{supply} - V_{LED} - V_0 = 15 - 1.6 - V_0 = 0 \hspace{1cm} V_0=13.4=IR $$
+$$ V_0=I_{max}R_{min} \hspace{1cm} R_{min}=\frac{V_0}{I_{max}}=\frac{13.4 \hspace{0.1cm} V}{0.2 \hspace{0.1cm} A} = 67\hspace{0.1cm} \Omega$$
+
 
 \begin{figure}[h]
 \begin{center}
@@ -210,21 +212,20 @@ A lower resistance allows the circuit to pass more current resulting in a bright
 It depends on the nature of the failure. 
 
 \begin{itemize}
-\item If $R_{Lim}$ fails by shorting out then the maximum current is 750 $mA$ \\
+\item If $R_{Lim}$ fails by shorting out then the maximum current is 750 $mA$ 
 
 $$I_{Lim} = \frac{(5000)*(4.75)}{31600\Omega + R_{CL}} $$
 
-\item If $R_{Lim}$ is intact and another component fails, then the maximum current is 510 $mA$. \\
+\item If $R_{Lim}$ is intact and another component fails, then the maximum current is 510 $mA$. 
 
 $$I_{Lim} = \frac{(5000)*(4.75)}{31.600k\Omega + 14.9k\Omega} =510.64mA$$
 
-\item If the electromagnet somehow became shorted across $+V$ and $-V$, then it would see a potential difference of 30 V.  The coil's internal resistance is 32 $\Omega$ yielding a current of 0.9375 A, and a power dissipated of 28.125 W, which may be enough to cause the coil to overheat.\\
-
+\item If the electromagnet somehow became shorted across $+V$ and $-V$, then it would see a potential difference of 30 V.  The coil's internal resistance is 32 $\Omega$ yielding a current of 0.9375 A, and a power dissipated of 28.125 W, which may be enough to cause the coil to overheat.
 
 $$I = \frac{V}{R} = \frac{30}{32} = 0.9375 A \hspace{1cm}  P = \frac{V^{2}}{R} = \frac{30^2}{32} = 28.125 W $$
 \end{itemize}
 
-If the coil shorted out but remained in series with any of the other components, most of them would be unable to handle the large current draw and rapidly fail.  We would recommend a fuse in series with the coil with 10\% more current rating than our current limit, yielding a rating of 560 $mA$\\
+If the coil shorted out but remained in series with any of the other components, most of them would be unable to handle the large current draw and rapidly fail.  We would recommend a fuse in series with the coil with 10\% more current rating than our current limit, yielding a rating of 560 $mA$
 
 
 \subsection*{f.}  We would like the lower limit to be 0 volts, because feeding negative voltage to the magnet would elicit the non-linear behavior of the electromagnet.  In a linear system, we would expect this negative signal to push the sphere away, but in this non-linear system it would attract the sphere.  Limiting the lower range to 0 avoids this non-linearity.  
@@ -250,66 +251,72 @@ The capacitors act as filters that remove high frequency noise in the power supp
 
 The power supply provided in the X-50 lab is already buffered and smoothened out. Hence, when we removed the capacitors, the system did not show any noticeable change in behavior.
 
-\section{Part 2 Question 1}
+%\newpage
+%\begin{center}
+%\section*{Part B}
+%\end{center}
+%\section*{Question 1}
+%
+%\subsection*{a.}
+%
+%\subsubsection*{Break Beam Sensor}
+%
+%Assumptions \\
+%\begin{itemize}
+%\item Neglect Diffraction.
+%\item Light rays are parallel. 
+%\end{itemize}
+%As a consequence of these two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow casted by the sphere is then simply the circle with radius equal to the radius of the sphere.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions. \\
+%
+%\[
+%  Radiance \hspace{0.1cm} Fraction = \left\{
+%  \begin{array}{l l}
+%    \frac{A_{beam} - A_{sphere}}{A_{beam}} & \quad \text{if } r_{sphere} + |d| < r_{beam} \\
+%    0 & \quad \text{if } r_{beam} + |d| < r_{sphere} \\
+%    1 & \quad \text{if } |d| < r_{beam} + r_{sphere} \\
+%    \frac{A_{beam} - A_{Overlap}}{A_{beam}} & \quad \text{if } |d| < r_{sphere} + r_{beam} \\
+%  \end{array} \right.
+%\]
+%
+%\xxx{Format this part to look a bit nicer} \\
+%\textbf{Where:}
+%\begin{center}
+%$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ \\
+%$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$ \\
+%$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ \\
+%$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$ \\
+%$$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$ \\
+%\end{center}
+%
+%\subsubsection{Electro Magnet}
+%
+%\subsubsection{Bearing \& Magnet System}
+%
+%\subsection*{b.}
+%
+%\subsection*{c.}
+%
+%\subsection*{d.}
+%
+%\subsection*{e.}
+%
+%\subsection*{f.}
+%
+%\subsection*{g.}
+%
+%\section*{Question 2}
+%
+%\subsection*{a.}
+%
+%\subsection*{b.}
+%
+%\subsection*{c.}
+%
+%\subsection*{d.}
+%
+%\section*{Question 3}
 
-\subsection*{a.}
 
-\subsubsection{Break Beam Sensor}
-
-Assumptions \\
-\begin{itemize}
-\item Neglect Diffraction.
-\item Light rays are parallel. 
-\end{itemize}
-As a consequence of these two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow casted by the sphere is then simply the circle with radius equal to the radius of the sphere.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions. \\
-
-\[
-  Radiance \hspace{0.1cm} Fraction = \left\{
-  \begin{array}{l l}
-    \frac{A_{beam} - A_{sphere}}{A_{beam}} & \quad \text{if } r_{sphere} + |d| < r_{beam} \\
-    0 & \quad \text{if } r_{beam} + |d| < r_{sphere} \\
-    1 & \quad \text{if } |d| < r_{beam} + r_{sphere} \\
-    \frac{A_{beam} - A_{Overlap}}{A_{beam}} & \quad \text{if } |d| < r_{sphere} + r_{beam} \\
-  \end{array} \right.
-\]
-
-\xxx{Format this part to look a bit nicer} \\
-\textbf{Where:}
-\begin{center}
-$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ \\
-$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$ \\
-$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ \\
-$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$ \\
-$$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$ \\
-\end{center}
-
-\subsubsection{Electro Magnet}
-
-\subsubsection{Bearing \& Magnet System}
-
-\subsection*{b.}
-
-\subsection*{c.}
-
-\subsection*{d.}
-
-\subsection*{e.}
-
-\subsection*{f.}
-
-\subsection*{g.}
-
-\section{Part 2 Question 2}
-
-\subsection*{a.}
-
-\subsection*{b.}
-
-\subsection*{c.}
-
-\subsection*{d.}
-
-\section{Part 2 question 3}
 %These capacitors buffer the large current requirements of the electromagnet when it turns on. 
 %$V_i(t) = L\frac{di(t)}{dt}$
 %
