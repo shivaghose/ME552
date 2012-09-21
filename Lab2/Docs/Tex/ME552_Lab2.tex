@@ -200,13 +200,13 @@ $$ V_0=I_{max}R_{min} \hspace{1cm} R_{min}=\frac{V_0}{I_{max}}=\frac{13.4 \hspac
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=10cm]{lab2_emitter.png}
+\includegraphics[width=8cm]{lab2_emitter.png}
 \end{center}
-\caption{Simplified lead-lag compensator circuit diagram.}
-\label{q1_b}
+\caption{IR Photo-emitter circuit set up.}
+\label{q1_d}
 \end{figure}
 
-A lower resistance allows the circuit to pass more current resulting in a brighter IR beam. This brighter beam results in a higher signal to noise ratio, because this extra brightness will help to overpower ambient IR sources. It does not effect the full scale range of our detector circuit because this resistance has been tunned to ensure that range between the unblocked beam and the fully occluded beam is 10 volts.  \\  
+A lower resistance allows the circuit to pass more current resulting in a brighter IR beam (as seen in figure \ref{q1_d}). This brighter beam results in a higher signal to noise ratio, because this extra brightness will help to overpower ambient IR sources. It does not effect the full scale range of our detector circuit because this resistance has been tunned to ensure that range between the unblocked beam and the fully occluded beam is 10 volts.  \\  
 
 \subsection*{e.}
 It depends on the nature of the failure. 
@@ -326,12 +326,12 @@ The power supply provided in the X-50 lab is already buffered and smoothened out
 %\xxx{make note of our use of the flyback diode, want to show that it improves response, so run an experiment and compare transient current response with and without it in place} \\
 %
 %\xxx{make a note of vdroop on sensor} \\
-\newpage
+%\newpage
 \section*{Appendix}
 \subsection*{irradianceEstimate.m}
 \begin{verbatim}
 function [irradianceRatio] = irradianceEstimate(rbeam, rblock, x)
-% computes the fraction of irradiance as a function of the radii of the two
+% computes the fraction of irradiance as a function of the radii of the two 
 % intersecting circles and the distance between their centers, d
 % This can be used to model the irradiance of our phototransistor if we
 % make several assumptions:
