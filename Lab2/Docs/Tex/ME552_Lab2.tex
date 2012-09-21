@@ -256,6 +256,23 @@ The power supply provided in the X-50 lab is already buffered and smoothened out
 
 \subsubsection{Break Beam Sensor}
 
+Assumptions \\
+\begin{itemize}
+\item Neglect Diffraction.
+\item Light rays are parallel. 
+\end{itemize}
+As a consequence of these two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow casted by the sphere is then simply the circle with radius equal to the radius of the sphere.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions. \\
+
+%\begin{algorithm}
+%\IF{r_{beam} + \abs{d} < r_{sphere}
+%\ENDIF
+%\end{algorithm}
+
+ %\begin{center}
+%$$Power Fraction = PF = \frac{A_{beam} - A_{blocked}}{A_{beam}} $$ \\
+
+%\end{center}
+
 \subsubsection{Electro Magnet}
 
 \subsubsection{Bearing \& Magnet System}
