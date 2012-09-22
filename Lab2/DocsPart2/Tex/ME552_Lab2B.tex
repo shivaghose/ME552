@@ -82,6 +82,7 @@
 \newcommand{\Prob}{\textrm{Prob}}
 %==
 \usepackage{graphicx}
+\usepackage{xfrac}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
@@ -207,6 +208,25 @@ C_{1} = \frac{L_{EM} + L_{ab}}{\mu_{air} A_{EM}} $$
 Substituting back into the $1^{st}$ equation lets us solve for $\phi_{main}$ yielding: 
 
 $$ \phi_{main} = \frac{NI(1-C_{0}C_{1})}{C_{1} - C_{0} C_{1}^2 + \frac{L_{bc}}{\mu_{air} A_{s}} + \frac{x}{\mu_{air} A_{s}}} $$
+
+With equations for our fluxes we can now compute the self inductance and from that compute the force exerted on the steel sphere as a function of position and current.
+
+$$ \lambda = N \phi = L(x) I $$
+$$ W(i,x) = (\sfrac{1}{2}) L(x) I^2 = (\sfrac{1}{2}) N \phi(x) I =(\sfrac{1}{2}) N I (\phi_{main}(x) + \phi_{leak}(x))$$
+$$ F(i,x) = \frac{d}{dx} (W(i,x) )= (\sfrac{1}{2}) N I ( \frac{d}{dx} (\phi_{main}) + \frac{d}{dx} (\phi_{leak})) $$
+
+$$ \frac{d}{dx}(\phi_{main}) = - \frac{N I (1 - C_{0}C_{1} \mu_{air} A_{s}}{(\mu_{air} A_{s}(C_{1} - C_{0} C_{1}^2 + C_{2}) + x)^2} dx$$
+
+$$ \frac{d}{dx}(\phi_{leak}) = -C_{0} C_{1} \frac{d}{dx}(\phi_{main})$$
+
+Putting this pair of terms together yields our final expression for the force.
+
+$$ F(x) = -\frac{1}{2} \left( 1 - C_{0}C_{1} \right)^2 \frac{\mu_{air} A_{s} N^2 }{(\mu_{air} A_{s}(C_{1} - C_{0} C_{1}^2 + C_{2}) + x)^2} I^2 $$
+
+We can then condense these terms to arrive at a simple equation to model the force, shown below.  Where values for A and B can be obtained experimentally.
+
+$$ F(x) = -\frac{A I^2}{(B+x)^2} $$
+
 \subsubsection{Bearing \& Magnet System}
 
 \subsection*{b.}
