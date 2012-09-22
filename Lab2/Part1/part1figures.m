@@ -5,11 +5,11 @@
 % observed data
 
 rbeam = 2.3650; % units in mm
-rbeam = 1.5048;
+rbeam = 1.6706;
 rblock = 6.350;
 
 % actual data follows
-displacement = [3.64; 4.6; 5.07; 5.5; 5.55; 6; 6.5; 7; 7.45; 7.93; 9.36];
+displacement = [3.49; 4.45; 4.927; 5.35; 5.4; 5.85; 6.35; 6.85; 7.3; 7.78; 9.21];
 VoltageFraction = [0.0066; 0.0116; 0.1116; 0.1296; 0.2166; 0.4376; 0.7006; 0.8146; 0.9766; 0.9946; 0.9956];
 
 irradianceSweep(rbeam, rblock);
