@@ -162,13 +162,11 @@ As a consequence of these two assumptions the IR beam from the LED to the photo-
 
 \xxx{Format this part to look a bit nicer} \\
 \textbf{Where:}
-\begin{center}
-$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ \\
-$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$ \\
-$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ \\
-$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$ \\
-$$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$ \\
-\end{center}
+$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
+$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
+$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
+$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$
+$$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
 
 \begin{figure}
 \begin{center}
@@ -179,8 +177,36 @@ $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$ \\
 \end{figure}
 
 \subsubsection{Electro Magnet}
+\textbf{Assumptions}
+\begin{itemize}
+\item $ \mu_{Al} \approx \mu_{Cu} \approx \mu_{air} $ \\
+\item $ \mu_{steel} \gg \mu_{air} $ \\
+\item can model the steel sphere as a cylinder with its axis collinear with the electromagnet  \\ 
+$$A_{cd} \approx A_{s} = \pi * r_{sphere}^2 $$ \\
+\item neglect effects of fringing on cross-sectional area and assume particular dimensions of area of paths through the air that are consistent with the solid objects in the system \\
+$$ A_{EM} = \pi*r_{EM}^2 \approx A_{ab} \hspace{1cm} A_{s} \approx A_{bc} \approx A_{de} \hspace{1cm} A_{EM} \approx A_{be} + A_{bc} $$ \\
+\item Path length from b to c does not vary with x \\
+$$ \frac{\partial}{\partial x} (L_{bc}) = 0$$ \\
+\end{itemize}
+
+Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \xxx{magnetic circuit diagram} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations.  \\
+
+$$ NI = \phi \left (\mathbb{R}_{EM} + \mathbb{R}_{ab}\right) + \phi_{main} \left( \mathbb{R}_{bc}+\mathbb{R}_{s}+\mathbb{R}_{dc} \right) $$
+$$ NI = \phi \left( \mathbb{R}_{EM} + \mathbb{R}_{ab} \right) + \phi_{leak} \left( \mathbb{R}_{be} \right) $$
+$$ \phi = \phi_{main} + \phi_{leak} $$
 
 
+$$ \mathbb{R}_{EM} = \frac{L_{EM}}{A_{EM}\mu_{air}}  \hspace{1cm} \mathbb{R}_{ab} = \frac{L_{ab}}{A_{EM}\mu_{air}} \hspace{1cm} \mathbb{R}_{bc} = \frac{L_{bc}}{(A_{s})\mu_{air}} \hspace{1cm} \mathbb{R}_{de} = \frac{x}{A_{A_{s}}\mu_{air}} \hspace{1cm} $$ $$ \mathbb{R}_{be} = \frac{L_{be}}{(A_{EM} - A_{s})\mu_{air}}  \hspace{1cm}  \mathbb{R}_{s} = \frac{2*r_{sphere}}{A_{s}\mu_{steel}} \approx 0$$
+
+Solving the $2^{nd}$ equation for $\phi_{leak}$ gives:
+
+$$\phi_{leak} = C_{0}\left( NI-C_{1}\phi_{main} \right)$$ 
+$$C_{0} = \frac{\mu_{air} A_{EM} (A_{EM} - A_{s})}{L_{be} A_{EM} + (L_{EM} + L_{ab})(A_{EM} - A_{s}))} \hspace{1cm} 
+C_{1} = \frac{L_{EM} + L_{ab}}{\mu_{air} A_{EM}} $$
+
+Substituting back into the $1^{st}$ equation lets us solve for $\phi_{main}$ yielding: 
+
+$$ \phi_{main} = \frac{NI(1-C_{0}C_{1})}{C_{1} - C_{0} C_{1}^2 + \frac{L_{bc}}{\mu_{air} A_{s}} + \frac{x}{\mu_{air} A_{s}}} $$
 \subsubsection{Bearing \& Magnet System}
 
 \subsection*{b.}
