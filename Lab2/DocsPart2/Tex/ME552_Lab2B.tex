@@ -138,7 +138,7 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \newpage
 
-\section{Part 2 Question 1}
+\section{Question 1}
 
 \subsection*{a.}
 
@@ -254,6 +254,10 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 \end{figure}
 
 \subsection*{b.}
+\subsubsection{Break Beam Sensor}
+
+\subsubsection{Electromagnet \& Steel Sphere}
+\xxx{Linearization goes here shiva}
 
 \subsection*{c.}
 
@@ -265,12 +269,26 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 \xxx{plot of fitting rbeam to the data and plot the fitted result}
 \xxx{refit this data, try to fit both rbeam and rblock to the optimal result}
 
-\subsection{Electromagnet}
-\xxx{how we collected data adjusted set point, and measured current and position, measured current directly}
-\xxx{how we fit the data to our model, comment on first having to solve symbolically and use two data points to obtain a good guess for nonlinear optimization}
+
+\subsubsection{Electromagnet}
+Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we levitated the sphere at various heights and measured the current associated with those heights.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
+
+$$ F(I,x) = \frac{A I^2}{(B+x)^2} $$
+At equilibrium we know that the force exerted by the electromagnet must balance out the force of gravity on the sphere, this yields the following two expressions.
+$$ mg = f = \frac{A I_{1}^2}{(B+x_{1})^2}  = \frac{A I_{2}^2}{(B+x_{2})^2} $$ 
+
+We can solve the first expression for A.
+$$ A = \frac{F (B + x_{1})^2}{I_{1}^2}$$
+
+Then substituting the previous expression for A back into the $2^{nd}$ equation yields the following expression for B:
+$$ B^2(1-R) + (2x_2-2x_1R)+x_2^2-x_1^2R = 0 \hspace{1cm} R = \frac{I_2^2}{I_1^1} $$
+
+Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.
+\xxx{why are their two solutions? what is the physical reason, and which one makes sense as the right one}
+
 \xxx{plot of actual data vs the fitted result}
 
-\subsection{Steel Sphere}
+\subsubsection{Steel Sphere}
 \xxx{we just weighed it.}
 
 \subsection*{e.}
