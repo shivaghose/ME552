@@ -9,11 +9,17 @@ function [A,B] = estimateMagnetParameters()
 % compute current
 %I = driverVtoI(V);
 
+
 % different data set
 I = [0.358, 0.308, 0.365, 0.298, 0.288, 0.277] ;
 X = [3.23, 2.73, 3.235, 3.13, 3.035, 2.935] ./ 1000;
 
-x = [7.6128e-7; 1.8741e-5]; % inital estimate of A and B;
+% Aplus = 8.9387e-9 Bplus = -0.0031
+% Aminus = 7.6128e-7 Bminus = -0.0022
+% note that using Aminus and Bminus above yielded a lower residual
+% 7.6128e-7; 1.8741e-5
+x = [7.6128e-7; -0.0022]; % inital estimate of A and B;
+% actual A = 8.9574e-06 B = 1.8741e-5
 
 dxtol = 1e-11;
 maxiter = 1000;
