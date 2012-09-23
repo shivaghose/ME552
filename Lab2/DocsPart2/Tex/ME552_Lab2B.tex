@@ -287,6 +287,7 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 
 \subsection*{b.}
 \subsubsection*{Break Beam Sensor}
+\xxx{John linearization goes here}
 
 \subsubsection*{Electromagnet \& Steel Sphere}
 We can model the dynamic forces of attraction between the ball and the magnet as follows:
@@ -297,10 +298,31 @@ We can model the dynamic forces of attraction between the ball and the magnet as
 \subsection*{d. Parameter Identification}
 
 \subsubsection*{Break Beam Sensor}
-\xxx{how we acquired data, used shims and had the sphere on the stand, changed the height by known amounts and measured voltages}
-\xxx{sensor data that we acquired plotted with our theoretical results based purely on the dimensions}
-\xxx{plot of fitting rbeam to the data and plot the fitted result}
-\xxx{refit this data, try to fit both rbeam and rblock to the optimal result}
+To acquire data to measure the relationship between the displacement between the optical axis of the phototransistor and the steel sphere we sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization revealed that that the actual values, shown in table \ref{Q1_dt2} were reasonably close to our expected values.  The curve resulting from this fit and our data are shown in figure \ref{Q1_d1}.
+
+\xxx{make sure table reference works!}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~      & Expected Radii (mm) & Fit Radii (mm) \\ \hline
+        Rbeam  & 2.3650              & 1.398935       \\ 
+        Rblock & 6.350               & 6.070821       \\
+        \hline
+    \end{tabular}
+\end{center}
+\label{Q1_dt2}
+\caption{Expected and Fit values for beam radius and blocking radius}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{SensorRadianceCurve.png}
+\end{center}
+\caption{Normalized Sensor Voltage Output vs distance from the optical axis}
+\label{Q1_d1}
+\end{figure}
 
 \subsubsection*{Driver Circuit}
 
