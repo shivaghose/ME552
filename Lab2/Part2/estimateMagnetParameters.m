@@ -3,22 +3,22 @@ function [A,B] = estimateMagnetParameters()
 % model to the data
 
 % actual data
-%X = [0.52; 1.95; 2.38; 2.88; 3.38; 3.88; 4.31] ./ 1000; % want m
-%V = [0.74; 1.17; 1.349; 1.565; 1.74; 2; 2.25];
+X = [0.52; 1.95; 2.38; 2.88; 3.38; 3.88; 4.31] ./ 1000; % want m
+V = [0.74; 1.17; 1.349; 1.565; 1.74; 2; 2.25];
 
 % compute current
-%I = driverVtoI(V);
+I = actualdriverVtoI(V);
 
 
 % different data set
-I = [0.358, 0.308, 0.365, 0.298, 0.288, 0.277] ;
-X = [3.23, 2.73, 3.235, 3.13, 3.035, 2.935] ./ 1000;
+%I = [0.358, 0.308, 0.365, 0.298, 0.288, 0.277] ;
+%X = [3.23, 2.73, 3.235, 3.13, 3.035, 2.935] ./ 1000;
 
 % Aplus = 8.9387e-9 Bplus = -0.0031
 % Aminus = 7.6128e-7 Bminus = -0.0022
 % note that using Aminus and Bminus above yielded a lower residual
 % 7.6128e-7; 1.8741e-5
-x = [7.6128e-7; -0.0022]; % inital estimate of A and B;
+x = [1.97e-6; 8.929e-4]; % inital estimate of A and B;
 % actual A = 8.9574e-06 B = 1.8741e-5
 
 dxtol = 1e-11;
