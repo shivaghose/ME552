@@ -144,7 +144,7 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \subsubsection{Break Beam Sensor}
 
-\textbf{Assumptions} \\
+\textbf{Assumptions} 
 \begin{itemize}
 \item Neglect Diffraction.
 \item Light rays are parallel. 
@@ -177,6 +177,24 @@ $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
 \end{center}
 \end{figure}
 
+\subsubsection{Driver Circuit}
+\textbf{Assumptions}
+\begin{itemize}
+\item Op-Amp Golden Rules: voltage at inverting and non-inverting terminals is equal and op-amp input impedance is infinite
+\end{itemize}
+
+The electromagnet driver is a simple op-amp circuit, shown in figure \ref{Q1_a2}, which is designed to pass a specific current through the electromagnet for a a given input voltage.  The voltage at the non-inverting input can be simply determined by applying the voltage divider rule.  The voltage at the inverting input is now known allowing us to apply Ohm's Law to determine the current through $R_{3}$ and therefore through the electromagnet.
+
+$$ V^{+}=\frac{R_2}{R_1+R_2}V_{in} \hspace{1cm} I_{EM}=\frac{V^{+}}{R_3}=\frac{1}{R_3}\left(\frac{R_2}{R_1+R_2}\right)V_{in} $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{em_driver_circuit.png}
+\end{center}
+\caption{Electromagnet Driver Circuit}
+\label{Q1_a2}
+\end{figure}
+
 \subsubsection{Electro Magnet}
 \textbf{Assumptions}
 \begin{itemize}
@@ -191,11 +209,11 @@ $ \frac{\partial}{\partial x} (L_{bc}) = 0$
 \item The sphere remains in line with the axis of the electro magnet and $ x > 0$
 \end{itemize}
 
-Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \xxx{magnetic circuit diagram} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations.  \\
+Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \ref{Q1_a3} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations.  \\
 
 \begin{figure}
 \includegraphics[width = 7cm]{flux_diagram.png}
-\label{Q1_a2}
+\label{Q1_a3}
 \caption{Approximate Flux paths taken through our system}
 \end{figure}
 
