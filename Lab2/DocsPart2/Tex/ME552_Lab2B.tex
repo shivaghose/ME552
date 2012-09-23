@@ -137,19 +137,22 @@ and that I have read and understood the X50 Lab Rules.\\
 \end{table}
 
 \newpage
-
-\section{Question 1}
+\begin{center}
+\section*{Part B}
+\end{center}
+\section*{Question 1}
 
 \subsection*{a.}
 
-\subsubsection{Break Beam Sensor}
+\subsubsection*{Break Beam Sensor}
 
 \textbf{Assumptions} 
 \begin{itemize}
-\item Neglect Diffraction.
+\item Neglect the effects of diffraction.
 \item Light rays are parallel. 
+\item Neglect reflection of IR light by the polished ball stand.
 \end{itemize}
-As a consequence of these two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow casted by the sphere is then simply the circle with radius equal to the radius of the sphere.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions. \\
+As a consequence of the first two assumptions the IR beam from the LED to the photo-transistor can be modeled as a cylinder.  The shadow cast by the sphere is then simply a circle with radius equal to the radius of the sphere itself.  This also means that the distance between the sphere and the IR LED does not matter, instead the only values that matter are the radius of the IR beam, the radius of the sphere, and the perpendicular distance between the axis of the beam and the center of the sphere.  The amount of light received by the photo-transistor can then simply be modeled as the intersection of two circles in 2-dimensions as shown in figure \ref{Q1_a1}. \\
 
 \[
   Radiance \hspace{0.1cm} Fraction = \left\{
@@ -163,8 +166,8 @@ As a consequence of these two assumptions the IR beam from the LED to the photo-
 
 \xxx{Format this part to look a bit nicer} \\
 \textbf{Where:}
-$$ A_{beam} = \pi r_{beam}^2 \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
-$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d} \hspace{1cm} d_{beam}=x \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
+$$ A_{beam} = \pi r_{beam}^2, \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
+$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=x, \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
 $$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
 $$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$
 $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
@@ -172,12 +175,12 @@ $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
 \begin{figure}
 \begin{center}
 \includegraphics[width = 9cm]{beam_sphere_diagram.png}
-\label{Q1_a1}
 \caption{Planar approximation of IR beam occluded by steel sphere}
+\label{Q1_a1}
 \end{center}
 \end{figure}
 
-\subsubsection{Driver Circuit}
+\subsubsection*{Driver Circuit}
 \textbf{Assumptions}
 \begin{itemize}
 \item Op-Amp Golden Rules: voltage at inverting and non-inverting terminals is equal and op-amp input impedance is infinite
@@ -187,32 +190,33 @@ The electromagnet driver is a simple op-amp circuit, shown in figure \ref{Q1_a2}
 
 $$ V^{+}=\frac{R_2}{R_1+R_2}V_{in} \hspace{1cm} I_{EM}=\frac{V^{+}}{R_3}=\frac{1}{R_3}\left(\frac{R_2}{R_1+R_2}\right)V_{in} = DV_{in}$$
 
+\subsubsection*{Electromagnet}
+\textbf{Assumptions}
 \begin{figure}
 \begin{center}
-\includegraphics[width = 10cm]{em_driver_circuit.png}
-\end{center}
-\caption{Electromagnet Driver Circuit}
+\includegraphics[width = 7cm]{flux_diagram.png}
+\caption{Approximate Flux paths taken through our system}
 \label{Q1_a2}
+\end{center}
 \end{figure}
-
-\subsubsection{Electro Magnet}
-\textbf{Assumptions}
 \begin{itemize}
-\item $ \mu_{Al} \approx \mu_{Cu} \approx \mu_{air} $ 
+\item $ \mu_{Al} \approx \mu_{Cu} \approx \mu_{air} $ , where $\mu_x$ is the absolute permeability of material $x$
 \item $ \mu_{steel} \gg \mu_{air} $
-\item can model the steel sphere as a cylinder with its axis collinear with the electromagnet  \\ 
+\item We can model the steel sphere as a cylinder with its axis collinear with the electromagnet  \\ 
 $$A_{cd} \approx A_{s} = \pi * r_{sphere}^2 $$ 
-\item neglect effects of fringing on cross-sectional area and assume particular dimensions of area of paths through the air that are consistent with the solid objects in the system \\
+\item We can neglect the effects of fringing on the cross-sectional area and assume particular dimensions of area of paths through the air that are consistent with the solid objects in the system \\
 $$ A_{EM} = \pi*r_{EM}^2 \approx A_{ab} \hspace{1cm} A_{s} \approx A_{bc} \approx A_{de} \hspace{1cm} A_{EM} \approx A_{be} + A_{bc} $$ 
-\item Path length from b to c does not vary with x: 
+\item Path length from b to c (see figure \ref{Q1_a2}) does not vary with x: 
 $ \frac{\partial}{\partial x} (L_{bc}) = 0$
 \item The sphere remains in line with the axis of the electro magnet and $ x > 0$
 \end{itemize}
 
-Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \ref{Q1_a3} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations.  \\
+Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \ref{Q1_a3} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations. 
 
 \begin{figure}
-\includegraphics[width = 7cm]{flux_diagram.png}
+\begin{center}
+\includegraphics[width = 7cm]{em_driver_circuit.png}
+\end{center}
 \label{Q1_a3}
 \caption{Approximate Flux paths taken through our system}
 \end{figure}
@@ -252,11 +256,11 @@ We can then condense these terms to arrive at a simple equation to model the for
 
 $$ F_{EM}(x) = -\frac{A I^2}{(B+x)^2} $$
 
-\subsubsection{Steel Sphere \& Magnet System}
+\subsubsection*{Steel Sphere \& Magnet System}
 \textbf{Assumptions}
 \begin{itemize}
-\item neglect air resistance.
-\item Steel sphere does not collide with the magnet: $x > 0$
+\item Air resistance is negligible.
+\item The steel sphere does not collide with the magnet: $x > 0$
 \end{itemize}
 
 According to Newton's second law the sum of the forces on an object is proportional to the acceleration of the object.  After constructing a free body diagram of our system shown in \xxx{make free body diagram} we can very easily derive a model of the motion of our system.
@@ -272,16 +276,17 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 \end{figure}
 
 \subsection*{b.}
-\subsubsection{Break Beam Sensor}
+\subsubsection*{Break Beam Sensor}
 
-\subsubsection{Electromagnet \& Steel Sphere}
-\xxx{Linearization goes here shiva}
+\subsubsection*{Electromagnet \& Steel Sphere}
+We can model the dynamic forces of attraction between the ball and the magnet as follows:
+
 
 \subsection*{c.}
 
 \subsection*{d. Parameter Identification}
 
-\subsubsection{Break Beam Sensor}
+\subsubsection*{Break Beam Sensor}
 \xxx{how we acquired data, used shims and had the sphere on the stand, changed the height by known amounts and measured voltages}
 \xxx{sensor data that we acquired plotted with our theoretical results based purely on the dimensions}
 \xxx{plot of fitting rbeam to the data and plot the fitted result}
@@ -320,7 +325,7 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
 \caption{Measured Resistances in driver circuit.}
 \end{table}
 
-\subsubsection{Electromagnet}
+\subsubsection*{Electromagnet}
 Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we levitated the sphere at various heights and measured the current associated with those heights.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
 
 $$ F(I,x) = \frac{A I^2}{(B+x)^2} $$
@@ -338,7 +343,7 @@ Choosing two of our x, I pairs allowed us to solve for plausible values of A and
 
 \xxx{plot of actual data vs the fitted result}
 
-\subsubsection{Steel Sphere}
+\subsubsection*{Steel Sphere}
 \xxx{we just weighed it.}
 
 \subsection*{e.}
@@ -347,7 +352,7 @@ Choosing two of our x, I pairs allowed us to solve for plausible values of A and
 
 \subsection*{g.}
 
-\section{Part 2 Question 2}
+\section*{Part 2 Question 2}
 
 \subsection*{a.}
 
