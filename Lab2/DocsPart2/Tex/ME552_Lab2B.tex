@@ -324,6 +324,30 @@ To acquire data to measure the relationship between the displacement between the
 \label{Q1_d1}
 \end{figure}
 
+There is a fixed offset between the displacement, measured from the optical axis of the phototransistor to the center of the sphere, used in figure \ref{Q1_d1}, from the x, measured from the bottom of the magnet to the top of the sphere, used in our controller.  This relationship can be obtained by examining the physical dimensions of the system, noted in table \ref{Q1_dt2} yielding the following expression for x in terms of d.
+
+$$ x = \Delta + h_{magnet} - h_{s stand} - r_{s} \hspace{1cm} \Delta = d + h_{s stand} - h_{sensor} $$
+
+Evaluating this equation and solving for $x$ yields the following relationship:
+
+$$ x = d - 4.12 \text{ mm} $$
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        ~                                    & Dimension (mm) \\ \hline
+        Magnet Height $(h_{magnet}) $          & 130.73         \\ 
+        Sphere on Stand Height $(h_{s stand})$ & 121.5          \\ 
+        Sensor Height $(h_{sensor})$           & 128.5          \\ 
+        Sphere Radius $(r_{s})$                & 6.35           \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Physical Dimensions of the System}
+\label{Q1_dt2}
+\end{table}
+
 \subsubsection*{Driver Circuit}
 
 Theoretically the conversion from voltage to current for this system should be very straight forwards.  We used a multi-meter to measure the resistances, noted in table \ref{Q1_dt1}, and then plugged these values into our model yielding the following relationship between current and input voltage.
