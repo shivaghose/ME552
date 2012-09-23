@@ -1,6 +1,8 @@
 % parameters for magnet
-A = 8.9574e-06;
-B = 1.8741e-05;
+%A = 8.9574e-06;
+%B = 1.8741e-05;
+A = 1.9752e-05;
+B = 8.9294e-04;
 
 % good values
 %A = 3.4963e-04; B = 0.0011;
@@ -16,7 +18,7 @@ X = [0.52; 1.95; 2.38; 2.88; 3.38; 3.88; 4.31] ./ 1000; % want m
 V = [0.74; 1.17; 1.349; 1.565; 1.74; 2; 2.25];
 
 % compute current
-I = driverVtoI(V);
+I = actualdriverVtoI(V);
 
 x = (0:0.01:4);
 x = x ./ 1000;
@@ -34,4 +36,25 @@ plot(Xshiva,Ishiva,'r');
 title('Necessary Magnet Current: Experimental vs Fit Values');
 xlabel('X (m)');
 ylabel('Current (A)');
+hold off;
+
+%%%%%%%%%%%
+% Driver Circuit Data
+
+Vin = [0; 0.5; 1; 1.25; 1.5; 1.75; 1.8; 1.85; 1.9; 1.95; 2; 2.05; 2.1; 2.15; 2.2; 2.25; 2.3; 2.4; 2.45; 2.5; 2.6; 2.7];
+Iout = [-0.015; 0.071; 0.159; 0.203; 0.248; 0.292; 0.302; 0.311; 0.32; 0.329; 0.338; 0.348; 0.357; 0.366; 0.375; 0.384; 0.394; 0.401; 0.4; 0.404; 0.4; 0.399];
+
+Vinm = 0:0.1:3;
+Ioutm = 0.1781.*Vinm - 0.0179;
+Ioutt = 0.042331.*Vinm;
+
+figure
+hold on;
+plot(Vin,Iout,'ko')
+plot(Vinm,Ioutm,'b')
+plot(Vinm,Ioutt,'r')
+legend('Measured Ouput Currents','Fit Current Model','Theoretical Current Model')
+title('Driver Circuit Modeling')
+xlabel('Input Voltage (V)')
+ylabel('Electromagnet Current (I)');
 hold off;

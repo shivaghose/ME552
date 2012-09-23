@@ -6,9 +6,8 @@ function [A, B] = estimateMagnetParametersBetter()
 X = [0.52; 1.95; 2.38; 2.88; 3.38; 3.88; 4.31] ./ 1000; % want m
 V = [0.74; 1.17; 1.349; 1.565; 1.74; 2; 2.25];
 
-X
 % compute current
-I = driverVtoI(V);
+I = actualdriverVtoI(V);
 
 global f;
 f = - 0.01 * 9.81; % the weight of the sphere
@@ -34,7 +33,7 @@ while ((max(abs(dx)) >= dxtol) && (iter < maxiter))
     dx = J \ E;
     
     x = x + dx;
-    magD = norm(dx)
+    magD = norm(dx);
     
     iter = iter + 1;
 end
@@ -52,8 +51,8 @@ E = I - Iest;
 disp('magnitude of final error = ')
 magE = norm(E)
 
-A = x(1)
-B = x(2)
+A = x(1);
+B = x(2);
 
 end
 
