@@ -167,7 +167,7 @@ As a consequence of the first two assumptions the IR beam from the LED to the ph
 \xxx{Format this part to look a bit nicer} \\
 \textbf{Where:}
 $$ A_{beam} = \pi r_{beam}^2, \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
-$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=x, \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
+$$ y = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=y, \hspace{1cm} d_{sphere}=d-y=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
 $$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
 $$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$
 $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
@@ -287,6 +287,27 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 
 \subsection*{b.}
 \subsubsection*{Break Beam Sensor}
+$$ d = x + 4.12 \hspace{1cm} \partial x=\partial d $$
+$$ y = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}=\frac{d}{2} + \frac{r_{beam}^2}{2d} + \frac{r_{sphere}^2}{2d} \hspace{1cm} \frac{\partial}{\partial d} y = \frac{1}{2}\partial d $$
+$$ d_{beam}=y \hspace{1cm} \frac{\partial}{\partial d} d_{beam} = \frac{1}{2}\partial d $$
+$$  d_{sphere}=d-y \hspace{1cm}   \frac{\partial}{\partial d} d_{sphere} = 1\partial d - \frac{1}{2}\partial d = \frac{1}{2}\partial d$$
+$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
+
+$$ \frac{\partial}{\partial d} A_{Obeam} = \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d}$$
+
+$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} $$
+
+$$ \frac{\partial}{\partial d} A_{Osphere} = \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d}$$
+
+$$ A_{Overlap} = A_{Obeam} + A_{Osphere} \hspace{1cm}  \frac{\partial}{\partial d} A_{Overlap} = \frac{\partial}{\partial d} A_{Obeam} + \frac{\partial}{\partial d} A_{Osphere} $$
+
+The set point we are linearizing about is in the area where the function above is well behaved:
+
+$$ Radiance \hspace{0.1cm} Fraction = \frac{A_{beam} - A_{Overlap}}{A_{beam}} = 1 - \frac{A_{Overlap}}{A_{beam}} \hspace{1cm} $$
+
+$$ \frac{\partial}{\partial d} \left( Radiance \hspace{0.1cm} Fraction \right) = \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap} \right) $$
+
+
 \xxx{John linearization goes here}
 
 \subsubsection*{Electromagnet \& Steel Sphere}
@@ -298,7 +319,7 @@ We can model the dynamic forces of attraction between the ball and the magnet as
 \subsection*{d. Parameter Identification}
 
 \subsubsection*{Break Beam Sensor}
-To acquire data to measure the relationship between the displacement between the optical axis of the phototransistor and the steel sphere we sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization revealed that that the actual values, shown in table \ref{Q1_dt2} were reasonably close to our expected values.  The curve resulting from this fit and our data are shown in figure \ref{Q1_d1}.
+To acquire data to measure the relationship between the displacement between the optical axis of the phototransistor and the steel sphere we sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization of the non-linear model revealed that that the actual values, shown in table \ref{Q1_dt2} were reasonably close to our expected values.  The curve resulting from this fit and our data are shown in figure \ref{Q1_d1}.
 
 \xxx{make sure table reference works!}
 
