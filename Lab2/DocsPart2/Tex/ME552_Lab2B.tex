@@ -288,6 +288,8 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 
 \subsection*{b.}
 \subsubsection*{Break Beam Sensor}
+The position sensor is very nearly linear with saturations at 0 and the full scale range.  The numerical derivative is easily obtained and useful in this case as the function is smooth, but the symbolic computation of the derivative, shown below, is far more involved. 
+
 $$ d = x + 4.12 \hspace{1cm} \partial x=\partial d $$
 $$ y = \frac{d^2+r_{beam}^2-r_{sphere}^2}{2d}=\frac{d}{2} + \frac{r_{beam}^2}{2d} - \frac{r_{sphere}^2}{2d} \hspace{1cm} \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
 $$ d_{beam}=y \hspace{1cm} \frac{\partial}{\partial d} d_{beam} =  \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
@@ -323,7 +325,6 @@ $$ R(x) \approx R(x_{0} + 4.12) + \left. \frac{\partial \, R(x)}{\partial x} \ri
 Substituting our previous expressions in to obtain a single symbolic linear expression for the Radiance Fraction in terms of $x$, $r_{beam}$ and $r_{sphere}$ is possible but not particularly practical.  The appendix includes matlab code for computing $R'(d_{0})$.
 
 
-
 %$$ R(d) \approx \left(1 - \frac{A_{Overlap}(d_{0})}{A_{beam}} \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap}(d_{0}) \right) \left(d - d_{0} \right)$$
 %
 %$$ R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(A_{Obeam}(d_{0}) + A_{Osphere}(d_{0}) \right) \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Obeam}(d_{0}) + \frac{\partial}{\partial d} A_{Osphere}(d_{0}) \right) \left(d - d_{0} \right)$$
@@ -338,10 +339,11 @@ Substituting our previous expressions in to obtain a single symbolic linear expr
 
 \subsubsection*{Electromagnet \& Steel Sphere}
 We can model the dynamic forces of attraction between the ball and the magnet as follows:
+\xxx{shiva linearization goes here}
 
-
+\xxx{still need overall linear mathematical model of the system}
 \subsection*{c.}
-\xxx{write this up John}
+The sensor has a non-linear relationship between ball position and output voltage.  The primary non-linearity in this system are the two saturations, at zero volts and the full scale value of 10 volts.  The central region is non-linear, but a linear function in this region provides a good approximation of the function.  Linear Controls theory may only be strictly applied to linear systems, because the Laplace Transform assumes linear time invariant systems.  Because of this assumption we must linearize our sensor about some nominal position.  The whole notion of a transfer function does not apply to a non-linear system so attempting to apply Linear Controls without the linearizion would be an oversight at best, if the system is pretty close to linear, or a complete disaster if it is not.  This non-linearity will cause the actual closed loop response to deviate from the results we would expect given the systems transfer function as we deviate from the nominal position.
 
 \subsection*{d. Parameter Identification}
 
@@ -430,7 +432,7 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
 \end{table}
 
 \subsubsection*{Electromagnet}
-Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we levitated the sphere at various heights and measured the current associated with those heights.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
+Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we measured the amount of voltage sent to the driver to lift the steel sphere from a particular height.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
 
 $$ F(I,x) = \frac{A I^2}{(B+x)^2} $$
 At equilibrium we know that the force exerted by the electromagnet must balance out the force of gravity on the sphere, this yields the following two expressions.
@@ -442,10 +444,32 @@ $$ A = \frac{F (B + x_{1})^2}{I_{1}^2}$$
 Then substituting the previous expression for A back into the $2^{nd}$ equation yields the following expression for B:
 $$ B^2(1-R) + (2x_2-2x_1R)+x_2^2-x_1^2R = 0 \hspace{1cm} R = \frac{I_2^2}{I_1^1} $$
 
-Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.
 \xxx{why are their two solutions? what is the physical reason, and which one makes sense as the right one}
 
-\xxx{plot of actual data vs the fitted result}
+Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt2} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.
+\xxx{why is the force one the one we like}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{magnetDataFits.png}
+\end{center}
+\label{Q1_d3}
+\caption{Electromagnet Current vs X position}
+\end{figure}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        ~           & A          & B         &  Error \\ \hline
+        Force Fit   & 2.2795e-05 & 0.0011656  & 0.0223076 N \\ 
+        Current Fit & 1.9752e-05 & 8.9294e-04 & 0.0272997 A\\
+        \hline
+    \end{tabular}
+\end{center}
+\label{Q1_dt2}
+\caption{Two different parameter fits to our data}
+\end{table}
 
 \subsubsection*{Steel Sphere}
 \xxx{we just weighed it.}
