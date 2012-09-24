@@ -83,6 +83,7 @@
 %==
 \usepackage{graphicx}
 \usepackage{xfrac}
+\usepackage{amsmath}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
@@ -167,7 +168,7 @@ As a consequence of the first two assumptions the IR beam from the LED to the ph
 \xxx{Format this part to look a bit nicer} \\
 \textbf{Where:}
 $$ A_{beam} = \pi r_{beam}^2, \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
-$$ y = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=y, \hspace{1cm} d_{sphere}=d-y=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
+$$ y = \frac{d^2+r_{beam}^2-r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=y, \hspace{1cm} d_{sphere}=d-y=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
 $$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
 $$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$
 $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
@@ -288,16 +289,16 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 \subsection*{b.}
 \subsubsection*{Break Beam Sensor}
 $$ d = x + 4.12 \hspace{1cm} \partial x=\partial d $$
-$$ y = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}=\frac{d}{2} + \frac{r_{beam}^2}{2d} + \frac{r_{sphere}^2}{2d} \hspace{1cm} \frac{\partial}{\partial d} y = \frac{1}{2}\partial d $$
-$$ d_{beam}=y \hspace{1cm} \frac{\partial}{\partial d} d_{beam} = \frac{1}{2}\partial d $$
-$$  d_{sphere}=d-y \hspace{1cm}   \frac{\partial}{\partial d} d_{sphere} = 1\partial d - \frac{1}{2}\partial d = \frac{1}{2}\partial d$$
+$$ y = \frac{d^2+r_{beam}^2-r_{sphere}^2}{2d}=\frac{d}{2} + \frac{r_{beam}^2}{2d} - \frac{r_{sphere}^2}{2d} \hspace{1cm} \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
+$$ d_{beam}=y \hspace{1cm} \frac{\partial}{\partial d} d_{beam} =  \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
+$$  d_{sphere}=d-y \hspace{1cm}   \frac{\partial}{\partial d} d_{sphere} = 1\partial d - \frac{\partial}{\partial d} y = \left(1 - \frac{1}{2}  +\frac{r_{beam}^2}{2d^2} - \frac{r_{sphere}^2}{2d^2}\right) \partial d = \left(\frac{1}{2}  +\frac{r_{beam}^2}{2d^2} - \frac{r_{sphere}^2}{2d^2}\right) \partial d$$
 $$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
 
-$$ \frac{\partial}{\partial d} A_{Obeam} = \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d}$$
+$$ \frac{\partial}{\partial d} A_{Obeam} = \left( -\frac{r_{beam}}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} + d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{-1}{2}} \right) \frac{\partial d_{beam}}{\partial d}$$
 
 $$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} $$
 
-$$ \frac{\partial}{\partial d} A_{Osphere} = \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d}$$
+$$ \frac{\partial}{\partial d} A_{Osphere} = \left( -\frac{r_{sphere}}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} + d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{-1}{2}} \right) \frac{\partial d_{sphere}}{\partial d}$$
 
 $$ A_{Overlap} = A_{Obeam} + A_{Osphere} \hspace{1cm}  \frac{\partial}{\partial d} A_{Overlap} = \frac{\partial}{\partial d} A_{Obeam} + \frac{\partial}{\partial d} A_{Osphere} $$
 
@@ -307,14 +308,40 @@ $$ Radiance \hspace{0.1cm} Fraction = \frac{A_{beam} - A_{Overlap}}{A_{beam}} = 
 
 $$ \frac{\partial}{\partial d} \left( Radiance \hspace{0.1cm} Fraction \right) = \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap} \right) $$
 
+Taylor expansion allows us to approximate the Radiance Fraction about a certain distance $d_0$ as:
 
-\xxx{John linearization goes here}
+$$ Radiance \hspace{0.1cm} Fraction = R(d) = R(d_{0}) + \left. \frac{\partial \, R(d)}{\partial d} \right|_{d_{0}} \left( d - d_{0} \right) + \left. \frac{1}{2!} \frac{\partial^2 \, R(d)}{\partial d^2} \right|_{d_{0}} \left(d-d_{0}\right)^2 + ... $$
+
+Dropping the higher order terms leaves us with a linear expression for the Radiance Fraction about a certain distance.
+
+$$ R(d) \approx R(d_{0}) + \left. \frac{\partial \, R(d)}{\partial d} \right|_{d_{0}} \left( d - d_{0} \right) $$
+
+Substituting our expression for d in terms of x yields:
+
+$$ R(x) \approx R(x_{0} + 4.12) + \left. \frac{\partial \, R(x)}{\partial x} \right|_{x_{0}+4.12} \left( x - x_{0} \right) $$
+
+Substituting our previous expressions in to obtain a single symbolic linear expression for the Radiance Fraction in terms of $x$, $r_{beam}$ and $r_{sphere}$ is possible but not particularly practical.  The appendix includes matlab code for computing $R'(d_{0})$.
+
+
+
+%$$ R(d) \approx \left(1 - \frac{A_{Overlap}(d_{0})}{A_{beam}} \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap}(d_{0}) \right) \left(d - d_{0} \right)$$
+%
+%$$ R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(A_{Obeam}(d_{0}) + A_{Osphere}(d_{0}) \right) \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Obeam}(d_{0}) + \frac{\partial}{\partial d} A_{Osphere}(d_{0}) \right) \left(d - d_{0} \right)$$
+%
+%\begin{multline}
+%R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2} \right. \right. \\ \left. \left.+ r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} \right) \right) \\ + \frac{1}{A_{beam}} \left( \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d} \right. \\ \left. +  \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d} \right) \left(d - d_{0} \right)
+%\end{multline}
+%
+%\begin{multline}
+%R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2} \right. \right. \\ \left. \left.+ r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} \right) \right) \\ + \frac{1}{A_{beam}} \left( \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d} \right. \\ \left. +  \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d} \right) \left(d - d_{0} \right)
+%\end{multline}
 
 \subsubsection*{Electromagnet \& Steel Sphere}
 We can model the dynamic forces of attraction between the ball and the magnet as follows:
 
 
 \subsection*{c.}
+\xxx{write this up John}
 
 \subsection*{d. Parameter Identification}
 
@@ -440,5 +467,9 @@ Choosing two of our x, I pairs allowed us to solve for plausible values of A and
 \subsection*{d.}
 
 \section*{Question 3}
+
+\section*{Appendix}
+\xxx{include radianceDerivative from part 1 folder}
+
 
 \end{document}
