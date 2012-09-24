@@ -1,8 +1,10 @@
 % parameters for magnet
 %A = 8.9574e-06;
 %B = 1.8741e-05;
-A = 1.9752e-05;
-B = 8.9294e-04;
+Ac = 1.9752e-05;
+Bc = 8.9294e-04;
+A = 2.2795e-05;
+B = 0.0011656;
 
 % good values
 %A = 3.4963e-04; B = 0.0011;
@@ -20,7 +22,7 @@ V = [0.74; 1.17; 1.349; 1.565; 1.74; 2; 2.25];
 % compute current
 I = actualdriverVtoI(V);
 
-x = (0:0.01:4);
+x = (0:0.01:4.5);
 x = x ./ 1000;
 f = -0.0981;
 Iest = zeros(length(x),1);
@@ -28,15 +30,24 @@ for i = 1:length(x)
     Iest(i) = requiredCurrent(A,B,x(i));
 end
 
+ICest = zeros(length(x),1);
+for i = 1:length(x)
+    ICest(i) = requiredCurrent(Ac,Bc,x(i));
+end
+
 figure;
 hold on;
-plot(X,I,'k');
+plot(X,I,'ko');
 plot(x,Iest,'b');
-plot(Xshiva,Ishiva,'r');
+plot(x,ICest,'r');
+%plot(Xshiva,Ishiva,'r');
 title('Necessary Magnet Current: Experimental vs Fit Values');
 xlabel('X (m)');
 ylabel('Current (A)');
+legend('Observed Position & Current','Necessary Current: Force Fit', 'Neccessary Current: Current Fit')
 hold off;
+
+
 
 %%%%%%%%%%%
 % Driver Circuit Data
