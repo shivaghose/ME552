@@ -83,6 +83,7 @@
 %==
 \usepackage{graphicx}
 \usepackage{xfrac}
+\usepackage{amsmath}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
@@ -167,7 +168,7 @@ As a consequence of the first two assumptions the IR beam from the LED to the ph
 \xxx{Format this part to look a bit nicer} \\
 \textbf{Where:}
 $$ A_{beam} = \pi r_{beam}^2, \hspace{1cm} A_{sphere} = \pi r_{sphere}^2 $$ 
-$$ x = \frac{d^2+r_{beam}^2+r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=x, \hspace{1cm} d_{sphere}=d-x=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
+$$ y = \frac{d^2+r_{beam}^2-r_{sphere}^2}{2d}, \hspace{1cm} d_{beam}=y, \hspace{1cm} d_{sphere}=d-y=\frac{d^2-r_{beam}^2+r_{sphere}^2}{2d} $$
 $$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
 $$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2}$$
 $$ A_{Overlap} = A_{Obeam} + A_{Osphere} $$
@@ -190,15 +191,33 @@ The electromagnet driver is a simple op-amp circuit, shown in figure \ref{Q1_a2}
 
 $$ V^{+}=\frac{R_2}{R_1+R_2}V_{in} \hspace{1cm} I_{EM}=\frac{V^{+}}{R_3}=\frac{1}{R_3}\left(\frac{R_2}{R_1+R_2}\right)V_{in} = DV_{in}$$
 
-\subsubsection*{Electromagnet}
-\textbf{Assumptions}
 \begin{figure}
 \begin{center}
+\includegraphics[width = 9cm]{em_driver_circuit.png}
+\end{center}
+\label{Q1_a2}
+\caption{Electromagnet Driver Circuit}
+\end{figure}
+
+\subsubsection*{Electromagnet}
+\textbf{Assumptions}
+
+\begin{figure}[htb]
+\begin{minipage}[b]{0.45\linewidth}
+\centering
 \includegraphics[width = 7cm]{flux_diagram.png}
 \caption{Approximate Flux paths taken through our system}
-\label{Q1_a2}
-\end{center}
+\label{Q1_a3L}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+\includegraphics[width = 8cm]{magnetic_circuit.png}
+\caption{Equivalent Magnetic Circuit}
+\label{Q1_a3R}
+\end{minipage}
 \end{figure}
+
 \begin{itemize}
 \item $ \mu_{Al} \approx \mu_{Cu} \approx \mu_{air} $ , where $\mu_x$ is the absolute permeability of material $x$
 \item $ \mu_{steel} \gg \mu_{air} $
@@ -211,15 +230,7 @@ $ \frac{\partial}{\partial x} (L_{bc}) = 0$
 \item The sphere remains in line with the axis of the electro magnet and $ x > 0$
 \end{itemize}
 
-Drawing out approximate flux paths yields the following diagram \xxx{make diagram of system} which can be converted to the following magnetic circuit shown in \ref{Q1_a3} by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations. 
-
-\begin{figure}
-\begin{center}
-\includegraphics[width = 7cm]{em_driver_circuit.png}
-\end{center}
-\label{Q1_a3}
-\caption{Approximate Flux paths taken through our system}
-\end{figure}
+Drawing out approximate flux paths yields the following diagram in figure \ref{Q1_a3L} which can be converted to the following magnetic circuit , shown in figure \ref{Q1_a3R}, by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations. 
 
 $$ NI = \phi \left (\mathbb{R}_{EM} + \mathbb{R}_{ab}\right) + \phi_{main} \left( \mathbb{R}_{bc}+\mathbb{R}_{s}+\mathbb{R}_{dc} \right) $$
 $$ NI = \phi \left( \mathbb{R}_{EM} + \mathbb{R}_{ab} \right) + \phi_{leak} \left( \mathbb{R}_{be} \right) $$
@@ -263,7 +274,7 @@ $$ F_{EM}(x) = -\frac{A I^2}{(B+x)^2} $$
 \item The steel sphere does not collide with the magnet: $x > 0$
 \end{itemize}
 
-According to Newton's second law the sum of the forces on an object is proportional to the acceleration of the object.  After constructing a free body diagram of our system shown in \xxx{make free body diagram} we can very easily derive a model of the motion of our system.
+According to Newton's second law the sum of the forces on an object is proportional to the acceleration of the object.  After constructing a free body diagram of our system shown in figure \ref{Q1_a4} we can very easily derive a model of the motion of our system.
 
 $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 
@@ -277,54 +288,115 @@ $$ \sum F_x = mg + F_{EM} = mg -\frac{A I^2}{(B+x)^2} = m  \ddot{x}$$
 
 \subsection*{b.}
 \subsubsection*{Break Beam Sensor}
+The position sensor is very nearly linear with saturations at 0 and the full scale range.  The numerical derivative is easily obtained and useful in this case as the function is smooth, but the symbolic computation of the derivative, shown below, is far more involved. 
+
+$$ d = x + 4.12 \hspace{1cm} \partial x=\partial d $$
+$$ y = \frac{d^2+r_{beam}^2-r_{sphere}^2}{2d}=\frac{d}{2} + \frac{r_{beam}^2}{2d} - \frac{r_{sphere}^2}{2d} \hspace{1cm} \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
+$$ d_{beam}=y \hspace{1cm} \frac{\partial}{\partial d} d_{beam} =  \frac{\partial}{\partial d} y = \left(\frac{1}{2}  -\frac{r_{beam}^2}{2d^2} + \frac{r_{sphere}^2}{2d^2}\right) \partial d $$
+$$  d_{sphere}=d-y \hspace{1cm}   \frac{\partial}{\partial d} d_{sphere} = 1\partial d - \frac{\partial}{\partial d} y = \left(1 - \frac{1}{2}  +\frac{r_{beam}^2}{2d^2} - \frac{r_{sphere}^2}{2d^2}\right) \partial d = \left(\frac{1}{2}  +\frac{r_{beam}^2}{2d^2} - \frac{r_{sphere}^2}{2d^2}\right) \partial d$$
+$$ A_{Obeam} = r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2}$$ 
+
+$$ \frac{\partial}{\partial d} A_{Obeam} = \left( -\frac{r_{beam}}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} + d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{-1}{2}} \right) \frac{\partial d_{beam}}{\partial d}$$
+
+$$ A_{Osphere} = r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} $$
+
+$$ \frac{\partial}{\partial d} A_{Osphere} = \left( -\frac{r_{sphere}}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} + d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{-1}{2}} \right) \frac{\partial d_{sphere}}{\partial d}$$
+
+$$ A_{Overlap} = A_{Obeam} + A_{Osphere} \hspace{1cm}  \frac{\partial}{\partial d} A_{Overlap} = \frac{\partial}{\partial d} A_{Obeam} + \frac{\partial}{\partial d} A_{Osphere} $$
+
+The set point we are linearizing about is in the area where the function above is well behaved:
+
+$$ Radiance \hspace{0.1cm} Fraction = \frac{A_{beam} - A_{Overlap}}{A_{beam}} = 1 - \frac{A_{Overlap}}{A_{beam}} \hspace{1cm} $$
+
+$$ \frac{\partial}{\partial d} \left( Radiance \hspace{0.1cm} Fraction \right) = \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap} \right) $$
+
+Taylor expansion allows us to approximate the Radiance Fraction about a certain distance $d_0$ as:
+
+$$ Radiance \hspace{0.1cm} Fraction = R(d) = R(d_{0}) + \left. \frac{\partial \, R(d)}{\partial d} \right|_{d_{0}} \left( d - d_{0} \right) + \left. \frac{1}{2!} \frac{\partial^2 \, R(d)}{\partial d^2} \right|_{d_{0}} \left(d-d_{0}\right)^2 + ... $$
+
+Dropping the higher order terms leaves us with a linear expression for the Radiance Fraction about a certain distance.
+
+$$ R(d) \approx R(d_{0}) + \left. \frac{\partial \, R(d)}{\partial d} \right|_{d_{0}} \left( d - d_{0} \right) $$
+
+Substituting our expression for d in terms of x yields:
+
+$$ R(x) \approx R(x_{0} + 4.12) + \left. \frac{\partial \, R(x)}{\partial x} \right|_{x_{0}+4.12} \left( x - x_{0} \right) $$
+
+Substituting our previous expressions in to obtain a single symbolic linear expression for the Radiance Fraction in terms of $x$, $r_{beam}$ and $r_{sphere}$ is possible but not particularly practical.  The appendix includes matlab code for computing $R'(d_{0})$.
+
+
+%$$ R(d) \approx \left(1 - \frac{A_{Overlap}(d_{0})}{A_{beam}} \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Overlap}(d_{0}) \right) \left(d - d_{0} \right)$$
+%
+%$$ R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(A_{Obeam}(d_{0}) + A_{Osphere}(d_{0}) \right) \right) + \frac{1}{A_{beam}} \left( \frac{\partial}{\partial d} A_{Obeam}(d_{0}) + \frac{\partial}{\partial d} A_{Osphere}(d_{0}) \right) \left(d - d_{0} \right)$$
+%
+%\begin{multline}
+%R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2} \right. \right. \\ \left. \left.+ r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} \right) \right) \\ + \frac{1}{A_{beam}} \left( \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d} \right. \\ \left. +  \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d} \right) \left(d - d_{0} \right)
+%\end{multline}
+%
+%\begin{multline}
+%R(d) \approx \left(1 - \frac{1}{A_{beam}}\left(r_{beam}^2 \cos^{-1} (\frac{d_{beam}}{r_{beam}})-d_{beam} \sqrt{r_{beam}^2-d_{beam}^2} \right. \right. \\ \left. \left.+ r_{sphere}^2 \cos^{-1} (\frac{d_{sphere}}{r_{sphere}})-d_{sphere} \sqrt{r_{sphere}^2-d_{sphere}^2} \right) \right) \\ + \frac{1}{A_{beam}} \left( \left( -\frac{r_{beam}^2}{\sqrt{1 - \left(\frac{d_{beam}}{r_{beam}}\right)^2}} - \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} - d_{beam}^2 \left( r_{beam}^2 - d_{beam}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{beam}}{\partial d} \right. \\ \left. +  \left( -\frac{r_{sphere}^2}{\sqrt{1 - \left(\frac{d_{sphere}}{r_{sphere}}\right)^2}} - \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} - d_{sphere}^2 \left( r_{sphere}^2 - d_{sphere}^2\right)^{\sfrac{1}{2}} \right) \frac{\partial d_{sphere}}{\partial d} \right) \left(d - d_{0} \right)
+%\end{multline}
 
 \subsubsection*{Electromagnet \& Steel Sphere}
 We can model the dynamic forces of attraction between the ball and the magnet as follows:
+\xxx{shiva linearization goes here}
 
-$$mg - \frac{A i^2}{(B + x)^2} = m\ddot{x}$$
-
-\textbf{Where:}
-$$ mg - \text{is the weight of the ball pulling downwards}$$
-$$- \frac{A i^2}{(B + x)^2} - \text{is the non-linear attractive force exerted by the electromagnet}$$
-$$ m\ddot{x} - \text{is the net force experienced by the ball}$$
-
-In order to simplify the system we would like to linearize the force of attraction exerted by the magnet around the region of equilibrium. This can be achieved using the Taylor series expansion which allows us to represent the function as a sum of derivatives about the point of interest. The Taylor series of a function $f(a)$ is given by:
-$$\sum_{n=0}^{\infty} \frac {f^{(n)}(a)}{n!} \, (x-a)^{n}$$
-Which can be expanded to give:
-$$f(a)+\frac {f'(a)}{1!} (x-a)+ \frac{f''(a)}{2!} (x-a)^2+\frac{f^{(3)}(a)}{3!}(x-a)^3+ \cdots.$$
-For our purposes, estimating the system up to the first derivative gives us sufficient approximation, thus we see that:
-$$\frac{A i^2}{(B + x)^2} \approx \frac{A \bar{i}^2}{(B + \bar{x})^2} - 2\frac{A \bar{i}^2}{(B + \bar{x})^3}\hat{x} + 2\frac{A \bar{i}}{(B + \bar{x})^2}\hat{i}$$
-\textbf{Where:}
-$$\bar{i}- \text{is the current flowing through the electromagnet at equilibrium}$$
-$$\hat{i}- \text{is the instantaneous current flowing through the electromagnet at the present time}$$
-$$\bar{x}- \text{is the displacement of the ball from the electromagnet at equilibrium}$$
-$$\hat{x}- \text{is the current displacement of the ball from it's equilibrium position.}$$
-
-Hence the expression for the forces acting on the ball can be rewritten as:
-$$mg - \Big( \frac{A \bar{i}^2}{(B + \bar{x})^2} - 2\frac{A \bar{i}^2}{(B + \bar{x})^3}\hat{x} + 2\frac{A \bar{i}}{(B + \bar{x})^2}\hat{i} \Big) = m\ddot{\hat{x}}$$
-
-At equilibrium the ball experiences zero net force along the vertical axis as the weight of the ball is negated by the force of the magnet, hence we see that:
-$$mg = \frac{A \bar{i}^2}{(B + \bar{x})^2} $$
-Hence about the equilibrium point, the force acting on the ball can be rewritten as:
-$$m\ddot{\hat{x}} = + 2\frac{A \bar{i}^2}{(B + \bar{x})^3}\hat{x} - 2\frac{A \bar{i}}{(B + \bar{x})^2}\hat{i}$$
-Taking the Laplace transform of the expression, we get:
-$$s^2 m \hat{X}(s) = + 2\frac{A \bar{i}^2}{(B + \bar{x})^3}\hat{X}(s) - 2\frac{A \bar{i}}{(B + \bar{x})^2}\hat{I}(s)$$
-Grouping similar terms, we get:
-$$\hat{X}(s) \Big( s^2 m - \frac{2A\bar{i}}{(B + \bar{x})^3} \Big) = \hat{I}(s) \Big( - \frac{2A\bar{i}}{(B + \bar{x})^2}\Big)$$
-We can further rearrange the terms to get a ratio of the output to input as follows:
-$$\frac{\hat{X}(s)}{\hat{I}(s)} = \frac{-2 A \bar{i} (B + \bar{x})}{s^2 (m (B + \bar{x})^3) - 2 A\bar{i}^2}$$
-This is the linearized transfer function of the electromagnet-ball system.
-
-
+\xxx{still need overall linear mathematical model of the system}
 \subsection*{c.}
+The sensor has a non-linear relationship between ball position and output voltage.  The primary non-linearity in this system are the two saturations, at zero volts and the full scale value of 10 volts.  The central region is non-linear, but a linear function in this region provides a good approximation of the function.  Linear Controls theory may only be strictly applied to linear systems, because the Laplace Transform assumes linear time invariant systems.  Because of this assumption we must linearize our sensor about some nominal position.  The whole notion of a transfer function does not apply to a non-linear system so attempting to apply Linear Controls without the linearizion would be an oversight at best, if the system is pretty close to linear, or a complete disaster if it is not.  This non-linearity will cause the actual closed loop response to deviate from the results we would expect given the systems transfer function as we deviate from the nominal position.
 
 \subsection*{d. Parameter Identification}
 
 \subsubsection*{Break Beam Sensor}
-\xxx{how we acquired data, used shims and had the sphere on the stand, changed the height by known amounts and measured voltages}
-\xxx{sensor data that we acquired plotted with our theoretical results based purely on the dimensions}
-\xxx{plot of fitting rbeam to the data and plot the fitted result}
-\xxx{refit this data, try to fit both rbeam and rblock to the optimal result}
+To acquire data to measure the relationship between the displacement between the optical axis of the phototransistor and the steel sphere we sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization of the non-linear model revealed that that the actual values, shown in table \ref{Q1_dt2} were reasonably close to our expected values.  The curve resulting from this fit and our data are shown in figure \ref{Q1_d1}.
+
+\xxx{make sure table reference works!}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~      & Expected Radii (mm) & Fit Radii (mm) \\ \hline
+        Rbeam  & 2.3650              & 1.398935       \\ 
+        Rblock & 6.350               & 6.070821       \\
+        \hline
+    \end{tabular}
+\end{center}
+\label{Q1_dt2}
+\caption{Expected and Fit values for beam radius and blocking radius}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{SensorRadianceCurve.png}
+\end{center}
+\caption{Normalized Sensor Voltage Output vs distance from the optical axis}
+\label{Q1_d1}
+\end{figure}
+
+There is a fixed offset between the displacement, measured from the optical axis of the phototransistor to the center of the sphere, used in figure \ref{Q1_d1}, from the x, measured from the bottom of the magnet to the top of the sphere, used in our controller.  This relationship can be obtained by examining the physical dimensions of the system, noted in table \ref{Q1_dt2} yielding the following expression for x in terms of d.
+
+$$ x = \Delta + h_{magnet} - h_{s stand} - r_{s} \hspace{1cm} \Delta = d + h_{s stand} - h_{sensor} $$
+
+Evaluating this equation and solving for $x$ yields the following relationship:
+
+$$ x = d - 4.12 \text{ mm} $$
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        ~                                    & Dimension (mm) \\ \hline
+        Magnet Height $(h_{magnet}) $          & 130.73         \\ 
+        Sphere on Stand Height $(h_{s stand})$ & 121.5          \\ 
+        Sensor Height $(h_{sensor})$           & 128.5          \\ 
+        Sphere Radius $(r_{s})$                & 6.35           \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Physical Dimensions of the System}
+\label{Q1_dt2}
+\end{table}
 
 \subsubsection*{Driver Circuit}
 
@@ -339,12 +411,12 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{DriverCircuitModel.png}
+\end{center}
 \label{Q1_d2}
 \caption{Comparison of actual voltage current relationship with the fit model and the theoretical model}
-\end{center}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}
 \begin{center}
     \begin{tabular}{|c|c|}
         \hline
@@ -355,12 +427,12 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
         \hline
     \end{tabular}
 \end{center}
-\label{Q1_dt1}
 \caption{Measured Resistances in driver circuit.}
+\label{Q1_dt1}
 \end{table}
 
 \subsubsection*{Electromagnet}
-Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we levitated the sphere at various heights and measured the current associated with those heights.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
+Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  Now that we have a working system we were able to conduct an experiment where we measured the amount of voltage sent to the driver to lift the steel sphere from a particular height.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
 
 $$ F(I,x) = \frac{A I^2}{(B+x)^2} $$
 At equilibrium we know that the force exerted by the electromagnet must balance out the force of gravity on the sphere, this yields the following two expressions.
@@ -372,13 +444,49 @@ $$ A = \frac{F (B + x_{1})^2}{I_{1}^2}$$
 Then substituting the previous expression for A back into the $2^{nd}$ equation yields the following expression for B:
 $$ B^2(1-R) + (2x_2-2x_1R)+x_2^2-x_1^2R = 0 \hspace{1cm} R = \frac{I_2^2}{I_1^1} $$
 
-Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.
 \xxx{why are their two solutions? what is the physical reason, and which one makes sense as the right one}
 
-\xxx{plot of actual data vs the fitted result}
+Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt2} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.
+\xxx{why is the force one the one we like}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{magnetDataFits.png}
+\end{center}
+\label{Q1_d3}
+\caption{Electromagnet Current vs X position}
+\end{figure}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        ~           & A          & B         &  Error \\ \hline
+        Force Fit   & 2.2795e-05 & 0.0011656  & 0.0223076 N \\ 
+        Current Fit & 1.9752e-05 & 8.9294e-04 & 0.0272997 A\\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Two different parameter fits to our data}
+\label{Q1_dt2}
+\end{table}
 
 \subsubsection*{Steel Sphere}
-\xxx{we just weighed it.}
+The steel sphere has two parameters of consequence for our modeling, its diameter and its mass.  Both of these values were obtained through direct measurements using calipers and a scale respectively.
+
+\begin{table}[hbt]
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Steel Sphere Mass (g)      & 10   \\ \hline
+        Steel Sphere Diameter (mm) & 12.7 \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Steel sphere parameters}
+\label{Q1_dt3}
+\end{table}
+
 
 \subsection*{e.}
 
@@ -397,5 +505,9 @@ Choosing two of our x, I pairs allowed us to solve for plausible values of A and
 \subsection*{d.}
 
 \section*{Question 3}
+
+\section*{Appendix}
+\xxx{include radianceDerivative from part 1 folder}
+
 
 \end{document}

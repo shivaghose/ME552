@@ -5,8 +5,11 @@
 % observed data
 
 rbeam = 2.3650; % units in mm
-rbeam = 1.6706;
+rbeam = 1.6706; % only fitting estimateRbeam
 rblock = 6.350;
+
+rbeam = 1.398935; %fitting both
+rblock = 6.070821; 
 
 % actual data follows
 displacement = [3.49; 4.45; 4.927; 5.35; 5.4; 5.85; 6.35; 6.85; 7.3; 7.78; 9.21];
