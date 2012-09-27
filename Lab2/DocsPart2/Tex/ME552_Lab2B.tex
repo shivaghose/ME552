@@ -515,10 +515,6 @@ Optimizing the error in force is the more correct answer for this problem becaus
 \subsubsection*{Steel Sphere}
 The steel sphere has two parameters of consequence for our modeling, its diameter and its mass.  Both of these values were obtained through direct measurements using calipers and a scale respectively shown in table \ref{Q1_dt5}.
 
-\subsubsection*{Open Loop Transfer Function}
-Substituting numerical values from our physical system yields the following open loop transfer function:
-$$ \frac{-78511.7}{s^2 - 6201.6} $$
-
 \begin{table}[hbt]
 \begin{center}
     \begin{tabular}{|c|c|}
@@ -532,12 +528,15 @@ $$ \frac{-78511.7}{s^2 - 6201.6} $$
 \end{center}
 \end{table}
 
+\subsubsection*{Open Loop Transfer Function}
+Substituting numerical values from our physical system yields the following open loop transfer function:
+$$ \frac{-78511.7}{s^2 - 6201.6} $$
 
 \subsection*{e.}
 Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, and figures \ref{Q1_e4} - \ref{Q1_e2} show the Simulink models of the individual sub-systems. The Matlab code for the non-linear model of the Photo-transistor can be seen in the appendix\footnote{Appendix: Matlab code for Photo-transistor: irradianceEstimator.m }.Figure \ref{Q1_e6}  shows the overall Simulink model of the linear system while figures \ref{Q1_e7} - \ref{Q1_e9} show the linearized Simulink models of the individual sub-systems.\\
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{NonLinearUnControlledComplete}
+\includegraphics[width = 15cm]{NonLinearUnControlledComplete.jpg}
 \caption{\emph{Nonlinear Simulink model}}
 \label{Q1_e1}
 \end{center}
@@ -545,7 +544,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{NonLinearUnControlledActuatorBall}
+\includegraphics[width = 15cm]{NonLinearUnControlledActuatorBall.jpg}
 \caption{\emph{Non-Linear Simulink model of Actuator-Ball Sub-System}}
 \label{Q1_e4}
 \end{center}
@@ -553,7 +552,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{NonLinearUnControlledDriver}
+\includegraphics[width = 15cm]{NonLinearUnControlledDriver.jpg}
 \caption{\emph{Non-linear Simulink model of the OPA-547 Op-Amp}}
 \label{Q1_e5}
 \end{center}
@@ -562,7 +561,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{NonLinearUnControlledPhototransistor}
+\includegraphics[width = 15cm]{NonLinearUnControlledPhototransistor.jpg}
 \caption{\emph{Nonlinear Simulink model of the Phototransistor}}
 \label{Q1_e2}
 \end{center}
@@ -572,7 +571,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{LinearUnControlledComplete}
+\includegraphics[width = 15cm]{LinearUnControlledComplete.jpg}
 \caption{\emph{Linearized Simulink model}}
 \label{Q1_e6}
 \end{center}
@@ -580,7 +579,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{LinearUnControlledActuatorBall}
+\includegraphics[width = 15cm]{LinearUnControlledActuatorBall.jpg}
 \caption{\emph{Simulink model of the linearized Actuator-Ball Sub-System}}
 \label{Q1_e7}
 \end{center}
@@ -588,7 +587,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 10cm]{LinearUnControlledInitialization}
+\includegraphics[width = 10cm]{LinearUnControlledInitialization.jpg}
 \caption{\emph{Simulink Model of Initial Position Offset}}
 \label{Q1_e8}
 \end{center}
@@ -597,7 +596,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{LinearUnControlledSensor}
+\includegraphics[width = 15cm]{LinearUnControlledSensor.jpg}
 \caption{\emph{Linearized Simulink model of the Phototransistor}}
 \label{Q1_e9}
 \end{center}
@@ -609,7 +608,7 @@ Figure \ref{Q1_e1}  shows the overall Simulink model of the nonlinear system, an
 Figure \ref{Q1_f1} shows the time response of the nonlinear and linearized models when both are set to the nominal starting position ($\bar{x} = 0.00323$m). The time scale has been reduced to better show the behavior of both systems. In both cases the ball oscillates about a distance closer to the electromagnet than the starting point, with the ball in the nonlinear model ending up closer than the ball in the linearized model. In the case of the nonlinear model, the ball strikes the magnet before it begins oscillating, and the amplitude of its oscillations is less than the amplitude of the linearized model.\\
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 10cm]{Part1fNoDisturbance}
+\includegraphics[width = 10cm]{Part1fNoDisturbance.jpg}
 \caption{\emph{At the nominal starting height, both systems are able to levitate the ball, but also show sustained oscillations }}
 \label{Q1_f1}
 \end{center}
@@ -619,7 +618,7 @@ In figure \ref{Q1_f2}, the nonlinear and linearized models are both set to a pos
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 10cm]{Part1fCloseDisturbance}
+\includegraphics[width = 10cm]{Part1fCloseDisturbance.jpg}
 \caption{\emph{When starting 1 mm further away from the electromagnet, the linearized model again predicts that it can still levitate the ball (with sustained oscillations) while the non-linear model again forecasts that the ball will fall}}
 \label{Q1_f2}
 \end{center}
@@ -629,13 +628,13 @@ In figure \ref{Q1_f3}, the nonlinear and linearized models are both set to a pos
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 10cm]{Part1fFarDisturbance}
+\includegraphics[width = 10cm]{Part1fFarDisturbance.jpg}
 \caption{\emph{When starting 1 mm closer to the electromagnet, the linearized model predicts that it can still levitate the ball (with sustained oscillations) while the non-linear model forecasts that the ball will fall}}
 \label{Q1_f3}
 \end{center}
 \end{figure}
 
-When starting at the nominal position, the two models exhibit the same general behavior. However, changing the start point by greater than 0.01mm causes the nonlinear model to become unstable and fall away, while the linear model remains stable.As the model is uncontrolled, we expect the system to be unstable. However, the linearized model does not include the squared current and distance terms, so it is more \emph{optimistic} in terms of keeping the system stable. While the linearization does not agree with the nonlinear model over a large range, the general behavior is similar very close around our set point. Therefore, we believe our linearization assumptions are sufficient for the model, and the addition of a controller will improve the agreement between the models.
+When starting at the nominal position, the two models exhibit the same general behavior. However, changing the start point by greater than 0.01mm causes the nonlinear model to become unstable and fall away, while the linear model remains stable.  As the model is uncontrolled, we expect the system to be unstable. However, the linearized model does not include the squared current and distance terms, so it is more \emph{optimistic} in terms of keeping the system stable. While the linearization does not agree with the nonlinear model over a large range, the general behavior is similar very close around our set point. Therefore, we believe our linearization assumptions are sufficient for the model, and the addition of a controller will improve the agreement between the models.
 
 \subsection*{g.}
 
@@ -644,7 +643,7 @@ Using the linearized model from question one, the root locus plot in figure \ref
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 12cm]{FigureA}
+\includegraphics[width = 12cm]{FigureA.jpg}
 \caption{\emph{Open-Loop Physical System is Always Unstable.}}
 \label{Q2}
 \end{center}
@@ -656,7 +655,7 @@ $$C(s)= -0.37 \frac{(s+20)}{(s+80)}$$
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 12cm]{FigureB}
+\includegraphics[width = 12cm]{FigureB.jpg}
 \caption{\emph{With Sufficient Gain, Lead Controller Stabilizes the System.}}
 \label{Q2}
 \end{center}
@@ -668,7 +667,7 @@ $$\frac{2.367*10^4 s+ 4.732*10^5}{s^3+ 79.995 s^2+1.746*10^4 s - 2.290*10^4}$$
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 12cm]{ClosedLoopBode2}
+\includegraphics[width = 12cm]{ClosedLoopBode2.jpg}
 \caption{\emph{Bode Plot of the Closed-Loop System.}}
 \label{Q2_a}
 \end{center}
@@ -681,13 +680,13 @@ Figures \ref{Q2_b1} and \ref{Q2_b2} show the Simulink models of the nonlinear an
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 14cm]{NonLinearControlledComplete}
+\includegraphics[width = 14cm]{NonLinearControlledComplete.jpg}
 \caption{\emph{Nonlinear Model with Controller}}
 \label{Q2_b1}
-\includegraphics[width = 14cm]{LinearControlledComplete}
+\includegraphics[width = 14cm]{LinearControlledComplete.jpg}
 \caption{\emph{Linear Model with Controller}}
 \label{Q2_b2}
-\includegraphics[width = 14cm]{Controller}
+\includegraphics[width = 14cm]{Controller.jpg}
 \caption{\emph{Simulink Model of the Controller sub-system}}
 \label{Q2_b3}
 \end{center}
@@ -697,7 +696,7 @@ Figure \ref{Q2_b4} shows the time response of both models when the ball is start
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 10cm]{Part2bNoDisturbance}
+\includegraphics[width = 10cm]{Part2bNoDisturbance.jpg}
 \caption{\emph{With the controller, both models have steady levitation positions when starting at the nominal distance.}}
 \label{Q2_b4}
 \end{center}
@@ -707,7 +706,7 @@ If the starting position of the ball is moved closer to the magnet, both systems
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 10cm]{Part2bCloseDisturbance}
+\includegraphics[width = 10cm]{Part2bCloseDisturbance.jpg}
 \caption{\emph{When starting 0.8mm above the set point, the linearized model is unstable and the ball falls.}}
 \label{Q2_b5}
 \end{center}
@@ -715,7 +714,7 @@ If the starting position of the ball is moved closer to the magnet, both systems
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 10cm]{Part2bFarDisturbance}
+\includegraphics[width = 10cm]{Part2bFarDisturbance.jpg}
 \caption{\emph{When starting 1.9mm below the set point, the nonlinear model is unstable and the ball falls.}}
 \label{Q2_b6}
 \end{center}
@@ -731,7 +730,7 @@ The block diagram in figure \ref{Q2_d} illustrates how we ensure we have negativ
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width = 15cm]{BlockDiagram}
+\includegraphics[width = 15cm]{BlockDiagram.JPG}
 \caption{\emph{Block Diagram of System: Signs Ensure Negative Feedback.}}
 \label{Q2_d}
 \end{center}
