@@ -1,5 +1,7 @@
 function [dRdd] = radianceDerivative(rbeam, rsphere, d)
 % compute derivative of the radiance curve at a particular distance
+% nominal values rbeam = 1.398935, rsphere = 6.070821
+
 
 assert((rbeam >= 0) && (rsphere >= 0), 'Expected non-negative numbers')
 
