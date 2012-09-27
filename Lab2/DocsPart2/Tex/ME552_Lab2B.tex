@@ -196,9 +196,9 @@ $$ V^{+}=\frac{R_2}{R_1+R_2}V_{in} \hspace{1cm} I_{EM}=\frac{V^{+}}{R_3}=\frac{1
 \begin{figure}
 \begin{center}
 \includegraphics[width = 9cm]{em_driver_circuit.png}
-\end{center}
-\label{Q1_a2}
 \caption{\emph{Electromagnet Driver Circuit}}
+\label{Q1_a2}
+\end{center}
 \end{figure}
 
 \subsubsection*{Electromagnet}
@@ -229,7 +229,7 @@ $$A_{cd} \approx A_{s} = \pi * r_{sphere}^2 $$
 $$ A_{EM} = \pi*r_{EM}^2 \approx A_{ab} \hspace{1cm} A_{s} \approx A_{bc} \approx A_{de} \hspace{1cm} A_{EM} \approx A_{be} + A_{bc} $$ 
 \item Path length from b to c (see figure \ref{Q1_a2}) does not vary with x: 
 $ \frac{\partial}{\partial x} (L_{bc}) = 0$
-\item The sphere remains in line with the axis of the electro magnet and $ x > 0$
+\item The sphere remains in line with the axis of the electro magnet and in front of the magnet $( x > 0 )$
 \end{itemize}
 
 Drawing out approximate flux paths yields the following diagram in figure \ref{Q1_a3L} which can be converted to the following magnetic circuit , shown in figure \ref{Q1_a3R}, by applying Ampere's Law and Maxwell's $2^{nd}$ law which yield the following three equations. 
@@ -384,8 +384,6 @@ The sensor has a non-linear relationship between ball position and output voltag
 \subsubsection*{Break Beam Sensor}
 To acquire data to measure the relationship between the displacement between the optical axis of the phototransistor and the steel sphere we sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization of the non-linear model revealed that that the actual values, shown in table \ref{Q1_dt2} were reasonably close to our expected values.  The curve resulting from this fit and our data are shown in figure \ref{Q1_d1}.
 
-\xxx{make sure table reference works!}
-
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|}
@@ -395,17 +393,17 @@ To acquire data to measure the relationship between the displacement between the
         Rblock & 6.350               & 6.070821       \\
         \hline
     \end{tabular}
-\end{center}
 \label{Q1_dt2}
 \caption{\emph{Expected and Fit values for beam radius and blocking radius}}
+\end{center}
 \end{table}
 
 \begin{figure}
 \begin{center}
 \includegraphics[width = 15cm]{SensorRadianceCurve.png}
-\end{center}
 \caption{\emph{Normalized Sensor Voltage Output vs distance from the optical axis}}
 \label{Q1_d1}
+\end{center}
 \end{figure}
 
 There is a fixed offset between the displacement, measured from the optical axis of the phototransistor to the center of the sphere, used in figure \ref{Q1_d1}, from the x, measured from the bottom of the magnet to the top of the sphere, used in our controller.  This relationship can be obtained by examining the physical dimensions of the system, noted in table \ref{Q1_dt2} yielding the following expression for x in terms of d.
@@ -427,9 +425,9 @@ $$ x = d - 4.12 \text{ mm} $$
         Sphere Radius $(r_{s})$                & 6.35           \\
         \hline
     \end{tabular}
-\end{center}
 \caption{\emph{Physical Dimensions of the System}}
 \label{Q1_dt2}
+\end{center}
 \end{table}
 
 \subsubsection*{Driver Circuit}
@@ -445,9 +443,9 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{DriverCircuitModel.png}
-\end{center}
 \label{Q1_d2}
 \caption{\emph{Comparison of actual voltage current relationship with the fit model and the theoretical model}}
+\end{center}
 \end{figure}
 
 \begin{table}
@@ -460,9 +458,9 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
         $R_{3}$   & 0.5                   \\
         \hline
     \end{tabular}
-\end{center}
 \caption{\emph{Measured Resistances in driver circuit.}}
 \label{Q1_dt1}
+\end{center}
 \end{table}
 
 \subsubsection*{Electromagnet}
@@ -478,10 +476,11 @@ $$ A = \frac{F (B + x_{1})^2}{I_{1}^2}$$
 Then substituting the previous expression for A back into the $2^{nd}$ equation yields the following expression for B:
 $$ B^2(1-R) + (2x_2-2x_1R)+x_2^2-x_1^2R = 0 \hspace{1cm} R = \frac{I_2^2}{I_1^1} $$
 
-\xxx{why are their two solutions? what is the physical reason, and which one makes sense as the right one}
+Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  Notice that because our model has both $I^2$ and $x^2$ terms, we expect multiple solutions for A and B.  The $I^2$ term physically means that the direction of current through the electromagnet is irrelevant to the force exerted.  However the x term is added to our B term before being squared.  Physically the B term prevents the force exerted by the electromagnet from going to infinity when x equals 0, but our model has no notion of notion of negative x values, even though it is perfectly legal to plug negative values in for x.  Small negative x values correspond to the steel sphere being within the magnet in real life, but in our model does not correctly handle this case.  In fact the model suggests that if B is a positive value then for some negative value for x the force exerted goes to infinity.  To handle these multiple solutions we attempted the optimization with both pairs of solutions and choose the one that minimized the overall error.  
 
-Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt2} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.
-\xxx{why is the force one the one we like}
+ It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt2} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.
+
+Optimizing the error in force is the more correct answer for this problem because that is the error we wish to minimize. The force exerted is the dependent variable while the current and height are both independent variables.  Given a constant force we can link the height to the current, but this is only an approximation and assumes no external disturbances.  
 
 \begin{figure}
 \begin{center}
@@ -506,7 +505,7 @@ Choosing two of our x, I pairs allowed us to solve for plausible values of A and
 \end{table}
 
 \subsubsection*{Steel Sphere}
-The steel sphere has two parameters of consequence for our modeling, its diameter and its mass.  Both of these values were obtained through direct measurements using calipers and a scale respectively.
+The steel sphere has two parameters of consequence for our modeling, its diameter and its mass.  Both of these values were obtained through direct measurements using calipers and a scale respectively shown in table \ref{Q1_dt3}.
 
 \begin{table}[hbt]
 \begin{center}
