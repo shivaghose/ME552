@@ -143,6 +143,48 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \subsection*{a.}
 
+\subsubsection*{U1}
+U1 serves as a difference circuit between $^-Ref$ and $^+Ref$ with a variable overall gain dictated by the potentiometer.
+
+$$ V_{out} = \left( \frac{R_6}{R_5+R_6} \right) \left( \left(1 + \frac{R_2}{R_1} \right) \left( \frac{R_4}{R_3+R_4} \right) (^-Ref) - \left( \frac{R_2}{R_1} \right) (^+Ref) \right) $$
+$$ V_{out} = \left( \frac{R_6}{R_5+R_6} \right) \left( \left(1+ \frac{20}{50} \right) \left( \frac{20}{50+20} \right)(^-Ref) - \left( \frac{20}{50} \right) (^+Ref) \right) $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{q1a_u1.png}
+\caption{Unit 1 within AMC servo-amplifier}
+\label{q1_au1}
+\end{center}
+\end{figure}
+
+\subsubsection*{U3}
+
+U3 serves as an inverting amplifier which can be tuned by the potentiometer.
+
+$$U3_{out} = - \left( \frac{R_3 + R_4}{R_4} \right) \left( \frac{R_2}{R_1} \right) Ref_{gain} $$
+$$U3_{out} = - \left( \frac{R_3 + R_4}{R_4} \right) \left( \frac{10}{5} \right) Ref_{gain} $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{q1a_u3.png}
+\caption{Unit 3 within AMC servo-amplifier}
+\label{q1_au3}
+\end{center}
+\end{figure}
+
+\subsubsection*{U4}
+
+$$U4_{out} = - \left( \frac{1}{R_1} \right) \left( R_2 + \frac{C_1}{s} \right) U3_{out} $$
+$$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) U3_{out} $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{q1a_u4.png}
+\caption{Unit 4 within AMC servo-amplifier}
+\label{q1_au4}
+\end{center}
+\end{figure}
+
 \subsection*{b.}
 
 \subsection*{c.}
