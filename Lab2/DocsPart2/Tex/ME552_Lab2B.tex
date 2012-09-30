@@ -107,7 +107,7 @@ while working on this lab and assignment.\\
 I accept my responsibility to look after all of the equipment assigned to me and my team, 
 and that I have read and understood the X50 Lab Rules.\\
 
-\begin{table}[h]
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -390,7 +390,7 @@ The sensor has a non-linear relationship between sphere position and output volt
 \subsection*{d. Parameter Identification}
 
 \subsubsection*{Break Beam Sensor}
-To determine the model parameters of the break beam sensor model, the beam radius and the effective sphere radius, we acquired data measuring the relationship between the displacement between the optical axis of the phototransistor and the steel sphere and sensor voltage.  We sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts, recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization of the model revealed that that the actual values, shown in table \ref{Q1_dt1} were reasonably close to our expected values.  The curve resulting from this fit plotted alongside our data is shown in figure \ref{Q1_d1}.
+To determine the model parameters of the break beam sensor model, the beam radius and the effective sphere radius, we acquired data measuring the relationship between the displacement between the optical axis of the phototransistor and the steel sphere and sensor voltage.  We sat the sphere on top of the stand and changed the height of the sphere stand and the magnet stand by known amounts, recording the voltage from the phototransistor at each displacement value.  Theoretically we would expect the beam radius to be very close to the radius of the phototransistor while we would expect the blocking radius to be very close to the radius of the sphere.  Non-linear optimization of the model revealed that that the actual values, shown in table \ref{Q1_dt1} were reasonably close to our expected values.  The curve resulting from this fit plotted alongside our data is shown in figure \ref{Q1_d1}.\\
 
 \begin{table}
 \begin{center}
@@ -414,7 +414,7 @@ To determine the model parameters of the break beam sensor model, the beam radiu
 \end{center}
 \end{figure}
 
-There is a fixed offset between the displacement, measured from the optical axis of the phototransistor to the center of the sphere, used in figure \ref{Q1_d1}, from the x, measured from the bottom of the magnet to the top of the sphere, used in our controller.  This relationship can be obtained by examining the physical dimensions of the system, noted in table \ref{Q1_dt2} yielding the following expression for x in terms of d.
+There is a fixed offset between the displacement, measured from the optical axis of the phototransistor to the center of the sphere, used in figure \ref{Q1_d1}, from the x, measured from the bottom of the magnet to the top of the sphere, used in our controller.  This relationship can be obtained by examining the physical dimensions of the system, noted in table \ref{Q1_dt2} yielding the following expression for x in terms of d.\\
 
 $$ x = \Delta + h_{magnet} - h_{s stand} - r_{s} \hspace{1cm} \Delta = d + h_{s stand} - h_{sensor} $$
 
@@ -473,7 +473,7 @@ $$ I_{EM Fit} = D \, V_{in} + C = 0.1781 \, V_{in} - 0.0179  \quad \textbf{if } 
 
 \subsubsection*{Electromagnet}
 $$ F(I,x) = \frac{A I^2}{(B+x)^2} $$
-Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  We conducted an experiment where we measured the amount of voltage sent to the driver to lift the steel sphere from a particular height.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.  
+Examining our model for the force exerted by the electromagnet we see that we have two unknowns, A and B.  We conducted an experiment where we measured the amount of voltage sent to the driver to lift the steel sphere from a particular height.  We then attempted to perform non-linear optimization to determine A and B from this data however this computation diverged due to poor initial guesses for A and B.  To determine better initial guesses we symbolically solved for A and B as a function of two of these data points and then used these values as our initial estimate.\\  
 
 At equilibrium we know that the force exerted by the electromagnet must balance out the force of gravity on the sphere, this yields the following two expressions.  In our experiment, the moment that the force exerted by the electro magnet exceeds the force of gravity, the sphere will stick to the magnet because the system was uncontrolled.  But in that moment we know that the system must have passed through the equilibrium current giving us a good measurement of the correct amount of current.
 $$ mg = f = \frac{A I_{1}^2}{(B+x_{1})^2}  = \frac{A I_{2}^2}{(B+x_{2})^2} $$ 
@@ -484,9 +484,9 @@ $$ A = \frac{F (B + x_{1})^2}{I_{1}^2}$$
 Then substituting the previous expression for A back into the $2^{nd}$ equation yields the following expression for B:
 $$ B^2(1-R) + (2x_2-2x_1R)+x_2^2-x_1^2R = 0 \hspace{1cm} R = \frac{I_2^2}{I_1^1} $$
 
-Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  Notice that because our model has both $I^2$ and $x^2$ terms, we expect multiple solutions for A and B.  The $I^2$ term physically means that the direction of current through the electromagnet is irrelevant to the force exerted.  However the x term is added to our B term before being squared.  Physically the B term prevents the force exerted by the electromagnet from going to infinity when x equals 0, but our model has no notion of notion of negative x values, even though it is perfectly legal to plug negative values in for x.  Small negative x values correspond to the steel sphere being within the magnet in real life, but in our model does not correctly handle this case.  In fact the model suggests that if B is a positive value then for some negative value for x the force exerted goes to infinity.  To handle these multiple solutions we attempted the optimization with both pairs of solutions and choose the one that minimized the overall error.  
+Choosing two of our x, I pairs allowed us to solve for plausible values of A and B which we used as initial guesses for the optimization allowing it to converge to the correct result.  Notice that because our model has both $I^2$ and $x^2$ terms, we expect multiple solutions for A and B.  The $I^2$ term physically means that the direction of current through the electromagnet is irrelevant to the force exerted.  However the x term is added to our B term before being squared.  Physically the B term prevents the force exerted by the electromagnet from going to infinity when x equals 0, but our model has no notion of notion of negative x values, even though it is perfectly legal to plug negative values in for x.  Small negative x values correspond to the steel sphere being within the magnet in real life, but in our model does not correctly handle this case.  In fact the model suggests that if B is a positive value then for some negative value for x the force exerted goes to infinity.  To handle these multiple solutions we attempted the optimization with both pairs of solutions and choose the one that minimized the overall error.\\
 
- It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt4} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.
+ It is important to note the difference between the two different fits presented in figure \ref{Q1_d3}.  Both are the result of non-linear regression to solve for our unknown parameters A and B.  However the errors that each minimize is different.  The Current fit, minimizes the expected amount of current draw at each of our measured x values from the actual amount of current drawn by the electromagnet.  The Force fit minimizes the error between the expected amount of force, computed for each pair of observed current and position, and the actual amount of force required to lift the steel sphere.  The fit error described in table \ref{Q1_dt4} refers to the error in each fits respective space.  So the force fit has error in units of Newtons while the current fit has error in units of Amps so these two errors are not directly comparable.  The required current was computed assuming the specified amount of force needed.\\
 
 Optimizing the error in force is the more correct answer for this problem because that is the error we wish to minimize. The force exerted is the dependent variable while the current and height are both independent variables.  Given a constant force we can link the height to the current, but this is only an approximation and assumes no external disturbances.  
 
@@ -637,11 +637,14 @@ In figure \ref{Q1_f3}, the nonlinear and linearized models are both set to a pos
 When starting at the nominal position, the two models exhibit the same general behavior. However, changing the start point by greater than 0.01mm causes the nonlinear model to become unstable and fall away, while the linear model remains stable.  As the model is uncontrolled, we expect the system to be unstable. However, the linearized model does not include the squared current and distance terms, so it is more \emph{optimistic} in terms of keeping the system stable. While the linearization does not agree with the nonlinear model over a large range, the general behavior is similar very close around our set point. Therefore, we believe our linearization assumptions are sufficient for the model, and the addition of a controller will improve the agreement between the models.
 
 \subsection*{g.}
+Investigating the fidelity of our models could be done with some simple experiments using the test apparatus and simple physics models. For example, we could input a given set point to the model, but set the current to the driver block at a constant zero. The resulting output of position vs. time should match that of general falling body physics equations. Similar experiments could be done by inputting a constant voltage command to the real and simulated drivers and comparing the Simulink output to the position measurements within LabView. These simple tests would give us some indication of if our models are accurately representing the true motion of the physical system.\\
+
+More specific tests could be conducted on the individual sub-systems. For example, using the stand and shims we could place the ball at known heights and record the sensor output. We could then set the model to the same heights and record the output of our sensor models. The same type of test could be conducted on the driver. 
 
 \section*{Question 2}
 Using the linearized model from question one, the root locus plot in figure \ref{Q2} shows that the physical system will always be unstable in open-loop, because there will always be a pole in the right-half plane (RHP).\\
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{FigureA.jpg}
 \caption{\emph{Open-Loop Physical System is Always Unstable.}}
@@ -653,7 +656,7 @@ A lead controller adds a pole and a zero to the system, with the pole being grea
 
 $$C(s)= -0.37 \frac{(s+20)}{(s+80)}$$
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{FigureB.jpg}
 \caption{\emph{With Sufficient Gain, Lead Controller Stabilizes the System.}}
@@ -678,7 +681,7 @@ From the closed-loop bode plot(figure \ref{Q2_a}), the bandwidth (frequency at w
 \subsection*{b.}
 Figures \ref{Q2_b1} and \ref{Q2_b2} show the Simulink models of the nonlinear and linearized models, respectively, with the controller applied. Figure \ref{Q2_b3} shows the Simulink model of the controller itself, which is the same for the linearized and nonlinear models. All other sub-systems in the model are the same as shown in Part \emph{1 (e)}.\\
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{NonLinearControlledComplete.jpg}
 \caption{\emph{Nonlinear Model with Controller}}
@@ -694,9 +697,9 @@ Figures \ref{Q2_b1} and \ref{Q2_b2} show the Simulink models of the nonlinear an
 
 Figure \ref{Q2_b4} shows the time response of both models when the ball is started at the nominal height ($\bar{x} = .00323m$). Unlike the uncontrolled systems which oscillated continuously, when the controller is applied both systems settle on a steady position levitated below the electromagnet (the nonlinear model has some initial oscillations before settling).\\
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 10cm]{Part2bNoDisturbance.jpg}
+\includegraphics[width = 8cm]{Part2bNoDisturbance.jpg}
 \caption{\emph{With the controller, both models have steady levitation positions when starting at the nominal distance.}}
 \label{Q2_b4}
 \end{center}
@@ -704,17 +707,12 @@ Figure \ref{Q2_b4} shows the time response of both models when the ball is start
 
 If the starting position of the ball is moved closer to the magnet, both systems remain stable until a position 0.8mm above the set point, when the linearized model becomes unstable. An example of this is shown in figure \ref{Q2_b5}. In contrast, when the starting position is moved away from the magnet both systems remain stable until a position 1.9mm below the set point, when the nonlinear model becomes unstable. An example of this is shown in figure \ref{Q2_b6}.\\
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 10cm]{Part2bCloseDisturbance.jpg}
+\includegraphics[width = 8cm]{Part2bCloseDisturbance.jpg}
 \caption{\emph{When starting 0.8mm above the set point, the linearized model is unstable and the ball falls.}}
 \label{Q2_b5}
-\end{center}
-\end{figure}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width = 10cm]{Part2bFarDisturbance.jpg}
+\includegraphics[width = 8cm]{Part2bFarDisturbance.jpg}
 \caption{\emph{When starting 1.9mm below the set point, the nonlinear model is unstable and the ball falls.}}
 \label{Q2_b6}
 \end{center}
@@ -728,7 +726,7 @@ The controller above does match the controller we used in the lab exercise durin
 \subsection*{d.}
 The block diagram in figure \ref{Q2_d} illustrates how we ensure we have negative feedback in our system. If we start at the far right and assume that the ball just moved slightly above the set point (closer to the electromagnet), the sensor outputs a voltage related to this position which will always be positive. This voltage is then converted to position (m) and subtracted from the set point. Because the ball is above the set point, the error will be positive. The error signal then passes through a gain block of -1 to flip its sign to negative. The controller takes in the negative error and outputs a negative voltage. By adding this negative voltage to the bias voltage, a lower command voltage is sent to the driver than previously (the starting assumption was that the ball had been at the setpoint, but just moved up). This results in a smaller current being sent to the actuator, which results in less force from the electromagnet. Less force from the electromagnet results in the ball falling further away from the magnet, back towards the set point. This is the behavior that we want.
 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 15cm]{BlockDiagram.JPG}
 \caption{\emph{Block Diagram of System: Signs Ensure Negative Feedback.}}
@@ -739,9 +737,28 @@ The block diagram in figure \ref{Q2_d} illustrates how we ensure we have negativ
 
 Similarly, if the ball is below the setpoint, the error will negative, and the inverting unity gain block will send a positive error into the controller, which will then output a positive voltage. Adding this voltage to the bias voltage results in a larger command voltage than when the ball is at the set point, so the current to the actuator will increase. The increased current will result in a larger force from the electromagnet, which will pull the ball back up towards the set point. Again, this is the behavior we want, so the signs within our system are correct. Because the physical and electronic sub-systems have restrictions on their signs (e.g. the sensor is tuned to always output between 0 and 10 volts), inserting the negation before the controller is the most important step to ensure we have stabilizing feedback. 
 
-\section*{Question 3}
 
-\newpage
+\section*{Question 3}
+\subsection*{Predicting the Range of Controllability}
+
+In our system, we use reference position commands instead of voltage commands because it makes semantic sense. For our physical system, the original set point was 3.23mm, and we found the controllable position command ranged from 3.03mm to 3.53mm. For the linear model, the control range goes from 2.53mm to 5.23mm. The non-linear model is controllable from 0mm to 5.13mm.\\
+
+We see overlapping agreement between the virtual models and the physical system around the set point. The physical system has the least range of controllability. The difference between our models and the real system arise due to a range of factors that we did not take into account such as op-amp short-comings, air viscosity, heating in the electromagnet's coil causing a change in properties, etc. We additionally see that our non-linear model has higher fidelity in predicting what the system would do compared to the linear model, but both grossly optimistically over-estimate the range of controllability. Thus we can conclude that we could \emph{not} have gauged the controllability of the electromagnet system using the two models.\\
+
+The frequencies used in the empirical observations started from 0.01Hz and went all the up to 13Hz. A total of 19 data points were sampled. More samples were selected at higher frequencies since the behavior of the system was more interesting behavior was predicted by the linear model. However, the physical system became unstable at higher frequencies and we were limited by this. The bode plot for these data is shown in figure \ref{Q3_1}. Compared to the one generated from our linear theoretical model, we see that the predicted magnitude change is similar to the actual change in magnitude: as the frequency of input signals increases, they start steadily, decrease and then increases a little bit. However, when we look at the phase, although the trends for both diagrams are similar, they have some noticeable difference. This is probably due to non-linearity in the system and some factors that we have not modelled. This can also account for why our observed bandwidth and predicted bandwidth vary.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 15cm]{BodeComparison.png}
+\caption{\emph{Bode plot comparison of predicted and observed values.}}
+\label{Q3_1}
+\end{center}
+\end{figure}
+
+
+
+\pagebreak
+\appendix
 \section*{Appendix}
 \subsection*{Matlab code: radianceDerivative.m}
 \begin{verbatim}
