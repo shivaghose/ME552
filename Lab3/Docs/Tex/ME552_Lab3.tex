@@ -174,6 +174,8 @@ $$U3_{out} = - \left( \frac{R_3 + R_4}{R_4} \right) \left( \frac{10}{5} \right) 
 
 \subsubsection*{U4}
 
+U4 serves as an inverting integrator with a proportional gain when switch 3 is open, and a simple inverting amplifier with the switch closed.
+
 $$U4_{out} = - \left( \frac{1}{R_1} \right) \left( R_2 + \frac{C_1}{s} \right) U3_{out} $$
 $$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) U3_{out} $$
 
@@ -186,6 +188,9 @@ $$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) 
 \end{figure}
 
 \subsection*{b.}
+Current Limiting Resistor.
+For DC current, an inductor is effectively a short circuit.  We need a resistor to limit the maximum current that goes to ground.
+\xxx{confirm with him that its a coil in series with resistor}
 
 \subsection*{c.}
 
@@ -196,8 +201,68 @@ $$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) 
 \section*{2.}
 
 \subsection*{a.}
+\xxx{ our transfer function doesn't involve the stall torque or the no load speed, does this suggest that we have made an assumption about being away from the maximum speed and away from stall condition? }
+$$V_{s} - e = iR + L\left(\frac{di}{dt}\right) $$
+$$ e = K_{b} \dot{\theta} $$
+
+$$ \Sigma_{\tau} = \tau_{motor} - \tau_{damping} + \tau_{coulomb} = J \ddot{\theta}$$
+$$ \tau_{motor} = K_{T}i \hspace{1cm} \tau_{damping} = b \dot{\theta}$$
+\[
+  \tau_{coulomb} = \left\{
+  \begin{array}{c l}
+     - \mu_{forwards}N & \quad \text{if } \tau_{motor} > 0 \\
+    \mu_{reverse}N  & \quad \text{if } \tau_{motor} < 0 \\
+	0 & \quad \text{if } \tau_{motor} = 0 \\
+  \end{array} \right.
+\]
+
+\xxx{we would also expect colombic friction to change with motion stopped vs moving}
+
+Neglecting coulomb friction:
+
+$$ V_{s}(s) - s \, K_{b} \, \theta (s) = I(s) (R+sL) \hspace{1cm} \text{and} \hspace{1cm} K_{t} \, I(s) = \theta(s)(Js^2+bs) $$
+$$ \frac{\theta(s)}{V(s)} = \frac{K_T}{s\left[ (Js + b)(Ls + R)+K_bK_T \right]} $$
+
+The transfer function relating voltage and position is not particularly convenient but we can obtain a transfer function easily in terms of $I(s)$.
+
+$$ K_{t} \, I(s) = \theta(s)(Js^2+bs) $$
+$$ \frac{\theta(s)}{I(s)} = \frac{K_T}{(Js + b)s} $$
+
+This model relating angular position, $\theta(t)$ with motor current $i(t)$ requires the moment of inertia of the rotor, $J$, the viscous damping coefficient, $b$, and the torque constant $K_T$.  Note that coulomb friction has been neglected. \\
+
+The driver gives us current control as long as we are opperating away from the maximum speed of the motor.  At maximum speed, the current required by the motor should drop to some steady state value required to overcome losses within the motor.
+
+\xxx{may need to redo picture a bit to agree with terminology in equation}
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{dcmotor.png}
+\label{q2_a1}
+\caption{DC motor model}
+\end{center}
+\end{figure}
 
 \subsection*{b.}
+
+\xxx{how to compute coulomb friction?}
+
+To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$
+
+$$ \Sigma_{V} = V_{s} + V_{R} + V_{L} e = V_{s} + IR + e = 0 $$
+$$ K_b = \frac{e}{\dot{\theta}} $$
+
+%To determine the torque constant, we can place the motor on its side, pin a pulley to the shaft and attach a known mass to the pulley.  This exerts a known torque on the shaft, and we can simply adjust motor current until it balances out the torque.   
+%
+%$$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} - \tau_{mass}= J \ddot{\theta} \hspace{1cm} \dot{\theta} = \ddot{\theta} = 0  $$
+%$$ \tau_{motor} = - \tau_{coulomb} + \tau_{mass} \approx \tau_{mass} $$
+%
+%$$ K_T \approx \frac{\tau_{mass}}{i_{equilibrium}} = \frac{mg(r_{pulley})}{i_{equilibrium}} $$
+
+We can experimentally determine the viscous damping term, $b$ by applying a known torque to the motor.  Once the angular velocity has reached steady state, $b$ can be read off directly.  The driver in current mode delivers a known current, which using the torque constant determined above yields the torque.  
+
+$$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
+$$ b = \frac{\tau_{motor} + \tau_{coulomb}}{\dot{\theta}} \approx \frac{\tau_{motor}}{\dot{\theta}}$$
+
+We can determine the moment of inertia of the rotor, $J$ by starting from rest and sending the motor a known torque while recording the position as a function of time.  
 
 \section*{3.}
 
