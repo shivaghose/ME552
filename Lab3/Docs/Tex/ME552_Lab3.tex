@@ -262,7 +262,11 @@ We can experimentally determine the viscous damping term, $b$ by applying a know
 $$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
 $$ b = \frac{\tau_{motor} + \tau_{coulomb}}{\dot{\theta}} \approx \frac{\tau_{motor}}{\dot{\theta}}$$
 
-We can determine the moment of inertia of the rotor, $J$ by starting from rest and sending the motor a known torque while recording the position as a function of time.  
+We can determine the moment of inertia of the rotor, $J$ by starting from rest and sending the motor a known torque while recording the position as a function of time stopping when the system has reached a constant velocity.  Then by computing the $1^{st}$ and $2^{nd}$ order derivatives at each time step we can assemble a linear system to allow us to jointly solve for $J$, $b$, and $\tau_{coulomb}$.
+
+$$ A_{t} = \left[ \begin{array}{c c c} \ddot{\theta_{t}} & \dot{\theta_{t}} & -1 \end{array} \right]  \hspace{1cm} 
+x = \left[ \begin{array}{c} J \\ b \\ \tau_{coulomb} \end{array} \right] \hspace{1cm} z_{t} = \tau_{motor}$$
+$$ Ax = b $$
 
 \section*{3.}
 
