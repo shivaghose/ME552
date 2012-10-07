@@ -243,13 +243,15 @@ $$ \tau_{motor} = K_{T}i \hspace{1cm} \tau_{damping} = b \dot{\theta}$$
 \[
   \tau_{coulomb} = \left\{
   \begin{array}{c l}
-     - \mu_{forwards}N & \quad \text{if } \tau_{motor} > 0 \\
-    \mu_{reverse}N  & \quad \text{if } \tau_{motor} < 0 \\
-	0 & \quad \text{if } \tau_{motor} = 0 \\
+    	- \mu_{kinetic}N & \quad \text{if } \dot{\theta} > 0 \\
+    	+ \mu_{kinetic}N & \quad \text{if } \dot{\theta} < 0 \\
+	- \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} > \mu_{static}N \\
+	- \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 <= \tau_{motor} <= \mu_{static}N \\
+	+ \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} < -\mu_{static}N \\
+	+ \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 >=\tau_{motor} >= -\mu_{static}N \\
   \end{array} \right.
 \]
 
-\xxx{we would also expect colombic friction to change with motion stopped vs moving}
 
 Neglecting coulomb friction:
 
@@ -269,14 +271,18 @@ The driver gives us current control as long as we are opperating away from the m
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{dcmotor.png}
-\label{q2_a1}
 \caption{DC motor model}
+\label{q2_a1}
 \end{center}
 \end{figure}
 
 \subsection*{b.}
 
-\xxx{how to compute coulomb friction?}
+\xxx{how to derive kinetic friction} \\
+To determine the force of static friction on the motor shaft, if we knew the motor constant, $K_t$, we could start the motor from rest and increase motor current until the shaft broke free of static friction.
+
+$$\Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \dot{\theta} =\ddot{\theta} = 0 $$
+$$ \tau_{motor} = K_{t}I_{m} = - \tau_{static_coulomb}$$
 
 To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$
 
@@ -300,6 +306,44 @@ We can determine the moment of inertia of the rotor, $J$ by starting from rest a
 $$ A_{t} = \left[ \begin{array}{c c c} \ddot{\theta_{t}} & \dot{\theta_{t}} & -1 \end{array} \right]  \hspace{1cm} 
 x = \left[ \begin{array}{c} J \\ b \\ \tau_{coulomb} \end{array} \right] \hspace{1cm} z_{t} = \tau_{motor}$$
 $$ Ax = b $$
+
+We performed a version of the optimization noted above to jointly solve for $J$, $b$, $K_t$, and $\tau_{coulomb}$.  Note that for this optimization we choose a simplified model which assumed that the torques of static friction and kinetic friction are identical.  We first constructed a model of this system in Matlab which given the values of physical parameters of the system and the current in the motor allows us to predict the position of the rotor as a function of time.  Starting from rest we fed the system a sinusoidal current for a few seconds and recorded the current input and position as a function of time being sure to include the initial transient in the record.  Given initial values for parameters obtained from the data sheet, we could then compare the predicted behavior to the actual behavior and use this error to optimize our estimates of the parameters. \\
+
+Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. \\
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                                                      & Data Sheet Parameters      & Fit Parameters  \\ \hline
+        $J \hspace{0.1cm} \left( \frac{N\,s^2}{m} \right)$     & $8.5 * 10^{-6} $           & $1*10^{-3}$     \\ 
+        $B \hspace{0.1cm} \left( N \, s \right) $               & $3.7*10^{-6} $             & $1*10^{-3}$     \\ 
+        $F_{f} \hspace{0.1cm} \left( N \, m \right)$           & $\frac{5.6 * 10^{-3}}{2} $ & $1.192*10^{-1}$ \\ 
+        $K_{t} \hspace{0.1cm} \left( \frac{N\, m}{A} \right) $ & $4.24*10^{-2}$             & $4.67*10^{-2}$  \\
+        \hline
+    \end{tabular}
+\caption{Comparison of model parameter values obtained from the data sheet to fit values.}
+\label{q2_b1}
+\end{center}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{initialModel.png}
+\caption{Predicted behavior vs Actual behavior using initial parameter values.}
+\label{q2_b2}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{fitModel.png}
+\caption{Predicted behavior vs Actual behavior using fit parameter values}
+\label{q2_b3}
+\end{center}
+\end{figure}
+
+Although it looks appears as if the fit shown in figure \ref{q2_b3} can be improved, a parameter sweep along all four parameters: $J$, $b$, $F_{f}$, and $K_{t}$ over a range of $3\%$ of the fit values at increments of $1\%$ demonstrated that this indeed is a local minimum in the error.  
 
 \section*{3.}
 
