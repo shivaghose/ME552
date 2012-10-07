@@ -5,8 +5,8 @@ global Tobs Thetaobs Iobs
 Tobs = Tin; Thetaobs = Thetain; Iobs = Iin; P0 = Pin;
 xstart = [0; 0];
 
-deltaP = 0.01 .* P0; % use 0.1% of initial value for the sweep sort of like resolution
-Range = 3;
+deltaP = 0.4 .* P0; % use 0.1% of initial value for the sweep sort of like resolution
+Range = 2;
 
 % try the initial
 PBest = P0;
