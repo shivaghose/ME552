@@ -56,7 +56,9 @@ while ((max(abs(dP)) >= dPtol) && (iter < maxiter))
     
     dP = J \ E;
     
-    Pc = Pc + dP;
+    % going 100% of the dP is causing trouble, going less distance should
+    % help
+    Pc = Pc + 0.1*dP;
     
     iter = iter + 1;
 end
@@ -135,7 +137,7 @@ P = P_;
 tstart = 0;
 tend = Tobs(end) + 0.25; % go quarter of a second longer past the end
 
-options = odeset('RelTol', 1e-10, 'AbsTol', 1e-10);
+options = odeset('RelTol', 1e-12, 'AbsTol', 1e-12);
 
 [T, X] = ode45(@motorEQMotion, [tstart, tend], xstart, options);
 
@@ -148,7 +150,7 @@ global P
 
 P = P_;
 
-options = odeset('RelTol', 1e-8, 'AbsTol', 1e-8);
+options = odeset('RelTol', 1e-12, 'AbsTol', 1e-12);
 
 [T, X] = ode45(@motorEQMotion, Tin, xstart, options);
 
@@ -189,7 +191,7 @@ global P
 
 Ff = P(3);
 
-if (abs(thetadot) < 1e-6) % if not moving, friction opposes attempted motion
+if (abs(thetadot) < 1e-8) % if not moving, friction opposes attempted motion
     if abs(motorTorque) < Ff
         FF = abs(motorTorque); % and doesn't exceed the magnitude of the applied torque
     else
