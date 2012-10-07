@@ -84,6 +84,7 @@
 \usepackage{graphicx}
 \usepackage{xfrac}
 \usepackage{amsmath}
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
@@ -193,8 +194,40 @@ For DC current, an inductor is effectively a short circuit.  We need a resistor 
 \xxx{confirm with him that its a coil in series with resistor}
 
 \subsection*{c.}
+The motor datasheet specifies a max winding temerature of 155 $^\circ$C; this is the temperature at which the motor can become irreparably damaged. The datasheet also gives a thermal impedance of 11.2 $^\circ$C/W. Assuming a room temperature of 15 $^\circ$C, the motor's temperature can only increase by 130 $^\circ$C before overheating. With these values (and the motor's internal resistance of 1.85 $\Omega$) we can solve for the maximum continuous current:
+
+$$130 = 11.2*i_{continuous}^2*1.85$$
+$$i_{continuous} = 2.5048 \,A$$
+
+With this current and the given motor constant we can then calculate the maximum continuous torque:
+
+$$T_{m} = k_{t}*i_{continuous} = 3.11\e{-2}*2.5048 = 7.79\e{-2}\, Nm$$
+
+This value is less than the torque value given in the datasheet, implying that our calculated current value is more conservative than the ratings in the datasheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 2.6045 A, but at that value the temperature rise would be 140.55 $^\circ$C above ambient. This means that at the max torque given by the datasheet, the motor would overheat unless the room temperature were below 14.45 $^\circ$C. 
+
+The motor's datasheet lists a peak current rating of 13.0 A and a stall torque of 0.54 Nm. With this torque value and the given torque constant (4.24$\e{-2}$ Nm/A), the peak current should be:
+
+
+$$i_{peak} = \frac{T_{stall}}{k_{t}} = \frac{0.54}{4.24\e{-2}} = 12.74 \,A$$
+
+This is less than the given rating for peak current. Choosing this as our peak current limit, the power in the motor is:
+
+
+$$P = i_{peak}^2 * R_{m} = 12.74^2 * 1.85 = 300.269 \,W$$
+
+Because this is occuring at stall, there is no mechanical power output from the motor, and all of the power goes to heat. If the system were allowed to go to steady-state with no failures, this would lead to a temperature of:
+
+$$Temp = P * R_{t} = 300.269 * 11.2 = 3388.0128  \,{^\circ}C\;(above \;ambient)$$ 
+
+Clearly the system could not phyical reach this temperature without failing, but it illustrates the reason that peak current can only be sustained for short times. With the given thermal time constant (13.8 min), we can plot the temperature rise of the motor, as shown in \xxx{figure @}, and estimate that it would overheat after approximately 32.4 seconds at peak current. 
+
+\xxx{Insert figure here}
 
 \subsection*{d.}
+The 12A8E servo amplifier is capable of outputting maximum continuous and peak currents of +-6A and +-12A, respecitvely (from the datasheet). However, the servo amplifier includes a potentiometer that can be used to reduce both the continuous and peak currents (while maintaining a 1:2 relationship between them). The lab instructions specify that the potentiometer should be adjusted so that the current limits will be +-3A and +-6A. Additionally, the continuous current limit can be further reduced (without affecting the peak current) by connecting a current limiting resistor between pins P1-10 and P1-2 on the servo-amp. That was not done in this lab. Assuming the adjustment on the current limiting potentiometer was done correctly, the servo-amp should be capable of sending +-3A continuously and +-6A intermittently to the motor. The continuous current limit from the servo-amp is greater than the continuous current rating of the motor, so we can't rely on the servo-amp to prevent the motor from drawing too much current.
+\vspace{3 mm}
+
+The datasheet for the servo-amp specifies a peak current of +-12 A for a maximum of 2 seconds. From information on the Advanced Motion Controls website, this can only be achieved if the current switches across its entire range (-6 A to +6 A, and vice-versa). Any change of smaller magnitude will not be maintained as long (i.e. switching from 0 A to +12 A will only be held for 1 second before the current begins falling). A primary concern with maintaining high currents is overheating, and the servo-amp has a much lower temperature limit than the motor (65 $^\circ$C vs 155 $^\circ$C). This is why the peak current can not be maintained for long, the maximum temperature would be exceeded very quickly and the servo-amp's internal safeties would shut it off. As an example, in the thermal model for the motor at peak current (which is lower than the 6 A rating of the servo-amp), 65 $^\circ$C was reached in only 9.8 seconds. \xxx{add a little more here}
 
 \subsection*{e.}
 
