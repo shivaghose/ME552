@@ -342,7 +342,7 @@ We performed a version of the optimization noted above to jointly solve for $J$,
 
 Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. \\
 
-\xxx{These values have changed a bit, refine the model because the fit isn't quite right still}
+\xxx{These values have changed a bit, refine the model because the fit isn't quite right still!!!}
 
 \begin{table}
 \begin{center}
@@ -379,6 +379,17 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 Although it looks appears as if the fit shown in figure \ref{q2_b3} can be improved, a parameter sweep along all four parameters: $J$, $b$, $F_{f}$, and $K_{t}$ over a range of $3\%$ of the fit values at increments of $1\%$ demonstrated that this indeed is a local minimum in the error.  
 
 \section*{3.}
+\subsection*{a.}
+
+\subsection*{b.}
+
+\subsection*{c.}
+
+\subsection*{d.}
+
+\subsection*{e.}
+
+\subsection*{f.}
 
 \section*{4.}
 
@@ -390,6 +401,66 @@ Although it looks appears as if the fit shown in figure \ref{q2_b3} can be impro
 The bearings in the motor are the primary sources of coulomb friction in the motor encoder system.  
 
 \subsection*{b. Saturation}
+
+Position Saturation
+
+\xxx{comment on actuation saturation}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Step Input Amplitude (Radians) & $1\pi$   & $1.5 \pi$ & $2\pi$   & $3\pi$   & $4\pi$   \\ \hline
+        Rise Time (seconds)            & 0.0700002 & 0.0800000   & 0.0850000 & 0.110000 & 0.125    \\ 
+        Settling Time (seconds)        & 2.40420   & 0.900000    & 1.97500   & 2.37900  & 3.57500  \\ 
+        Percent Overshoot (\%)          & 6.79997   & 16.8000     & 31.8500   & 65.0331  & 91.0003  \\ 
+        Steady State Error (\%)         & 0.100034  & 0.594022    & 0.150008  & 0.13335  & 0.399713 \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Step Response for a variety of input positions.  Where rise time is defined as reaching 90\% of the final value while settling time is the time after which the function remains within 2\% of its final value}
+\label{q5_b6}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{posstep_1pi.png}
+\caption{Step response of position controller}
+\label{q5_b1}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{posstep_15pi.png}
+\caption{Step response of position controller}
+\label{q5_b2}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{posstep_2pi.png}
+\caption{Step response of position controller}
+\label{q5_b3}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{posstep_3pi.png}
+\caption{Step response of position controller}
+\label{q5_b4}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{posstep_4pi.png}
+\caption{Step response of position controller}
+\label{q5_b5}
+\end{center}
+\end{figure}
 
 \subsection*{c. Quantization}
 
