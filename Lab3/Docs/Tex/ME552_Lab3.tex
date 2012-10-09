@@ -279,10 +279,41 @@ The driver gives us current control as long as we are opperating away from the m
 \subsection*{b.}
 
 \xxx{how to derive kinetic friction} \\
-To determine the force of static friction on the motor shaft, if we knew the motor constant, $K_t$, we could start the motor from rest and increase motor current until the shaft broke free of static friction.
+The torque of friction and the viscous damping can be jointly  derived in an experiment where for a given constant input voltage to the driver, $V_{driver}$, we read off the angular velocity.  At a constant velocity the following equation holds giving a relationship between $\tau_{motor}$, $b$, and $\tau_{coulomb}$.
 
-$$\Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \dot{\theta} =\ddot{\theta} = 0 $$
-$$ \tau_{motor} = K_{t}I_{m} = - \tau_{static_coulomb}$$
+$$\Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
+$$ \tau_{motor} = K_{t}I_{m} = b\dot{\theta}_{ss} - \tau_{coulomb}$$
+
+Assuming that we have the motor torque constant $K_{t}$, we can write an equation that relates steady state angular velocity $\theta_{steady state}$ to motor current which is known to be directly proportional to $V_{driver}$ for suitably small values of $V_{driver}$.
+
+$$ V_{driver} = I_{m} \hspace{1cm} V_{driver} = \left( \frac{b}{K_t} \right) \dot{\theta}_{ss} - \frac{\tau_{coulomb}}{K_{t}} $$
+
+From our plot in figure \ref{q2_b4} we can obtain $\left( \sfrac{b}{K_t} \right)$ as the slope of each of the linear segments and $\sfrac{\tau_{coulomb}}{K_{t}}$ as the y intercepts shown in table \ref{q2_b5}.  We can separately determine the force of static friction $\tau_{static \, coulomb}$ by measuring the smallest input voltage to the driver, and from this how much torque, is required to start the motor from rest.
+
+$$ \Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \dot{\theta} = \ddot{\theta} = 0 $$
+$$ V_{driver} = - \frac{\tau_{coulomb}}{K_{t}} $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 16cm]{SpeedCurrentCurve.png}
+\caption{Relationship between angular velocity and steady state voltage applied to motor driver}
+\label{q2_b4}
+\end{center}
+\end{figure}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~        & Slope $\left( \frac{V * s}{rad} \right) $ & y-intercept $ \left( V \right) $ \\ \hline
+        Forwards & 5.4289e-04                                & 0.46374                          \\ 
+        Reverse  & 6.72805e-04                               & -0.60717                         \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Extracted slopes and y-intercepts from current speed curve}
+\label{q2_b5}
+\end{table}
 
 To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$
 
@@ -310,6 +341,8 @@ $$ Ax = b $$
 We performed a version of the optimization noted above to jointly solve for $J$, $b$, $K_t$, and $\tau_{coulomb}$.  Note that for this optimization we choose a simplified model which assumed that the torques of static friction and kinetic friction are identical.  We first constructed a model of this system in Matlab which given the values of physical parameters of the system and the current in the motor allows us to predict the position of the rotor as a function of time.  Starting from rest we fed the system a sinusoidal current for a few seconds and recorded the current input and position as a function of time being sure to include the initial transient in the record.  Given initial values for parameters obtained from the data sheet, we could then compare the predicted behavior to the actual behavior and use this error to optimize our estimates of the parameters. \\
 
 Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. \\
+
+\xxx{These values have changed a bit, refine the model because the fit isn't quite right still}
 
 \begin{table}
 \begin{center}
@@ -354,6 +387,7 @@ Although it looks appears as if the fit shown in figure \ref{q2_b3} can be impro
 \section*{5.}
 
 \subsection*{a. Coulomb Friction}
+The bearings in the motor are the primary sources of coulomb friction in the motor encoder system.  
 
 \subsection*{b. Saturation}
 
