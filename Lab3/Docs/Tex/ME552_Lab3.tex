@@ -234,24 +234,30 @@ The datasheet for the servo-amp specifies a peak current of +-12 A for a maximum
 \section*{2.}
 
 \subsection*{a.}
-\xxx{ our transfer function doesn't involve the stall torque or the no load speed, does this suggest that we have made an assumption about being away from the maximum speed and away from stall condition? }
+
+Using expressions for the back-emf of the motor with a simple model of the motor as a resistance in series with an inductance we can model the electrical characteristics of the motor.  We can combine this with a simple lumped parameter model of physical dynamics of the motor to derive an overall transfer function.  
 $$V_{s} - e = iR + L\left(\frac{di}{dt}\right) $$
 $$ e = K_{b} \dot{\theta} $$
 
 $$ \Sigma_{\tau} = \tau_{motor} - \tau_{damping} + \tau_{coulomb} = J \ddot{\theta}$$
 $$ \tau_{motor} = K_{T}i \hspace{1cm} \tau_{damping} = b \dot{\theta}$$
+
 \[
   \tau_{coulomb} = \left\{
   \begin{array}{c l}
-    	- \mu_{kinetic}N & \quad \text{if } \dot{\theta} > 0 \\
-    	+ \mu_{kinetic}N & \quad \text{if } \dot{\theta} < 0 \\
-	- \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} > \mu_{static}N \\
-	- \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 <= \tau_{motor} <= \mu_{static}N \\
-	+ \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} < -\mu_{static}N \\
-	+ \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 >=\tau_{motor} >= -\mu_{static}N \\
+	 - \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } |\tau_{motor}| < \tau_{friction} \\
+	- sgn(\tau_{motor}) \cdot \tau_{friction} & \quad \text{if } \dot{\theta} = 0 \text{ and } |\tau_{motor}| > \tau_{friction} \\
+	- sgn(\dot{\theta}) \cdot \tau_{friction} & \quad \text{if } \dot{\theta} \neq 0 \\
+%    	- \mu_{kinetic}N & \quad \text{if } \dot{\theta} > 0 \\
+%    	+ \mu_{kinetic}N & \quad \text{if } \dot{\theta} < 0 \\
+%	- \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} > \mu_{static}N \\
+%	- \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 <= \tau_{motor} <= \mu_{static}N \\
+%	+ \mu_{static}N & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} < -\mu_{static}N \\
+%	+ \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 >=\tau_{motor} >= -\mu_{static}N \\
   \end{array} \right.
 \]
 
+Where: $K_{t}$ is the motor torque constant; $J$ is the rotor inertia; $b$ is the viscous damping on the rotor; $K_{b}$ is the back-emf constant of the motor; $R$ is the equivalent resistance of the motor; $L$ is the effective motor inductance; $i$ is the current flowing through the motor; and $\tau_{coulomb}$ is the force of coulomb friction on the rotor. \\
 
 Neglecting coulomb friction:
 
@@ -278,20 +284,19 @@ The driver gives us current control as long as we are opperating away from the m
 
 \subsection*{b.}
 
-\xxx{how to derive kinetic friction} \\
 The torque of friction and the viscous damping can be jointly  derived in an experiment where for a given constant input voltage to the driver, $V_{driver}$, we read off the angular velocity.  At a constant velocity the following equation holds giving a relationship between $\tau_{motor}$, $b$, and $\tau_{coulomb}$.
 
 $$\Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
-$$ \tau_{motor} = K_{t}I_{m} = b\dot{\theta}_{ss} - \tau_{coulomb}$$
+$$ \tau_{motor} = K_{T}I_{m} = b\dot{\theta}_{ss} - \tau_{coulomb}$$
 
 Assuming that we have the motor torque constant $K_{t}$, we can write an equation that relates steady state angular velocity $\theta_{steady state}$ to motor current which is known to be directly proportional to $V_{driver}$ for suitably small values of $V_{driver}$.
 
-$$ V_{driver} = I_{m} \hspace{1cm} V_{driver} = \left( \frac{b}{K_t} \right) \dot{\theta}_{ss} - \frac{\tau_{coulomb}}{K_{t}} $$
+$$ V_{driver} = I_{m} \hspace{1cm} V_{driver} = \left( \frac{b}{K_T} \right) \dot{\theta}_{ss} - \frac{\tau_{coulomb}}{K_{T}} $$
 
-From our plot in figure \ref{q2_b4} we can obtain $\left( \sfrac{b}{K_t} \right)$ as the slope of each of the linear segments and $\sfrac{\tau_{coulomb}}{K_{t}}$ as the y intercepts shown in table \ref{q2_b5}.  We can separately determine the force of static friction $\tau_{static \, coulomb}$ by measuring the smallest input voltage to the driver, and from this how much torque, is required to start the motor from rest.
+From our plot in figure \ref{q2_b4} we can obtain $\left( \sfrac{b}{K_t} \right)$ as the slope of each of the linear segments and $\sfrac{\tau_{coulomb}}{K_{T}}$ as the y intercepts shown in table \ref{q2_b5}.  We can separately determine the force of static friction $\tau_{static \, coulomb}$ by measuring the smallest input voltage to the driver, and from this how much torque, is required to start the motor from rest.
 
 $$ \Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \dot{\theta} = \ddot{\theta} = 0 $$
-$$ V_{driver} = - \frac{\tau_{coulomb}}{K_{t}} $$
+$$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 
 \begin{figure}
 \begin{center}
@@ -335,24 +340,23 @@ $$ b = \frac{\tau_{motor} + \tau_{coulomb}}{\dot{\theta}} \approx \frac{\tau_{mo
 We can determine the moment of inertia of the rotor, $J$ by starting from rest and sending the motor a known torque while recording the position as a function of time stopping when the system has reached a constant velocity.  Then by computing the $1^{st}$ and $2^{nd}$ order derivatives at each time step we can assemble a linear system to allow us to jointly solve for $J$, $b$, and $\tau_{coulomb}$.
 
 $$ A_{t} = \left[ \begin{array}{c c c} \ddot{\theta_{t}} & \dot{\theta_{t}} & -1 \end{array} \right]  \hspace{1cm} 
-x = \left[ \begin{array}{c} J \\ b \\ \tau_{coulomb} \end{array} \right] \hspace{1cm} z_{t} = \tau_{motor}$$
-$$ Ax = b $$
+x = \left[ \begin{array}{c} J \\ b \\ \tau_{coulomb} \end{array} \right] \hspace{1cm} z_{t} = \tau_{motor} $$
+$$ Ax = z $$
 
-We performed a version of the optimization noted above to jointly solve for $J$, $b$, $K_t$, and $\tau_{coulomb}$.  Note that for this optimization we choose a simplified model which assumed that the torques of static friction and kinetic friction are identical.  We first constructed a model of this system in Matlab which given the values of physical parameters of the system and the current in the motor allows us to predict the position of the rotor as a function of time.  Starting from rest we fed the system a sinusoidal current for a few seconds and recorded the current input and position as a function of time being sure to include the initial transient in the record.  Given initial values for parameters obtained from the data sheet, we could then compare the predicted behavior to the actual behavior and use this error to optimize our estimates of the parameters. \\
+Rather than attempt the method above, we instead used MATLAB's numerical differential equation solving to simulate the trajectory of the system as a function of time, driver current, $I_t$ and our unknown system parameters $J$, $b$, $K_t$, and $\tau_{coulomb}$.  By then
+comparing the predicted angular positions with the measured angular positions over time, we can construct a non-linear regression to estimate the unknown parameters.  We collected a data set where the driver was given a sinusoidal voltage, and we assume that motor current, $I_m$, is identical to this driver voltage and recorded the motor motion that this input caused. \\
 
-Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. \\
-
-\xxx{These values have changed a bit, refine the model because the fit isn't quite right still!!!}
+Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is very clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be very difficult yielding fits similar to the results shown in figure \ref{q2_b6}.  It is clear that although these  results are significantly improved over the original values, but there is still room for improvement.  However, improvement from this minima is not possible strictly using the method noted above, so we resorted to parameter sweeping to to identify more appropriate values.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
 
 \begin{table}
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|}
         \hline
-        ~                                                      & Data Sheet Parameters      & Fit Parameters  \\ \hline
-        $J \hspace{0.1cm} \left( \frac{N\,s^2}{m} \right)$     & $8.5 * 10^{-6} $           & $1*10^{-3}$     \\ 
-        $B \hspace{0.1cm} \left( N \, s \right) $               & $3.7*10^{-6} $             & $1*10^{-3}$     \\ 
-        $F_{f} \hspace{0.1cm} \left( N \, m \right)$           & $\frac{5.6 * 10^{-3}}{2} $ & $1.192*10^{-1}$ \\ 
-        $K_{t} \hspace{0.1cm} \left( \frac{N\, m}{A} \right) $ & $4.24*10^{-2}$             & $4.67*10^{-2}$  \\
+        ~                                                      & Data Sheet Parameters        \\ \hline
+        $J \hspace{0.1cm} \left( \frac{N\cdot s^2}{m} \right)$     & $8.5 \cdot 10^{-6} $               \\ 
+        $b \hspace{0.1cm} \left( N \cdot s \right) $               & $3.7\cdot 10^{-6} $                 \\ 
+        $\tau_{coulomb} \hspace{0.1cm} \left( N \cdot m \right)$           & $\frac{5.6 \cdot 10^{-3}}{2} $  \\ 
+        $K_{T} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right) $ & $4.24 \cdot 10^{-2}$             \\
         \hline
     \end{tabular}
 \caption{Comparison of model parameter values obtained from the data sheet to fit values.}
@@ -371,12 +375,92 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \begin{figure}
 \begin{center}
 \includegraphics[width = 14cm]{fitModel.png}
-\caption{Predicted behavior vs Actual behavior using fit parameter values}
-\label{q2_b3}
+\caption{Example of local minimum in error.  $J = 0.001 \, B = 0.001 \, F_{f} = 0.1192 \, K_{t} = 0.0467 $}
+\label{q2_b6}
 \end{center}
 \end{figure}
 
-Although it looks appears as if the fit shown in figure \ref{q2_b3} can be improved, a parameter sweep along all four parameters: $J$, $b$, $F_{f}$, and $K_{t}$ over a range of $3\%$ of the fit values at increments of $1\%$ demonstrated that this indeed is a local minimum in the error.  
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{2ndexamplefit.png}
+\caption{Improved Fit $J = 6.06724 \cdot 10^{-5} \, B = 4.05562 \cdot 10^{-5} \, F_{f} = 0.0145312 \, K_{t} = 0.019020 $}
+\label{q2_b7}
+\end{center}
+\end{figure}
+
+Manual parameter guessing revealed that it was not possible to obtain the measured curve using the model, repeated below. 
+$$ \Sigma_{tau} = K_{T}I_{m} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} $$
+
+Clearly there were some effects that this model neglected.  Our previous experiment to attempt to determine $b$ and $\tau_{coulomb}$ showed that these parameters are likely not the same in each direction, so we augmented the model to allow $b$ and $\tau_{coulomb}$ to take on different values in the forwards direction and reverse directions yielding the following model:
+
+$$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} $$
+
+\[
+  \tau_{coulomb} = \left\{
+  \begin{array}{l l}
+    	- \tau_{forwards} & \quad \text{if } \dot{\theta} > 0 \\
+    	+ \tau_{reverse} & \quad \text{if } \dot{\theta} < 0 \\
+	- \tau_{forwards} & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} > \tau_{forwards} \\
+	- \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 <= \tau_{motor} <= \tau_{forwards} \\
+	+ \tau_{reverse} & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{motor} < -\tau_{reverse} \\
+	+ \tau_{motor} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 >=\tau_{motor} >= -\tau_{reverse}\\
+  \end{array} \right.
+\]
+
+\[
+b = \left\{
+\begin{array}{l l}
+b_{forwards} & \quad \text{if } \dot{\theta} > 0 \\
+b_{reverse} & \quad  \text{if } \dot{\theta} < 0 \\
+\end{array} \right.
+\]
+
+With this improved model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_b3}.
+The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions.  
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                 & Data-Sheet Values    & Fit Values              \\ \hline
+        $J \hspace{0.1cm} \left( \frac{N \cdot s^2}{m} \right)$               & $8.5 \cdot 10^{-6} $     & $3.50514 \cdot 10^{-5}$ \\ 
+        $K_{t} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right)$           & $0.0424$             & $0.0314499$             \\ 
+        $b_{forwards} \hspace{0.1cm} \left( N \cdot s \right)$    & $3.7 \cdot 10^{-6} $ & $1.08586 \cdot 10^{-5}$ \\ 
+        $b_{reverse} \hspace{0.1cm} \left( N \cdot s \right)$     & $3.7 \cdot 10^{-6} $ & $2.49301 \cdot 10^{-5}$ \\ 
+        $\tau_{forwards} \hspace{0.1cm} \left( N \cdot m \right)$ & $5.6 \cdot 10^{-3}$  & $0.0224389$             \\ 
+        $\tau_{reverse} \hspace{0.1cm} \left( N \cdot m \right)$   & $5.6 \cdot 10^{-3}$  & $0.0143096$             \\
+        \hline
+    \end{tabular}
+\caption{Final Parameter Values vs Original Data Sheet Values}
+\label{q2_b8}
+\end{center}
+\end{table}
+
+Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. We can also compare these fit values with values obtained from our earlier experiment.  We can notice that our terms are in the same order of magnitude, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments. \\
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|l|}
+        \hline
+        ~                 & Predicted Value          & Fit Value               \\ \hline
+        $B_{forwards}$    & $1.707338 \cdot 10^{-5}$ & $1.08586 \cdot 10^{-5}$ \\ 
+        $B_{reverse}$     & $2.11611 \cdot 10^{-5}$  & $2.49301 \cdot 10^{-5}$ \\ 
+        $\tau_{forwards}$ & $0.0145846$              & $0.0224389$             \\ 
+        $\tau_{reverse}$  & $0.0190954$              & $0.0143096$             \\
+        \hline
+    \end{tabular}
+\caption{Damping and friction torques calculated from earlier experiment vs fit values}
+\label{q2_b9}
+\end{center}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{awesomefitFiner.png}
+\caption{Predicted behavior vs Actual behavior using fit parameter values and enchanced modeling}
+\label{q2_b3}
+\end{center}
+\end{figure}
 
 \section*{3.}
 \subsection*{a.}
