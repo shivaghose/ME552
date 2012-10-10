@@ -17,11 +17,13 @@ end
 % look at the last 5% of values we have 
 index = floor(0.95 * length(X));
 finalVal = mean(X(index:length(X)));
-steadyStateErrorPercent = abs((finalVal - stepEnd) / (stepEnd - stepStart));
+steadyStateErrorPercent = 100 * abs((finalVal - stepEnd) / (stepEnd - stepStart));
+disp(finalVal)
 
 % determine settling time
 for i = length(X) : 1
-    if abs((X(i) - finalVal)) / finalVal > 0.02
+    disp(i)
+    if abs((X(i) - finalVal) / finalVal) > 0.02
         index = i + 1; % last index that was within 2% of final value
         break;
     end
@@ -32,6 +34,7 @@ settlingTime = T(index) - T(1); % change in time
 for i = 1 : length(X)
     if abs((X(i) - finalVal) / finalVal) < 0.1
         index = i; % first index to get witin 10% of final value
+        break;
     end
 end
 riseTime = T(index) - T(1); 
