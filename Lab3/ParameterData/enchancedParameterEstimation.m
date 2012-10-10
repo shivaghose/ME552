@@ -14,7 +14,7 @@ assert((length(state) == length(lockedPositions)),'should have been the same len
 % ode45 sort of works, but is very slow, static friction really gives it a
 % hard time
 
-numPoints = 10^4;
+numPoints = 2*10^5;
 state = state0;
 LPos = lockedPositions;
 
@@ -72,7 +72,7 @@ while ((max(abs(dP)) >= dPtol) && (iter < maxiter))
     
     % going 100% of the dP is causing trouble, going less distance should
     % help
-    stateC = updateState(stateC,ds);
+    stateC = updateState(stateC,0.1 .* ds);
     
     iter = iter + 1;
 end
@@ -108,15 +108,18 @@ global Tobs numUPos LPos
 
 % matrix for storing perturbed values
 pX1 = zeros(length(Tobs),numUPos);
+deltaP = zeros(numUPos,1);
 
-deltaP = 1e-6;
+dP = 1e-2;
 
 p = 1;
 for s = 1:length(state0)
     
     if ~LPos(s)
         stateP = state0;
-        stateP(s) = stateP(s) + deltaP;
+        deltaP(p) = dP * abs(state0(s));
+        %deltaP(p) = 1e-6;
+        stateP(s) = stateP(s) + deltaP(p) ;
         [pT, pX] = shootMotor(xstart,stateP);
         pX1(:,p) = pX(:,1); % we only care about storing the positions
         % don't discretize yet, because that would mess up the jacobian
@@ -127,7 +130,7 @@ end
 J = zeros(length(T0),numUPos);
 for i = 1:length(T0)
    for j = 1:numUPos
-       J(i,j) = (pX1(i,j) - X0(i)) / deltaP;
+       J(i,j) = (pX1(i,j) - X0(i)) / deltaP(j);
    end
 end
 
@@ -224,7 +227,7 @@ if (abs(thetadot) < staticThreshold) % if not moving, friction opposes attempted
     % if motortorque does not exceed static friction
     if ((motorTorque < Tff) && (motorTorque >= 0)) || ((motorTorque > -Tfr) && (motorTorque < 0))
         FF = abs(motorTorque);
-    elseif (motorTorque > Tfforwards)
+    elseif (motorTorque > Tff)
         FF = Tff;
     else
         FF = Tfr;
