@@ -512,7 +512,7 @@ Position Saturation
         \hline
         Step Input Amplitude (Radians) & $1\pi$   & $1.5 \pi$ & $2\pi$   & $3\pi$   & $4\pi$   \\ \hline
         Rise Time (seconds)            & 0.0700002 & 0.0800000   & 0.0850000 & 0.110000 & 0.125    \\ 
-        Settling Time (seconds)        & 2.40420   & 0.900000    & 1.97500   & 2.37900  & 3.57500  \\ 
+        Settling Time (seconds)        & 0.290000   & 0.320000    & 0.28000   & 0.54500  & 1.45500  \\ 
         Percent Overshoot (\%)          & 6.79997   & 16.8000     & 31.8500   & 65.0331  & 91.0003  \\ 
         Steady State Error (\%)         & 0.100034  & 0.594022    & 0.150008  & 0.13335  & 0.399713 \\
         \hline
@@ -565,5 +565,89 @@ Position Saturation
 \subsection*{c. Quantization}
 
 \section*{6.}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+        \hline
+        Step Input Amplitude (Radians) & $0.5 \cdot \pi$ & $1 \cdot \pi$ & $1.5 \cdot \pi$ & $2 \cdot \pi$ & $5 \cdot \pi$ & $10 \cdot \pi$ \\ \hline
+        Rise Time (seconds)            & 0.11            & 0.115         & 0.125           & 0.14          & 0.23          & 0.385          \\ 
+        Settling Time (seconds)        & 1.5700          &1.6700          & 1.95500           & 1.9700        & 2.3050        & 2.8550         \\ 
+        Percent Overshoot (\%)         & 4.3415          & 6.1564        & 7.9919          & 11.3925       & 21.091        & 27.1553        \\ 
+        Steady State Error (\%)        & 0.11779         & 0.041862      & 0.053597        & 0.058333      & 0.050267      & 0.050634       \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Step Input Amplitude (Radians) & $2 \cdot \pi$ & $2 \cdot \pi$ with Noise \\ \hline
+        Rise Time (seconds)            & 0.14          & 0.135                    \\ 
+        Settling Time (seconds)        & 1.9700        &  -                    \\ 
+        Percent Overshoot (\%)         & 11.3925       & 29.6000                  \\ 
+        Steady State Error (\%)        & 0.058328      & 0.054649                 \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep0_5Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_1}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstepPi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_2}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep1_5Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_3}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep2Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_4}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep5Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_5}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep10Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_6}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep2PiwNoise.png}
+\caption{Velocity Controller Step Response with added Noise}
+\label{q6_7}
+\end{center}
+\end{figure}
 
 \end{document}
