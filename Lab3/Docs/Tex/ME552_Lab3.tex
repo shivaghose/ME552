@@ -203,7 +203,7 @@ With this current and the given motor constant we can then calculate the maximum
 
 $$T_{m} = k_{t}*i_{continuous} = 4.24\e{-2}*2.5048 = 10.6\e{-2}\, Nm$$
 
-This value is more than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 1.91 A, but at that value the temperature rise would be 75.6 $^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods. 
+This value is more than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 1.91 A, but at that value the temperature rise would be 75.6 $^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods.\\
 
 The motor's data sheet lists a peak current rating of 13.0 A and a stall torque of 0.54 Nm. With this torque value and the given torque constant (4.24$\e{-2}$ Nm/A), the peak current should be:
 
@@ -230,13 +230,15 @@ Clearly the system could not physical reach this temperature without failing, bu
 \end{figure}
 
 \subsection*{d.}
-The 12A8E servo amplifier is capable of outputting maximum continuous and peak currents of +-6A and +-12A, respectively (from the data sheet). However, the servo amplifier includes a potentiometer that can be used to reduce both the continuous and peak currents (while maintaining a 1:2 relationship between them). The lab instructions specify that the potentiometer should be adjusted so that the current limits will be +-3A and +-6A. Additionally, the continuous current limit can be further reduced (without affecting the peak current) by connecting a current limiting resistor between pins P1-10 and P1-2 on the servo-amp. That was not done in this lab. Assuming the adjustment on the current limiting potentiometer was done correctly, the servo-amp should be capable of sending +-3A continuously and +-6A intermittently to the motor. The continuous current limit from the servo-amp is greater than the continuous current rating of the motor, so we can't rely on the servo-amp to prevent the motor from drawing too much current.
-\vspace{3 mm}
+The 12A8E servo amplifier is capable of outputting maximum continuous and peak currents of +-6A and +-12A, respectively (from the data sheet). However, the servo amplifier includes a potentiometer that can be used to reduce both the continuous and peak currents (while maintaining a 1:2 relationship between them). The lab instructions specify that the potentiometer should be adjusted so that the current limits will be +-3A and +-6A. Additionally, the continuous current limit can be further reduced (without affecting the peak current) by connecting a current limiting resistor between pins P1-10 and P1-2 on the servo-amp. That was not done in this lab. Assuming the adjustment on the current limiting potentiometer was done correctly, the servo-amp should be capable of sending +-3A continuously and +-6A intermittently to the motor. The continuous current limit from the servo-amp is greater than the continuous current rating of the motor, so we can't rely on the servo-amp to prevent the motor from drawing too much current.\\
 
-The data sheet for the servo-amp specifies a peak current of +-12 A for a maximum of 2 seconds. From information on the Advanced Motion Controls website, this can only be achieved if the current switches across its entire range (-12 A to +12 A, and vice-versa). Any change of smaller magnitude will not be maintained as long (i.e. switching from 0 A to +12 A will only be held for 1 second before the current begins falling). A primary concern with maintaining high currents is overheating, and the servo-amp has a much lower temperature limit than the motor (65 $^\circ$C vs 155 $^\circ$C). This is why the peak current can not be maintained for long, the maximum temperature would be exceeded very quickly and the servo-amp's internal safeties would shut it off. As an example, in the thermal model for the motor at peak current (which is lower than the 6 A rating of the servo-amp), 65 $^\circ$C was reached in only 9.8 seconds. Of course, the servo-amp has different thermal properties than the motor, so that specific value is not accurate. However, the basic idea is valid: the servo-amp is capable of passing a lot of current, and has a lower temperature limit than the motor, so there is a danger of it overheating if high currents are maintained. Luckily, the servo-amp has built in safeties, such as a thermal shut-off.   
+
+The data sheet for the servo-amp specifies a peak current of +-12 A for a maximum of 2 seconds. From information on the Advanced Motion Controls website, this can only be achieved if the current switches across its entire range (-12 A to +12 A, and vice-versa). Any change of smaller magnitude will not be maintained as long (i.e. switching from 0 A to +12 A will only be held for 1 second before the current begins falling). A primary concern with maintaining high currents is overheating, and the servo-amp has a much lower temperature limit than the motor (65 $^\circ$C vs 155 $^\circ$C). This is why the peak current can not be maintained for long, the maximum temperature would be exceeded very quickly and the servo-amp's internal safeties would shut it off. As an example, in the thermal model for the motor at peak current (which is lower than the 6 A rating of the servo-amp), 65 $^\circ$C was reached in only 9.8 seconds. Of course, the servo-amp has different thermal properties than the motor, so that specific value is not accurate. However, the basic idea is valid: the servo-amp is capable of passing a lot of current, and has a lower temperature limit than the motor, so there is a danger of it overheating if high currents are maintained. Luckily, the servo-amp has built in safeties, such as a thermal shut-off.  \\
 
 \subsection*{e.}
-In the above sections, we showed that the motor has a continuous and peak current limits of 2.5 A and 12.74 A, and the servo-amp  has current limits of 3 A and 6 A, respectively. Within our LabView controller we chose to implement saturation limits of +-6 A so that we could take advantage of the peak current capability of the servo-amp and motor. We considered setting a saturation limit based on the motor's continuous current limit of 2.5 A, but felt that might have a negative effect on the transient response of the motor. Also, we knew that the servo-amp has built in mechanisms to prevent the current from remaining at the peak value - it automatically lowers it after at most two seconds. Additionally, as we were tuning our LabView controller, we monitored a waveform graph of the attempted output of the contoller. This allowed us to adjust our gain values not just for system stability, but also to keep the attempted output within safe limits. Given more resources, we could have implemented more safety measures. For example, we could implement a slow-blow fuse rated a little under the continuous current limit of the motor. This would protect the system from high currents for prolonged times, but still allow for short bursts of higher current during transient conditions.
+In the above sections, we showed that the motor has a continuous and peak current limits of 2.5 A and 12.74 A, and the servo-amp  has current limits of 3 A and 6 A, respectively. Within our LabView controller we chose to implement saturation limits of +-6 A so that we could take advantage of the peak current capability of the servo-amp and motor. We considered setting a saturation limit based on the motor's continuous current limit of 2.5 A, but felt that might have a negative effect on the transient response of the motor. Also, we knew that the servo-amp has built in mechanisms to prevent the current from remaining at the peak value - it automatically lowers it after at most two seconds. Additionally, as we were tuning our LabView controller, we monitored a waveform graph of the attempted output of the contoller. This allowed us to adjust our gain values not just for system stability, but also to keep the attempted output within safe limits. Given more resources, we could have implemented more safety measures. For example, we could implement a slow-blow fuse rated a little under the continuous current limit of the motor. This would protect the system from high currents for prolonged times, but still allow for short bursts of higher current during transient conditions.\\
+
+\clearpage
 
 \section*{2.}
 
@@ -278,7 +280,7 @@ $$ \frac{\theta(s)}{I(s)} = \frac{K_T}{(Js + b)s} $$
 
 This model relating angular position, $\theta(t)$ with motor current $i(t)$ requires the moment of inertia of the rotor, $J$, the viscous damping coefficient, $b$, and the torque constant $K_T$.  Note that coulomb friction has been neglected. \\
 
-The driver gives us current control as long as we are opperating away from the maximum speed of the motor.  At maximum speed, the current required by the motor should drop to some steady state value required to overcome losses within the motor.
+The driver gives us current control as long as we are opperating away from the maximum speed of the motor.  At maximum speed, the current required by the motor should drop to some steady state value required to overcome losses within the motor.\\
 
 \xxx{may need to redo picture a bit to agree with terminology in equation}
 \begin{figure}[htb]
@@ -327,7 +329,7 @@ $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 \label{q2_b5}
 \end{table}
 
-To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$
+To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$:
 
 $$ \Sigma_{V} = V_{s} + V_{R} + V_{L} e = V_{s} + IR + e = 0 $$
 $$ K_b = \frac{e}{\dot{\theta}} $$
@@ -422,8 +424,7 @@ b_{reverse} & \quad  \text{if } \dot{\theta} < 0 \\
 \end{array} \right.
 \]
 
-With this improved model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_b3}.
-The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions.  
+With this improved model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_b3}. The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions. \\ 
 
 \begin{table}[htb]
 \begin{center}
@@ -443,7 +444,7 @@ The most notable feature of these values is the large difference between the tor
 \end{center}
 \end{table}
 
-Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. We can also compare these fit values with values obtained from our earlier experiment.  We can notice that our terms are in the same order of magnitude, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments. \\
+Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. We can also compare these fit values with values obtained from our earlier experiment.  We can notice that our terms are in the same order of magnitude, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments.\\
 
 \begin{table}[htb]
 \begin{center}
@@ -469,6 +470,8 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \end{center}
 \end{figure}
 
+\clearpage
+
 \section*{3.}
 \subsection*{a.}
 
@@ -482,10 +485,12 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 
 \subsection*{f.}
 
+\clearpage
+
 \section*{4.}
 
 \subsection*{a.}
-When we implemented the controller and values from our simulation in part 3, we were unable to achieve stable output in the physical system. Therefore, we kept the same general approach - a velocity controller nested within a position controller with feed forward - but we re-tuned the system with different gain values. Because we have a velocity controller inside of our position controller, we first tuned the velocity control on its own (see section 6). Once it was working, we then implemented it in the inner loop of our position controller and tuned the position control gains. In the end we were not able to meet all of the control goals with one controller. We designed one controller with good step response and noise attenuation, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below.  
+When we implemented the controller and values from our simulation in part 3, we were unable to achieve stable output in the physical system. Therefore, we kept the same general approach - a velocity controller nested within a position controller with feed forward - but we re-tuned the system with different gain values. Because we have a velocity controller inside of our position controller, we first tuned the velocity control on its own (see section 6). Once it was working, we then implemented it in the inner loop of our position controller and tuned the position control gains. In the end we were not able to meet all of the control goals with one controller. We designed one controller with good step response and noise attenuation, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below.\\
 
 \begin{table}[htb]
 \begin{center}
@@ -501,7 +506,8 @@ When we implemented the controller and values from our simulation in part 3, we 
 \label{positionGains}
 \end{table}
 
-Figure \ref{PosStepPi} shows the system's response to a position step input of $\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The peak error here is 0.11\%, which greatly exceeds the goal of 2\% error. Additional results for position steps of different magnitudes are included in section 5b.
+Figure \ref{PosStepPi} shows the system's response to a position step input of $\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The peak error here is 0.11\%, which greatly exceeds the goal of 2\% error. Additional results for position steps of different magnitudes are included in section 5b.\\
+
 \xxx{Compare to simulation results}
 
 \begin{figure}[htb]
@@ -520,7 +526,8 @@ Figure \ref{PosStepPi} shows the system's response to a position step input of $
 \end{center}
 \end{figure}
 
-Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.
+Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.\\
+
 \xxx{Compare to simulation results}
 
 \begin{figure}[htb]
@@ -539,7 +546,8 @@ Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ r
 \end{center}
 \end{figure}
 
-The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the table \ref{positionFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
+The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the table \ref{positionFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.\\
+
 \xxx{Compare to simulation}
 
 \begin{table}[htb]
@@ -556,6 +564,22 @@ The position controller we were using for the step response and noise attenuatio
 \label{positionFreqGains}
 \end{table}
 
+\begin{table}[htb]
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Frequency (Hz) & Input Amplitude & Output Amplitude & Magnitude (dB) & \%Error       \\ \hline
+        1              & $\pi$           & 3.13845          & -0.008693172   & -0.100033771 \\ 
+        2              & $\pi$           & 3.02221          & -0.336504689   & -3.800067888 \\ 
+        3              & $\pi$           & 3.079209         & -0.174214105   & -1.985733367 \\ 
+        4              & $\pi$           & 3.030152         & -0.313709167   & -3.547266176 \\ 
+        5              & $\pi$           & 2.473084         & -2.078220099   & -21.27929134 \\ 
+        5.27           & $\pi$           & 2.181877         & -3.166392169   & -30.54869805 \\
+        \hline
+    \end{tabular}
+    \caption{Velocity control data.}
+    \label{q4_atable}
+\end{table}
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{PositionControl_Error.png}
@@ -564,7 +588,7 @@ The position controller we were using for the step response and noise attenuatio
 \end{center}
 \end{figure}
 
-To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$ this corresponded to an output of 2.22). We found that the bandwidth of our position control system was 5.27 Hz, as shown in figure \ref{PosBandwidth}.
+To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$ this corresponded to an output of 2.22). We found that the bandwidth of our position control system was 5.27 Hz, as shown in figure \ref{PosBandwidth}.\\
 
 \begin{figure}[htb]
 \begin{center}
@@ -574,25 +598,26 @@ To determine the closed-loop bandwidth of the system, we slowly increased the fr
 \end{center}
 \end{figure}
 
-Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In the end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.
+Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In the end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.\\
+
+
+\clearpage 
 
 \section*{5.}
 
 \subsection*{a. Coulomb Friction}
-The bearings in the motor are the primary source of coulomb friction in the motor encoder system. This could be especially true in the current configuration of the motor because Pittman's website only specifies that they use ball or sleeve bearings in their products. If these are only radial bearings with no thrust capability, then the motor's performance could be affected by the vertical mounting we are using. Additionally, there is friction between the brushes and commutator. In section 2b we discussed and carried out experiments and modeling to determine the friction value.   
+The bearings in the motor are the primary source of coulomb friction in the motor encoder system. This could be especially true in the current configuration of the motor because Pittman's website only specifies that they use ball or sleeve bearings in their products. If these are only radial bearings with no thrust capability, then the motor's performance could be affected by the vertical mounting we are using. Additionally, there is friction between the brushes and commutator. In section 2b we discussed and carried out experiments and modeling to determine the friction value.\\
 
-\vspace{3 mm}
-Setting aside the earlier parameter identification, there are some simple experiments that could be run to estimate the friction in the system. If we assume that the torque constant given in the data-sheet is correct and that the gain of the servo-amp is exact and known, then for a given command voltage, the motor should be capable of a specific torque output. By slowly increasing the voltage from zero until the motor just begins to turn. From this, the torque caused by static friction would be equal to the product of the torque constant and the input voltage (because there is a 1:1 relationship between command voltage and applied current). 
 
-\vspace{3 mm}
-A similar method could be used to determine sliding friction. By applying a constant voltage to the system, the motor would come to a steady-state velocity. If we the coefficient of damping is known, then the torque caused by sliding friction is equal to the motor torque ($K_{t}$ * $V_{command}$) minus the torque from damping (the product of the damping coefficient and velocity). This was carried out in part 2b.
+Setting aside the earlier parameter identification, there are some simple experiments that could be run to estimate the friction in the system. If we assume that the torque constant given in the data-sheet is correct and that the gain of the servo-amp is exact and known, then for a given command voltage, the motor should be capable of a specific torque output. By slowly increasing the voltage from zero until the motor just begins to turn. From this, the torque caused by static friction would be equal to the product of the torque constant and the input voltage (because there is a 1:1 relationship between command voltage and applied current). \\
 
-\vspace{3 mm}
-Friction was included in our Simulink model from the beginning of our modeling, as presented in part 3. At the beginning of our tests we used approximations based on the data-sheet values, but as we performed more regression analysis, we obtained new values that should be closer to the true values of the physical system. 
+A similar method could be used to determine sliding friction. By applying a constant voltage to the system, the motor would come to a steady-state velocity. If we the coefficient of damping is known, then the torque caused by sliding friction is equal to the motor torque ($K_{t}$ * $V_{command}$) minus the torque from damping (the product of the damping coefficient and velocity). This was carried out in part 2b.\\
+
+Friction was included in our Simulink model from the beginning of our modeling, as presented in part 3. At the beginning of our tests we used approximations based on the data-sheet values, but as we performed more regression analysis, we obtained new values that should be closer to the true values of the physical system. \\
 
 \subsection*{b. Saturation}
 
-Position Saturation
+Position Saturation\\
 
 \xxx{comment on actuation saturation}
 
@@ -612,7 +637,7 @@ Position Saturation
 \label{q5_b6}
 \end{table}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{posstep_1pi.png}
 \caption{Step response of position controller}
@@ -620,7 +645,7 @@ Position Saturation
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{posstep_15pi.png}
 \caption{Step response of position controller}
@@ -628,7 +653,7 @@ Position Saturation
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{posstep_2pi.png}
 \caption{Step response of position controller}
@@ -636,7 +661,7 @@ Position Saturation
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{posstep_3pi.png}
 \caption{Step response of position controller}
@@ -644,7 +669,7 @@ Position Saturation
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{posstep_4pi.png}
 \caption{Step response of position controller}
@@ -654,8 +679,10 @@ Position Saturation
 
 \subsection*{c. Quantization}
 
+\clearpage
+
 \section*{6.}
-As was discussed in section 4, work on the velocity controller for the real system was performed before the position controller, because we needed to nest the velocity loop within the position loop. The gains we used in the simulation were not able to stabilize the system with the performance we wanted, so we re-tuned the gain values. As with position control, we were not able to use one controller to meet all of the requirements: we designed one controller that could meet the step and noise requirements, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below. The gains used here are the same as in the step position controller's nested velocity loop. 
+As was discussed in section 4, work on the velocity controller for the real system was performed before the position controller, because we needed to nest the velocity loop within the position loop. The gains we used in the simulation were not able to stabilize the system with the performance we wanted, so we re-tuned the gain values. As with position control, we were not able to use one controller to meet all of the requirements: we designed one controller that could meet the step and noise requirements, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below. The gains used here are the same as in the step position controller's nested velocity loop.\\
 
 \begin{table}[htb]
 \begin{center}
@@ -670,10 +697,11 @@ As was discussed in section 4, work on the velocity controller for the real syst
 \label{velocityGains}
 \end{table}
 
-Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdot\pi$ radians, and figure \ref{VelStepError} shows a zoomed in view after it had settled. The peak error here is approximately 0.16\% (and on average is much less), which greatly exceeds the goal of 2\% error. Additional results for velocity steps of different magnitudes are also shown in the following tables and figures.
+Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdot\pi$ radians, and figure \ref{VelStepError} shows a zoomed in view after it had settled. The peak error here is approximately 0.16\% (and on average is much less), which greatly exceeds the goal of 2\% error. Additional results for velocity steps of different magnitudes are also shown in the following tables and figures.\\
+
 \xxx{Compare to simulation results}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep2Pi.png}
 \caption{Velocity Controller Step Response}
@@ -681,7 +709,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{VelStepError.png}
 \caption{Steady state error for step input of 2$\cdot\pi$ rad/sec}
@@ -689,7 +717,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
@@ -703,7 +731,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{table}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep0_5Pi.png}
 \caption{Velocity Controller Step Response}
@@ -711,7 +739,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstepPi.png}
 \caption{Velocity Controller Step Response}
@@ -719,7 +747,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep1_5Pi.png}
 \caption{Velocity Controller Step Response}
@@ -727,7 +755,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep5Pi.png}
 \caption{Velocity Controller Step Response}
@@ -735,7 +763,7 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep10Pi.png}
 \caption{Velocity Controller Step Response}
@@ -743,18 +771,19 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$ radians/sec. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant, just as with the position controller. Figure \ref{VelNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our peak steady state error was 0.010, and with the noise the highest error is 0.20. Given that we were inputting a noise amplitude of one and the error only increased by 0.19, we have attenuated the noise by approximately 5.26 times. This meets the goal of a five times reduction.
+Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$ radians/sec. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant, just as with the position controller. Figure \ref{VelNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our peak steady state error was 0.010, and with the noise the highest error is 0.20. Given that we were inputting a noise amplitude of one and the error only increased by 0.19, we have attenuated the noise by approximately 5.26 times. This meets the goal of a five times reduction.\\
+
 \xxx{Compare to simulation results}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{velstep2PiwNoise.png}
-\caption{Velocity step response for input of 2$\cdot\pi$ with a 60 Hz noise signal (amplitude = 1)}
+\caption{Velocity step response for input of 2$\cdot{\pi}$ with a 60 Hz noise signal (amplitude = 1)}
 \label{q6_7}
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{VelErrorNoise.png}
 \caption{Steady state velocity step response for input of 2$\cdot\pi$ with a 60 Hz noise signal (amplitude = 1)}
@@ -762,7 +791,7 @@ Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -776,7 +805,8 @@ Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$
 \end{center}
 \end{table}
 
-The velocity controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains to try to improve the frequency response. The relevant values are given in the table \ref{VelFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$/2. Figure \ref{VelFreqError} shows the error as a function of input frequency. During our tests the velocity output remained stable up to 5 Hz, but the output amplitude error increased greatly. The error exceeded 5\% just beyond 2.2 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
+The velocity controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains to try to improve the frequency response. The relevant values are given in the table \ref{VelFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$/2. Figure \ref{VelFreqError} shows the error as a function of input frequency. During our tests the velocity output remained stable up to 5 Hz, but the output amplitude error increased greatly. The error exceeded 5\% just beyond 2.2 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.\\
+
 \xxx{Compare to simulation}
 
 \begin{table}[htb]
@@ -792,6 +822,25 @@ The velocity controller we were using for the step response and noise attenuatio
 \label{VelFreqGains}
 \end{table}
 
+$$\text{Predicted Bandwidth } =  \xxx{SOMETHING}$$
+$$\text{Experimental Bandwidth } =  2.9 Hz$$
+
+\begin{table}[htb]
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Frequency (Hz) & Input Amplitude & Output Amplitude & Magnitude (dB) & \%Error      \\ \hline
+        1              & $\pi/2$         & 1.649            & 0.422015572    & 4.978600463  \\ 
+        2              & $\pi/2$         & 1.632143         & 0.332766594    & 3.905450513  \\ 
+        2.9            & $\pi/2$         & 1.11778          & -2.955270847   & -28.83991508 \\ 
+        3              & $\pi/2$         & 1.06516          & -3.374100561   & -32.18980833 \\ 
+        4              & $\pi/2$         & 0.581875         & -8.625803574   & -62.956687   \\ 
+        5              & $\pi/2$         & 0.47833          & -10.32784514   & -69.54856643 \\
+        \hline
+    \end{tabular}
+    \caption{Numerical results of velocity control.}
+    \label{q6_table}
+\end{table}
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{VelocityControl_Error.png}
@@ -800,7 +849,7 @@ The velocity controller we were using for the step response and noise attenuatio
 \end{center}
 \end{figure}
 
-To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$/2 this corresponded to an output of 1.11), just as we did in section 4 to determine the bandwidth of the position controller. We found that the bandwidth of our position control system was  2.9 Hz, as shown in figure \ref{VelBandwidth}.
+To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$/2 this corresponded to an output of 1.11), just as we did in section 4 to determine the bandwidth of the position controller. We found that the bandwidth of our position control system was  2.9 Hz, as shown in figure \ref{VelBandwidth}.\\
 
 \begin{figure}[htb]
 \begin{center}
@@ -810,6 +859,8 @@ To determine the closed-loop bandwidth of the system, we slowly increased the fr
 \end{center}
 \end{figure}
 
-Just like with the position controller, we faced a lot of trouble meeting all of the performance specifications with just one controller. Again, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. As we mentioned in section 4 ,it's possible that some of the values used in our simulation are incorrect, or that there are other factors we did not account for. In the end we were able to meet the steady state error for step input and noise attenuation requirements, but were not very close to the frequency response requirement.
+Just like with the position controller, we faced a lot of trouble meeting all of the performance specifications with just one controller. Again, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. As we mentioned in section 4 ,it's possible that some of the values used in our simulation are incorrect, or that there are other factors we did not account for. In the end we were able to meet the steady state error for step input and noise attenuation requirements, but were not very close to the frequency response requirement.\\
+
+\clearpage
 
 \end{document}
