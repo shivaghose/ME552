@@ -464,7 +464,7 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \begin{figure}
 \begin{center}
 \includegraphics[width = 14cm]{awesomefitFiner.png}
-\caption{Predicted behavior vs Actual behavior using fit parameter values and enchanced modeling}
+\caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
 \label{q2_b3}
 \end{center}
 \end{figure}
@@ -489,7 +489,16 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \section*{5.}
 
 \subsection*{a. Coulomb Friction}
-The bearings in the motor are the primary sources of coulomb friction in the motor encoder system.  
+The bearings in the motor are the primary source of coulomb friction in the motor encoder system. This could be especially true in the current configuration of the motor because Pittman's website only specifies that they use ball or sleeve bearings in their products. If these are only radial bearings with no thrust capability, then the motor's performance could be affected by the vertical mounting we are using. Additionally, there is friction between the brushes and commutator. In section 2b we discussed and carried out experiments and modeling to determine the friction value.   
+
+\vspace{3 mm}
+Setting aside the earlier parameter identification, there are some simple experiments that could be run to estimate the friction in the system. If we assume that the torque constant given in the data-sheet is correct and that the gain of the servo-amp is exact and known, then for a given command voltage, the motor should be capable of a specific torque output. By slowly increasing the voltage from zero until the motor just begins to turn. From this, the torque caused by static friction would be equal to the product of the torque constant and the input voltage (because there is a 1:1 relationship between command voltage and applied current). 
+
+\vspace{3 mm}
+A similar method could be used to determine sliding friction. By applying a constant voltage to the system, the motor would come to a steady-state velocity. If we the coefficient of damping is known, then the torque caused by sliding friction is equal to the motor torque ($K_{t}$ * $V_{command}$) minus the torque from damping (the product of the damping coefficient and velocity). This was carried out in part 2b.
+
+\vspace{3 mm}
+Friction was included in our Simulink model from the beginning of our modeling, as presented in part 3.  
 
 \subsection*{b. Saturation}
 
