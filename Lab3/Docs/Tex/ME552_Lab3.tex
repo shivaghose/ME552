@@ -501,7 +501,7 @@ When we implemented the controller and values from our simulation in part 3, we 
 \label{positionGains}
 \end{table}
 
-Figure \ref{PosStepPi} shows the system's response to a position step input of 2$\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The error here is approximately 0.11\%, which greatly exceeds the goal of 2\% error.
+Figure \ref{PosStepPi} shows the system's response to a position step input of $\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The peak error here is 0.11\%, which greatly exceeds the goal of 2\% error. Additional results for position steps of different magnitudes are included in section 5b.
 \xxx{Compare to simulation results}
 
 \begin{figure}[htb]
@@ -520,7 +520,7 @@ Figure \ref{PosStepPi} shows the system's response to a position step input of 2
 \end{center}
 \end{figure}
 
-Figure \ref{PosNoise} shows the noise attenuation during a step input of pi radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.
+Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.
 \xxx{Compare to simulation results}
 
 \begin{figure}[htb]
@@ -539,7 +539,7 @@ Figure \ref{PosNoise} shows the noise attenuation during a step input of pi radi
 \end{center}
 \end{figure}
 
-The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the following table, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
+The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the table \ref{positionFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
 \xxx{Compare to simulation}
 
 \begin{table}[htb]
@@ -553,7 +553,7 @@ The position controller we were using for the step response and noise attenuatio
     \end{tabular}
 \end{center}
 \caption{Values of position controller with nested velocity controller for frequency response}
-\label{positionGains}
+\label{positionFreqGains}
 \end{table}
 
 \begin{figure}[htb]
@@ -569,12 +569,12 @@ To determine the closed-loop bandwidth of the system, we slowly increased the fr
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{PositionControl_Magnitude.png}
-\caption{Output magnitude vs. frequency used to determine bandwidth}
+\caption{Output magnitude vs. frequency used to determine bandwidth of position controller}
 \label{PosBandwidth}
 \end{center}
 \end{figure}
 
-Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In th end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.
+Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In the end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.
 
 \section*{5.}
 
@@ -655,6 +655,39 @@ Position Saturation
 \subsection*{c. Quantization}
 
 \section*{6.}
+As was discussed in section 4, work on the velocity controller for the real system was performed before the position controller, because we needed to nest the velocity loop within the position loop. The gains we used in the simulation were not able to stabilize the system with the performance we wanted, so we re-tuned the gain values. As with position control, we were not able to use one controller to meet all of the requirements: we designed one controller that could meet the step and noise requirements, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below. The gains used here are the same as in the step position controller's nested velocity loop. 
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Gains & P   & I & D     & Filter $\tau$   \\ \hline
+        Velocity Controller       & 22.5   & 22.5    & 1.125    & 6.5797  \\ 
+       \hline
+    \end{tabular}
+\end{center}
+\caption{Values of velocity controller for step response and noise attenuation}
+\label{velocityGains}
+\end{table}
+
+Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdot\pi$ radians, and figure \ref{VelStepError} shows a zoomed in view after it had settled. The peak error here is approximately 0.16\% (and on average is much less), which greatly exceeds the goal of 2\% error. Additional results for velocity steps of different magnitudes are also shown in the following tables and figures.
+\xxx{Compare to simulation results}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{velstep2Pi.png}
+\caption{Velocity Controller Step Response}
+\label{q6_4}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{VelStepError.png}
+\caption{Steady state error for step input of 2$\cdot\pi$ rad/sec}
+\label{VelStepError}
+\end{center}
+\end{figure}
 
 \begin{table}
 \begin{center}
@@ -665,20 +698,6 @@ Position Saturation
         Settling Time (seconds)        & 1.5700          &1.6700          & 1.95500           & 1.9700        & 2.3050        & 2.8550         \\ 
         Percent Overshoot (\%)         & 4.3415          & 6.1564        & 7.9919          & 11.3925       & 21.091        & 27.1553        \\ 
         Steady State Error (\%)        & 0.11779         & 0.041862      & 0.053597        & 0.058333      & 0.050267      & 0.050634       \\
-        \hline
-    \end{tabular}
-\end{center}
-\end{table}
-
-\begin{table}
-\begin{center}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        Step Input Amplitude (Radians) & $2 \cdot \pi$ & $2 \cdot \pi$ with Noise \\ \hline
-        Rise Time (seconds)            & 0.14          & 0.135                    \\ 
-        Settling Time (seconds)        & 1.9700        &  -                    \\ 
-        Percent Overshoot (\%)         & 11.3925       & 29.6000                  \\ 
-        Steady State Error (\%)        & 0.058328      & 0.054649                 \\
         \hline
     \end{tabular}
 \end{center}
@@ -710,14 +729,6 @@ Position Saturation
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 12cm]{velstep2Pi.png}
-\caption{Velocity Controller Step Response}
-\label{q6_4}
-\end{center}
-\end{figure}
-
-\begin{figure}
-\begin{center}
 \includegraphics[width = 12cm]{velstep5Pi.png}
 \caption{Velocity Controller Step Response}
 \label{q6_5}
@@ -732,12 +743,73 @@ Position Saturation
 \end{center}
 \end{figure}
 
+Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$ radians/sec. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant, just as with the position controller. Figure \ref{VelNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our peak steady state error was 0.010, and with the noise the highest error is 0.20. Given that we were inputting a noise amplitude of one and the error only increased by 0.19, we have attenuated the noise by approximately 5.26 times. This meets the goal of a five times reduction.
+\xxx{Compare to simulation results}
+
 \begin{figure}
 \begin{center}
 \includegraphics[width = 12cm]{velstep2PiwNoise.png}
-\caption{Velocity Controller Step Response with added Noise}
+\caption{Velocity step response for input of 2$\cdot\pi$ with a 60 Hz noise signal (amplitude = 1)}
 \label{q6_7}
 \end{center}
 \end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{VelErrorNoise.png}
+\caption{Steady state velocity step response for input of 2$\cdot\pi$ with a 60 Hz noise signal (amplitude = 1)}
+\label{VelNoiseZoom}
+\end{center}
+\end{figure}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Step Input Amplitude (Radians) & $2 \cdot \pi$ & $2 \cdot \pi$ with Noise \\ \hline
+        Rise Time (seconds)            & 0.14          & 0.135                    \\ 
+        Settling Time (seconds)        & 1.9700        &  -                    \\ 
+        Percent Overshoot (\%)         & 11.3925       & 29.6000                  \\ 
+        Steady State Error (\%)        & 0.058328      & 0.054649                 \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+The velocity controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains to try to improve the frequency response. The relevant values are given in the table \ref{VelFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$/2. Figure \ref{VelFreqError} shows the error as a function of input frequency. During our tests the velocity output remained stable up to 5 Hz, but the output amplitude error increased greatly. The error exceeded 5\% just beyond 2.2 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
+\xxx{Compare to simulation}
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Gains & P   & I & D     & Filter $\tau$   \\ \hline
+        Velocity Loop       & 2   & 9    & 0.3   & 6.5797  \\ 
+       \hline
+    \end{tabular}
+\end{center}
+\caption{Values of velocity controller for frequency response}
+\label{VelFreqGains}
+\end{table}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{VelocityControl_Error.png}
+\caption{Velocity error vs. frequency for an input amplitude of $\pi$/2 rad/sec}
+\label{VelFreqError}
+\end{center}
+\end{figure}
+
+To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$/2 this corresponded to an output of 1.11), just as we did in section 4 to determine the bandwidth of the position controller. We found that the bandwidth of our position control system was  2.9 Hz, as shown in figure \ref{VelBandwidth}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{VelocityControl_Magnitude.png}
+\caption{Output magnitude vs. frequency used to determine bandwidth of velocity controller}
+\label{VelBandwidth}
+\end{center}
+\end{figure}
+
+Just like with the position controller, we faced a lot of trouble meeting all of the performance specifications with just one controller. Again, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. As we mentioned in section 4 ,it's possible that some of the values used in our simulation are incorrect, or that there are other factors we did not account for. In the end we were able to meet the steady state error for step input and noise attenuation requirements, but were not very close to the frequency response requirement.
 
 \end{document}
