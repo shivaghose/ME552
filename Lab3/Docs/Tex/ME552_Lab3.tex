@@ -150,7 +150,7 @@ U1 serves as a difference circuit between $^-Ref$ and $^+Ref$ with a variable ov
 $$ V_{out} = \left( \frac{R_6}{R_5+R_6} \right) \left( \left(1 + \frac{R_2}{R_1} \right) \left( \frac{R_4}{R_3+R_4} \right) (^-Ref) - \left( \frac{R_2}{R_1} \right) (^+Ref) \right) $$
 $$ V_{out} = \left( \frac{R_6}{R_5+R_6} \right) \left( \left(1+ \frac{20}{50} \right) \left( \frac{20}{50+20} \right)(^-Ref) - \left( \frac{20}{50} \right) (^+Ref) \right) $$
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 10cm]{q1a_u1.png}
 \caption{Unit 1 within AMC servo-amplifier}
@@ -165,7 +165,7 @@ U3 serves as an inverting amplifier which can be tuned by the potentiometer.
 $$U3_{out} = - \left( \frac{R_3 + R_4}{R_4} \right) \left( \frac{R_2}{R_1} \right) Ref_{gain} $$
 $$U3_{out} = - \left( \frac{R_3 + R_4}{R_4} \right) \left( \frac{10}{5} \right) Ref_{gain} $$
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 10cm]{q1a_u3.png}
 \caption{Unit 3 within AMC servo-amplifier}
@@ -180,7 +180,7 @@ U4 serves as an inverting integrator with a proportional gain when switch 3 is o
 $$U4_{out} = - \left( \frac{1}{R_1} \right) \left( R_2 + \frac{C_1}{s} \right) U3_{out} $$
 $$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) U3_{out} $$
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 10cm]{q1a_u4.png}
 \caption{Unit 4 within AMC servo-amplifier}
@@ -223,7 +223,7 @@ Clearly the system could not phyical reach this temperature without failing, but
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 10cm]{temperature.png}
+\includegraphics[width = 12cm]{temperature.png}
 \caption{Motor temperature over time at peak current}
 \label{temperature}
 \end{center}
@@ -281,7 +281,7 @@ This model relating angular position, $\theta(t)$ with motor current $i(t)$ requ
 The driver gives us current control as long as we are opperating away from the maximum speed of the motor.  At maximum speed, the current required by the motor should drop to some steady state value required to overcome losses within the motor.
 
 \xxx{may need to redo picture a bit to agree with terminology in equation}
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{dcmotor.png}
 \caption{DC motor model}
@@ -305,7 +305,7 @@ From our plot in figure \ref{q2_b4} we can obtain $\left( \sfrac{b}{K_t} \right)
 $$ \Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \dot{\theta} = \ddot{\theta} = 0 $$
 $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 16cm]{SpeedCurrentCurve.png}
 \caption{Relationship between angular velocity and steady state voltage applied to motor driver}
@@ -313,7 +313,7 @@ $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -355,7 +355,7 @@ comparing the predicted angular positions with the measured angular positions ov
 
 Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is very clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be very difficult yielding fits similar to the results shown in figure \ref{q2_b6}.  It is clear that although these  results are significantly improved over the original values, but there is still room for improvement.  However, improvement from this minima is not possible strictly using the method noted above, so we resorted to parameter sweeping to to identify more appropriate values.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|}
         \hline
@@ -371,7 +371,7 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
 \end{center}
 \end{table}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{initialModel.png}
 \caption{Predicted behavior vs Actual behavior using initial parameter values.}
@@ -379,7 +379,7 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{fitModel.png}
 \caption{Example of local minimum in error.  $J = 0.001 \, B = 0.001 \, F_{f} = 0.1192 \, K_{t} = 0.0467 $}
@@ -387,7 +387,7 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{2ndexamplefit.png}
 \caption{Improved Fit $J = 6.06724 \cdot 10^{-5} \, B = 4.05562 \cdot 10^{-5} \, F_{f} = 0.0145312 \, K_{t} = 0.019020 $}
@@ -425,7 +425,7 @@ b_{reverse} & \quad  \text{if } \dot{\theta} < 0 \\
 With this improved model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_b3}.
 The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions.  
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -445,7 +445,7 @@ The most notable feature of these values is the large difference between the tor
 
 Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  The results of fitting are shown in figure \ref{q2_b3}. We can also compare these fit values with values obtained from our earlier experiment.  We can notice that our terms are in the same order of magnitude, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments. \\
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|l|}
         \hline
@@ -461,7 +461,7 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \end{center}
 \end{table}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{awesomefitFiner.png}
 \caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
@@ -485,6 +485,96 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \section*{4.}
 
 \subsection*{a.}
+When we implemented the controller and values from our simulation in part 3, we were unable to achieve stable output in the physical system. Therefore, we kept the same general approach - a velocity controller nested within a position controller with feed forward - but we re-tuned the system with different gain values. Because we have a velocity controller inside of our position controller, we first tuned the velocity control on its own (see section 6). Once it was working, we then implemented it in the inner loop of our position controller and tuned the position control gains. In the end we were not able to meet all of the control goals with one controller. We designed one controller with good step response and noise attenuation, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below.  
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Gains & P   & I & D   & Feed Forward   & Filter $\tau$   \\ \hline
+        Position Loop            & 0.1 & 20  & 0 & 1 & 6.5797    \\ 
+        Velocity Loop       & 22.5   & 22.5    & 1.125   & -  & 6.5797  \\ 
+       \hline
+    \end{tabular}
+\end{center}
+\caption{Values of position controller with nested velocity controller for step response and noise attenuation}
+\label{positionGains}
+\end{table}
+
+Figure \ref{PosStepPi} shows the system's response to a position step input of 2$\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The error here is approximately 0.11\%, which greatly exceeds the goal of 2\% error.
+\xxx{Compare to simulation results}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{posstep_1pi.png}
+\caption{Step response of position controller}
+\label{PosStepPi}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{positionStepError.png}
+\caption{Steady state error for position step input of $\pi$}
+\label{PosStepError}
+\end{center}
+\end{figure}
+
+Figure \ref{PosNoise} shows the noise attenuation during a step input of pi radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.
+\xxx{Compare to simulation results}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{PosNoise.png}
+\caption{Step response for input of $\pi$ with a 60 Hz noise signal (amplitude = 1)}
+\label{PosNoise}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{PosNoiseZoom.png}
+\caption{Steady state step response for input of $\pi$ with a 60 Hz noise signal (amplitude = 1)}
+\label{PosNoiseZoom}
+\end{center}
+\end{figure}
+
+The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the following table, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.
+\xxx{Compare to simulation}
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Gains & P   & I & D   & Feed Forward   & Filter $\tau$   \\ \hline
+        Position Loop            & 0 & 20  & 0 & 1 & 6.5797    \\ 
+        Velocity Loop       & 3   & 7    & 0.4   & -  & 6.5797  \\ 
+       \hline
+    \end{tabular}
+\end{center}
+\caption{Values of position controller with nested velocity controller for frequency response}
+\label{positionGains}
+\end{table}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{PositionControl_Error.png}
+\caption{Position error vs. frequency for an input amplitude of $\pi$ radians}
+\label{PosFreqError}
+\end{center}
+\end{figure}
+
+To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$ this corresponded to an output of 2.22). We found that the bandwidth of our position control system was 5.27 Hz, as shown in figure \ref{PosBandwidth}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{PositionControl_Magnitude.png}
+\caption{Output magnitude vs. frequency used to determine bandwidth}
+\label{PosBandwidth}
+\end{center}
+\end{figure}
+
+Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In th end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.
 
 \section*{5.}
 
@@ -498,7 +588,7 @@ Setting aside the earlier parameter identification, there are some simple experi
 A similar method could be used to determine sliding friction. By applying a constant voltage to the system, the motor would come to a steady-state velocity. If we the coefficient of damping is known, then the torque caused by sliding friction is equal to the motor torque ($K_{t}$ * $V_{command}$) minus the torque from damping (the product of the damping coefficient and velocity). This was carried out in part 2b.
 
 \vspace{3 mm}
-Friction was included in our Simulink model from the beginning of our modeling, as presented in part 3.  
+Friction was included in our Simulink model from the beginning of our modeling, as presented in part 3. At the beginning of our tests we used approximations based on the data-sheet values, but as we performed more regression analysis, we obtained new values that should be closer to the true values of the physical system. 
 
 \subsection*{b. Saturation}
 
@@ -506,7 +596,7 @@ Position Saturation
 
 \xxx{comment on actuation saturation}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
