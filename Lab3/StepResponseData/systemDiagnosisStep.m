@@ -21,8 +21,7 @@ steadyStateErrorPercent = 100 * abs((finalVal - stepEnd) / (stepEnd - stepStart)
 disp(finalVal)
 
 % determine settling time
-for i = length(X) : 1
-    disp(i)
+for i = length(X): -1 : 1
     if abs((X(i) - finalVal) / finalVal) > 0.02
         index = i + 1; % last index that was within 2% of final value
         break;
