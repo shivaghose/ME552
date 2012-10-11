@@ -201,9 +201,9 @@ $$i_{continuous} = 2.5048 \,A$$
 
 With this current and the given motor constant we can then calculate the maximum continuous torque:
 
-$$T_{m} = k_{t}*i_{continuous} = 3.11\e{-2}*2.5048 = 7.79\e{-2}\, Nm$$
+$$T_{m} = k_{t}*i_{continuous} = 4.24\e{-2}*2.5048 = 10.6\e{-2}\, Nm$$
 
-This value is less than the torque value given in the data sheet, implying that our calculated current value is more conservative than the ratings in the data sheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 2.6045 A, but at that value the temperature rise would be 140.55 $^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would overheat unless the room temperature were below 14.45 $^\circ$C. 
+This value is more than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 1.91 A, but at that value the temperature rise would be 75.6 $^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods. 
 
 The motor's data sheet lists a peak current rating of 13.0 A and a stall torque of 0.54 Nm. With this torque value and the given torque constant (4.24$\e{-2}$ Nm/A), the peak current should be:
 
