@@ -189,12 +189,10 @@ $$U4_{out} = - \left( \frac{1}{500} \right) \left( 500 + \frac{0.01}{s} \right) 
 \end{figure}
 
 \subsection*{b.}
-Current Limiting Resistor.
-For DC current, an inductor is effectively a short circuit.  We need a resistor to limit the maximum current that goes to ground.
-\xxx{confirm with him that its a coil in series with resistor}
+This resistor serves to limit the current that flows through this section of the circuit to the ground because the inductor which is.  A larger resistance value decreases this current and waste less power.
 
 \subsection*{c.}
-The motor data sheet specifies a max winding temperature of 155 $^\circ$C; this is the temperature at which the motor can become irreparably damaged. The data sheet also gives a thermal impedance of 11.2 $^\circ$C/W. Assuming a room temperature of 15 $^\circ$C, the motor's temperature can only increase by 130 $^\circ$C before overheating. With these values (and the motor's internal resistance of 1.85 $\Omega$) we can solve for the maximum continuous current:
+The motor data sheet specifies a max winding temperature of $155^\circ$C, above which the motor can become irreparably damaged, and a thermal impedance of $11.2 \, \sfrac{^\circ C}{W}$.  Assuming a room temperature of $15^\circ$C, the motor's temperature can only increase by $130^\circ$C before overheating. With these values and the motor's internal resistance of $1.85 \, \Omega$, we can solve for the maximum continuous current:
 
 $$130 = 11.2*i_{continuous}^2*1.85$$
 $$i_{continuous} = 2.5048 \,A$$
@@ -203,23 +201,20 @@ With this current and the given motor constant we can then calculate the maximum
 
 $$T_{m} = k_{t}*i_{continuous} = 4.24\e{-2}*2.5048 = 10.6\e{-2}\, Nm$$
 
-This value is more than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque (8.1$\e{-2}$ Nm), the max continuous current would be 1.91 A, but at that value the temperature rise would be 75.6 $^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods.\\
+This value is greater than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque, $8.1 \e{-2}\, Nm$, the max continuous current would be $1.91 A$, but at that value the temperature rise would be $75^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods.\\
 
-The motor's data sheet lists a peak current rating of 13.0 A and a stall torque of 0.54 Nm. With this torque value and the given torque constant (4.24$\e{-2}$ Nm/A), the peak current should be:
+The motor's data sheet lists a peak current rating of 13.0 $A$ and a stall torque of 0.54 $N \cdot m$. With this torque value and the given torque constant (4.24$\e{-2} \sfrac{(N \cdot m)}{A}$), the peak current should be:
 
 
 $$i_{peak} = \frac{T_{stall}}{k_{t}} = \frac{0.54}{4.24\e{-2}} = 12.74 \,A$$
 
-This is less than the given rating for peak current. Choosing this as our peak current limit, the power in the motor is:
-
+This is less than the given rating for peak current. At this peak current limit, the motor dissipates approximately 300 W.  If the system were allowed to run at this current, and assuming that the motor does not fail in some way, it would reach a steady state temperature of:
 
 $$P = i_{peak}^2 * R_{m} = 12.74^2 * 1.85 = 300.269 \,W$$
 
-Because this is occurring at stall, there is no mechanical power output from the motor, and all of the power goes to heat. If the system were allowed to go to steady-state with no failures, this would lead to a temperature of:
+$$\Delta Temp = P * R_{t} = 300.269 * 11.2 = 3363.0128  \,{^\circ}C\;(above \;ambient)$$ 
 
-$$Temp = P * R_{t} = 300.269 * 11.2 = 3363.0128  \,{^\circ}C\;(above \;ambient)$$ 
-
-Clearly the system could not physical reach this temperature without failing, but it illustrates the reason that peak current can only be sustained for short times. With the given thermal time constant (13.8 min), we can plot the temperature rise of the motor, as shown in figure \ref{temperature}, and estimate that it would overheat after approximately 32.4 seconds at peak current. 
+Clearly the system could not physical reach this temperature without failing, but it illustrates the reason that peak current can only be sustained for short times. With the given thermal time constant of 13.8 min, we can plot the temperature rise of the motor, as shown in figure \ref{temperature}, and estimate that it would overheat after approximately 32.4 seconds at peak current. 
 
 \begin{figure}[htb]
 \begin{center}
@@ -230,13 +225,13 @@ Clearly the system could not physical reach this temperature without failing, bu
 \end{figure}
 
 \subsection*{d.}
-The 12A8E servo amplifier is capable of outputting maximum continuous and peak currents of +-6A and +-12A, respectively (from the data sheet). However, the servo amplifier includes a potentiometer that can be used to reduce both the continuous and peak currents (while maintaining a 1:2 relationship between them). The lab instructions specify that the potentiometer should be adjusted so that the current limits will be +-3A and +-6A. Additionally, the continuous current limit can be further reduced (without affecting the peak current) by connecting a current limiting resistor between pins P1-10 and P1-2 on the servo-amp. That was not done in this lab. Assuming the adjustment on the current limiting potentiometer was done correctly, the servo-amp should be capable of sending +-3A continuously and +-6A intermittently to the motor. The continuous current limit from the servo-amp is greater than the continuous current rating of the motor, so we can't rely on the servo-amp to prevent the motor from drawing too much current.\\
+The 12A8E servo amplifier is capable of outputting maximum continuous and peak currents of $\pm 6A$ and $\pm 12A$, respectively (from the data sheet). However, the servo amplifier includes a potentiometer that can be used to reduce both the continuous and peak currents while maintaining a 1:2 relationship between them. The lab instructions specify that the potentiometer should be adjusted so that the current limits will be $\pm 3A$ and $\pm 6A$.  The continuous current limit can be further reduced, without affecting the peak current, by connecting a current limiting resistor between pins P1-10 and P1-2 on the servo-amp. That was not done in this lab. Assuming the adjustment on the current limiting potentiometer was done correctly, the servo-amp should be capable of sending $\pm 3A$ continuously and $\pm6A$ intermittently to the motor. The continuous current limit from the servo-amp is greater than the continuous current rating of the motor, so we can't rely on the servo-amp to prevent the motor from drawing too much current.\\
 
 
-The data sheet for the servo-amp specifies a peak current of +-12 A for a maximum of 2 seconds. From information on the Advanced Motion Controls website, this can only be achieved if the current switches across its entire range (-12 A to +12 A, and vice-versa). Any change of smaller magnitude will not be maintained as long (i.e. switching from 0 A to +12 A will only be held for 1 second before the current begins falling). A primary concern with maintaining high currents is overheating, and the servo-amp has a much lower temperature limit than the motor (65 $^\circ$C vs 155 $^\circ$C). This is why the peak current can not be maintained for long, the maximum temperature would be exceeded very quickly and the servo-amp's internal safeties would shut it off. As an example, in the thermal model for the motor at peak current (which is lower than the 6 A rating of the servo-amp), 65 $^\circ$C was reached in only 9.8 seconds. Of course, the servo-amp has different thermal properties than the motor, so that specific value is not accurate. However, the basic idea is valid: the servo-amp is capable of passing a lot of current, and has a lower temperature limit than the motor, so there is a danger of it overheating if high currents are maintained. Luckily, the servo-amp has built in safeties, such as a thermal shut-off.  \\
+The data sheet for the servo-amp specifies a peak current of $\pm12 A$ for a maximum of 2 seconds. From information on the Advanced Motion Controls website, this can only be achieved if the current switches across its entire range (-12 A to +12 A, and vice-versa). Any change of smaller magnitude will not be maintained as long (i.e. switching from 0 A to +12 A will only be held for 1 second before the current begins falling). The primary concern with maintaining high currents is overheating, and the servo-amp has a much lower temperature limit than the motor (65 $^\circ$C vs 155 $^\circ$C), as well as a much smaller thermal time constant than the motor.  This is why the peak current can not be maintained for long, the maximum temperature would be exceeded very quickly and the servo-amp's internal safeties would shut it off. As an example, in the thermal model for the motor at peak current (which is lower than the 6 A rating of the servo-amp), 65 $^\circ$C was reached in only 9.8 seconds. Of course, the servo-amp has different thermal properties than the motor, so that specific value is not accurate. However, the basic idea is valid: the servo-amp is capable of passing a lot of current, and has a lower temperature limit than the motor, so there is a danger of it overheating if high currents are maintained. Luckily, the servo-amp has built in safeties, such as a thermal shut-off.  \\
 
 \subsection*{e.}
-In the above sections, we showed that the motor has a continuous and peak current limits of 2.5 A and 12.74 A, and the servo-amp  has current limits of 3 A and 6 A, respectively. Within our LabView controller we chose to implement saturation limits of +-6 A so that we could take advantage of the peak current capability of the servo-amp and motor. We considered setting a saturation limit based on the motor's continuous current limit of 2.5 A, but felt that might have a negative effect on the transient response of the motor. Also, we knew that the servo-amp has built in mechanisms to prevent the current from remaining at the peak value - it automatically lowers it after at most two seconds. Additionally, as we were tuning our LabView controller, we monitored a waveform graph of the attempted output of the contoller. This allowed us to adjust our gain values not just for system stability, but also to keep the attempted output within safe limits. Given more resources, we could have implemented more safety measures. For example, we could implement a slow-blow fuse rated a little under the continuous current limit of the motor. This would protect the system from high currents for prolonged times, but still allow for short bursts of higher current during transient conditions.\\
+In the above sections, we showed that the motor has a continuous and peak current limits of 2.5 A and 12.74 A, and the servo-amp  has current limits of 3 A and 6 A, respectively. Within our LabView controller we chose to implement saturation limits of $\pm6$ A so that we could take advantage of the peak current capability of the servo-amp and motor. We considered setting a saturation limit based on the motor's continuous current limit of 2.5 A, but felt that might have a negative effect on the transient response of the motor. Also, we knew that the servo-amp has built in mechanisms to prevent the current from remaining at the peak value - it automatically lowers it after at most two seconds. Additionally, as we were tuning our LabView controller, we monitored a waveform graph of the attempted output of the controller. This allowed us to adjust our gain values not just for system stability, but also to keep the attempted output within safe limits. Given more resources, we could have implemented more safety measures. For example, we could implement a slow-blow fuse rated a little under the continuous current limit of the motor. This would protect the system from high currents for prolonged times, but still allow for short bursts of higher current during transient conditions.\\
 
 \clearpage
 
@@ -244,9 +239,8 @@ In the above sections, we showed that the motor has a continuous and peak curren
 
 \subsection*{a.}
 
-Using expressions for the back-emf of the motor with a simple model of the motor as a resistance in series with an inductance we can model the electrical characteristics of the motor.  We can combine this with a simple lumped parameter model of physical dynamics of the motor to derive an overall transfer function.  
-$$V_{s} - e = iR + L\left(\frac{di}{dt}\right) $$
-$$ e = K_{b} \dot{\theta} $$
+Using expressions for the back-emf of the motor along with a simple electrical model of the motor as a resistance in series with an inductance we can model the motor-driver circuit.   This derivation neglects the effects of changing current direction in the rotor windings during operation. We can combine this electrical model with a simple lumped parameter model of physical dynamics of the motor to derive an overall transfer function.  
+$$V_{s} - e = iR + L\left(\frac{di}{dt}\right) \hspace{1cm} e = K_{b} \dot{\theta} $$
 
 $$ \Sigma_{\tau} = \tau_{motor} - \tau_{damping} + \tau_{coulomb} = J \ddot{\theta}$$
 $$ \tau_{motor} = K_{T}i \hspace{1cm} \tau_{damping} = b \dot{\theta}$$
@@ -273,32 +267,29 @@ Neglecting coulomb friction:
 $$ V_{s}(s) - s \, K_{b} \, \theta (s) = I(s) (R+sL) \hspace{1cm} \text{and} \hspace{1cm} K_{t} \, I(s) = \theta(s)(Js^2+bs) $$
 $$ \frac{\theta(s)}{V(s)} = \frac{K_T}{s\left[ (Js + b)(Ls + R)+K_bK_T \right]} $$
 
-The transfer function relating voltage and position is not particularly convenient but we can obtain a transfer function easily in terms of $I(s)$.
+The transfer function relating voltage and position is not particularly convenient and a much simpler one can be constructed relating motor current, $I(s)$, and angular position, $\theta (s)$. 
 
 $$ K_{t} \, I(s) = \theta(s)(Js^2+bs) $$
 $$ \frac{\theta(s)}{I(s)} = \frac{K_T}{(Js + b)s} $$
 
-This model relating angular position, $\theta(t)$ with motor current $i(t)$ requires the moment of inertia of the rotor, $J$, the viscous damping coefficient, $b$, and the torque constant $K_T$.  Note that coulomb friction has been neglected. \\
+This model relating angular position with motor current requires the moment of inertia of the rotor, $J$, the viscous damping coefficient, $b$, and the torque constant $K_T$.  Note that coulomb friction has been neglected.  The driver operating in current mode gives us control over the torque exerted by the motor as long as the we avoid saturating our supply voltages of $\pm 24 V$.  This saturation occurs because without an external load on the motor, the rotor is free to spin up to a high angular velocity only limited by viscous damping and coulomb friction.  At these high velocities, the back emf across the motor increases, meaning that the driver must supply higher voltages across the motor to pass the same current through it.\\
 
-The driver gives us current control as long as we are opperating away from the maximum speed of the motor.  At maximum speed, the current required by the motor should drop to some steady state value required to overcome losses within the motor.\\
-
-\xxx{may need to redo picture a bit to agree with terminology in equation}
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{dcmotor.png}
-\caption{DC motor model}
+\caption{DC motor model.  Note that the sign convention here is not the one used in the remainder of the report, but is presented to concisely reflect the nature of the system.}
 \label{q2_a1}
 \end{center}
 \end{figure}
 
 \subsection*{b.}
 
-The torque of friction and the viscous damping can be jointly  derived in an experiment where for a given constant input voltage to the driver, $V_{driver}$, we read off the angular velocity.  At a constant velocity the following equation holds giving a relationship between $\tau_{motor}$, $b$, and $\tau_{coulomb}$.
+The torque of friction and the viscous damping can be jointly  derived in an experiment where for a given constant input voltage to the driver, $V_{driver}$, we read off the steady state angular velocity, $\dot{\theta}_{ss}$.  At a constant velocity the following equation holds giving a relationship between $\tau_{motor}$, $b$, and $\tau_{coulomb}$.
 
 $$\Sigma_{\tau} =  \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
 $$ \tau_{motor} = K_{T}I_{m} = b\dot{\theta}_{ss} - \tau_{coulomb}$$
 
-Assuming that we have the motor torque constant $K_{t}$, we can write an equation that relates steady state angular velocity $\theta_{steady state}$ to motor current which is known to be directly proportional to $V_{driver}$ for suitably small values of $V_{driver}$.
+Assuming that we have the motor torque constant $K_{t}$, we can write a linear equation that relates steady state angular velocity $\theta_{steady state}$ to motor current which is assumed to be directly proportional to $V_{driver}$ for suitably small values of $V_{driver}$.
 
 $$ V_{driver} = I_{m} \hspace{1cm} V_{driver} = \left( \frac{b}{K_T} \right) \dot{\theta}_{ss} - \frac{\tau_{coulomb}}{K_{T}} $$
 
@@ -310,7 +301,7 @@ $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 16cm]{SpeedCurrentCurve.png}
-\caption{Relationship between angular velocity and steady state voltage applied to motor driver}
+\caption{Relationship between angular velocity and steady state voltage applied to motor driver.  Notice the saturation at $\pm 600 \, \sfrac{radians}{s}$}
 \label{q2_b4}
 \end{center}
 \end{figure}
@@ -329,7 +320,7 @@ $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 \label{q2_b5}
 \end{table}
 
-If we assume the motor constant on the data-sheet of $0.0424 \, \sfrac{N \cdot m}{A}$ then we can arrive at the following estimates for b and $\tau_{coulomb}$ which are shown in \ref{q2_b10} compared against the values obtained from the data sheet.  Our values are within an order of magnitude of the provided values. \\
+If we assume the motor constant on the data-sheet of $0.0424 \, \sfrac{(N \cdot m)}{A}$ then we can arrive at the following estimates for b and $\tau_{coulomb}$, shown in table \ref{q2_b10} compared against the values obtained from the data sheet.  Our values are within an order of magnitude of the provided values which is not close enough to make any particular claims besides that this motor seems to have worse performance than advertised. \\
 
 \begin{table}
 \begin{center}
@@ -345,7 +336,7 @@ If we assume the motor constant on the data-sheet of $0.0424 \, \sfrac{N \cdot m
 \label{q2_b10}
 \end{table}
 
-To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$:
+To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$:
 
 $$ \Sigma_{V} = V_{s} + V_{R} + V_{L} e = V_{s} + IR + e = 0 $$
 $$ K_b = \frac{e}{\dot{\theta}} $$
@@ -357,10 +348,10 @@ $$ K_b = \frac{e}{\dot{\theta}} $$
 %
 %$$ K_T \approx \frac{\tau_{mass}}{i_{equilibrium}} = \frac{mg(r_{pulley})}{i_{equilibrium}} $$
 
-We can experimentally determine the viscous damping term, $b$ by applying a known torque to the motor.  Once the angular velocity has reached steady state, $b$ can be read off directly.  The driver in current mode delivers a known current, which using the torque constant determined above yields the torque.  
-
-$$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
-$$ b = \frac{\tau_{motor} + \tau_{coulomb}}{\dot{\theta}} \approx \frac{\tau_{motor}}{\dot{\theta}}$$
+%We can experimentally determine the viscous damping term, $b$ by applying a known torque to the motor.  Once the angular velocity has reached steady state, $b$ can be read off directly.  The driver in current mode delivers a known current, which using the torque constant determined above yields the torque.  
+%
+%$$ \Sigma_{tau} = \tau_{motor} - b\dot{\theta} + \tau_{coulomb} = J \ddot{\theta} \hspace{1cm} \ddot{\theta} = 0 $$
+%$$ b = \frac{\tau_{motor} + \tau_{coulomb}}{\dot{\theta}} \approx \frac{\tau_{motor}}{\dot{\theta}}$$
 
 We can determine the moment of inertia of the rotor, $J$ by starting from rest and sending the motor a known torque while recording the position as a function of time stopping when the system has reached a constant velocity.  Then by computing the $1^{st}$ and $2^{nd}$ order derivatives at each time step we can assemble a linear system to allow us to jointly solve for $J$, $b$, and $\tau_{coulomb}$.
 
@@ -371,7 +362,7 @@ $$ Ax = z $$
 Rather than attempt the method above, we instead used MATLAB's numerical differential equation solving to simulate the trajectory of the system as a function of time, driver current, $I_t$ and our unknown system parameters $J$, $b$, $K_t$, and $\tau_{coulomb}$.  By then
 comparing the predicted angular positions with the measured angular positions over time, we can construct a non-linear regression to estimate the unknown parameters.  We collected a data set where the driver was given a sinusoidal voltage, and we assume that motor current, $I_m$, is identical to this driver voltage and recorded the motor motion that this input caused. \\
 
-Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is very clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be very difficult, so we resorted to parameter sweeping to to identify appropriate values.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
+Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be difficult, so we resorted to parameter sweeping to to identify appropriate starting points for regression.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
 
 \begin{table}[htb]
 \begin{center}
@@ -392,7 +383,7 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{initialModel.png}
-\caption{Predicted behavior vs Actual behavior using initial parameter values.}
+\caption{Predicted behavior vs Actual behavior using initial parameter values noted in table \ref{q2_b1}.}
 \label{q2_b2}
 \end{center}
 \end{figure}
@@ -442,7 +433,7 @@ With this improved model and some intelligent guessing for new parameter values,
         $J \hspace{0.1cm} \left( \frac{N \cdot s^2}{m} \right)$               & $8.5 \cdot 10^{-6} $     & $3.50514 \cdot 10^{-5}$ \\ 
         $K_{t} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right)$           & $0.0424$             & $0.0314499$             \\ 
         $b_{forwards} \hspace{0.1cm} \left( N \cdot s \right)$    & $3.7 \cdot 10^{-6} $ & $1.08586 \cdot 10^{-5}$ \\ 
-        $b_{reverse} \hspace{0.1cm} \left( N \cdot s \right)$     & $3.7 \cdot 10^{-6} $ & $2.49301 \cdot 10^{-5}$ \\ 
+        $b_{reverse} \hspace{0.1cm} \left( N \cdot s \right)$     & $3.7 \cdot 10^{-6} $ & $4.85930 \cdot 10^{-5}$ \\ 
         $\tau_{forwards} \hspace{0.1cm} \left( N \cdot m \right)$ & $5.6 \cdot 10^{-3}$  & $0.0224389$             \\ 
         $\tau_{reverse} \hspace{0.1cm} \left( N \cdot m \right)$   & $5.6 \cdot 10^{-3}$  & $0.0143096$             \\
         \hline
@@ -452,7 +443,9 @@ With this improved model and some intelligent guessing for new parameter values,
 \end{center}
 \end{table}
 
-Table \ref{q2_b1} below shows our final fit values alongside the original values obtained from the data sheet, while the fit curve itself is shown in figure \ref{q2_b3}  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  We can also compare these fit values with values obtained from our earlier experiment, after adjusting for the difference in motor torque constant, and notice that our terms are quite similar, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments.\\
+Table \ref{q2_b8} shows our final fit values alongside the original values obtained from the data sheet, while the fit curve itself is shown in figure \ref{q2_b3}.  This large difference in values is clearly illustrated by the large difference in behavior between the actual system and our model using the values obtained from the data sheet shown in figure \ref{q2_b2}.  \\
+
+We can also compare these fit values with values obtained from our earlier experiment, shown together in table \ref{q2_b9}, after adjusting for the difference in motor torque constant, and notice that our terms are quite similar, however it seems as if this experiment did not accurately estimate the force of friction as the relative values seem to be flipped between the two experiments.\\
 
 \begin{table}[htb]
 \begin{center}
@@ -482,18 +475,18 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 
 \section*{3.}
 \subsection*{Simulink Model}
-\xxx{Figure} \ref{q3_1} shows the overall model of DC motor servo system for both velocity and position control. It consists of four main units: 
+Figure \ref{q3_1} shows the overall model of DC motor servo system for both velocity and position control. It consists of four main units: 
 \begin{itemize}
 \item DC Motor
 \item Optical Encoder 
-\item Servo Amplifier, and 
+\item Servo Amplifier 
 \item Controller
 \end{itemize}
 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{q3_1}
-\caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
+\caption{DC motor servo system}
 \label{q3_1}
 \end{center}
 \end{figure}
@@ -505,7 +498,7 @@ The DC motor subsystem, seen in figure \ref{q3_2} worked on the principle that t
 $$T = K_t*i$$
 Where, $K_t = 4.24\times10^{-2}$  is the torque constant of the motor. According to the motor datasheet, the rotor inertia, $J$, is $8.5 \times 10^{-6}$ , and the viscous damping coefficient, $B, =3.7\times10^{-6}$.\\
 
-Friction torque was modeled as a simple coulomb viscous model (see \xxx{figure} \ref{q3_3}). As the viscous friction was already taken into account in the motor transfer function, the model of coulomb friction was created using the following simple function: 
+Friction torque was modeled as a simple coulomb viscous model, shown in figure \ref{q3_3}. As the viscous friction was already taken into account in the motor transfer function, the model of coulomb friction was created using the following simple function: 
 $$T_f^{+/-} (\omega) =T_{cou}l^{+/-}$$
 Where,  Coulomb Friction Torque: $ T_f = 5.6\times 10^{-3} \ \  [Nm/A]$
 
@@ -544,7 +537,7 @@ The optical encoder (see figure \ref{q3_3}) was modeled as a quantizer with the 
 The Servo Amplifier was treated as a gain equal to 1 due to its high bandwidth (2.5 kHz). It can be seen in figure \ref{q3_1}.
 
 \subsubsection*{Controller}
-Two controllers were used to achieve both position and velocity control, they are visible in figures \ref{q3_5} and \ref{q3_6}. The saturation limit was set to $+/- 6 A$ based on the maximum peak current of the servo-amplifier. An additional concern was that the $RMS$ command voltage needed to be lower than the maximum continuous current of the motor ($1.92 A$). We ensured that using limiting our output to $+/- 6$ Volts generally allowed for better tracking stability while not often applying more than $1.92 A$ for continuous periods of time.\\
+Two controllers were used to achieve both position and velocity control, they are visible in figures \ref{q3_5} and \ref{q3_6}. The saturation limit was set to $\pm 6 A$ based on the maximum peak current of the servo-amplifier. An additional concern was that the $RMS$ command voltage needed to be lower than the maximum continuous current of the motor ($1.92 A$). We ensured that limiting our output to $\pm 6$ Volts generally allowed for better tracking stability while not often applying more than $1.92 A$ for continuous periods of time.\\
 
 Additionally PID block represents the controller while $\tau$ (tau) represents the filter time-constant for the transfer function from angular position to velocity. It was treated as a variable coefficient.\\
 
@@ -580,7 +573,7 @@ Additionally PID block represents the controller while $\tau$ (tau) represents t
 \clearpage
 
 \subsection*{Controller Design}
-The cascaded P/PI controller (see figure \ref{q3_7}) is one of the most commonly used controller structure in motion control systems. It is simple and has a very systematic tuning procedure. Thus, we used it as the fundamental structure for both position and velocity control.\\
+The cascaded P/PI controller (see figure \ref{q3_7}) is one of the most commonly used controller structures in motion control systems. It is simple and has a systematic tuning procedure. This configuration allowed us to reuse the velocity controller within our position controller.\\
 
 \begin{figure}[htb]
 \begin{center}
@@ -590,12 +583,10 @@ The cascaded P/PI controller (see figure \ref{q3_7}) is one of the most commonly
 \end{center}
 \end{figure}
 
-It consists of two cascaded loops. The inner one is the velocity loop. It is a PI controller which aims to ensure that the velocity command is tracked accurately. It is surrounded by the outer position loop which is a P controller that ensures the desired reference point is achieved. Having both loops makes it easy to deal with each loop at one time. The first step is to optimize the PI controller, achieving the best performance in the velocity loop, and then tune the P controller to ensure the ability of position tracking.\\
-
-
+This design consists of two cascaded loops. The inner one is the velocity loop. It is a PI controller which aims to ensure that the velocity command is tracked accurately. It is surrounded by the outer position loop which is a P controller that ensures the desired reference point is achieved. Having both loops makes it easy to deal with each loop at one time. The first step is to optimize the PI controller, achieving the best performance in the velocity loop, and then tune the P controller to ensure position tracking performance.\\
 
 \subsubsection*{Velocity Control System - Dynamics Analysis}
-Before we started to work on tuning procedures, the overall system dynamics was required to be known since it provided essential information for the guidelines of controller tuning. Frequency response was used to analyze the velocity loop based on different values of time constant: tau (denoted by $\tau$). The following figures (\ref{q3_8}, \ref{q3_9} and \ref{q3_10}) show Bode diagrams for the transfer functions of open-loop ($G_{OL}$), close-loop ($G_{CL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) with $\tau = 0.05, 0.1, \text{and } 1$, respectively.
+Before we began tuning, we needed to know the overall system dynamics, which provide essential information to guide the tuning process. Frequency response was used to analyze the velocity loop based on different values of time constant, $\tau$. The following figures (\ref{q3_8}, \ref{q3_9} and \ref{q3_10}) show Bode diagrams for the transfer functions of open-loop ($G_{OL}$), close-loop ($G_{CL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) with $\tau = 0.05, 0.1, \text{and } 1$, respectively.
 
 \begin{itemize}
 \item $G_{OL}$ (see figure \ref{q3_8}): when $\tau$ increases, the gain of $G_{OL}$ becomes lower in medium and high frequencies, so does the phase behavior. It can be observed that a larger $\tau$ may make the system unstable in lower frequencies since the phase is close to -180 degrees (smaller Phase Margin) and there are still other delays neglected by assumptions, such as the dynamics of servo amplifier.   
