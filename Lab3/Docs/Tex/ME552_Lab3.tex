@@ -986,7 +986,7 @@ Even though we included many nonlinear factors in our simulation, we still faced
     \end{tabular}
 \end{table}
 
-The original model was built using the values of $J, B$ and $T_f$ (which is the static friction) and optimized to provide the best performance. We then proceeded to measure the actual system parameters empirically. Using the measured values as well as accounting for non-linear effects like saturation and varying friction, we made a second model - the new model. At the same time we proceeded to tune the physical system. We then incorporated the practical values used in the real system on our theoretical system for comparison of how well our model simulates the real world. As you can see from the table above, our model does a very realistic job of modeling the system.
+The original model was built using the values of $J, b$ and $\tau_f$ and optimized to provide the best performance. We then proceeded to measure the actual system parameters empirically. Using the measured values as well as accounting for non-linear effects like saturation and varying friction, we made a second model - the new model. At the same time we proceeded to tune the physical system. We then incorporated the practical values used in the real system on our theoretical system for comparison of how well our model simulates the real world. As you can see from the table above, our model does a very realistic job of modeling the system.
 
 \begin{figure}[htb]
 \begin{center}
@@ -1001,7 +1001,6 @@ The original model was built using the values of $J, B$ and $T_f$ (which is the 
 \subsection*{a. Coulomb Friction}
 The bearings in the motor are the primary source of coulomb friction in the motor encoder system. This could be especially true in the current configuration of the motor because Pittman's website only specifies that they use ball or sleeve bearings in their products. If these are only radial bearings with no thrust capability, then the motor's performance could be affected by the vertical mounting we are using. Additionally, there is friction between the brushes and commutator. In section 2b we discussed and carried out experiments and modeling to determine the friction value.\\
 
-
 Setting aside the earlier parameter identification, there are some simple experiments that could be run to estimate the friction in the system. If we assume that the torque constant given in the data-sheet is correct and that the gain of the servo-amp is exact and known, then for a given command voltage, the motor should be capable of a specific torque output. By slowly increasing the voltage from zero until the motor just begins to turn. From this, the torque caused by static friction would be equal to the product of the torque constant and the input voltage (because there is a 1:1 relationship between command voltage and applied current). \\
 
 A similar method could be used to determine sliding friction. By applying a constant voltage to the system, the motor would come to a steady-state velocity. If we the coefficient of damping is known, then the torque caused by sliding friction is equal to the motor torque ($K_{t}$ * $V_{command}$) minus the torque from damping (the product of the damping coefficient and velocity). This was carried out in part 2b.\\
@@ -1012,9 +1011,9 @@ Friction was included in our Simulink model from the beginning of our modeling, 
 
 Position Saturation\\
 
-\xxx{comment on actuation saturation}
+In the actual system, the effects of saturation can clearly be seen in the steady increase of rise time as well as the decreasing stability of the system reflected in the higher percent overshoot and larger steady state error.  With saturation, the system is not able to move at the speed at which the controller requests, meaning that rise time will become dependent on the actual input magnitude, rather than being independent as is normally the case without saturation.  The loss of stability that we see is an effect of integral wind up.  Because the system takes longer to respond, our integral term has a longer period of time to accumulate error, which then has to be canceled out with positive error, leading to large overshoots and long settling times.  In extreme cases this can drive the system to instability.  The effects of saturation on integrator wind up can be compensated for by limiting the maximum and minimum values that the integrator can accumulate.  Another method is to model the saturation effect and use this model to alter the input to the integrator such that when the driver becomes saturated, the integrator no longer receives input. \\
 
-
+As can be seen in figure \ref{q5_b0} our model also exhibits the same large rise time that we would expect for extremely large input signals.  
 
 \begin{table}[htb]
 \begin{center}
