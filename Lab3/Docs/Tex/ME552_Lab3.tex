@@ -1009,14 +1009,11 @@ Friction was included in our Simulink model from the beginning of our modeling, 
 
 \subsection*{b. Saturation}
 
-Position Saturation\\
-
 In the actual system, the effects of saturation can clearly be seen in the steady increase of rise time as well as the decreasing stability of the system reflected in the higher percent overshoot and larger steady state error.  With saturation, the system is not able to move at the speed at which the controller requests, meaning that rise time will become dependent on the actual input magnitude, rather than being independent as is normally the case without saturation.  The loss of stability that we see is an effect of integral wind up.  Because the system takes longer to respond, our integral term has a longer period of time to accumulate error, which then has to be canceled out with positive error, leading to large overshoots and long settling times.  In extreme cases this can drive the system to instability.  The effects of saturation on integrator wind up can be compensated for by limiting the maximum and minimum values that the integrator can accumulate.  Another method is to model the saturation effect and use this model to alter the input to the integrator such that when the driver becomes saturated, the integrator no longer receives input. \\
 
-\xxx{John's Unique Stuff}
+As can be seen in figure \ref{q5_b0} our model also exhibits the same large rise time that we would expect for extremely large input signals.  For an input of $\pi \e{5}$ we see a rise time of roughly, 18 seconds, or 260 times larger than the rise time for a step of $\pi$.  If there was no saturation effect, we would expect to see the exact same rise time.   While our physical system appears to be going unstable for large step magnitudes, the simulation refused to become unstable even for enormous step sizes.   
 
-As can be seen in figure \ref{q5_b0} our model also exhibits the same large rise time that we would expect for extremely large input signals.  
-
+Our experimental system exhibits distortion due to changes in step size immediately  because our aggressive feed forwards design was already using the all of the available command voltage.
 \begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -1089,12 +1086,14 @@ As can be seen in figure \ref{q5_b0} our model also exhibits the same large rise
 \subsection*{c. Quantization}
 The real behavior of the optical encoder was already modeled as the quantizer with an interval $2\pi/2000$ in our model. The higher resolution of the sensor, the closer the system is to a  linear unity gain block, providing less measured error. The tracking error of sinusoidal input exceeded 5\% as the resolution reached 75 step/rev, while the error of step input went beyond 2\% when the resolution neared 325 steps/rev. \\
 
-Most parasitic effects have been considered for our model. For quantization, we find it causes significant trouble in our position control. In feedback control systems, the sum of loop sensitivity  and complementary sensibility is one. Since the sensed error which resulted from quantization is based on the complementary sensitivity, more power is required to achieve the same closed-loop response; otherwise, the tracking error cannot be lowered in a desired manner. 
+Most parasitic effects have been considered for our model. For quantization, we find it causes significant trouble in our position control. In feedback control systems, the sum of loop sensitivity  and complementary sensitivity is one. Since the sensed error which resulted from quantization is based on the complementary sensitivity, more power is required to achieve the same closed-loop response; otherwise, the tracking error cannot be lowered in a desired manner. \\
+
+The effects of quantization on velocity estimation cannot be overstated.  Without a proper model of the system velocity estimation requires some sort of filtering to average over previous time steps.  But this introduces a time delay in the velocity estimation and can even cause it to miss quick transients entirely.  
 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{q5c_sine_75.png}
-\caption{Sinusoidal Tracking Error > 5\% when Resolution = 75 steps/rev}
+\caption{Sinusoidal Tracking Error $> 5\%$ when Resolution = 75 steps/rev}
 \label{q5_c1}
 \end{center}
 \end{figure}
@@ -1103,7 +1102,7 @@ Most parasitic effects have been considered for our model. For quantization, we 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 14cm]{q5c_step_325.png}
-\caption{Step Tracking Error > 2\% when Resolution = 325 steps/rev}
+\caption{Step Tracking Error $> 2\%$ when Resolution = 325 steps/rev}
 \label{q5_c2}
 \end{center}
 \end{figure}
