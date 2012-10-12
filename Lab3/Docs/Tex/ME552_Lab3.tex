@@ -329,6 +329,22 @@ $$ V_{driver} = - \frac{\tau_{coulomb}}{K_{T}} $$
 \label{q2_b5}
 \end{table}
 
+If we assume the motor constant on the data-sheet of $0.0424 \, \sfrac{N \cdot m}{A}$ then we can arrive at the following estimates for b and $\tau_{coulomb}$ which are shown in \ref{q2_b10} compared against the values obtained from the data sheet.  Our values are within an order of magnitude of the provided values. \\
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                                                        & Data Sheet Values   & Average Estimated Values \\ \hline
+        $b \, \left( N \cdot s \right) $             & $3.7 \cdot 10^{-6}$ & $2.5773 \cdot 10^{-5}$   \\ 
+        $\tau_{coulomb} \, \left( N \cdot m \right)$ & $5.6 \cdot 10^{-3}$ & $0.044978$               \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Comparison of viscous damping and friction torque estimates with values obtained from the data sheet}
+\label{q2_b10}
+\end{table}
+
 To compute the torque constant, $K_{T}$ we can first compute the back-emf constant, $K_b$, which we know to be numerically equal to $K_T$ in SI units.  To calculate $K_b$ we can measure the internal resistance of the motor, R, using an ohm-meter.  Then running the system at a constant current, we can measure the source voltage, $V_{s}$ that the driver outputs to maintain that current  to obtain e. We can use the encoder to measure the angular velocity and use that value with e to solve for $K_b$:
 
 $$ \Sigma_{V} = V_{s} + V_{R} + V_{L} e = V_{s} + IR + e = 0 $$
@@ -355,7 +371,7 @@ $$ Ax = z $$
 Rather than attempt the method above, we instead used MATLAB's numerical differential equation solving to simulate the trajectory of the system as a function of time, driver current, $I_t$ and our unknown system parameters $J$, $b$, $K_t$, and $\tau_{coulomb}$.  By then
 comparing the predicted angular positions with the measured angular positions over time, we can construct a non-linear regression to estimate the unknown parameters.  We collected a data set where the driver was given a sinusoidal voltage, and we assume that motor current, $I_m$, is identical to this driver voltage and recorded the motor motion that this input caused. \\
 
-Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is very clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be very difficult yielding fits similar to the results shown in figure \ref{q2_b6}.  It is clear that although these  results are significantly improved over the original values, but there is still room for improvement.  However, improvement from this minima is not possible strictly using the method noted above, so we resorted to parameter sweeping to to identify more appropriate values.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
+Table \ref{q2_b1} below shows the parameters for our equation of motion obtained from the data sheet.  The results, in figure \ref{q2_b2} shows the estimated trajectory using these parameter values.  It is very clear that these parameter values are quite far off.  Attempting to perform nonlinear optimization on our model parameters proved to be very difficult, so we resorted to parameter sweeping to to identify appropriate values.  Figure \ref{q2_b7} shows one of the best results discovered by this parameter sweep.  In this case the error has been reduced, but the fit still appear inappropriate.  \\
 
 \begin{table}[htb]
 \begin{center}
@@ -364,11 +380,11 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
         ~                                                      & Data Sheet Parameters        \\ \hline
         $J \hspace{0.1cm} \left( \frac{N\cdot s^2}{m} \right)$     & $8.5 \cdot 10^{-6} $               \\ 
         $b \hspace{0.1cm} \left( N \cdot s \right) $               & $3.7\cdot 10^{-6} $                 \\ 
-        $\tau_{coulomb} \hspace{0.1cm} \left( N \cdot m \right)$           & $\frac{5.6 \cdot 10^{-3}}{2} $  \\ 
+        $\tau_{coulomb} \hspace{0.1cm} \left( N \cdot m \right)$           & $5.6 \cdot 10^{-3}$  \\ 
         $K_{T} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right) $ & $4.24 \cdot 10^{-2}$             \\
         \hline
     \end{tabular}
-\caption{Comparison of model parameter values obtained from the data sheet to fit values.}
+\caption{Original model parameter values obtained from the data sheet.}
 \label{q2_b1}
 \end{center}
 \end{table}
@@ -383,16 +399,8 @@ Table \ref{q2_b1} below shows the parameters for our equation of motion obtained
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 14cm]{fitModel.png}
-\caption{Example of local minimum in error.  $J = 0.001 \, B = 0.001 \, F_{f} = 0.1192 \, K_{t} = 0.0467 $}
-\label{q2_b6}
-\end{center}
-\end{figure}
-
-\begin{figure}[htb]
-\begin{center}
 \includegraphics[width = 14cm]{2ndexamplefit.png}
-\caption{Improved Fit $J = 6.06724 \cdot 10^{-5} \, B = 4.05562 \cdot 10^{-5} \, F_{f} = 0.0145312 \, K_{t} = 0.019020 $}
+\caption{Improved Fit $J = 6.06724 \cdot 10^{-5} \, B = 4.05562 \cdot 10^{-5} \, F_{f} = 1.45312 \cdot 10^{-4} \, K_{t} = 0.019020 $}
 \label{q2_b7}
 \end{center}
 \end{figure}
@@ -448,7 +456,7 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 
 \begin{table}[htb]
 \begin{center}
-    \begin{tabular}{|c|c|l|}
+    \begin{tabular}{|c|c|c|}
         \hline
         ~                 & Predicted Value          & Fit Value               \\ \hline
         $B_{forwards}$    & $1.707338 \cdot 10^{-5}$ & $1.08586 \cdot 10^{-5}$ \\ 
