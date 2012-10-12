@@ -880,9 +880,7 @@ When we implemented the controller and values from our simulation in part 3, we 
 \label{positionGains}
 \end{table}
 
-Figure \ref{PosStepPi} shows the system's response to a position step input of $\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The peak error here is 0.11\%, which greatly exceeds the goal of 2\% error. Additional results for position steps of different magnitudes are included in section 5b.\\
-
-\xxx{Compare to simulation results}
+Figure \ref{PosStepPi} shows the system's response to a position step input of $\pi$ radians, and figure \ref{PosStepError} shows a zoomed in view after it had settled. The peak error here is 0.11\%, which out performs the goal of 2\% error. Additional results for position steps of different magnitudes are included in section 5b.  The error seen here is very similar to the steady state error of 0.10\% predicted in our simulink simulation in response to a step input of $\pi$ radians.\\
 
 \begin{figure}[htb]
 \begin{center}
@@ -902,8 +900,6 @@ Figure \ref{PosStepPi} shows the system's response to a position step input of $
 
 Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ radians. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant. Figure \ref{PosNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our steady state error was approximately 0.003, and with the noise the highest error is 0.060. Given that we were inputting a noise amplitude of one and the error only increased by 0.057, we have attenuated the noise by approximately 17.54 times. This exceeds the goal of a ten times reduction.\\
 
-\xxx{Compare to simulation results}
-
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{PosNoise.png}
@@ -920,9 +916,7 @@ Figure \ref{PosNoise} shows the noise attenuation during a step input of $\pi$ r
 \end{center}
 \end{figure}
 
-The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains while keeping the overall architecture the same. The relevant values are given in the table \ref{positionFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.\\
-
-\xxx{Compare to simulation}
+The position controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs forcing us to modify gains while keeping the overall architecture the same. The relevant values are given in the table \ref{positionFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$. Figure \ref{PosFreqError} shows the error as a function of input frequency. During our tests the position output remained stable up to 5 Hz, but the output amplitude error exceeded 5\% just beyond 4 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.  The performance of the real system at 5 Hz with an output magnitude of -2.078 dB performs far worse than our simulated system which maintained a 0 dB magnitude at the same frequency \\
 
 \begin{table}[htb]
 \begin{center}
@@ -950,7 +944,7 @@ The position controller we were using for the step response and noise attenuatio
         5.27           & $\pi$           & 2.181877         & -3.166392169   & -30.54869805 \\
         \hline
     \end{tabular}
-    \caption{Velocity control data.}
+    \caption{Position control data.}
     \label{q4_atable}
 \end{table}
 
@@ -972,7 +966,7 @@ To determine the closed-loop bandwidth of the system, we slowly increased the fr
 \end{center}
 \end{figure}
 
-Even though we included many nonlinear factors in our simulation, we still faced a lot of trouble meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In the end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.\\
+Even though we included many nonlinear factors in our simulation, we still faced difficulties meeting all of the performance specifications, particularly trying to do so with just one controller. In general, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. It's possible that some of the values used in our simulation are incorrect (even after testing and regression), or that there are other factors we did not account for, such as the dynamics of the servo-amp. In the end we were able to meet the steady state error for step input and noise attenuation requirements, and were very close to the frequency response requirement.\\
 
 
 \clearpage 
