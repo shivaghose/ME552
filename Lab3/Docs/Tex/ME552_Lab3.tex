@@ -481,19 +481,229 @@ Table \ref{q2_b1} below shows our final fit values alongside the original values
 \clearpage
 
 \section*{3.}
-\subsection*{a.}
+\subsection*{Simulink Model}
+\xxx{Figure} \ref{q3_1} shows the overall model of DC motor servo system for both velocity and position control. It consists of four main units: 
+\begin{itemize}
+\item DC Motor
+\item Optical Encoder 
+\item Servo Amplifier, and 
+\item Controller
+\end{itemize}
 
-\subsection*{b.}
-
-\subsection*{c.}
-
-\subsection*{d.}
-
-\subsection*{e.}
-
-\subsection*{f.}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q3_1}
+\caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
+\label{q3_1}
+\end{center}
+\end{figure}
 
 \clearpage
+
+\subsubsection*{DC Motor}
+The DC motor subsystem, seen in figure \ref{q3_2} worked on the principle that the input torque generated was based on the conversion equation: 
+$$T = K_t*i$$
+Where, $K_t = 4.24\times10^{-2}$  is the torque constant of the motor. According to the motor datasheet, the rotor inertia, $J$, is $8.5 \times 10^{-6}$ , and the viscous damping coefficient, $B, =3.7\times10^{-6}$.\\
+
+Friction torque was modeled as a simple coulomb viscous model (see \xxx{figure} \ref{q3_3}). As the viscous friction was already taken into account in the motor transfer function, the model of coulomb friction was created using the following simple function: 
+$$T_f^{+/-} (\omega) =T_{cou}l^{+/-}$$
+Where,  Coulomb Friction Torque: $ T_f = 5.6\times 10^{-3} \ \  [Nm/A]$
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q3_2}
+\caption{DC Motor Subsystem}
+\label{q3_2}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 10cm]{q3_3}
+\caption{Plot of Friction Force v.s. Velocity}
+\label{q3_3}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsubsection*{Optical Encoder}
+The optical encoder (see figure \ref{q3_3}) was modeled as a quantizer with the interval size equal to $2\pi/2000$ was used to simulate the effects of the ADC.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q3_4}
+\caption{The Optical Encoder Subsystem}
+\label{q3_4}
+\end{center}
+\end{figure}
+
+
+\subsubsection*{Servo Amplifier}
+The Servo Amplifier was treated as a gain equal to 1 due to its high bandwidth (2.5 kHz). It can be seen in figure \ref{q3_1}.
+
+\subsubsection*{Controller}
+Two controllers were used to achieve both position and velocity control, they are visible in figures \ref{q3_5} and \ref{q3_6}. The saturation limit was set to $+/- 6 A$ based on the maximum peak current of the servo-amplifier. An additional concern was that the $RMS$ command voltage needed to be lower than the maximum continuous current of the motor ($1.92 A$). We ensured that using limiting our output to $+/- 6$ Volts generally allowed for better tracking stability while not often applying more than $1.92 A$ for continuous periods of time.\\
+
+Additionally PID block represents the controller while $\tau$ (tau) represents the filter time-constant for the transfer function from angular position to velocity. It was treated as a variable coefficient.\\
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $J$                   & $B$                   &$K_t$                   & $T_f$                  & $K_{amp}$           \\
+        Rotor inertia       & Viscous damping     & Torque constant      & Friction torque     & Gain of driver \\ 
+        $[kgm^2]$           & $[Nms]$             & $[Nm/A]$             & $[Nm]$              & $[A/V]$        \\ \hline
+        $8.5\times 10^{-6}$ & $3.7\times 10^{-6}$ & $4.24\times 10^{-2}$ & $5.6\times 10^{-3}$ & $1$            \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[height = 6 cm, width = 18 cm]{q3_5}
+\caption{The Velocity Control Subsystem}
+\label{q3_5}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[height = 6 cm,width = 18 cm]{q3_6}
+\caption{The Position Control Subsystem}
+\label{q3_6}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsection*{Controller Design}
+The cascaded P/PI controller (see figure \ref{q3_7}) is one of the most commonly used controller structure in motion control systems. It is simple and has a very systematic tuning procedure. Thus, we used it as the fundamental structure for both position and velocity control.\\
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_7}
+\caption{Basic Structure of P/PI Controller}
+\label{q3_7}
+\end{center}
+\end{figure}
+
+It consists of two cascaded loops. The inner one is the velocity loop. It is a PI controller which aims to ensure that the velocity command is tracked accurately. It is surrounded by the outer position loop which is a P controller that ensures the desired reference point is achieved. Having both loops makes it easy to deal with each loop at one time. The first step is to optimize the PI controller, achieving the best performance in the velocity loop, and then tune the P controller to ensure the ability of position tracking.\\
+
+
+
+\subsubsection*{Velocity Control System - Dynamics Analysis}
+Before we started to work on tuning procedures, the overall system dynamics was required to be known since it provided essential information for the guidelines of controller tuning. Frequency response was used to analyze the velocity loop based on different values of time constant: tau (denoted by $\tau$). The following figures (\ref{q3_8}, \ref{q3_9} and \ref{q3_10}) show Bode diagrams for the transfer functions of open-loop ($G_{OL}$), close-loop ($G_{CL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) with $\tau = 0.05, 0.1, \text{and } 1$, respectively.
+
+\begin{itemize}
+\item $G_{OL}$ (see figure \ref{q3_8}): when $\tau$ increases, the gain of $G_{OL}$ becomes lower in medium and high frequencies, so does the phase behavior. It can be observed that a larger $\tau$ may make the system unstable in lower frequencies since the phase is close to -180 degrees (smaller Phase Margin) and there are still other delays neglected by assumptions, such as the dynamics of servo amplifier.   
+
+\item $G_{CL}$ (see figure \ref{q3_9}): the bandwidth of $G_{CL}$ decreases as $\tau$ increases. 
+
+\item $G_{di}$ (see figure \ref{q3_9}): the bandwidth of $G_{di}$ is the same as that of $G_{CL}$ because the system is uncontrolled.
+
+\item $G_{do}$ (see figure \ref{q3_10}): its quality in higher frequencies becomes better when $\tau$ increases.
+
+\end{itemize}
+
+Thus we find that as $\tau$ goes higher, the quality of output disturbance rejection becomes better but this comes at the expense of reduced bandwidth, which is undesired. In terms of our goals, high bandwidth (up to 5Hz), and good quality of disturbance rejection (60Hz noise signal) need to be achieved at the same time; therefore, the value of $\tau$ has to be carefully determined with controllers.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 10 cm]{q3_8}
+\caption{Changes in $G_{OL}$ as $\tau$ is increased from 0.05 to 1}
+\label{q3_8}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 10 cm]{q3_9}
+\caption{Changes in $G_{CL}$  and $G_{di}$ as $\tau$ is increased from 0.05 to 1}
+\label{q3_9}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 10 cm]{q3_10}
+\caption{Changes in $G_{do}$  as $\tau$ is increased from 0.05 to 1}
+\label{q3_10}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsection*{Velocity Control System – Controller Tuning}
+$$K_{VP} : \text{Proportional Gain}$$
+$$K_{VI} : \text{Integral Gain}$$
+$$K_{VD} : \text{Derivative Gain}$$
+
+\subsubsection*{d) Keep steady state error below 2\% for a step command of 2$\pi$ radians/sec}
+\begin{itemize}
+\item Initialize $\tau$ as 0.05 to begin with.
+\item Tune $K_{VP}$ as high as possible because when $K_{VP}$ is increased, the crossover frequency as well as the bandwidth of velocity loop will also increase.
+\item If $K_{VP}$ exceeds a certain value, it may affect the system stability or saturate either the actuator or the current driver. Considering this issue, $K_{VP}$ was limited by the maximum peak current (6A) and continuous current (1.92A), respectively. Thus, $K_{VP}$  was tuned to 15, ensuring the commanded voltage less than 1.92 A in steady state.  
+\item $K_{VI}$ was not required here since the steady-state error was already less than 2\%. The reason may be because the filter seemed to provide the similar function to the integral gain.
+\end{itemize}
+
+\subsubsection*{e) Provide command tracking: Amplitude should remain within 5\% of command up until 5Hz for “command amplitude” of $\pi$/2 radians/sec}
+\begin{itemize}
+\item 	The tracking error of 5Hz command was up to 10\%, so that we tried to change $\tau$ to achieve better performance.
+\item When $\tau$ was 0.7, the error was minimum and fluctuated below 2\%. This modification also generated better track-ability for the step input.
+\end{itemize}
+
+\subsubsection*{f) Attenuate a 60Hz noise signal coming in either at the servo-amplifier or the sensor by at least 5 times.}
+\begin{itemize}
+\item The noise signal with amplitude 0.1 was used to test disturbance rejection. For the input disturbance (from servo amplifier), over 90\% was rejected; while none of the output disturbance (from the sensor) was rejected but even enlarged. Thus increasing τ was required to get better results. 
+\item When $\tau$ was changed from 0.7 to 6, the goal of five-times attenuation was achieved. However, we were unable to maintain sinusoidal command tracking due to the lower bandwidth. This was a trade-off which was expected.
+\item Considering the limitation of the PI controller, the derivative controller was introduced to add phase lead in our control loop, broadening the bandwidth. By trial and error, finally the three objectives were achieved with the following values of the coefficients:
+$$K_{VP} = 25$$
+$$K_{VI} = 0$$
+$$K_{VD} = 0.2  \ \ (N \footnote{Causality filter for the differentiator}=100), \text{and}$$
+$$ \tau=6.6 $$
+
+\end{itemize}
+
+\clearpage
+
+\subsection*{Velocity Control System – Simulation Results}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[height = 8 cm, width = 18 cm]{q3_11}
+\caption{Block Diagram of Velocity Control system}
+\label{q3_11}
+\end{center}
+\end{figure}
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $K_{VP}$ & $K_{VI}$ & $K_{VD}$ & $N$ & $\tau$ \\ \hline
+        25       & 0        & 0.2      & 100 & 6.6    \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Reference            & Input Amplitude & Output Amplitude & \%Error & Commanded Voltage \\ 
+        ~                    & [rad/s]                 & [rad/s]                  & ~       & [Max. V]                   \\ \hline
+        (d)Step              & $2\pi$                  & 6.278                    & 0.08\%  & 0.15                       \\ 
+        (e)Sinusoidal        & $\pi/2$                 & 1.641                    & 4.46\%  & 1.99                       \\ 
+        (f)Input Disturbance & 0.1                     & 0.002                    & 2.05\%  & 0.18                       \\ 
+        Output Disturbance   & 0.1                     & 0.02                     & 80.0\%  & 0.91                       \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
 
 \section*{4.}
 
