@@ -1,6 +1,6 @@
 %You can leave alone everything before Line 79.
 \documentclass{article}
-\usepackage{url,amsfonts, amsmath, amssymb, amsthm,color, enumerate}
+\usepackage{url,amsfonts, amsmath, amssymb, amsthm,color, enumerate, verbatim}
 % Page layout
 \setlength{\textheight}{8.75in}
 \setlength{\columnsep}{2.0pc}
@@ -1091,6 +1091,9 @@ Position Saturation\\
 \clearpage
 
 \subsection*{c. Quantization}
+The real behavior of the optical encoder was already modeled as the quantizer with an interval $2\pi/2000$ in our model. The higher resolution of the sensor, the closer the system is to a  linear unity gain block, providing less measured error. The tracking error of sinusoidal input exceeded 5\% as the resolution reached 75 step/rev, while the error of step input went beyond 2\% when the resolution neared 325 steps/rev. \\
+
+Most parasitic effects have been considered for our model. For quantization, we find it causes significant trouble in our position control. In feedback control systems, the sum of loop sensitivity  and complementary sensibility is one. Since the sensed error which resulted from quantization is based on the complementary sensitivity, more power is required to achieve the same closed-loop response; otherwise, the tracking error cannot be lowered in a desired manner. 
 
 \begin{figure}[htb]
 \begin{center}
@@ -1110,7 +1113,6 @@ Position Saturation\\
 \end{figure}
 %^Alex's stuff
 
-\xxx{Alex wants a table here}
 
 \clearpage
 
@@ -1295,5 +1297,16 @@ To determine the closed-loop bandwidth of the system, we slowly increased the fr
 Just like with the position controller, we faced a lot of trouble meeting all of the performance specifications with just one controller. Again, we found that when we adjusted gains to meet the step requirement, the frequency response usually got worse, and vice-versa. As we mentioned in section 4 ,it's possible that some of the values used in our simulation are incorrect, or that there are other factors we did not account for. In the end we were able to meet the steady state error for step input and noise attenuation requirements, but were not very close to the frequency response requirement.\\
 
 \clearpage
+
+\section*{Appendix : Matlab Code}
+\subsection*{enchancedParameterEstimation.m}
+\verbatiminput{enchancedParameterEstimation.m}
+
+\subsection*{flatInterpolate.m}
+\verbatiminput{flatInterpolate.m}
+
+\subsection*{testParameterEstimation.m}
+\verbatiminput{testParameterEstimation.m}
+
 
 \end{document}
