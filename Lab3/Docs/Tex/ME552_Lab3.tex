@@ -201,7 +201,7 @@ With this current and the given motor constant we can then calculate the maximum
 
 $$T_{m} = k_{t}*i_{continuous} = 4.24\e{-2}*2.5048 = 10.6\e{-2}\, Nm$$
 
-This value is greater than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque, $8.1 \e{-2}\, Nm$, the max continuous current would be $1.91 A$, but at that value the temperature rise would be $75^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods.\\
+This value is greater than the torque value given in the data sheet, implying that our calculated current value is less conservative than the ratings in the data sheet. Based on the given rating for max continuous torque, $8.1 \e{-2}\, Nm$, the max continuous current would be $1.92 A$, but at that value the temperature rise would be $75^\circ$C above ambient. This means that at the max torque given by the data sheet, the motor would be well under the temperature limit. It's possible that the given value is either based on a safety factor to prevent overheating, or there are other modes of breakdown that can result from higher currents. If the lower limit is based on temperature, then we should be able to use slightly higher currents given that we are running for short periods.\\
 
 The motor's data sheet lists a peak current rating of 13.0 $A$ and a stall torque of 0.54 $N \cdot m$. With this torque value and the given torque constant (4.24$\e{-2} \sfrac{(N \cdot m)}{A}$), the peak current should be:
 
@@ -496,10 +496,10 @@ Figure \ref{q3_1} shows the overall model of DC motor servo system for both velo
 \subsubsection*{DC Motor}
 The DC motor subsystem, seen in figure \ref{q3_2} worked on the principle that the input torque generated was based on the conversion equation: 
 $$T = K_t*i$$
-Where, $K_t = 4.24\times10^{-2}$  is the torque constant of the motor. According to the motor datasheet, the rotor inertia, $J$, is $8.5 \times 10^{-6}$ , and the viscous damping coefficient, $B, =3.7\times10^{-6}$.\\
+Where $K_t = 4.24\times10^{-2}$  is the torque constant of the motor. According to the motor datasheet the rotor inertia, $J$, is $8.5 \times 10^{-6}$ , and the viscous damping coefficient $B =3.7\times10^{-6}$.\\
 
 Friction torque was modeled as a simple coulomb viscous model, shown in figure \ref{q3_3}. As the viscous friction was already taken into account in the motor transfer function, the model of coulomb friction was created using the following simple function: 
-$$T_f^{+/-} (\omega) =T_{cou}l^{+/-}$$
+$$T_f^{+/-} (\omega) =T_{coul}^{+/-}$$
 Where,  Coulomb Friction Torque: $ T_f = 5.6\times 10^{-3} \ \  [Nm/A]$
 
 
@@ -522,7 +522,7 @@ Where,  Coulomb Friction Torque: $ T_f = 5.6\times 10^{-3} \ \  [Nm/A]$
 \clearpage
 
 \subsubsection*{Optical Encoder}
-The optical encoder (see figure \ref{q3_3}) was modeled as a quantizer with the interval size equal to $2\pi/2000$ was used to simulate the effects of the ADC.
+The optical encoder (see figure \ref{q3_4}) was modeled as a quantizer with the interval size equal to $2\pi/2000$ was used to simulate the effects of the ADC.
 
 \begin{figure}[htb]
 \begin{center}
@@ -539,7 +539,7 @@ The Servo Amplifier was treated as a gain equal to 1 due to its high bandwidth (
 \subsubsection*{Controller}
 Two controllers were used to achieve both position and velocity control, they are visible in figures \ref{q3_5} and \ref{q3_6}. The saturation limit was set to $\pm 6 A$ based on the maximum peak current of the servo-amplifier. An additional concern was that the $RMS$ command voltage needed to be lower than the maximum continuous current of the motor ($1.92 A$). We ensured that limiting our output to $\pm 6$ Volts generally allowed for better tracking stability while not often applying more than $1.92 A$ for continuous periods of time.\\
 
-Additionally PID block represents the controller while $\tau$ (tau) represents the filter time-constant for the transfer function from angular position to velocity. It was treated as a variable coefficient.\\
+Additionally, the PID block represents the controller while $\tau$ (tau) represents the filter time-constant for the transfer function from angular position to velocity. It was treated as a variable coefficient.\\
 
 \begin{table}[htb]
 \begin{center}
@@ -583,10 +583,10 @@ The cascaded P/PI controller (see figure \ref{q3_7}) is one of the most commonly
 \end{center}
 \end{figure}
 
-This design consists of two cascaded loops. The inner one is the velocity loop. It is a PI controller which aims to ensure that the velocity command is tracked accurately. It is surrounded by the outer position loop which is a P controller that ensures the desired reference point is achieved. Having both loops makes it easy to deal with each loop at one time. The first step is to optimize the PI controller, achieving the best performance in the velocity loop, and then tune the P controller to ensure position tracking performance.\\
+This design consists of two cascaded loops. The inner one is the velocity loop. It is a PI controller which aims to ensure that the velocity command is tracked accurately. It is surrounded by the outer position loop which is a P controller that ensures the desired reference point is achieved. Having both loops makes it easy to deal with each loop one at a time. The first step is to optimize the PI controller, achieving the best performance in the velocity loop, and then tune the P controller to ensure position tracking performance.\\
 
 \subsubsection*{Velocity Control System - Dynamics Analysis}
-Before we began tuning, we needed to know the overall system dynamics, which provide essential information to guide the tuning process. Frequency response was used to analyze the velocity loop based on different values of time constant, $\tau$. The following figures (\ref{q3_8}, \ref{q3_9} and \ref{q3_10}) show Bode diagrams for the transfer functions of open-loop ($G_{OL}$), close-loop ($G_{CL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) with $\tau = 0.05, 0.1, \text{and } 1$, respectively.
+Before we began tuning, we needed to know the overall system dynamics, which provide essential information to guide the tuning process. Frequency response was used to analyze the velocity loop based on different values of the time constant, $\tau$. The following figures (\ref{q3_8}, \ref{q3_9} and \ref{q3_10}) show Bode diagrams for the transfer functions of open-loop ($G_{OL}$), close-loop ($G_{CL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) with $\tau = 0.05, 0.1, \text{and } 1$, respectively.
 
 \begin{itemize}
 \item $G_{OL}$ (see figure \ref{q3_8}): when $\tau$ increases, the gain of $G_{OL}$ becomes lower in medium and high frequencies, so does the phase behavior. It can be observed that a larger $\tau$ may make the system unstable in lower frequencies since the phase is close to -180 degrees (smaller Phase Margin) and there are still other delays neglected by assumptions, such as the dynamics of servo amplifier.   
@@ -782,7 +782,7 @@ $$K_{VF}: \text{Feedforward Gain}$$
 
 \item Achieving all objectives simultaneously seemed to be impossible due to the limit on the commanded voltage (2A); in particular, the 60Hz noise was hardly  attenuated five times. Thus, we removed the quantizer to get a more favorable system. 
 
-\item By trial and error, finally three objectives were achieved with $K_{PP}=2$,$K_{PD}=0.09 (N \footnote{Simulinks causality filter}=150)$,$K_{VF}=1$, and $\tau = 6.6$. However, the ability of output disturbance rejection was limited with amplitude 0.08. If the noise exceeded this limit, the commanded voltage would go beyond the current limit; that is, more power was required.     
+\item By trial and error, finally three objectives were achieved with $K_{PP}=2$, $K_{PD}=0.09 (N \footnote{Simulinks causality filter}=150)$, $K_{VF}=1$, and $\tau = 6.6$. However, the ability of output disturbance rejection was limited with amplitude 0.08. If the noise exceeded this limit, the commanded voltage would go beyond the current limit; that is, more power was required.     
 
 \end{itemize}
 
@@ -824,7 +824,7 @@ $$K_{VF}: \text{Feedforward Gain}$$
 \end{table}
 
 
-Without a quantizer in the sensor, the three goals were achieved by similar tuning procedures. Due to the fact that position control was based on the velocity control, it seemed reasonable that the errors would be larger by combination if all settings were the same. Additionally, feedforward control was used in the position loop. It improved tracking performance and also eliminated the steady-state error for sinusoidal inputs, but it seemed have no effects on the velocity control.  
+Without a quantizer in the sensor, the three goals were achieved by similar tuning procedures. Due to the fact that position control was based on the velocity control, it seemed reasonable that the errors would be larger by combination if all settings were the same. Additionally, feedforward control was used in the position loop. It improved tracking performance and also eliminated the steady-state error for sinusoidal inputs, but it seemed to have no effect on the velocity control.  
 
 \begin{figure}[htb]
 \begin{center}
@@ -1128,9 +1128,7 @@ As was discussed in section 4, work on the velocity controller for the real syst
 \label{velocityGains}
 \end{table}
 
-Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdot\pi$ radians, and figure \ref{VelStepError} shows a zoomed in view after it had settled. The peak error here is approximately 0.16\% (and on average is much less), which greatly exceeds the goal of 2\% error. Additional results for velocity steps of different magnitudes are also shown in the following tables and figures.\\
-
-\xxx{Compare to simulation results}
+Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdot\pi$ radians, and figure \ref{VelStepError} shows a zoomed in view after it had settled. The peak error here is approximately 0.16\% (and on average is much less), which greatly exceeds the goal of 2\% error.  In section 3 we showed that our simulation had a steady state error of 0.08\%. While our real controller had twice as much error, both still greatly exceeded the performance goal. Additional results for velocity steps of different magnitudes are also shown in the following tables and figures.\\
 
 \begin{figure}[htb]
 \begin{center}
@@ -1202,9 +1200,8 @@ Figure \ref{q6_4} shows the system's response to a velocity step input of 2$\cdo
 \end{center}
 \end{figure}
 
-Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$ radians/sec. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant, just as with the position controller. Figure \ref{VelNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our peak steady state error was 0.010, and with the noise the highest error is 0.20. Given that we were inputting a noise amplitude of one and the error only increased by 0.19, we have attenuated the noise by approximately 5.26 times. This meets the goal of a five times reduction.\\
+Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$ radians/sec. To simulate the noise within LabView, we added a 60 Hz sine signal with an amplitude of 1 to the output of the DAQ assistant, just as with the position controller. Figure \ref{VelNoiseZoom} shows a zoomed in view after the step has taken place. For the step response with no noise, our peak steady state error was 0.010, and with the noise the highest error is 0.20. Given that we were inputting a noise amplitude of one and the error only increased by 0.19, we have attenuated the noise by approximately 5.26 times. This meets the goal of a five times reduction. Our simulation had an error with noise of 2.05\%, which corresponds to an error of 0.16. The real controller was very close to matching the simulation's performance.\\
 
-\xxx{Compare to simulation results}
 
 \begin{figure}[htb]
 \begin{center}
@@ -1236,9 +1233,8 @@ Figure \ref{q6_7} shows the noise attenuation during a step input of 2$\cdot\pi$
 \end{center}
 \end{table}
 
-The velocity controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains to try to improve the frequency response. The relevant values are given in the table \ref{VelFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$/2. Figure \ref{VelFreqError} shows the error as a function of input frequency. During our tests the velocity output remained stable up to 5 Hz, but the output amplitude error increased greatly. The error exceeded 5\% just beyond 2.2 Hz. This does not meet the goal of less than 5\% error up to 5 Hz.\\
+The velocity controller we were using for the step response and noise attenuation did not not perform well with sinusoidal inputs, therefore we modified to gains to try to improve the frequency response. The relevant values are given in the table \ref{VelFreqGains}, and the following figures show the response at various frequencies with an amplitude of $\pi$/2. Figure \ref{VelFreqError} shows the error as a function of input frequency. During our tests the velocity output remained stable up to 5 Hz, but the output amplitude error increased greatly. The error exceeded 5\% just beyond 2.2 Hz. This does not meet the goal of less than 5\% error up to 5 Hz. In the simulation we were able to achieve 4.46\% error up to 5 Hz. Therefore, our real controller was well below the performance of the simulation.\\
 
-\xxx{Compare to simulation}
 
 \begin{table}[htb]
 \begin{center}
@@ -1253,7 +1249,7 @@ The velocity controller we were using for the step response and noise attenuatio
 \label{VelFreqGains}
 \end{table}
 
-$$\text{Predicted Bandwidth } =  \xxx{SOMETHING}$$
+$$\text{Predicted Bandwidth } =  2.8 Hz$$
 $$\text{Experimental Bandwidth } =  2.9 Hz$$
 
 \begin{table}[htb]
@@ -1280,7 +1276,7 @@ $$\text{Experimental Bandwidth } =  2.9 Hz$$
 \end{center}
 \end{figure}
 
-To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$/2 this corresponded to an output of 1.11), just as we did in section 4 to determine the bandwidth of the position controller. We found that the bandwidth of our position control system was  2.9 Hz, as shown in figure \ref{VelBandwidth}.\\
+To determine the closed-loop bandwidth of the system, we slowly increased the frequency of the input signal until the output amplitude just crossed -3 dB (for a input of $\pi$/2 this corresponded to an output of 1.11), just as we did in section 4 to determine the bandwidth of the position controller. We found that the bandwidth of our position control system was  2.9 Hz, as shown in figure \ref{VelBandwidth}. This is very close to the bandwidth value predicted by our simulation.\\
 
 \begin{figure}[htb]
 \begin{center}
