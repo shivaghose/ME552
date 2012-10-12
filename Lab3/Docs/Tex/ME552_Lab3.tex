@@ -599,7 +599,7 @@ Before we began tuning, we needed to know the overall system dynamics, which pro
 
 \end{itemize}
 
-Thus we find that as $\tau$ goes higher, the quality of output disturbance rejection becomes better but this comes at the expense of reduced bandwidth, which is undesired. In terms of our goals, high bandwidth (up to 5Hz), and good quality of disturbance rejection (60Hz noise signal) need to be achieved at the same time; therefore, the value of $\tau$ has to be carefully determined with controllers.
+We find that as $\tau$ increases, the quality of output disturbance rejection becomes better but this comes at the expense of and undesirable reduction in bandwidth.  In terms of our goals, high bandwidth (up to 5Hz), and good quality of disturbance rejection (60Hz noise signal) need to be achieved at the same time; therefore, the value of $\tau$ has to be carefully determined with controllers.
 
 \begin{figure}[htb]
 \begin{center}
@@ -633,6 +633,7 @@ $$K_{VI} : \text{Integral Gain}$$
 $$K_{VD} : \text{Derivative Gain}$$
 
 \subsubsection*{d) Keep steady state error below 2\% for a step command of 2$\pi$ radians/sec}
+Tuning practices to achieve satisfactory step response:
 \begin{itemize}
 \item Initialize $\tau$ as 0.05 to begin with.
 \item Tune $K_{VP}$ as high as possible because when $K_{VP}$ is increased, the crossover frequency as well as the bandwidth of velocity loop will also increase.
@@ -648,7 +649,7 @@ $$K_{VD} : \text{Derivative Gain}$$
 
 \subsubsection*{f) Attenuate a 60Hz noise signal coming in either at the servo-amplifier or the sensor by at least 5 times.}
 \begin{itemize}
-\item The noise signal with amplitude 0.1 was used to test disturbance rejection. For the input disturbance (from servo amplifier), over 90\% was rejected; while none of the output disturbance (from the sensor) was rejected but even enlarged. Thus increasing τ was required to get better results. 
+\item A noise signal with amplitude 0.1 was used to test disturbance rejection. Over 90\% of the input disturbance from the servo amplifier was rejected; while none of the output disturbance, from the sensor was rejected but, even enlarged. Thus increasing τ was required to get better results. 
 \item When $\tau$ was changed from 0.7 to 6, the goal of five-times attenuation was achieved. However, we were unable to maintain sinusoidal command tracking due to the lower bandwidth. This was a trade-off which was expected.
 \item Considering the limitation of the PI controller, the derivative controller was introduced to add phase lead in our control loop, broadening the bandwidth. By trial and error, finally the three objectives were achieved with the following values of the coefficients:
 $$K_{VP} = 25$$
@@ -823,7 +824,7 @@ $$K_{VF}: \text{Feedforward Gain}$$
 \end{table}
 
 
-Without a quantizer in the sensor, the three goals were achieved by similar tuning procedures. Due to the fact that position control was based on the velocity control, it seemed reasonable that the errors would be larger by combination if all settings were the same. Additionally, feedforward control was used in the position loop. It improved tracking performance a lot and also eliminated the steady-state error, but it seemed have no effects on the velocity control.  
+Without a quantizer in the sensor, the three goals were achieved by similar tuning procedures. Due to the fact that position control was based on the velocity control, it seemed reasonable that the errors would be larger by combination if all settings were the same. Additionally, feedforward control was used in the position loop. It improved tracking performance and also eliminated the steady-state error for sinusoidal inputs, but it seemed have no effects on the velocity control.  
 
 \begin{figure}[htb]
 \begin{center}
