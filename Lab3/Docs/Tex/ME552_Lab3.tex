@@ -1013,6 +1013,8 @@ Position Saturation\\
 
 In the actual system, the effects of saturation can clearly be seen in the steady increase of rise time as well as the decreasing stability of the system reflected in the higher percent overshoot and larger steady state error.  With saturation, the system is not able to move at the speed at which the controller requests, meaning that rise time will become dependent on the actual input magnitude, rather than being independent as is normally the case without saturation.  The loss of stability that we see is an effect of integral wind up.  Because the system takes longer to respond, our integral term has a longer period of time to accumulate error, which then has to be canceled out with positive error, leading to large overshoots and long settling times.  In extreme cases this can drive the system to instability.  The effects of saturation on integrator wind up can be compensated for by limiting the maximum and minimum values that the integrator can accumulate.  Another method is to model the saturation effect and use this model to alter the input to the integrator such that when the driver becomes saturated, the integrator no longer receives input. \\
 
+\xxx{John's Unique Stuff}
+
 As can be seen in figure \ref{q5_b0} our model also exhibits the same large rise time that we would expect for extremely large input signals.  
 
 \begin{table}[htb]
