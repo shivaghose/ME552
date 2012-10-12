@@ -759,7 +759,7 @@ $$K_{PP}: \text{Proportional Gain}$$
 $$K_{PD}: \text{Derivative Gain}$$
 $$K_{VF}: \text{Feedforward Gain}$$
 
-\subsubsection*{Keep steady state error below 2\% for a step command of $\pi$ radians.}
+\subsubsection*{a) Keep steady state error below 2\% for a step command of $\pi$ radians.}
 \begin{itemize}
 \item Setting $K_{PP}=1$, we see that the error did not fall below the required value. This is because if $K_{PP}$ was increased until the goal was attained, the commanded voltage exceeded the continuous current limit (2A).
 
@@ -768,13 +768,13 @@ $$K_{VF}: \text{Feedforward Gain}$$
 \item When $K_{VF} = 1$, the tracking error became nearly zero. 
 \end{itemize}
 
-\subsubsection*{Provide command tracking: Amplitude should remain within 5\% of commanded amplitude of pi radians, up until 5Hz.}
+\subsubsection*{b) Provide command tracking: Amplitude should remain within 5\% of commanded amplitude of pi radians, up until 5Hz.}
 \begin{itemize}
 \item With the identical setting, the tracking error of 5Hz command was close to zero as well.    
 \end{itemize}
 
 
-\subsubsection*{Attenuate a 60Hz noise signal coming in either at the servo-amplifier or the sensor by at least 10 times.}
+\subsubsection*{c) Attenuate a 60Hz noise signal coming in either at the servo-amplifier or the sensor by at least 10 times.}
 \begin{itemize}
 \item	A noise signal with amplitude 0.1 was used to test disturbance rejection. For the input disturbance (from servo amplifier), over 90\% was rejected; while none of the output disturbance (from the sensor) was rejected but at times, it was seen to even enlarge. 
 
@@ -812,7 +812,7 @@ $$K_{VF}: \text{Feedforward Gain}$$
     \begin{tabular}{|c|c|c|c|c|}
         \hline
         Reference               & Input Amplitude  & Output Amplitude  & \%Error & Commanded Voltage  \\ 
-        ~                       & [rad/s]          & [rad/s]           & ~       & [Max. V]           \\ \hline
+        ~                       & [rad]          & [rad]           & ~       & [Max. V]           \\ \hline
         (d) Step                & $\pi$              & 3.139             & 0.10\%  & 0.13               \\ 
         (e) Sinusoidal (5Hz)          & $\pi$              & 3.144             & 0.16\%  & 0.3                \\ 
         (f) Input Disturbance   & 0.1              & 0.002             & 2.02\%  & 1.55               \\ 
