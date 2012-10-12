@@ -681,14 +681,14 @@ $$ \tau=6.6 $$
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|}
         \hline
         Reference            & Input Amplitude & Output Amplitude & \%Error & Commanded Voltage \\ 
         ~                    & [rad/s]                 & [rad/s]                  & ~       & [Max. V]                   \\ \hline
         (d)Step              & $2\pi$                  & 6.278                    & 0.08\%  & 0.15                       \\ 
-        (e)Sinusoidal        & $\pi/2$                 & 1.641                    & 4.46\%  & 1.99                       \\ 
+        (e)Sinusoidal (5Hz)        & $\pi/2$                 & 1.641                    & 4.46\%  & 1.99                       \\ 
         (f)Input Disturbance & 0.1                     & 0.002                    & 2.05\%  & 0.18                       \\ 
         Output Disturbance   & 0.1                     & 0.02                     & 80.0\%  & 0.91                       \\
         \hline
@@ -696,10 +696,174 @@ $$ \tau=6.6 $$
 \end{center}
 \end{table}
 
+Although we achieved all objectives simultaneously, it took large amounts of controller re-tuning to get to this point.We believe this was due to the following reasons: 
+\begin{itemize}
+\item There was a trade-off between sinusoidal reference tracking and high-frequency noise reduction, which was corresponding with what the Bode diagrams showed. 
+\item The continuous current limit was only 2A. The limitation provided much less room for the value of controller gains.  
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_12}
+\caption{Step Command of 2$\pi$ radians/sec}
+\label{q3_12}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_13}
+\caption{5Hz Sinusoidal Command of $\pi/2$ radians/sec}
+\label{q3_13}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_14}
+\caption{60Hz Input Disturbance of 0.1 radians/sec}
+\label{q3_14}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_15}
+\caption{60Hz Output Disturbance of 0.1 radians/sec}
+\label{q3_15}
+\end{center}
+\end{figure}
+
+
+
+
+\clearpage
+
+\subsection*{Position Control System - Dynamics Analysis}
+As shown in figure \ref{q3_16}, there is steady-state error in the tracking function ($G_{CL}$) within the bandwidth. Furthermore, despite all frequencies below 0 dB for the transfer function of output disturbance rejection $G_{do}$, there is a peak around 60Hz which should be noticed. Both issues were critical to our objectives of control.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 16 cm]{q3_16}
+\caption{Bode Diagrams for the Transfer Functions of Open-Loop ($G_{POL}$), close-loop ($G_{PCL}$), input disturbance rejection ($G_{di}$), and output disturbance rejection ($G_{do}$) }
+\label{q3_16}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsection*{Position Control System – Controller Tuning}
+
+$$K_{PP}: \text{Proportional Gain}$$
+$$K_{PD}: \text{Derivative Gain}$$
+$$K_{VF}: \text{Feedforward Gain}$$
+
+\subsubsection*{Keep steady state error below 2\% for a step command of $\pi$ radians.}
+\begin{itemize}
+\item Setting $K_{PP}=1$, we see that the error did not fall below the required value. This is because if $K_{PP}$ was increased until the goal was attained, the commanded voltage exceeded the continuous current limit (2A).
+
+\item In order to solve the problem, velocity feedforward control ($K_{VF}$) was introduced to provide better tracking performance without affecting the stability of the closed-loop system.
+
+\item When $K_{VF} = 1$, the tracking error became nearly zero. 
+\end{itemize}
+
+\subsubsection*{Provide command tracking: Amplitude should remain within 5\% of commanded amplitude of pi radians, up until 5Hz.}
+\begin{itemize}
+\item With the identical setting, the tracking error of 5Hz command was close to zero as well.    
+\end{itemize}
+
+
+\subsubsection*{Attenuate a 60Hz noise signal coming in either at the servo-amplifier or the sensor by at least 10 times.}
+\begin{itemize}
+\item	A noise signal with amplitude 0.1 was used to test disturbance rejection. For the input disturbance (from servo amplifier), over 90\% was rejected; while none of the output disturbance (from the sensor) was rejected but at times, it was seen to even enlarge. 
+
+\item The above situation was similar to that in the velocity control system, but $\tau$ was already tuned for the velocity loop. Therefore, we needed the derivative controller to improve the quality of disturbance rejection.  
+
+\item Achieving all objectives simultaneously seemed to be impossible due to the limit on the commanded voltage (2A); in particular, the 60Hz noise was hardly  attenuated five times. Thus, we removed the quantizer to get a more favorable system. 
+
+\item By trial and error, finally three objectives were achieved with $K_{PP}=2$,$K_{PD}=0.09 (N \footnote{Simulinks causality filter}=150)$,$K_{VF}=1$, and $\tau = 6.6$. However, the ability of output disturbance rejection was limited with amplitude 0.08. If the noise exceeded this limit, the commanded voltage would go beyond the current limit; that is, more power was required.     
+
+\end{itemize}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[height = 10cm, width = 16 cm]{q3_17}
+\caption{Block Diagram of Position Control system}
+\label{q3_17}
+\end{center}
+\end{figure}
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $K_{VF}$ & $K_{PP}$ & $K_{PD}$ & $N$ & $\tau$ \\ \hline
+        1        & 2        & 0.09     & 150 & 6.6    \\
+        \hline
+    \end{tabular}
+\caption{Controller Gains and $\tau$ of Position Control system}
+\end{center}
+\end{table}
+
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Reference               & Input Amplitude  & Output Amplitude  & \%Error & Commanded Voltage  \\ 
+        ~                       & [rad/s]          & [rad/s]           & ~       & [Max. V]           \\ \hline
+        (d) Step                & $\pi$              & 3.139             & 0.10\%  & 0.13               \\ 
+        (e) Sinusoidal (5Hz)          & $\pi$              & 3.144             & 0.16\%  & 0.3                \\ 
+        (f) Input Disturbance   & 0.1              & 0.002             & 2.02\%  & 1.55               \\ 
+             Output Disturbance & 0.08             & 0.003             & 3.75\%  & 1.95               \\
+        \hline
+    \end{tabular}
+\caption{Simulation Results for Different Reference Inputs}
+\end{center}
+\end{table}
+
+
+Without a quantizer in the sensor, the three goals were achieved by similar tuning procedures. Due to the fact that position control was based on the velocity control, it seemed reasonable that the errors would be larger by combination if all settings were the same. Additionally, feedforward control was used in the position loop. It improved tracking performance a lot and also eliminated the steady-state error, but it seemed have no effects on the velocity control.  
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_18}
+\caption{Step Command of $\pi$ radians}
+\label{q3_18}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_19}
+\caption{5Hz Sinusoidal Command of $\pi/2$ radians/sec}
+\label{q3_19}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_20}
+\caption{60Hz Input Disturbance of 0.1 radians}
+\label{q3_18}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14 cm]{q3_21}
+\caption{60Hz Output Disturbance of 0.1 radians}
+\label{q3_21}
+\end{center}
+\end{figure}
+
+\clearpage
+
 \section*{4.}
 
 \subsection*{a.}
 When we implemented the controller and values from our simulation in part 3, we were unable to achieve stable output in the physical system. Therefore, we kept the same general approach - a velocity controller nested within a position controller with feed forward - but we re-tuned the system with different gain values. Because we have a velocity controller inside of our position controller, we first tuned the velocity control on its own (see section 6). Once it was working, we then implemented it in the inner loop of our position controller and tuned the position control gains. In the end we were not able to meet all of the control goals with one controller. We designed one controller with good step response and noise attenuation, and then modified the gain values to improve the frequency response separately. The results for the step response and noise attenuation are given below.\\
+
 
 \begin{table}[htb]
 \begin{center}
@@ -813,6 +977,31 @@ Even though we included many nonlinear factors in our simulation, we still faced
 \clearpage 
 
 \section*{5.}
+\subsection*{ Comparison of Our System Model with the Data Sheet and the Physical System}
+\begin{table}[htb]
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        ~                        & Original Model & Original Model   & New Model & Real Physical System \\ 
+	~	& ~	& (with gains used in VI)& (with gains used in VI)& ~\\ \hline
+        BW of Velocity Loop [Hz] & 6.52           & 6.52                                    & 2.8                               & 2.9                  \\ 
+	~&	~&	~&	~&	~\\
+        BW of Position Loop [Hz] & 11.4           & 11.8                                    & 5.1                    & 5.27     \\
+	~ &~	&~	&\emph{(with I =1)} & \emph{(with I =10)}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+The original model was built using the values of $J, B$ and $T_f$ (which is the static friction) and optimized to provide the best performance. We then proceeded to measure the actual system parameters empirically. Using the measured values as well as accounting for non-linear effects like saturation and varying friction, we made a second model - the new model. At the same time we proceeded to tune the physical system. We then incorporated the practical values used in the real system on our theoretical system for comparison of how well our model simulates the real world. As you can see from the table above, our model does a very realistic job of modeling the system.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 13.5cm]{Original_vsNew.png}
+\caption{Comparison of the new model with the original model.}
+\label{q5_orig_v_new}
+\end{center}
+\end{figure}
+
+\clearpage
 
 \subsection*{a. Coulomb Friction}
 The bearings in the motor are the primary source of coulomb friction in the motor encoder system. This could be especially true in the current configuration of the motor because Pittman's website only specifies that they use ball or sleeve bearings in their products. If these are only radial bearings with no thrust capability, then the motor's performance could be affected by the vertical mounting we are using. Additionally, there is friction between the brushes and commutator. In section 2b we discussed and carried out experiments and modeling to determine the friction value.\\
@@ -830,6 +1019,8 @@ Position Saturation\\
 
 \xxx{comment on actuation saturation}
 
+
+
 \begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
@@ -845,6 +1036,17 @@ Position Saturation\\
 \caption{Step Response for a variety of input positions.  Where rise time is defined as reaching 90\% of the final value while settling time is the time after which the function remains within 2\% of its final value}
 \label{q5_b6}
 \end{table}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 16cm]{q5b.png}
+\caption{Tracking Ability for Extremely Large amplitude of step command}
+\label{q5_b0}
+\end{center}
+\end{figure}
+%^Alex's stuff
+
+
 
 \begin{figure}[htb]
 \begin{center}
@@ -886,7 +1088,29 @@ Position Saturation\\
 \end{center}
 \end{figure}
 
+\clearpage
+
 \subsection*{c. Quantization}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q5c_sine_75.png}
+\caption{Sinusoidal Tracking Error > 5\% when Resolution = 75 steps/rev}
+\label{q5_c1}
+\end{center}
+\end{figure}
+%^Alex's stuff
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q5c_step_325.png}
+\caption{Step Tracking Error > 2\% when Resolution = 325 steps/rev}
+\label{q5_c2}
+\end{center}
+\end{figure}
+%^Alex's stuff
+
+\xxx{Alex wants a table here}
 
 \clearpage
 
