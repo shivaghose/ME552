@@ -1,0 +1,131 @@
+% version 2 of the parameter initialization
+
+% note that positive theta is counter clockwise when viewed from above
+% positive alpha is clockwise when viewed from the end of the arm
+% x axis points along pendulum
+% z axis along arm towards motor
+% y is consistent with right handed coordinate frame
+
+% note that pendulum parameters have been obtained through a combination of
+% solid works modeling to provide center of mass and moments of inertia
+% and a rough eyeball fit of the friction and damping
+% arm damping and friction terms are carried over from the previous
+% experiment but this may not be quite the case with an off balance torque
+% on the shaft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% physical parameters
+
+% Motor and Driver Parameters
+Kt = 0.0314499;     % motor torque constant
+%Kb = 0.04;          % yes technically these should be equal, this is based on 600 rad/s 
+                    % for a supply voltage of 24 volts only effects driver /
+                    % motor model
+%Rm = 1.85;          % motor resistance based on data sheet
+%Vsupply = 24;       % supp,y voltage
+Ka = 1;             % nominal driver voltage to current ratio
+
+
+% lengths
+l1 = 0.10825640;
+l2c = 0.0856786;
+
+% mass
+m2 = 0.0820142;
+
+% moments of inertia
+Ix2 = 8.1e-6;
+Iy2 = 3.711e-4;
+Iz2 = 3.646e-4;
+Ixz2 = 2.03e-5;
+I1zt = 6.78e-4 + 3.50514e-5;    % arm moment of inertia obtained from solid works
+                                % and rotor inertia obtained from earlier
+                                % experiments
+
+% damping 
+ba = 6.5E-6;        % alpha / pendulum    
+btf = 1.08586e-5;   % forwards theta / arm  
+btr = 4.8593e-5;    % reverse theta
+
+% friction is dropped in a linear model
+%Tca = 7e-6;             % alpha / pendulum
+%Tctf = 0.022439;        % forwards theta / arm
+%Tctr = 0.0143096;       % reverse theta
+%staticThreshold = 1e-6; % below this velocity we aren't moving
+%staticRatio = 1;        % multiplier for static friction over normal friction
+% alternate friction quantities which do not illustrate a limit cycle
+%Tctf = 0.0001; Tctr = 0.0001;
+
+% gravity
+g = 9.81; 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% transfer functions
+% this linear form requires us to neglect friction and assume isotropic
+% damping
+
+% constants
+C1 = Iz2+m2*l2c*l2c;  C2 = Iy2+m2*l2c*l2c;  C3 = m2*l1*l2c-Ixz2;
+C4 = l2c*m2*g;        C5 = I1zt+Ix2+m2*l1*l1;   C6 = C5*C1-C3*C3;
+
+btavg = (btf + btr)/2; 
+
+% with Damping
+DenB = [(C5*C1-C3*C3), (C1*btavg+C5*ba), (ba*btavg-C4*C5), (-C4*btavg), 0];
+NumBT = [C1, ba, -C4];
+NumBA = [-C3, 0, 0]; 
+
+tfTB = tf(NumBT,DenB);
+tfAB = tf(NumBA,DenB);
+
+% without damping
+Den = [(C5*C1-C3*C3), 0, -C4*C5, 0, 0];
+NumT = [C1, 0, -C4];
+NumA = [-C3, 0, 0];
+
+tfT = tf(NumT,Den);
+tfA = tf(NumA,Den);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Controllers
+
+% Alpha Inner loop
+ACZeros = [-3.75; -7.85];
+ACPoles = [-50; 0];
+ACK = -3.7203;
+[NumAC, DenAC] = zp2tf(ACZeros,ACPoles,ACK);
+AController = tf(NumAC,DenAC);
+
+% having the controller changes our theta response
+NumTBwAC = conv(NumBT,NumAC);
+DenTBwAC = polyCoadd(conv(DenB,DenAC),conv(NumAC,NumBA));
+tfTBwAC = tf(NumTBwAC,DenTBwAC);
+
+% Theta Outer Loop will need positive feedback
+% just a simple lead controller
+TCZeros = [-1];
+TCPoles = [-15];
+TCK = 0.01784;
+[NumTC,DenTC] = zp2tf(TCZeros,TCPoles,TCK);
+TController = tf(NumTC,DenTC);
+
+% Final Closed Loop Transfer Functions to take our root locii from later
+% Alpha
+NumAF = conv(NumAC,NumBA);
+DenAF = conv(DenAC,DenB);
+tfAF = tf(NumAF,DenAF);
+%rlocus(tfAF);
+
+% Theta
+NumTF = conv(NumTBwAC,NumTC);
+DenTF = conv(DenTBwAC,DenTC);
+tfTF = tf(NumTF,DenTF);
+%rlocus(tfTF);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Other Controller Parameters
+%CONTROLLER_SWITCH_POINT = .30;  % switch over to balancing controller here
+%tau = .01;                      % time constant for derivative filter
+    
+    
