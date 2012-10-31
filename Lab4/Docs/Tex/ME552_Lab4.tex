@@ -220,13 +220,12 @@ As discussed later $I_{2xy}$ and $I_{2yz}$ are very nearly $0$ and have been neg
 $$T_{2R} = \frac{1}{2} \left[ \dot{\theta}^2 \left( I_{2xx} \cos^2(\alpha) + I_{2yy} \sin^2(\alpha) \right) + I_{2zz} \dot{\alpha}^2 \right] - I_{2xz} \dot{\theta} \dot{\alpha} \cos(\alpha) $$
 
 \subsubsection*{Lagrange's Equation and non-Linear Equations of Motion}
-The Lagrange method can be used to compute the equations of motion of complex dynamical systems using the total system energy derived above along with the generalized coordinates of the system $q_{i}$ and generalized non-conservative forces on the system $Q_{NCi}$.
+The Lagrange method can be used to compute the equations of motion of complex dynamical systems using the total system energy derived above along with the generalized coordinates of the system $q_{i}$ and generalized non-conservative forces on the system $Q_{NCi}$.  These non-conservative forces are the damping forces exerted on both the pendulum and the horizontal arm determined by $b_\alpha$ and $b_\theta$ respectively,  the motor torque exerted on the horizontal arm, $\tau_{m}$, and the force of coulomb friction exerted on both the pendulum and the horizontal arm denoted $\tau_{C \alpha}$ and $\tau_{C \theta}$ respectively.  
 
 $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{q_i}} - \frac{\partial \Lagr}{\partial q_i} = Q_{NCi} $$
 
 $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta} \hspace{1cm} \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} $$
 
-\xxx{finish describing the other terms, damping and friction}  
 \xxx{copy over coulomb friction model from previous file}
 
 $$ \Lagr = T - V = T_{1} + T_{2} - \left( V_{1} + V_{2} \right) = T_{1} + T_{2R} + T_{2T} - V_{2}$$
