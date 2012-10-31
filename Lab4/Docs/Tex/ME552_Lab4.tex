@@ -224,9 +224,40 @@ The Lagrange method can be used to compute the equations of motion of complex dy
 
 $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{q_i}} - \frac{\partial \Lagr}{\partial q_i} = Q_{NCi} $$
 
-$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta} \hspace{1cm} \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} $$
+$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta}  $$
+\begin{equation}
+ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} 
+\end{equation}
 
-\xxx{copy over coulomb friction model from previous file}
+
+For our friction model here we must make a simplifying assumption to avoid having to estimate internal constraint forces.  In a correct model to handle static friction correctly if the joint angle, $\dot{\theta}$ or $\dot{\alpha}$ is $0$, then we must estimate the torque exerted on the joint attempting to overcome static friction.  This torque can really be thought of as the constraint torque required to keep the angle fixed, but our Lagrange method sacrifices knowledge of these constraint forces to simplify the equation of motion.  To avoid having to estimate this constraint torque we make a simplifying assumption.  We only consider the external torques acting on each joint, rather than the internal forces at the joint.  These external torques are known, simply the motor torque, $\tau_m$ for the horizontal arm and the torque exerted by gravity on the pendulum $\tau_g$.
+
+$$ \tau_g = g m_2 l_{2c} \sin(\alpha) $$  
+
+With this assumption we can use our previous coulomb friction model with no change. Note that we again use two different frictional torques for the horizontal arm because our previous experiments with the motor discovered significant differences in friction in the forwards and reverse directions.  The pendulum has been modeled with a single friction torque because we have no reason to believe that the direction of rotation changes friction.  
+
+\[
+  \tau_{C \alpha} = \left\{
+  \begin{array}{c l}
+	 - \tau_{g} & \quad \text{if } \dot{\alpha} = 0 \text{ and } |\tau_{g}| < \tau_{F\alpha} \\
+	- sgn(\tau_{g}) \cdot \tau_{FA} & \quad \text{if } \dot{\alpha} = 0 \text{ and } |\tau_{motor}| > \tau_{F\alpha} \\
+	- sgn(\dot{\alpha}) \cdot \tau_{F\alpha} & \quad \text{if } \dot{\alpha} \neq 0 \\
+  \end{array} \right.
+\]
+
+\[
+  \tau_{C \theta} = \left\{
+  \begin{array}{c l}
+	 - \tau_{m} & \quad \text{if } \dot{\theta} = 0 \text{ and } 0 \leq \tau_{motor} < \tau_{F \theta F} \\
+	- \tau_{m} & \quad \text{if } \dot{\theta} = 0 \text{ and } -\tau_{F \theta R} \leq \tau_{m} <  0\\
+	- sgn(\tau_{m}) \cdot \tau_{F\theta F}& \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{m} > \tau_{F \theta F} \\
+	- sgn(\tau_{m}) \cdot \tau_{F\theta R} & \quad \text{if } \dot{\theta} = 0 \text{ and } \tau_{m} \leq -\tau_{F \theta R} \geq \\
+	- sgn(\dot{\theta}) \cdot \tau_{F \theta F} & \quad \text{if } \dot{\theta} > 0 \\
+	- sgn(\dot{\theta}) \cdot \tau_{F \theta R} & \quad \text{if } \dot{\theta} < 0 \\
+  \end{array} \right.
+\]
+
+The right hand side of the equation contains partial derivatives of the Lagrangian, $\Lagr$, which is given below as the difference of the total kinetic energy of the system, $T$, and the total potential energy of the system $V$.  Using the expressions derived above for the energies of each component of the system we can construct an expression for $\Lagr$ and take partial derivatives 
 
 $$ \Lagr = T - V = T_{1} + T_{2} - \left( V_{1} + V_{2} \right) = T_{1} + T_{2R} + T_{2T} - V_{2}$$
 
@@ -357,5 +388,33 @@ $$ \frac{\theta(s)}{\tau_{m}(s)} \approx \frac{s^2 C_1 - C_4}{s^2 \left[s^2 \lef
 $$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_5 C_1 - C_3^3 \right) - C_4 C_5\right]} $$
 
 In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
+
+\section*{2. Parameter Identification}
+
+\section*{3. Comparing Linear and Non-Linear Models}
+
+\section*{4. State Space Controls in Simulink}
+
+\section*{5. Swing Up Controller in Simulink}
+
+\section*{6. LabView Implementation}
+
+\subsection*{a.}
+
+\subsection*{b.}
+
+\subsection*{c.}
+
+\subsection*{d.}
+
+\section*{7. Effects on LabView Loop Rate on Stability}
+
+\section*{8. Classical Controller}
+
+\section*{9. Another Swing Up Controller}
+
+\section*{10. Parasitic Effects}
+
+
 
 \end{document}
