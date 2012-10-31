@@ -80,6 +80,7 @@
 % math macros
 \newcommand{\defeq}{\stackrel{\textrm{def}}{=}}
 \newcommand{\Prob}{\textrm{Prob}}
+\newcommand{\Lagr}{\mathcal{L}}
 %==
 \usepackage{graphicx}
 \usepackage{xfrac}
@@ -88,7 +89,7 @@
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\solutions{Your name}{Problem Set Number}{Date of preparation}{Collaborators}{Prover}{Verifiers}
-\solutions{}{3: Inverted Pendulum}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Peter Turpel, @pturpel\\ Chan-Rong Lin, @pmelin}
+\solutions{}{4: Inverted Pendulum}{\today}{Shiva Ghose, @gshiva\\ John Peterson, @jrpeters\\ Peter Turpel, @pturpel\\ Chan-Rong Lin, @pmelin}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\renewcommand{\theproblem}{\arabic{problem}} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -139,5 +140,223 @@ and that I have read and understood the X50 Lab Rules.\\
 \end{table}
 
 \newpage
+
+\section*{1.}
+
+\xxx{need figure to show coordinate frames!}
+\subsection*{a. Physical Model}
+We model the physical system as a pair of rigid links, the horizontal arm and the pendulum mounted to the end of the arm, neglecting the presence of the encoder cable, using a lumped parameter model.
+
+\subsection*{b. Assumptions}
+We assume that all of our links are rigid and assume allowing us to neglect work done by the internal constraining forces of the system.  This assumption very nearly holds because e are using stiff metals and bearings that are well fitted which should all but prevent internal losses due to collisions and deformations.  We neglect air resistance because of the small cross sectional areas and low velocities combined with the difficult in constructing an appropriate model and determining its forces.  We assume that the axis of rotation of the horizontal arm is fixed in space and perfectly level with the ground.  This assumption overlaps with neglecting losses due to internal constraints and ensures that there will be no potential energy term associated with the arm and avoids the need to consider the motor stand, the table beneath it etc.  We also neglect the presence of the encoder cable connected to the arm.  We found that the cable has a large impact on our system however its influence would be very difficult to model because it is not fixed to the arm and because the forces it introduces are highly non linear. 
+
+\subsection*{c. Mathematical Modeling}
+\subsubsection*{Forwards Kinematics}
+Let $^0F$ represent the fixed world coordinate frame, with $\bf{^0\hat{z}}$ aligned with the motor shaft and with $\bf{^0\hat{x}}$ pointing along the initial direction of the horizontal arm when the system is initialized.  Let the origin of $^0F$ be located to coincide with the motor axis and the axis of rotation of the pendulum.  Let $^1F$, representing the local frame of the horizontal arm, be attached to the horizontal arm, with $\bf{^1\hat{z}}$ aligned with the motor shaft and $\bf{^1\hat{x}}$ aligned with the motor arm pointed towards the pendulum.  Let $^2F$ be located such that its origin is along $\bf{^1\hat{x}}$ at a distance $l_1$, with $\bf{^2\hat{x}}$ pointing along the pendulum and $\bf{^2\hat{z}}$ along the $\bf{-^1\hat{x}}$ direction.  Where $l_1$ is the distance from the axis of rotation of the motor to the center of mass of the pendulum along the $\bf{^1\hat{x}}$ direction.  Let $\theta$ denote the angle between $\bf{^0\hat{x}}$ and $\bf{^1\hat{x}}$ and let $\alpha$ denote the angle between $\bf{^1\hat{z}}$ and $\bf{^2\hat{x}}$ measured clockwise when viewed from $\bf{^1\hat{x}}$.  We assume that the motor and the horizontal arm are rigidly connected and can be treated as a single inertia for purposes of our energy calculations below.
+
+Then:
+
+$$ ^0F = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left(^2F\right) $$
+
+Let $l_{2c}$ be the distance along $\bf{^2x}$ from the origin of $^2F$ to the center of mass of the pendulum.  Then the location of the center of mass of the pendulum in the world coordinate system $\bf{^0P_{2c}}$ is given as:
+
+$$ {\bf{^0P_{2c}}} = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left(\bf{^2P_{2c}}\right) = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left[l_{2c}, 0, 0\right]^T$$
+
+\[
+  {\bf{^0P_{2c}}} = \left[
+  \begin{array}{c l}
+	 -l_{2c} \sin(\theta) \sin(\alpha) + l_{1} \cos(\theta) \\
+	l_{2c} \cos(\theta) \sin(\alpha) + l_1 \sin(\theta) \\
+	l_{2c} \cos(\alpha) 
+  \end{array} \right]
+\]
+
+From this position we can then determine the linear velocity of the center of mass of the pendulum in the world frame denoted $\bf{^0\dot{P}_{2c}}$.  Let $J$ denote the matrix of partial derivatives of $\bf{^0P_{2c}}$ with respect to $\theta$ and $\alpha$.  Then the $\bf{^0\dot{P}_{2c}}$ is given by.
+
+$$ {\bf{^0\dot{P}_{2c}}} = J \left[ \begin{array}{c l} \dot{\theta} \\ \dot{\alpha} \end{array} \right] = \left[ \begin{array}{c c l} 
+	-l_{2c} sin(\alpha) \cos(\theta) - l_{1} \sin(\theta)  &  -l_{2c} \sin(\theta) \cos(\alpha) \\
+	-l_{2c} sin(\alpha) \sin(\theta) + l_1 \cos(\theta) & l_{2c} \cos(\theta) \cos(\alpha) \\
+	0 & -l_{2c} \sin(\alpha) \\ \end{array} \right] \left[ \begin{array}{c l} \dot{\theta} \\ \dot{\alpha} \end{array} \right]$$
+
+We can also determine the angular velocity of the pendulum about its center of mass in the pendulum fixed frame $^2F$  by the following:
+
+$$ {\bf{\omega_{2}}}= \dot{\theta} ({\bf{^1\hat{z}}}) + \dot{\alpha}({\bf{^2\hat{z}}})  = \left( R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha)\right)^{-1} \left[ 0, 0, \dot{\theta} \right]^T + \dot{\alpha}({\bf{^2\hat{z}}})$$
+
+$$  {\bf{^2\omega_{2}}}= \left[ \begin{array}{c l}   \dot{\theta} \cos(\alpha) \\ -\dot{\theta} \sin(\alpha) \\ \dot{\alpha} \end{array} \right]$$
+
+Rather than concern our selves with the forwards kinematics of the horizontal arm, because we assume that its only motion is a rotation about $\bf{^0\hat{z}}$ which allows us to simply apply the parallel axis theorem to obtain its moment of inertia 
+
+
+\subsubsection*{System Energy}
+
+Our system is composed of two rigid bodies, then the horizontal arm and the pendulum.  Each has an energy denoted $E_1$ and $E_2$ respectively.  Using the forwards kinematics derived above we can compute the kinetic and potential energies associated with each body as a function of $\theta$, $\alpha$, $\dot{\theta}$, and $\dot{\alpha}$.
+
+$$ E_{1} = T_{1} + V_{1} \hspace{1cm} E_{2} = T_{2} + V_{2} $$
+
+By our assumption above that $\bf{^1\hat{z}}$ is parallel to the direction of gravity, the term $V_{1}$ can be taken to be 0.  Furthermore, rather than expand $T_{1}$ into linear and rotational components, we can simply use a single rotation term with a modified moment of inertia, $I_{1z1}$.  Let $l_{1c}$ be the distance along $\bf{^1\hat{x}}$ from the origin to the center of mass of the rotor $^1P_{1c}$, and let $m_{1}$ be the mass of the horizontal arm.  Note that we must also include the rotor inertia :
+
+$$ E_{1} = I_{1z1} \dot{\theta}^2 = \left( I_{1zzc} + I_{rotor} + m_{1} l_{1c}^2 \right) \dot{\theta}^2$$
+
+The expression for $E_{2}$ is much more complex, we will break the kinetic energy into a translational and a rotational component. 
+
+Because the pendulum is perpendicular to the horizontal arm which is perpendicular to the ground, the potential energy of the pendulum, $V_{2}$ only depends on alpha, the distance from the axis of rotation to the center of mass along $\bf{^2\hat{x}}$, $l_{2c}$, the mass of the pendulum, $m_{2}$, and the acceleration due to gravity, $g$.  Without loss of generality, we assume that zero potential energy occurs for $\alpha = 0$.
+
+$$ V_{2} = \left( \cos(\alpha) - 1 \right) l_{2c} m_2 g $$
+
+The translation kinetic energy of the pendulum $T_{2T}$ is given by the following expression: 
+
+$$ T_{2T} = \frac{1}{2} m_{2} \left( \bf{^0\dot{P}_{2c}} \right)^2 = \frac{1}{2} m_{2} \left( \bf{^0\dot{P}_{2c}} \right)^T\left( \bf{^0\dot{P}_{2c}} \right) = \frac{1}{2} m_{2} \left[ \dot{\theta}, \dot{\alpha} \right] J^T J \left[ \begin{array}{c l} \dot{\theta} \\ \dot{\alpha} \end{array} \right] $$
+
+$$ T_{2T} = \dot{\theta}^2 \left( l_{2c}^2  \sin^2(\alpha)  + l_{1}^2 \right) + 2 l_{1} l_{2c} \dot{\theta} \dot{\alpha} \cos(\alpha) + \left( \dot{\alpha} l_{2c} \right)^2 $$
+
+The rotational kinetic energy of the pendulum is given by the following expression where $I_{2}$ is the 3 by 3 moment of inertia tensor of the pendulum. 
+
+$$ T_{2R} = \frac{1}{2} {\bf{^2\omega_{2}}}^T I_{2} {\bf{ ^2 \omega_{2}}} = \frac{1}{2} \left[ \dot{\theta}^2 \left(I_{2xx} \cos^2(\alpha) - 2 I_{2xy} \sin(\alpha)  \cos(\alpha) + I_{2yy}  \sin^2(\alpha)  \right) + 2 I_{2xz} \dot{\theta} \dot{\alpha} \sin(\alpha) + I_{2zz} \dot{\alpha}^2 \right]$$
+
+\xxx{Note this is where the arbitrary sign flip is!!!}
+
+As discussed later $I_{2xy}$ and $I_{2yz}$ are very nearly $0$ and have been neglected for the rest of the derivation.
+
+$$T_{2R} = \frac{1}{2} \left[ \dot{\theta}^2 \left( I_{2xx} \cos^2(\alpha) + I_{2yy} \sin^2(\alpha) \right) + I_{2zz} \dot{\alpha}^2 \right] - I_{2xz} \dot{\theta} \dot{\alpha} \cos(\alpha) $$
+
+\subsubsection*{Lagrange's Equation and non-Linear Equations of Motion}
+The Lagrange method can be used to compute the equations of motion of complex dynamical systems using the total system energy derived above along with the generalized coordinates of the system $q_{i}$ and generalized non-conservative forces on the system $Q_{NCi}$.
+
+$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{q_i}} - \frac{\partial \Lagr}{\partial q_i} = Q_{NCi} $$
+
+$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta} \hspace{1cm} \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} $$
+
+\xxx{finish describing the other terms, damping and friction}  
+\xxx{copy over coulomb friction model from previous file}
+
+$$ \Lagr = T - V = T_{1} + T_{2} - \left( V_{1} + V_{2} \right) = T_{1} + T_{2R} + T_{2T} - V_{2}$$
+
+$$ \Lagr = \frac{1}{2} \dot{\theta}^2 \left(I_{1z1} + C_2 \sin^2(\alpha)  + I_{2xx} \cos^2(\alpha) + m_2 l_{1}^2 \right) + \frac{1}{2} C_1  \dot{\alpha}^2 + C_3 \dot{\theta} \dot{\alpha} \cos(\alpha) - C_4 \cos(\alpha) + C_4 $$
+$$ C_1 = I_{2zz} + m_2 l_{2c}^2 \hspace{1cm} C2 = I_{2yy} + m_2 l_{2c}^2 \hspace{1cm} C_3 = m_2 l_1 l_{2c} - I_{2xz} \hspace{1cm} C_4 = l_{2c} m_2 g$$
+
+$$\frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}}  = \ddot{\theta} \left( I_{1z1} + C_2 \sin^2(\alpha) I_{2xx} \cos^2(\alpha) + m_2 l_1^2 \right) + 2 \left( C_2 - I_{2xx}\right)\dot{\theta} \dot{\alpha}  \sin(\alpha) \cos(\alpha) + C_3 \ddot{\alpha} \cos(\alpha) - C_3 \dot{\alpha}^2  \sin(\alpha)$$
+
+$$ \frac{\partial \Lagr}{\partial \theta} = 0 $$
+
+$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} = C_1 \ddot{\alpha} + C_3 \ddot{\theta}  \cos(\alpha) - C_3 \dot{\theta} \dot{\alpha} \sin(\alpha) $$
+
+$$ \frac{\partial \Lagr}{\partial \alpha} = \dot{\theta}^2 \left( C_2 \sin(\alpha) \cos(\alpha) - I_{2xx} \cos(\alpha) \sin(\alpha)\right) - C_3 \dot{\theta} \dot{\alpha} sin(\alpha) + C_4  \sin(\alpha) $$
+
+\xxx{fix centering on this equation and probably the next one}
+\begin{align} 
+\ddot{\theta} \left( I_{1z1} + C_2 \sin^2(\alpha) + I_{2xx} \cos^2(\alpha) + m_2 l_1^2\right) + 2 (C_2 - I_{2xx}) \dot{\theta} \dot{\alpha}  \sin(\alpha)  \cos(\alpha) \nonumber \\ {} + C_3  \ddot{\alpha}  \cos(\alpha)  - C_3  \dot{\alpha}^2 \sin(\alpha)  = -b_{\theta}  \dot{\theta} + \tau_{m} + \tau_{C \theta}
+\label{NonLin1}
+\end{align}
+
+\begin{equation}
+C_1 \ddot{\alpha} + C_3 \, \ddot{\theta} \cos(\alpha) - (C_2 - I_{2xx}) \dot{\theta}^2  \sin(\alpha) \cos(\alpha) - C_4 \sin(\alpha) = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha}
+\label{NonLin2}
+\end{equation}
+
+The pair of non-linear differential equations can be used to numerically model the behavior of the system, but they are not particularly useful for actual controller design.  Both state space controls and our traditional techniques require the system to be linearized around a particular operating point.  This allows us to generate a transfer function to approximate the behavior of the system and lets us construct root locii and bode plots to quantify system behavior.  
+
+\subsection*{d.}
+
+\xxx{put some pictures of the non-linear model make}
+\xxx{make references to matlab code}
+\subsection*{e.}
+\subsubsection*{Linearized Equations of Motion}
+
+We will linearize the equations of motion about $\theta = 0$, $\alpha = 0$.  By taylor expansion about this point and dropping higher order terms we obtain: 
+
+ $$ \sin(\alpha) \approx 0 \hspace{1cm} \cos(\alpha) \approx \alpha \hspace{1cm} \sin(\theta) \approx 0 \hspace{1cm} \cos{\theta} \approx \theta $$
+
+We note that the coulomb friction terms from the previous non-linear equations must be dropped completely as there is no reasonable linearization of the effects of friction.  We also note that we expect $\dot{\theta}$ and $\dot{\alpha}$ to be relatively small, which implies: 
+
+$$ \dot{\theta} \dot{\alpha} \approx 0 $$
+
+Applying these to equations \eqref{NonLin1} and \eqref{NonLin2} yields \eqref{Lin1} and \eqref{Lin2} respectively.
+
+\begin{equation}
+\ddot{\theta} \left( I_{1z1} + I_{2xx} + m_2 l_1^2 \right) + \ddot{\alpha} C_3 = -b_{\theta} \dot{\theta} + \tau_{m}
+\label{Lin1}
+\end{equation}
+
+\begin{equation}
+\ddot{\alpha} C_1 + \ddot{\theta} C_3 - \alpha C_4 = -b_{\alpha} \dot{\alpha} 
+\label{Lin2}
+\end{equation}
+
+Using equations \eqref{Lin1} and \eqref{Lin2} together we can generate two independent equations for $\ddot{\alpha}$ and $\ddot{\theta}$.
+
+$$ C_{5} = (I_{1z1} + I_{2xx} + m_2 l_1^2) $$
+
+\begin{equation}
+\ddot{\theta} = \frac{C_3 b_{\alpha} \dot{\alpha} - C_3 C_4 \alpha - C_1 b_{\theta} \dot{\theta} + C_1 \tau_{m}}{ C_5 C_1 - C_3^2}
+\label{Lin_Theta}
+\end{equation}
+
+\begin{equation}
+\ddot{\alpha} = \frac{-C_5 b_{\alpha} \dot{\alpha}  + C_3 b_{\theta} \dot{\theta}  + \alpha C_4 C_5 - C_3 \tau_m }{C_5 C_1 - C_3^2}
+\label{Lin_Alpha}
+\end{equation}
+
+\subsubsection*{State Space Model}
+
+\xxx{need some basic state space explanation here}
+\xxx{clearly state A, B, C, and D matricies need to look back at formulation for their meaning}
+
+$$ Q = [q_1, q_2, q_3, q_4]^T = [q_1, \dot{q}_1, q_3, \dot{q}_3]^T = [\theta, \dot{\theta}, \alpha, \dot{\alpha}]^T $$
+$$ \dot{Q} = [\dot{q}_1, \dot{q}_2, \dot{q}_3, \dot{q}_4]^T = [\dot{q}_1, \ddot{q}_1, \dot{q}_3, \ddot{q}_3]^T = [\dot{\theta}, \ddot{\theta}, \dot{\alpha}, \ddot{\alpha}]^T $$
+
+$$ A_{ij} = \frac{\partial \dot{q}_j}{\partial q_i} $$
+
+\xxx{need to format this matrix to look better}
+$$ A = \left[ \begin{array}{c c c c l}
+	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\
+	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\
+	\frac{\partial \dot{\alpha}}{\partial \theta} & \frac{\partial \dot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \dot{\alpha}}{\partial \alpha} & \frac{\partial \dot{\alpha}}{\partial \dot{\alpha}}\\
+	\frac{\partial \ddot{\alpha}}{\partial \theta} & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}}\\
+ \end{array} \right] = 
+\left[ \begin{array}{c c c c l} 
+0 & 1 & 0 & 0 \\
+0 & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}} \\
+0 & 0 & 0 & 1 \\
+0 & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}} \\
+\end{array} \right]$$
+
+$$ \frac{\partial \ddot{\theta}}{\partial \ddot{\theta}} = -\frac{C_1 b_{\theta}}{C_5 C_1 - C_3^2}  \hspace{1cm} \frac{\partial \ddot{\theta}}{\partial \alpha} = -\frac{C_3 C_4}{C_5 C_1 - C_3^2}
+\hspace{1cm} \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}} = \frac{C_3 b_{\alpha}}{C_5 C_1 - C_3^2}$$
+
+$$ \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} = \frac{C_3 b_{\theta}}{C_5 C_1 - C_3^2} \hspace{1cm}  \frac{\partial \ddot{\alpha}}{\partial \alpha} = \frac{C_4 C_5}{C_5 C_1 - C_3^2} \hspace{1cm} \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}} = - \frac{C_5 b_{\alpha}}{C_5 C_1 - C_3^2}$$
+
+$$ B = \left[ \begin{array}{c l} 
+\frac{\partial \dot{\theta}}{\partial \tau_m} \\
+\frac{\partial \ddot{\theta}}{\partial \tau_m} \\
+\frac{\partial \dot{\alpha}}{\partial \tau_m} \\
+\frac{\partial \ddot{\alpha}}{\partial \tau_m} \\
+ \end{array} \right] 
+= \left[  \begin{array}{c l} 
+0 \\ \frac{C_1}{C_5 C_1 - C_3^2} \\ 0 \\ -\frac{C_3}{C_5 C_1 - C_3^2} \\
+\end{array} \right] $$
+
+
+\subsubsection*{System Transfer Functions}
+
+To generate the transfer functions it is more straight forwards to proceed from equations \eqref{Lin1} and \eqref{Lin2} than from \eqref{Lin_Theta} and \eqref{Lin_Alpha}.  Applying the Laplace transform \eqref{Lin1} and \eqref{Lin2} yields and performing arithmetic operation to isolate $\theta (s)$ and $\alpha (s)$ yields the following transfer functions from motor torque, $ \tau (s)$ to $\theta (s)$ and $\alpha (s)$ respectively.
+
+
+\begin{equation}
+\frac{\theta(s)}{\tau_{m}(s)} = \frac{s^2 C_1 + s b_{\alpha} - C_4}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+\label{TF_Theta}
+\end{equation}
+
+\begin{equation}
+\frac{\alpha(s)}{\tau_{m}(s)} = \frac{-s^2 C_3}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+\label{TF_Alpha}
+\end{equation}
+
+If we were to neglect the effects of damping, then \eqref{TF_Theta} and \eqref{TF_Alpha} would reduce to the following:
+
+$$ \frac{\theta(s)}{\tau_{m}(s)} \approx \frac{s^2 C_1 - C_4}{s^2 \left[s^2 \left(C_5 C_1 - C_3^3 \right) - C_4 C_5\right]} $$
+
+$$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_5 C_1 - C_3^3 \right) - C_4 C_5\right]} $$
+
+In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
 
 \end{document}
