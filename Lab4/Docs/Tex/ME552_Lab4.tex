@@ -476,9 +476,18 @@ With the motor parameters largely known already, we focused on determining the p
 2.03\cdot10^{-5} & 3.711\cdot10^{-4} & 0 \\
 0 & 0 &  3.646\cdot10^{-4} \end{vmatrix}$\end{center}
 
+Translating from the coordinate system established in Solid Works to our coordinate system yields the following moment of inertia tensor:
+
+$$I_{2} = \left[ \begin{array}{c c c l} 
+8.1\e{-6} & 0 & 2.03\e{-5} \\   
+0 & 3.711\e{-4} & 0 \\
+2.03\e{-5} & 0 & 3.646e{-4} \\
+\end{array} \right] \, kg \cdot m^2$$
+
 \begin{center}
-$m_{1} = 0.1481 kg \quad m_{2} = 0.0820 kg $\\
-$ L_{1} = 0.10826 m \quad L_{2C} = 0.08568 m \quad I_{1zz} = 7.1305\cdot 10^{-4}kg\cdot m^{2}$
+$$m_{1} = 0.1481 kg \quad m_{2} = 0.0820 kg $$
+$$ l_{1} = 0.10826 m \quad l_{2C} = 0.08568 m $$
+$$I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2 =  7.1305\cdot 10^{-4}kg\cdot m^{2}$$
 \end{center}
 
 \begin{figure}[htb]
@@ -505,59 +514,10 @@ $ L_{1} = 0.10826 m \quad L_{2C} = 0.08568 m \quad I_{1zz} = 7.1305\cdot 10^{-4}
 \end{center}
 \end{figure}
 
-To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
-\begin{center}
-$b_{pendulum} = 6.5\cdot10^{-6}N\cdot s \qquad \tau_{pendulum} = 7.0\cdot10^{-6}N\cdot m$
-\end{center}
+For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ to be the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. 
 
-\xxx{Add plot of pendulum regression? Add reference to matlab file in appendix}
-
-
-Our mathematical model above requires several physical parameters from the system including the link lengths for the forwards kinematics, the locations of centers of mass, mass, and moments of inertia for kinetic energy and potential energy computations, and electrical motor characteristics, damping coefficients and friction torques for modeling non conservative forces 
-
-\subsection*{Physical Dimensions}
-The dimensions of components were obtained through a combination of measuring dimensions with calipers and examining part files obtained from McMaster Carr.  With these physical dimensions and using material properties we constructed a model of the system in Solid Works.
-
-The two physical dimensions of relevance to our mathematical model is the length of the horizontal arm along the $^1\hat{\bf{x}}$ direction to the center of mass of the pendulum, denoted $l_1$.  the other relevant parameter is the length of the pendulum from its axis of rotation in the $^2\hat{\bf{x}}$ direction to the center of mass of the pendulum.
-
-$$\l_1 = 0.10825640 \, m \hspace{1cm} \l_{2c} = 0.0856786 \, m$$
-
-\begin{figure}
-\begin{center}
-\includegraphics[width = 13cm]{CompleteHorizontalArm.png}
-\end{center}
-\caption{Horizontal Arm Solid Works Model}
-\label{ArmCAD}
-\end{figure}
-
-\begin{figure}
-\begin{center}
-\includegraphics[width = 13cm]{Pendulum.png}
-\end{center}
-\caption{Pendulum Solid Works Model}
-\label{PendulumCAD}
-\end{figure}
-
-\subsection*{Moments of Inertia}
-
-We obtained the moment of inertia tensor for the the pendulum and the moment of inertia of the horizontal arm about the the $\theta$ axis.  Note that in our final moment of inertia for the horizontal arm we also include the rotor inertia because we assume that the two are rigidly connected.  
-
-$$ I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2\hspace{1cm} 
-I_{2} = \left[ \begin{array}{c c c l} 
-8.1\e{-6} & 0 & 2.03\e{-5} \\   
-0 & 3.711\e{-4} & 0 \\
-2.03\e{-5} & 0 & 3.646e{-4} \\
-\end{array} \right] \, kg \cdot m^2$$
-
-\subsection*{Mass}
-
-We also obtained the total mass of the pendulum from the Solid Works modeling confirming this value using the scale.
-
-$$ m_2 = 0.0820142 \, kg $$
-
-\subsection*{Friction and Damping}
-
-We assume that frictional forces and the damping coefficient for the horizontal arm is identical to the values determined for the motor in the previous lab.  The damping coefficient and frictional torque for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope of the actual system motion with a simulated model, we formed a rough estimate of these terms. 
+%To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
+$$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-6} \, N\cdot m$$
 
 \begin{figure}
 \begin{center}
@@ -566,14 +526,6 @@ We assume that frictional forces and the damping coefficient for the horizontal 
 \label{Actual Decaying Envelope of motion vs Simulated Envelope}
 \end{figure}
 
-$$ b_{\theta F} = 1.08586 \e{-5} \, \frac{kg}{s} \hspace{1cm} b_{\theta R} = 4.8593\e{-5} \, \frac{kg}{s} \hspace{1cm} T_{F \theta F} = 0.022439 \, N \cdot m \hspace{1cm} T_{F \theta R} = 0.0143095 \, N \cdot m$$
-$$ b_{\alpha} \approx 6.5 \e{-6} \, \frac{kg}{s} \hspace{1cm} T_{F \alpha} \approx 7\e{-6} \, \frac{kg}{s}$$
-
-\subsection*{Motor Properties}
-
-We assume the same motor constant, $K_t$ from the previous experiment and also use this as the back-emf constant, $k_b$.  We also experimentally confirmed that this motor constant results in a top speed very similar to the observed top speed for the bare motor.  Winding resistance was obtained from the motor data sheet.  We assume that the presence of the horizontal arm and pendulum do not alter the electrical properties of the motor.  
-
-$$ K_t = 0.0314499 \, \frac{N \cdot m}{A} \hspace{1cm} R_m \approx 1.85 \, \Omega \hspace{1cm} V_s \pm 24 \, \text{V} $$
 
 \section*{3. Comparing Linear and Non-Linear Models}
 
