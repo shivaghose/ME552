@@ -418,6 +418,88 @@ $$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_
 In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
 
 \section*{2. Parameter Identification}
+The inverted pendulum system includes many parameters related to the mechanical and electrical properties of the system. To determine these, we used a combination of manufacturer data sheets, CAD modeling, physical measurements, and experimental regression.\\
+
+Most of the relevant motor parameters were previously determined in the DC motor lab. In that case, most of the parameters were provided by the manufacturer, but we performed regression on experimental data to fit our model with the test data and found that the true values were different from those on the data sheet. The relevant values are shown in table \ref{q2_1}. An abbreviated except from our DC motor lab is given below to show our procedure for determining these values. \\
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                 & Data-Sheet Values    & Fit Values              \\ \hline
+        $J_{motor} \hspace{0.1cm} \left( \frac{N \cdot s^2}{m} \right)$               & $8.5 \cdot 10^{-6} $     & $3.50514 \cdot 10^{-5}$ \\ 
+        $K_{t} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right)$           & $0.0424$             & $0.0314499$             \\ 
+        $b_{forwards} \hspace{0.1cm} \left( N \cdot s \right)$    & $3.7 \cdot 10^{-6} $ & $1.08586 \cdot 10^{-5}$ \\ 
+        $b_{reverse} \hspace{0.1cm} \left( N \cdot s \right)$     & $3.7 \cdot 10^{-6} $ & $4.85930 \cdot 10^{-5}$ \\ 
+        $\tau_{forwards} \hspace{0.1cm} \left( N \cdot m \right)$ & $5.6 \cdot 10^{-3}$  & $0.0224389$             \\ 
+        $\tau_{reverse} \hspace{0.1cm} \left( N \cdot m \right)$   & $5.6 \cdot 10^{-3}$  & $0.0143096$             \\
+        \hline
+    \end{tabular}
+\caption{DC Motor Final Parameter Values vs Original Data Sheet Values}
+\label{q2_1}
+\end{center}
+\end{table}
+
+To determine the parameters of the motor we used MATLAB's numerical differential equation solving to simulate the trajectory of the system as a function of time, driver current, $I_t$ and our unknown system parameters $J$, $b$, $K_t$, and $\tau_{coulomb}$.  By then
+comparing the predicted angular positions with the measured angular positions over time, we can construct a non-linear regression to estimate the unknown parameters.  We collected a data set where the driver was given a sinusoidal voltage, and we assume that motor current, $I_m$, is identical to this driver voltage and recorded the motor motion that this input caused. \\
+
+With this model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_2}. The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions. \\ 
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{awesomefitFiner.png}
+\caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
+\label{q2_2}
+\end{center}
+\end{figure}
+
+With the motor parameters largely known already, we focused on determining the parameters of the new components comprising the pendulum and horizontal arm. To ensure accuracy, we used multiple methods and compared results. For example, all of the mass of every component was determined on the scale provided in the mechatronics lab. We then built CAD models of every component in SolidWorks using a combination of engineering drawings, physical measurements, and already built models from McMaster-Carr. By setting the material properties correctly, SolidWorks can determine the mass of every part. We compared this calculated value to the measured values and they all matched within the limits of resolution of the scale. This gave us confidence in the ability of SolidWorks to calculate the other necessary parameters.Therefore, we built assemblies of the pendulum, the horizontal arm and complete system, and we used SolidWorks to calculate the masses, centers of mass, and moments of inertia that we needed. Figures \ref{q2_3}, \ref{q2_4}, and \ref{q2_5} show the CAD assemblies. The inertia matrix for the pendulum and other relevant values are given below. Note that the axes labels in the SolidWorks models are not the same as those in our derived equations.
+
+\begin{center} $ \begin{vmatrix}
+\bar{I}_{xx} & \bar{I}_{xy} & \bar{I}_{xz} \\
+\bar{I}_{yx} & \bar{I}_{yy} & \bar{I}_{yz} \\
+\bar{I}_{zx} & \bar{I}_{zy} &  \bar{I}_{zz} \end{vmatrix}_{Pendulum}
+=  \begin{vmatrix}
+8.1\cdot10^{-6} & 2.03\cdot10^{-5} & 0 \\
+2.03\cdot10^{-5} & 3.711\cdot10^{-4} & 0 \\
+0 & 0 &  3.646\cdot10^{-4} \end{vmatrix}$\end{center}
+
+\begin{center}
+$m_{1} = 0.1481 kg \quad m_{2} = 0.0820 kg $\\
+$ L_{1} = 0.10826 m \quad L_{2C} = 0.08568 m \quad I_{1zz} = 7.1305\cdot 10^{-4}kg\cdot m^{2}$
+\end{center}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{Pendulum.png}
+\caption{SolidWorks Model of Pendulum}
+\label{q2_3}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{Horizontal.png}
+\caption{SolidWorks Model of Horizontal Link}
+\label{q2_4}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{CompleteArm.png}
+\caption{SolidWorks Model of Assembled Pendulum and Horizontal Link}
+\label{q2_5}
+\end{center}
+\end{figure}
+
+To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
+\begin{center}
+$b_{pendulum} = 6.5\cdot10^{-6}N\cdot s \qquad \tau_{pendulum} = 7.0\cdot10^{-6}N\cdot m$
+\end{center}
+
+\xxx{Add plot of pendulum regression? Add reference to matlab file in appendix}
+
 
 \section*{3. Comparing Linear and Non-Linear Models}
 
