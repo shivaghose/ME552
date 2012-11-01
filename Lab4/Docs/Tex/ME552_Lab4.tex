@@ -141,19 +141,42 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \newpage
 
-\section*{1.}
+\section{System Modeling}
 
-\xxx{need figure to show coordinate frames!}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 6cm]{coordinates.png}
+\caption{The co-ordinate frames of the inverted pendulum system}
+\label{q1_coords}
+\end{center}
+\end{figure}
+
 \subsection*{a. Physical Model}
 We model the physical system as a pair of rigid links, the horizontal arm and the pendulum mounted to the end of the arm, neglecting the presence of the encoder cable, using a lumped parameter model.
 
 \subsection*{b. Assumptions}
-\xxx{This section could probably be cleaned up a bit}
-We assume that all of our links are rigid and assume allowing us to neglect work done by the internal constraining forces of the system.  This assumption very nearly holds because e are using stiff metals and bearings that are well fitted which should all but prevent internal losses due to collisions and deformations.  We neglect air resistance because of the small cross sectional areas and low velocities combined with the difficult in constructing an appropriate model and determining its forces.  We assume that the axis of rotation of the horizontal arm is fixed in space and perfectly level with the ground.  This assumption overlaps with neglecting losses due to internal constraints and ensures that there will be no potential energy term associated with the arm and avoids the need to consider the motor stand, the table beneath it etc.  We also neglect the presence of the encoder cable connected to the arm.  We found that the cable has a large impact on our system however its influence would be very difficult to model because it is not fixed to the arm and because the forces it introduces are highly non linear. 
+We make the following assumptions while modeling the system:
+\begin{itemize}
+\item All of the links are rigid - this allows us to neglect work done by the internal constraining forces of the system such as internal losses due to collisions and deformations. This assumption very nearly holds because system is built using stiff metals and bearings that are well fitted.
+
+\item Air resistance is neglected - this is due to the small cross sectional areas and low velocities experienced by the system. Additionally this is neglected due to the difficulty in constructing an appropriate model for these losses and determining its forces.
+
+\item The axis of rotation of the horizontal arm is fixed in space and perfectly level with the ground -  this assumption overlaps with neglecting losses due to internal constraints and ensures that there will be no potential energy term associated with the arm and avoids the need to consider the motor stand, the table beneath it etc.
+
+\item The presence of the encoder cable connected to the arm is neglected - We found that the cable has a large impact on our system however its influence would be very difficult to model because it is not fixed to the arm and because the forces it introduces are highly non linear.   
+\end{itemize}
+
+Apart from the above list, the standard set of control systems assumptions are also made:
+\begin{itemize}
+\item The current driver acts instantaneously - the transients involved occur so quickly with respect to the system response time that we virtually have immediate response. Also, the motor, acting as a low pass filter, will reject the high frequency components of the driver.
+
+\item The DAQ has instantaneous and correct response - we ignore the quantization and discretization errors of the DAQ and further assume that offset errors have been accounted for. This is valid because our control loop runs at 100 Hz while the DAQ can be sampled at 1000 Hz. Additionally we believe that the DAQ has been calibrated and static errors have been removed.
+\end{itemize}
+
 
 \subsection*{c. Mathematical Modeling}
 \subsubsection*{Forwards Kinematics}
-Let $^0F$ represent the fixed world coordinate frame, with $\bf{^0\hat{z}}$ aligned with the motor shaft and with $\bf{^0\hat{x}}$ pointing along the initial direction of the horizontal arm when the system is initialized.  Let the origin of $^0F$ be located to coincide with the motor axis and the axis of rotation of the pendulum.  Let $^1F$, representing the local frame of the horizontal arm, be attached to the horizontal arm, with $\bf{^1\hat{z}}$ aligned with the motor shaft and $\bf{^1\hat{x}}$ aligned with the motor arm pointed towards the pendulum.  Let $^2F$ be located such that its origin is along $\bf{^1\hat{x}}$ at a distance $l_1$, with $\bf{^2\hat{x}}$ pointing along the pendulum and $\bf{^2\hat{z}}$ along the $\bf{-^1\hat{x}}$ direction.  Where $l_1$ is the distance from the axis of rotation of the motor to the center of mass of the pendulum along the $\bf{^1\hat{x}}$ direction.  Let $\theta$ denote the angle between $\bf{^0\hat{x}}$ and $\bf{^1\hat{x}}$ and let $\alpha$ denote the angle between $\bf{^1\hat{z}}$ and $\bf{^2\hat{x}}$ measured clockwise when viewed from $\bf{^1\hat{x}}$.  We assume that the motor and the horizontal arm are rigidly connected and can be treated as a single inertia for purposes of our energy calculations below.
+Let $^0F$ represent the fixed world coordinate frame, with $\bf{^0\hat{z}}$ aligned with the motor shaft and with $\bf{^0\hat{x}}$ pointing along the initial direction of the horizontal arm when the system is initialized (as seen in figure \ref{q1_coords} on page \pageref{q1_coords}).  Let the origin of $^0F$ be located to coincide with the motor axis and the axis of rotation of the pendulum.  Let $^1F$, representing the local frame of the horizontal arm, be attached to the horizontal arm, with $\bf{^1\hat{z}}$ aligned with the motor shaft and $\bf{^1\hat{x}}$ aligned with the motor arm pointed towards the pendulum.  Let $^2F$ be located such that its origin is along $\bf{^1\hat{x}}$ at a distance $l_1$, with $\bf{^2\hat{x}}$ pointing along the pendulum and $\bf{^2\hat{z}}$ along the $\bf{-^1\hat{x}}$ direction.  Where $l_1$ is the distance from the axis of rotation of the motor to the center of mass of the pendulum along the $\bf{^1\hat{x}}$ direction.  Let $\theta$ denote the angle between $\bf{^0\hat{x}}$ and $\bf{^1\hat{x}}$ and let $\alpha$ denote the angle between $\bf{^1\hat{z}}$ and $\bf{^2\hat{x}}$ measured clockwise when viewed from $\bf{^1\hat{x}}$.  We assume that the motor and the horizontal arm are rigidly connected and can be treated as a single inertia for purposes of our energy calculations below.\\
 
 Then:
 
@@ -429,7 +452,9 @@ $$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_
 
 In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
 
-\section*{2. Parameter Identification}
+\clearpage
+
+\section{ Parameter Identification}
 The inverted pendulum system includes many parameters related to the mechanical and electrical properties of the system. To determine these, we used a combination of manufacturer data sheets, CAD modeling, physical measurements, and experimental regression.\\
 
 Most of the relevant motor parameters were previously determined in the DC motor lab. In that case, most of the parameters were provided by the manufacturer, but we performed regression on experimental data to fit our model with the test data and found that the true values were different from those on the data sheet. The relevant values are shown in table \ref{q2_1}. An abbreviated except from our DC motor lab is given below to show our procedure for determining these values. \\
@@ -526,11 +551,14 @@ $$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-
 \label{Actual Decaying Envelope of motion vs Simulated Envelope}
 \end{figure}
 
+\clearpage
 
-\section*{3. Comparing Linear and Non-Linear Models}
+\section{Comparing Linear and Non-Linear Models}
 
 
-\section*{4. State Space Controls in Simulink}
+\clearpage
+\section{State Space Controls in Simulink}
+
 
 Using the $A$, $B$, $C$, and $D$ matrices derived earlier together with the tuned $Q$ and $R$ matrices below, we constructed a full-state feedback controller using the Matlab $lqr$ function.  
 $$Q = \left[\begin{array}{c c c c l} 10 & 0 & 0 & 0 \\ 0 & 40 & 0 & 0 \\ 0 & 0 & 120 & 0 \\ 0 & 0 & 0 & 60 \\  \end{array} \right] \hspace{1cm} R = \left[ 6 \right]$$
@@ -565,28 +593,68 @@ Figure \ref{LvsNonLwF} introduces frictional forces to the non-linear model.  He
 \label{LvsNonLwF}
 \end{figure}
 
+\clearpage
+\section{Swing Up Controller in Simulink}
 
 
-\section*{5. Swing Up Controller in Simulink}
 
-\section*{6. LabView Implementation}
+\clearpage
+\section{LabView Implementation}
 
 \subsection*{a.}
+Angle normalization was implemented using the $mod2\pi()$ function. The function works by limiting an input angle, $\theta$ to $\pm \pi $ radians which effectively represents the entire angular spectrum of $2\pi$ radians. The advantage of using $mod2\pi()$ over a function that normalizes $\theta$ from $0$ to $2\pi$ is that the angular reset point is at $\pm \pi$ as opposed to $0$ radians. For our inverted pendulum we would like to ensure that $\alpha$ and $\theta$ are close to zero. Using $mod2\pi()$ ensures that spikes do not occur about the transition point.\\
+
+The code for the $mod2\pi$ operation is as follows:
+
+\begin{verbatim}
+if t<0
+    t = -t;
+    sign = -1;
+else
+    sign = 1;
+tout = sign*(t - floor(t*0.5/pi + 0.5) * 2 *pi);
+\end{verbatim}
+
+$\theta$ is represented as $t$. For our normalization, we require $t$ to be positive and we keep track of the original sign of $t$ through the variable $sign$. $tout$ represents the output value of $mod2\pi(\theta)$ . The $floor$ operation essentially finds the quotient of dividing $t$ by $2\pi$ and the the $+ 0.5$ operation allows the angle to be normalized between $+\pi$ on one side and $-\pi$ on the other. This way, we can constrain $\theta$ to stay between $\pm \pi$.
+
+
+
+$mod2\pi$ is very useful for controlling $\alpha$. $\alpha$ will reach its unstable equilibrium every $2\pi$ radians and we are happy with it as long as the pendulum balances in the unstable equilibrium. Additionally the change from $+\pi$ to $-\pi$ occurs when the the pendulum is facing downwards, but at this point the swing-up controller would be operational and for the swing-up controller, the sign of $\cos(\alpha)$ in the $+\pi$ and $-\pi$ quadrants are the same, so this does not affect the system.\\
+
+For $\theta$ control we have to be a little careful - the horizontal arm moves a lot during swing up and generally during balancing as well, if we apply a $mod2\pi()$ operation before calculating $\dot{\theta}$, the derivative will spike up violently during the $\pm \pi$ crossover point - this in turn would destabilie the inverted pendulum system. Hence it is a good idea to calculate $\dot{\theta}$ from $\theta_{\text{Absolute}}$.\\
+
+In general it is good practice to use a $mod2\pi()$ operation on repetitive angular functions, it helps in numerical precision in trigonometric functions also captures the nature of the system - after a point, we get back to where we were.
 
 \subsection*{b.}
+While implementing the system in Labview we used the Matlab script block which allowed us to write Matlab code for execution as opposed to creating a messy wire-block diagram. The front panel and the block diagram can be seen in figure \ref{q6_a}.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 8cm]{q6_a.png}
+\end{center}
+\caption{Front panel and block diagram of $mod2\pi$.}
+\label{q6_a}
+\end{figure}
+\clearpage
 
 \subsection*{c.}
 
 \subsection*{d.}
 
-\section*{7. Effects on LabView Loop Rate on Stability}
+\clearpage
+\section{Effects on LabView Loop Rate on Stability}
 
-\section*{8. Classical Controller}
 
-\section*{9. Another Swing Up Controller}
+\clearpage
+\section{Classical Controller}
 
-\section*{10. Parasitic Effects}
+\clearpage
+\section{Another Swing Up Controller}
 
+\clearpage
+\section{Parasitic Effects}
+
+\clearpage
 \section*{Appendix.}
 
 \xxx{Add matlab code and stuff here}
