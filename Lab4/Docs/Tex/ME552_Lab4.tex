@@ -148,6 +148,7 @@ and that I have read and understood the X50 Lab Rules.\\
 We model the physical system as a pair of rigid links, the horizontal arm and the pendulum mounted to the end of the arm, neglecting the presence of the encoder cable, using a lumped parameter model.
 
 \subsection*{b. Assumptions}
+\xxx{This section could probably be cleaned up a bit}
 We assume that all of our links are rigid and assume allowing us to neglect work done by the internal constraining forces of the system.  This assumption very nearly holds because e are using stiff metals and bearings that are well fitted which should all but prevent internal losses due to collisions and deformations.  We neglect air resistance because of the small cross sectional areas and low velocities combined with the difficult in constructing an appropriate model and determining its forces.  We assume that the axis of rotation of the horizontal arm is fixed in space and perfectly level with the ground.  This assumption overlaps with neglecting losses due to internal constraints and ensures that there will be no potential energy term associated with the arm and avoids the need to consider the motor stand, the table beneath it etc.  We also neglect the presence of the encoder cable connected to the arm.  We found that the cable has a large impact on our system however its influence would be very difficult to model because it is not fixed to the arm and because the forces it introduces are highly non linear. 
 
 \subsection*{c. Mathematical Modeling}
@@ -285,10 +286,30 @@ C_1 \ddot{\alpha} + C_3 \, \ddot{\theta} \cos(\alpha) - (C_2 - I_{2xx}) \dot{\th
 
 The pair of non-linear differential equations can be used to numerically model the behavior of the system, but they are not particularly useful for actual controller design.  Both state space controls and our traditional techniques require the system to be linearized around a particular operating point.  This allows us to generate a transfer function to approximate the behavior of the system and lets us construct root locii and bode plots to quantify system behavior.  
 
-\subsection*{d.}
+\subsubsection*{Electrical Driver and Motor Model}
 
-\xxx{put some pictures of the non-linear model make}
-\xxx{make references to matlab code}
+We also modeled the effects of motor back emf which serves to limit the maximum angular velocities that the arm can achieve. For the given command current, we compute the back emf across the motor according to its present angular velocity, $\dot{\theta}$ and the back-emf constant $K_b$, and compare the required supply voltage with the actual supply voltage, $V_{s}$.  If the supply voltage is insufficient, we use the supply voltage and the back-emf to compute the voltage across the motor and from that compute the actual motor current.  Otherwise motor current is directly proportional to command voltage. 
+
+\subsection*{d.}
+See figure \ref{NonLinearBlock} for the block diagram of the non-linear model within Simulink.  See the included code in the Appendix for the implemented functions. \\
+\xxx{add matlab code to Appendix}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{NonLinearModelPic.png}
+\end{center}
+\caption{Block Diagram of Non-Linear System Model}
+\label{NonLinearBlock}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{DriverandMotorModel.png}
+\end{center}
+\caption{Block Diagram of Driver and Electrical Motor Model}
+\label{DriverNonLinearBlock}
+\end{figure}
+
 \subsection*{e.}
 \subsubsection*{Linearized Equations of Motion}
 
@@ -328,13 +349,25 @@ $$ C_{5} = (I_{1z1} + I_{2xx} + m_2 l_1^2) $$
 
 \subsubsection*{State Space Model}
 
-\xxx{need some basic state space explanation here}
-\xxx{clearly state A, B, C, and D matricies need to look back at formulation for their meaning}
+State Space Representation models a dynamical system as a set of linear, time-varying differential equations.  What is known as the state of the system is a set of variables, the generalized coordinates, $q_i$ that completely describe the internal state of the system.  For the inverted pendulum we choose the coordinates: 
 
-$$ Q = [q_1, q_2, q_3, q_4]^T = [q_1, \dot{q}_1, q_3, \dot{q}_3]^T = [\theta, \dot{\theta}, \alpha, \dot{\alpha}]^T $$
-$$ \dot{Q} = [\dot{q}_1, \dot{q}_2, \dot{q}_3, \dot{q}_4]^T = [\dot{q}_1, \ddot{q}_1, \dot{q}_3, \ddot{q}_3]^T = [\dot{\theta}, \ddot{\theta}, \dot{\alpha}, \ddot{\alpha}]^T $$
+$$ {\bf{X}}(t) = [q_1(t), q_2(t), q_3(t), q_4(t)]^T = [q_1(t), \dot{q}_1(t), q_3(t), \dot{q}_3(t)]^T = [\theta(t), \dot{\theta}(t), \alpha, \dot{\alpha}(t)]^T $$
 
-$$ A_{ij} = \frac{\partial \dot{q}_j}{\partial q_i} $$
+In this generalized coordinate system, we compute the derivative of the state, $\dot{X}$ as a function of the current state $\bf{X}$ and the inputs $\bf{u}$. 
+
+$$ \dot{\bf{X}(t)} = [\dot{q}_1(t), \dot{q}_2(t), \dot{q}_3(t), \dot{q}_4(t)]^T = [\dot{q}_1(t), \ddot{q}_1(t), \dot{q}_3(t), \ddot{q}_3(t)]^T = [\dot{\theta}(t), \ddot{\theta}(t), \dot{\alpha}(t), \ddot{\alpha}(t)]^T $$
+
+Because our system is linear this relationship can be related through the State Matrix $A$ and the Input Matrix $B$ which map the current state and external inputs into the system into the change in state through the following equation.
+
+$$ \dot{\bf{X}}(t) = A(t) {\bf{X}(t)} + B(t) {\bf{u}}(t)$$
+
+$$ A_{ij} = \frac{\partial \dot{q}_j}{\partial q_i}(t) \hspace{1cm}  B_{i} = \frac{\partial \dot{q}_i}{\partial u_i}(t)$$
+
+The actual output that we wish to control is determined from $\dot{\bf{X}}(t)$ and from the inputs ${\bf{u}}(t)$ through the Output Matrix, $C(t)$ and the Direct Transmission Matrix $D(t)$.  Then our output ${\bf{Y}}(t)$ can be represented as follows:
+
+$$ {\bf{Y}}(t) = C(t) \dot{\bf{X}}(t) + D(t) {\bf{u}}(t) = C(t) \left\{ A(t) {\bf{X}(t)} + B(t) {\bf{u}}(t) \right\}+ D(t) {\bf{u}}(t)$$
+
+As noted above the matrices A, B, C, and D may in general be functions of time, however because our system is time invariant, these matrices become independent of time.  The notation below has been simplified accordingly.  The matrices A and B may be obtained directly from our linearized equations of motion above.  
 
 \xxx{need to format this matrix to look better}
 $$ A = \left[ \begin{array}{c c c c l}
@@ -365,6 +398,13 @@ $$ B = \left[ \begin{array}{c l}
 0 \\ \frac{C_1}{C_5 C_1 - C_3^2} \\ 0 \\ -\frac{C_3}{C_5 C_1 - C_3^2} \\
 \end{array} \right] $$
 
+We wish to stabilize the pendulum vertically, so the output be are interested in is precisely $\alpha(t)$.  Thus C becomes simply:
+
+$$ C = [0, 0, 1, 0]^T $$
+
+For this system, the only external input, the motor torque $\tau_{m}(t)$, does not directly influence the output, ${\bf{Y}}(t)$ except for its influence on  $\dot{\bf{X}}(t)$ making D simply the zero matrix.
+
+$$ D = [0, 0, 0, 0]^T$$
 
 \subsubsection*{System Transfer Functions}
 
@@ -390,6 +430,102 @@ $$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_
 In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
 
 \section*{2. Parameter Identification}
+The inverted pendulum system includes many parameters related to the mechanical and electrical properties of the system. To determine these, we used a combination of manufacturer data sheets, CAD modeling, physical measurements, and experimental regression.\\
+
+Most of the relevant motor parameters were previously determined in the DC motor lab. In that case, most of the parameters were provided by the manufacturer, but we performed regression on experimental data to fit our model with the test data and found that the true values were different from those on the data sheet. The relevant values are shown in table \ref{q2_1}. An abbreviated except from our DC motor lab is given below to show our procedure for determining these values. \\
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                 & Data-Sheet Values    & Fit Values              \\ \hline
+        $J_{motor} \hspace{0.1cm} \left( \frac{N \cdot s^2}{m} \right)$               & $8.5 \cdot 10^{-6} $     & $3.50514 \cdot 10^{-5}$ \\ 
+        $K_{t} \hspace{0.1cm} \left( \frac{N\cdot m}{A} \right)$           & $0.0424$             & $0.0314499$             \\ 
+        $b_{forwards} \hspace{0.1cm} \left( N \cdot s \right)$    & $3.7 \cdot 10^{-6} $ & $1.08586 \cdot 10^{-5}$ \\ 
+        $b_{reverse} \hspace{0.1cm} \left( N \cdot s \right)$     & $3.7 \cdot 10^{-6} $ & $4.85930 \cdot 10^{-5}$ \\ 
+        $\tau_{forwards} \hspace{0.1cm} \left( N \cdot m \right)$ & $5.6 \cdot 10^{-3}$  & $0.0224389$             \\ 
+        $\tau_{reverse} \hspace{0.1cm} \left( N \cdot m \right)$   & $5.6 \cdot 10^{-3}$  & $0.0143096$             \\
+        \hline
+    \end{tabular}
+\caption{DC Motor Final Parameter Values vs Original Data Sheet Values}
+\label{q2_1}
+\end{center}
+\end{table}
+
+To determine the parameters of the motor we used MATLAB's numerical differential equation solving to simulate the trajectory of the system as a function of time, driver current, $I_t$ and our unknown system parameters $J$, $b$, $K_t$, and $\tau_{coulomb}$.  By then
+comparing the predicted angular positions with the measured angular positions over time, we can construct a non-linear regression to estimate the unknown parameters.  We collected a data set where the driver was given a sinusoidal voltage, and we assume that motor current, $I_m$, is identical to this driver voltage and recorded the motor motion that this input caused. \\
+
+With this model and some intelligent guessing for new parameter values, we arrived at an excellent fit shown in figure \ref{q2_2}. The most notable feature of these values is the large difference between the torque of friction in the forwards and reverse directions. \\ 
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{awesomefitFiner.png}
+\caption{Predicted behavior vs Actual behavior using fit parameter values and enhanced modeling}
+\label{q2_2}
+\end{center}
+\end{figure}
+
+With the motor parameters largely known already, we focused on determining the parameters of the new components comprising the pendulum and horizontal arm. To ensure accuracy, we used multiple methods and compared results. For example, all of the mass of every component was determined on the scale provided in the mechatronics lab. We then built CAD models of every component in SolidWorks using a combination of engineering drawings, physical measurements, and already built models from McMaster-Carr. By setting the material properties correctly, SolidWorks can determine the mass of every part. We compared this calculated value to the measured values and they all matched within the limits of resolution of the scale. This gave us confidence in the ability of SolidWorks to calculate the other necessary parameters.Therefore, we built assemblies of the pendulum, the horizontal arm and complete system, and we used SolidWorks to calculate the masses, centers of mass, and moments of inertia that we needed. Figures \ref{q2_3}, \ref{q2_4}, and \ref{q2_5} show the CAD assemblies. The inertia matrix for the pendulum and other relevant values are given below. Note that the axes labels in the SolidWorks models are not the same as those in our derived equations.
+
+\begin{center} $ \begin{vmatrix}
+\bar{I}_{xx} & \bar{I}_{xy} & \bar{I}_{xz} \\
+\bar{I}_{yx} & \bar{I}_{yy} & \bar{I}_{yz} \\
+\bar{I}_{zx} & \bar{I}_{zy} &  \bar{I}_{zz} \end{vmatrix}_{Pendulum}
+=  \begin{vmatrix}
+8.1\cdot10^{-6} & 2.03\cdot10^{-5} & 0 \\
+2.03\cdot10^{-5} & 3.711\cdot10^{-4} & 0 \\
+0 & 0 &  3.646\cdot10^{-4} \end{vmatrix}$\end{center}
+
+Translating from the coordinate system established in Solid Works to our coordinate system yields the following moment of inertia tensor:
+
+$$I_{2} = \left[ \begin{array}{c c c l} 
+8.1\e{-6} & 0 & 2.03\e{-5} \\   
+0 & 3.711\e{-4} & 0 \\
+2.03\e{-5} & 0 & 3.646e{-4} \\
+\end{array} \right] \, kg \cdot m^2$$
+
+\begin{center}
+$$m_{1} = 0.1481 kg \quad m_{2} = 0.0820 kg $$
+$$ l_{1} = 0.10826 m \quad l_{2C} = 0.08568 m $$
+$$I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2 =  7.1305\cdot 10^{-4}kg\cdot m^{2}$$
+\end{center}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{Pendulum.png}
+\caption{SolidWorks Model of Pendulum}
+\label{q2_3}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{Horizontal.png}
+\caption{SolidWorks Model of Horizontal Link}
+\label{q2_4}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{CompleteArm.png}
+\caption{SolidWorks Model of Assembled Pendulum and Horizontal Link}
+\label{q2_5}
+\end{center}
+\end{figure}
+
+For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ to be the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. 
+
+%To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
+$$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-6} \, N\cdot m$$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 16cm]{pendulumEnvelope.png}
+\end{center}
+\label{Actual Decaying Envelope of motion vs Simulated Envelope}
+\end{figure}
+
 
 \section*{3. Comparing Linear and Non-Linear Models}
 
@@ -415,6 +551,8 @@ In the simplified transfer function for $\alpha (s)$ above it appears as if we c
 
 \section*{10. Parasitic Effects}
 
+\section*{Appendix.}
 
+\xxx{Add matlab code and stuff here}
 
 \end{document}
