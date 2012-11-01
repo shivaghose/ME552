@@ -13,8 +13,6 @@
 % experiment but this may not be quite the case with an off balance torque
 % on the shaft
 
-clear all
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % physical parameters
 

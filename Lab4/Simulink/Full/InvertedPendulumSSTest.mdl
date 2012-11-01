@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.238"
+    ComputedModelVersion    "1.245"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -27,9 +27,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "jrpeterson"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Oct 29 18:43:34 2012"
-  RTWModifiedTimeStamp	  273435513
-  ModelVersionFormat	  "1.%<AutoIncrement:238>"
+  LastModifiedDate	  "Thu Nov  1 16:55:48 2012"
+  RTWModifiedTimeStamp	  273680193
+  ModelVersionFormat	  "1.%<AutoIncrement:245>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -66,7 +66,6 @@ Model {
     $ObjectID		    1
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
     model_		    "InvertedPendulumSSTest"
-    signals_		    []
     overrideMode_	    [0.0]
     Array {
       Type		      "Cell"
@@ -920,7 +919,7 @@ Model {
   }
   System {
     Name		    "InvertedPendulumSSTest"
-    Location		    [1507, 185, 2464, 550]
+    Location		    [407, 158, 1666, 679]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -934,7 +933,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "300"
+    SIDHighWatermark	    "301"
     Block {
       BlockType		      SubSystem
       Name		      "Computer"
@@ -957,7 +956,7 @@ Model {
       }
       System {
 	Name			"Computer"
-	Location		[1159, 287, 2343, 1029]
+	Location		[1159, 331, 2343, 1073]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1439,8 +1438,8 @@ Model {
 	      MaskHideContents	      off
 	      System {
 		Name			"Swing Up Controller"
-		Location		[1742, 168, 3214, 1318]
-		Open			on
+		Location		[1394, 59, 2866, 1187]
+		Open			off
 		ModelBrowserVisibility	off
 		ModelBrowserWidth	200
 		ScreenColor		"white"
@@ -3192,11 +3191,19 @@ Model {
 	  }
 	}
 	Block {
+	  BlockType		  Gain
+	  Name			  "Gain"
+	  SID			  "301"
+	  Position		  [15, 635, 45, 665]
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
 	  BlockType		  Constant
 	  Name			  "Motor On?"
 	  SID			  "220"
 	  Position		  [310, 580, 340, 610]
-	  Value			  "0"
 	}
 	Block {
 	  BlockType		  Mux
@@ -3642,7 +3649,7 @@ Model {
       Name		      "Inverted Pendulum"
       SID		      "143"
       Ports		      [1, 3]
-      Position		      [685, 31, 880, 129]
+      Position		      [685, 41, 880, 139]
       MinAlgLoopOccurrences   off
       PropExecContextOutsideSubsystem off
       RTWSystemCode	      "Auto"
@@ -3673,7 +3680,7 @@ Model {
       }
       System {
 	Name			"Inverted Pendulum"
-	Location		[1806, 279, 3021, 933]
+	Location		[209, 316, 1424, 970]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -3707,7 +3714,7 @@ Model {
 	  Position		  [970, 469, 1045, 571]
 	  Floating		  off
 	  Location		  [803, 309, 1727, 980]
-	  Open			  on
+	  Open			  off
 	  NumInputPorts		  "3"
 	  List {
 	    ListType		    AxesTitles
@@ -3728,6 +3735,7 @@ Model {
 	  Name			  "Alpha_0"
 	  SID			  "207"
 	  Position		  [40, 210, 70, 240]
+	  Value			  "0.1"
 	  Port {
 	    PortNumber		    1
 	    Name		    "Alpha_0"
@@ -3989,7 +3997,7 @@ Model {
 	  Name			  "Integrator"
 	  SID			  "209"
 	  Ports			  [2, 1]
-	  Position		  [680, 121, 725, 159]
+	  Position		  [680, 126, 725, 164]
 	  InitialConditionSource  "external"
 	  Port {
 	    PortNumber		    1
@@ -4003,7 +4011,7 @@ Model {
 	  Name			  "Integrator1"
 	  SID			  "210"
 	  Ports			  [2, 1]
-	  Position		  [680, 186, 725, 224]
+	  Position		  [680, 191, 725, 229]
 	  InitialConditionSource  "external"
 	  Port {
 	    PortNumber		    1
@@ -4017,7 +4025,7 @@ Model {
 	  Name			  "Integrator2"
 	  SID			  "211"
 	  Ports			  [2, 1]
-	  Position		  [680, 250, 725, 290]
+	  Position		  [680, 255, 725, 295]
 	  InitialConditionSource  "external"
 	  Port {
 	    PortNumber		    1
@@ -4031,7 +4039,7 @@ Model {
 	  Name			  "Integrator3"
 	  SID			  "212"
 	  Ports			  [2, 1]
-	  Position		  [680, 315, 725, 350]
+	  Position		  [680, 320, 725, 355]
 	  InitialConditionSource  "external"
 	  Port {
 	    PortNumber		    1
@@ -4311,23 +4319,24 @@ Model {
 	  BlockType		  Scope
 	  Name			  "System State"
 	  SID			  "202"
-	  Ports			  [5]
-	  Position		  [930, 134, 1000, 206]
+	  Ports			  [4]
+	  Position		  [930, 139, 1000, 211]
 	  Floating		  off
-	  Location		  [174, 135, 1430, 962]
+	  Location		  [573, 126, 1829, 953]
 	  Open			  off
-	  NumInputPorts		  "5"
+	  NumInputPorts		  "4"
 	  List {
 	    ListType		    AxesTitles
 	    axes1		    "%<SignalLabel>"
 	    axes2		    "%<SignalLabel>"
 	    axes3		    "%<SignalLabel>"
 	    axes4		    "%<SignalLabel>"
-	    axes5		    "%<SignalLabel>"
 	  }
 	  TimeRange		  "10"
-	  YMin			  "-1~-20~0~-20~-0.4"
-	  YMax			  "4~20~5~20~0.4"
+	  YMin			  "-1~-20~0~-20"
+	  YMax			  "4~20~5~20"
+	  SaveToWorkspace	  on
+	  SaveName		  "NonLinearResponse"
 	  DataFormat		  "StructureWithTime"
 	  LimitDataPoints	  off
 	  SampleTime		  "0"
@@ -4386,22 +4395,12 @@ Model {
 	  Labels		  [0, 1]
 	  SrcBlock		  "Motor Torque (Nm)"
 	  SrcPort		  1
-	  Points		  [30, 0]
-	  Branch {
-	    DstBlock		    "Non_Linear_EQ_Motion"
-	    DstPort		    1
-	  }
-	  Branch {
-	    Labels		    [2, 1]
-	    Points		    [0, 320; 580, 0; 0, -245]
-	    DstBlock		    "System State"
-	    DstPort		    5
-	  }
+	  DstBlock		  "Non_Linear_EQ_Motion"
+	  DstPort		  1
 	}
 	Line {
 	  SrcBlock		  "Non_Linear_EQ_Motion"
 	  SrcPort		  1
-	  Points		  [0, -5]
 	  DstBlock		  "Integrator"
 	  DstPort		  1
 	}
@@ -4410,28 +4409,25 @@ Model {
 	  Labels		  [2, 0]
 	  SrcBlock		  "Theta_0"
 	  SrcPort		  1
-	  Points		  [0, -105; 585, 0; 0, 130]
+	  Points		  [0, -105; 585, 0; 0, 135]
 	  DstBlock		  "Integrator"
 	  DstPort		  2
 	}
 	Line {
 	  SrcBlock		  "Non_Linear_EQ_Motion"
 	  SrcPort		  2
-	  Points		  [0, -5]
 	  DstBlock		  "Integrator1"
 	  DstPort		  1
 	}
 	Line {
 	  SrcBlock		  "Non_Linear_EQ_Motion"
 	  SrcPort		  3
-	  Points		  [0, -5]
 	  DstBlock		  "Integrator2"
 	  DstPort		  1
 	}
 	Line {
 	  SrcBlock		  "Non_Linear_EQ_Motion"
 	  SrcPort		  4
-	  Points		  [0, -5]
 	  DstBlock		  "Integrator3"
 	  DstPort		  1
 	}
@@ -4440,7 +4436,7 @@ Model {
 	  Labels		  [3, 0]
 	  SrcBlock		  "Thetadot_0"
 	  SrcPort		  1
-	  Points		  [10, 0; 0, -135; 560, 0; 0, 175]
+	  Points		  [10, 0; 0, -135; 560, 0; 0, 180]
 	  DstBlock		  "Integrator1"
 	  DstPort		  2
 	}
@@ -4449,7 +4445,7 @@ Model {
 	  Labels		  [3, 0]
 	  SrcBlock		  "Alpha_0"
 	  SrcPort		  1
-	  Points		  [20, 0; 0, -165; 535, 0; 0, 220]
+	  Points		  [20, 0; 0, -165; 535, 0; 0, 225]
 	  DstBlock		  "Integrator2"
 	  DstPort		  2
 	}
@@ -4458,7 +4454,7 @@ Model {
 	  Labels		  [3, 0]
 	  SrcBlock		  "Alphadot_0"
 	  SrcPort		  1
-	  Points		  [35, 0; 0, -195; 505, 0; 0, 260]
+	  Points		  [35, 0; 0, -195; 505, 0; 0, 265]
 	  DstBlock		  "Integrator3"
 	  DstPort		  2
 	}
@@ -4476,7 +4472,7 @@ Model {
 	      DstPort		      1
 	    }
 	    Branch {
-	      Points		      [0, -120]
+	      Points		      [0, -125]
 	      DstBlock		      "Theta (rad)"
 	      DstPort		      1
 	    }
@@ -4485,12 +4481,12 @@ Model {
 	    Points		    [0, 245; -85, 0]
 	    Branch {
 	      Labels		      [1, 0]
-	      Points		      [-350, 0; 0, -155]
+	      Points		      [-350, 0; 0, -160]
 	      DstBlock		      "Non_Linear_EQ_Motion"
 	      DstPort		      4
 	    }
 	    Branch {
-	      Points		      [0, 95]
+	      Points		      [0, 90]
 	      DstBlock		      "Energy"
 	      DstPort		      1
 	    }
@@ -4506,24 +4502,24 @@ Model {
 	    Points		    [0, 195; -120, 0]
 	    Branch {
 	      Labels		      [1, 0]
-	      Points		      [-355, 0; 0, -135]
+	      Points		      [-355, 0; 0, -140]
 	      DstBlock		      "Non_Linear_EQ_Motion"
 	      DstPort		      5
 	    }
 	    Branch {
-	      Points		      [0, 105]
+	      Points		      [0, 100]
 	      DstBlock		      "Energy"
 	      DstPort		      2
 	    }
 	  }
 	  Branch {
-	    Points		    [0, -50]
+	    Points		    [0, -45]
 	    Branch {
 	      DstBlock		      "System State"
 	      DstPort		      2
 	    }
 	    Branch {
-	      Points		      [0, -100]
+	      Points		      [0, -110]
 	      DstBlock		      "Thetadot (rad/s)"
 	      DstPort		      1
 	    }
@@ -4534,29 +4530,29 @@ Model {
 	  Labels		  [0, 0]
 	  SrcBlock		  "Integrator2"
 	  SrcPort		  1
-	  Points		  [120, 0; 0, 0]
+	  Points		  [120, 0; 0, -5]
 	  Branch {
-	    Points		    [0, -100]
+	    Points		    [0, -85]
 	    Branch {
 	      DstBlock		      "System State"
 	      DstPort		      3
 	    }
 	    Branch {
-	      Points		      [0, -85]
+	      Points		      [0, -100]
 	      DstBlock		      "Alpha (rad)"
 	      DstPort		      1
 	    }
 	  }
 	  Branch {
-	    Points		    [0, 140; -155, 0]
+	    Points		    [0, 150; -155, 0]
 	    Branch {
 	      Labels		      [1, 0]
-	      Points		      [-355, 0; 0, -110]
+	      Points		      [-355, 0; 0, -120]
 	      DstBlock		      "Non_Linear_EQ_Motion"
 	      DstPort		      6
 	    }
 	    Branch {
-	      Points		      [0, 120]
+	      Points		      [0, 110]
 	      DstBlock		      "Energy"
 	      DstPort		      3
 	    }
@@ -4567,22 +4563,22 @@ Model {
 	  Labels		  [0, 0]
 	  SrcBlock		  "Integrator3"
 	  SrcPort		  1
-	  Points		  [140, 0; 0, 0]
+	  Points		  [140, 0; 0, -5]
 	  Branch {
-	    Points		    [0, -150]
+	    Points		    [0, -130]
 	    DstBlock		    "System State"
 	    DstPort		    4
 	  }
 	  Branch {
-	    Points		    [0, 95; -190, 0]
+	    Points		    [0, 100; -190, 0]
 	    Branch {
 	      Labels		      [1, 0]
-	      Points		      [-355, 0; 0, -95]
+	      Points		      [-355, 0; 0, -100]
 	      DstBlock		      "Non_Linear_EQ_Motion"
 	      DstPort		      7
 	    }
 	    Branch {
-	      Points		      [0, 125]
+	      Points		      [0, 120]
 	      DstBlock		      "Energy"
 	      DstPort		      4
 	    }
@@ -4636,7 +4632,7 @@ Model {
       Name		      "Motor and Driver Model"
       SID		      "232"
       Ports		      [2, 1]
-      Position		      [435, 60, 610, 100]
+      Position		      [435, 70, 610, 110]
       MinAlgLoopOccurrences   off
       PropExecContextOutsideSubsystem off
       RTWSystemCode	      "Auto"
@@ -4646,7 +4642,7 @@ Model {
       MaskHideContents	      off
       System {
 	Name			"Motor and Driver Model"
-	Location		[1387, 430, 1885, 730]
+	Location		[970, 625, 1703, 1005]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -4677,7 +4673,7 @@ Model {
 	  BlockType		  Inport
 	  Name			  "Motor Speed (rad/s)"
 	  SID			  "238"
-	  Position		  [40, 118, 70, 132]
+	  Position		  [40, 128, 70, 142]
 	  Port			  "2"
 	  IconDisplay		  "Port number"
 	  Port {
@@ -4693,7 +4689,7 @@ Model {
 	  Name			  "Driver Model"
 	  SID			  "237"
 	  Ports			  [2, 1]
-	  Position		  [170, 70, 245, 145]
+	  Position		  [170, 67, 290, 158]
 	  LibraryVersion	  "1.32"
 	  ErrorFcn		  "Stateflow.Translate.translate"
 	  PermitHierarchicalResolution "ExplicitOnly"
@@ -4709,7 +4705,7 @@ Model {
 	  MaskDescription	  "Embedded MATLAB block"
 	  MaskSelfModifiable	  on
 	  MaskDisplay		  "bgColor = Simulink.Root.ColorString2Rgb(get_param(gcbh, 'BackgroundColor')); image(imread('private/"
-	  "eml_membrane_16.png','png','BackgroundColor',bgColor(1:3)),'center'); disp([10 10 'fcn']);"
+	  "eml_membrane_16.png','png','BackgroundColor',bgColor(1:3)),'center'); disp([10 10 'saturation']);"
 	  MaskIconFrame		  on
 	  MaskIconOpaque	  off
 	  MaskIconRotate	  "none"
@@ -4830,7 +4826,7 @@ Model {
 	  BlockType		  Gain
 	  Name			  "Gain"
 	  SID			  "235"
-	  Position		  [340, 95, 370, 125]
+	  Position		  [385, 95, 415, 125]
 	  Gain			  "Kt"
 	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
 	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
@@ -4840,7 +4836,7 @@ Model {
 	  BlockType		  Outport
 	  Name			  "Motor Torque (Nm)"
 	  SID			  "234"
-	  Position		  [425, 103, 455, 117]
+	  Position		  [450, 103, 480, 117]
 	  IconDisplay		  "Port number"
 	}
 	Line {
@@ -4966,7 +4962,6 @@ Model {
       Labels		      [1, 0]
       SrcBlock		      "Computer"
       SrcPort		      1
-      Points		      [125, 0]
       DstBlock		      "Motor and Driver Model"
       DstPort		      1
     }
@@ -4989,7 +4984,7 @@ Model {
       Labels		      [3, 0]
       SrcBlock		      "Inverted Pendulum"
       SrcPort		      2
-      Points		      [15, 0; 0, 150]
+      Points		      [15, 0; 0, 140]
       DstBlock		      "Sensors"
       DstPort		      1
     }
@@ -4998,7 +4993,7 @@ Model {
       Labels		      [3, 0]
       SrcBlock		      "Inverted Pendulum"
       SrcPort		      1
-      Points		      [35, 0; 0, 240]
+      Points		      [35, 0; 0, 230]
       DstBlock		      "Sensors"
       DstPort		      2
     }
@@ -6660,7 +6655,7 @@ Stateflow {
     chartFileNumber	    4
     disableImplicitCasting  1
     eml {
-      name		      "fcn"
+      name		      "saturation"
     }
   }
   state {
@@ -6677,15 +6672,15 @@ Stateflow {
     decomposition	    CLUSTER_STATE
     eml {
       isEML		      1
-      script		      "function Im = fcn(Vcmd, Vsupply, thetadot, Kb, Ka, Rm)\n% determines motor current as a function "
-      "of the command voltage, supply\n% voltages, angular speed, and motor back emf constant\n% Vsupply are the suppli"
-      "ed votages to the power supply\n% thetadot is the current angular speed of the motor\n% Kb is the back emf const"
-      "ant\n% Ka is the nominal motor driver gain\n% R is nominanal motor resistance\n\n% for thetadot no load = 600 ra"
-      "d/s then Kb = 0.04\n\n% for the given command current, how much voltage would we need\nVb = Kb*thetadot;\nIcmd ="
-      " Ka * Vcmd;\nVrequired = Vb + Rm * Icmd;\n\nif abs(Vrequired) < Vsupply\n    Im = Icmd; % if we can supply enoug"
-      "h voltage, then we can send this much current\nelse\n    % otherwise, need to figure out what current we are lim"
-      "ited to\n    if Vcmd > 0\n        Im = (Vsupply - Vb) / Rm;\n    else\n        Im = (-Vsupply - Vb) / Rm;\n    e"
-      "nd\nend\nend"
+      script		      "function Im = saturation(Vcmd, Vsupply, thetadot, Kb, Ka, Rm)\n% determines motor current as a fu"
+      "nction of the command voltage, supply\n% voltages, angular speed, and motor back emf constant\n% Vsupply are the"
+      " supplied votages to the power supply\n% thetadot is the current angular speed of the motor\n% Kb is the back em"
+      "f constant\n% Ka is the nominal motor driver gain\n% R is nominanal motor resistance\n\n% for thetadot no load ="
+      " 600 rad/s then Kb = 0.04\n\n% for the given command current, how much voltage would we need\nVb = Kb*thetadot;\n"
+      "Icmd = Ka * Vcmd;\nVrequired = Vb + Rm * Icmd;\n\nif abs(Vrequired) < Vsupply\n    Im = Icmd; % if we can supply"
+      " enough voltage, then we can send this much current\nelse\n    % otherwise, need to figure out what current we a"
+      "re limited to\n    if Vcmd > 0\n        Im = (Vsupply - Vb) / Rm;\n    else\n        Im = (-Vsupply - Vb) / Rm;\n"
+      "    end\nend\nend"
       editorLayout	      "100 M4x1[708 209 1080 733]"
     }
   }

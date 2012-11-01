@@ -14,7 +14,7 @@ assert((length(state) == length(lockedPositions)),'should have been the same len
 % ode45 sort of works, but is very slow, static friction really gives it a
 % hard time
 
-numPoints = 2*10^5;
+numPoints = 2*10^4;
 state = state0;
 LPos = lockedPositions;
 
@@ -26,7 +26,7 @@ for i = 1:length(LPos)
     end
 end
 
-staticRatio = 1.1;  % static friction assumed to be 10% larger than sliding friction to avoid stuttering problem
+staticRatio = 1.0;  % static friction assumed to be 10% larger than sliding friction to avoid stuttering problem
 staticThreshold = 1e-6; % below this we aren't moving
 Tobs = Tin; Thetaobs = Thetain; Iobs = Iin;
 

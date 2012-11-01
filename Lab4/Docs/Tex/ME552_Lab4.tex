@@ -707,6 +707,40 @@ While implementing the system in Labview we used the Matlab script block which a
 \clearpage
 \section{Classical Controller}
 
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{ClassicalLimitCycle.png}
+\end{center}
+\caption{Limit Cycle exerted by the Classical Controller when applied to the non-linear Model}
+\label{ClassicalLimitCycle}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{classicalLinearModel.png}
+\end{center}
+\caption{The Classical Controller successfully stabilizes the linearized system, however $\theta$ has a long settling time}
+\label{ClassicalLinearModel}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{classicaltransientLinearvsNonLinear.png}
+\end{center}
+\caption{The difference in the transient response of the classical controller applied to the linear and non-linear models}
+\label{q8classicaltransientCompare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{transientNonLinear}
+\end{center}
+\caption{Comparison of the transient response of the non-linear model when controlled by the state-space controller and the classical controller.}
+\label{q8classicalvsStateSpace}
+\end{figure}
+
+\xxx{still need to compare model performance with reality}
+
 \clearpage
 \section{Another Swing Up Controller}
 

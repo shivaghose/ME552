@@ -52,7 +52,16 @@ Tfreverse = 0.015632909278982;
 %    0.022438919281204
 %    0.014309603079420
 
-VAL = xlsread('SinusoidalInput.xls');
+% initial error with best numbers above 8.425662612875667e+02
+% on medium came up with this 3.259151910806145e+02
+% 0.000028710305642
+%    0.031941181768441
+%    0.000075360245042
+%    0.000024930146369
+%    0.019532312877692
+%    0.016530560525051
+
+VAL = xlsread('shortSinusoidalInput.xls');
 
 T = VAL(:,2); % delta Time
 Theta = VAL(:,3); % need negative
@@ -70,10 +79,19 @@ I = Voltage;
 % legend('Angular Position','Motor Current');
 % hold off
 
+J = 6.06724e-5;
+B = 4.05562e-5;
+Kt = 0.01902;
+Bforwards = B;
+Breverse = B;
+Tf = 0.000145312;
+Tfforwards = Tf;
+Tfreverse = Tf;
+
 %Pest = parameterSweep(T',Theta',I,P0)
 %Pest = nonuniformParameterEstimation(0,T,Theta,I,P0,);
 state0 = [J; Kt; Bforwards; Breverse; Tfforwards; Tfreverse];
-locked = [ 0; 0;     0    ;     0   ;     0    ;       0     ];
+locked = [ 1; 1;     1    ;     1   ;     1    ;       1     ];
 Pest = enchancedParameterEstimation(T,Theta,I,state0,locked)
 end
 

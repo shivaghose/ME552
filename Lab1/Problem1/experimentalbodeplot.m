@@ -1,4 +1,4 @@
-% generates the expected and actual bode plots of our system for a variety
+ % generates the expected and actual bode plots of our system for a variety
 % of frequencies
 
 % notes on compensator.vi

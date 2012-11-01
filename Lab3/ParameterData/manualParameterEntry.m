@@ -89,7 +89,8 @@ end
 
 T = motorTorque(motorCurrent(t));
 
-thetadotdot = T / J - B * thetadot / J + coulombicFriction(T, thetadot) / J;
+%thetadotdot = T / J - B * thetadot / J + coulombicFriction(T, thetadot) / J;
+thetadotdot = T / J;
 
 xdot = [thetadot; thetadotdot];
 
