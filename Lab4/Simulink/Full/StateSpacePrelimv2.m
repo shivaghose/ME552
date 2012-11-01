@@ -71,6 +71,7 @@ C1 = Iz2+m2*l2c*l2c;  C2 = Iy2+m2*l2c*l2c;  C3 = m2*l1*l2c-Ixz2;
 C4 = l2c*m2*g;        C5 = I1zt+Ix2+m2*l1*l1;   C6 = C5*C1-C3*C3;
 
 btavg = (btf + btr)/2; 
+bt = btavg;
 
 % with Damping
 DenB = [(C5*C1-C3*C3), (C1*btavg+C5*ba), (ba*btavg-C4*C5), (-C4*btavg), 0];
@@ -113,6 +114,7 @@ Q = diag([10 40 120 60]);
 R = 6;
 
 K = lqr(A,B,Q,R)
+K1 = K(1); K2 = K(2); K3 = K(3); K4 = K(4);
 
 Ac = (A-B*K);
 Bc = B;
