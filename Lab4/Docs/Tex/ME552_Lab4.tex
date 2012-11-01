@@ -539,7 +539,7 @@ $$I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2 =  7.1305
 \end{center}
 \end{figure}
 
-For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ to be the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. 
+For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ to be the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. \\
 
 %To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
 $$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-6} \, N\cdot m$$
@@ -547,23 +547,82 @@ $$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-
 \begin{figure}
 \begin{center}
 \includegraphics[width = 16cm]{pendulumEnvelope.png}
+\caption{Actual Decaying Envelope of motion vs Simulated Envelope}
+\label{q2_6}
 \end{center}
-\label{Actual Decaying Envelope of motion vs Simulated Envelope}
 \end{figure}
 
 \clearpage
 
-\section{Comparing Linear and Non-Linear Models}
+\section{ Comparing Linear and Non-Linear Models}
+Figures \ref{q3_1} and \ref{q3_2} show the pendulum and horizontal arm angle response from the nonlinear model compared to experimental data. The data was obtained by allowing the pendulum to oscillate freely from a starting angle and then running the simulink model with the same initial conditions. The predicted pendulum angle agrees with the experimental data quite well for the first few periods, but quickly deviates. Interestingly, after several periods the experimental angle doesn't decay as quickly as the predicted angle, but the decay accelerates after several more periods and the pendulum comes to rest much sooner in the real system than in the model. A possible cause of this is the force applied by the encoder cable on the horizontal arm, which is unmodelled and very nonlinear and unpredictable. This is especially apparent in figure \ref{q3_2}, where the horizontal arm prediction and real behavior were very far off. \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{alpha1.png}
+\end{center}
+\caption{Comparison of Normalized Pendulum Angle From the Nonlinear Model and Experimental Data}
+\label{q3_1}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{theta1.png}
+\end{center}
+\caption{Comparison of Normalized Horizontal Arm Angle From the Nonlinear Model and Experimental Data}
+\label{q3_2}
+\end{figure}
+
+Figures \ref{q3_3} and \ref{q3_4} show the pendulum and horizontal arm angle response from the linearized model compared to experimental data. The predicted pendulum angle agrees with the experimental quite well for several periods. Somewhat surprisingly, the linear model matches the experimental data longer than the nonlinear model did. However, the linear model decays extremely slowly. This is largely because the friction terms are no longer present, and friciton on the horizontal arm played a large role in reducing the energy of the system. While the linear pendulum angle seems to perform reasonably well initially, the linear horizontal arm angle does not agree with the test data at all. If the angle data was not normalized, the predicted arm angle in figure \ref{q3_4} would grow without bound. A possible cause of this is that our linear model does not incorporate all of the friction and damping forces that act on the horizontal arm, and the encoder cable applies significant resistance to rotation on the arm.\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{alphaLinear.png}
+\end{center}
+\caption{Comparison of Normalized Pendulum Angle From the Linearized Model and Experimental Data}
+\label{q3_3}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{alphaLinear.png}
+\end{center}
+\caption{Comparison of Normalized Horizontal Arm Angle From the Linearized Model and Experimental Data}
+\label{q3_4}
+\end{figure}
+
+To investigate the effect that the encoder cord has on the system, we ran tests with the cable removed. This meant that we could only get data on the horizontal arm angle. To ensure consistency, we raised the pendulum to a horizontal position before releasing it, then ran the simulink model from a horizontal starting position. Figure \ref{q3_5} shows the results of such a test. The initial transient phase of the two datasets still doesn't agree, and the real system decays much slower, but it's interesting that both move towards +-$\pi$ (though the normalization of the angles makes this somewhat hard to see). This suggests to us that the cord is having a large effect on the system, but there are other factors which haven't been considered (such as tilt of the table).\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{thetaNoCord.png}
+\end{center}
+\caption{Comparison of Normalized Horizontal Arm Angle From the Nonlinear Model and Experimental Data with the Encoder Cable Removed}
+\label{q3_5}
+\end{figure}
+
+Figure \ref{q3_6} shows the predicted pendulum angle from the nonlinear model and from the linearized model. Just as when comparing both models to the experimental data, there is some agreement in the first few periods, but then the two models diverge. This is largely because the lack of friction in the linearized model causes it to decay much more slowly. There is also a noticeable phase difference as time increases because the nonlinear model predicts a slightly longer period of oscillation. \\
+
+It is clear that there are weakness in the linear model based on the weak agreement with the nonlinear model and real system. However, this is largely because the linearization assumptions are based on the pendulum being very close to the vertical equilibrium point for use with a balancing controller. While we linearized the system about the bottom position for the purposes of comparing to the test data, the assumptions that the small angle theorem would hold and that $\dot{\theta}$ and $\dot{\alpha}$ would be small were not necessarily true when in a free swinging situation instead of being balanced. Therefore, we believe that our linearization assumptions are valid as long as we only apply the linearization within a small angle range and have a balance controller active to minimize $\dot{\theta}$ and $\dot{\alpha}$. The greatest effect of the linearization was the dropping of the friction terms (which was more of a practical necessity rather than an assumption). This had a large effect on the decay of the systems oscillations, but with our balance controller active, this assumption should not have a significantly negative effect.\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{linearAndNonlinear.png}
+\end{center}
+\caption{Comparison of Normalized Pendulum Angle From the Nonlinear Model and Linearized Model}
+\label{q3_6}
+\end{figure}
 
 
 \clearpage
 \section{State Space Controls in Simulink}
 
 
+
 Using the $A$, $B$, $C$, and $D$ matrices derived earlier together with the tuned $Q$ and $R$ matrices below, we constructed a full-state feedback controller using the Matlab $lqr$ function.  
 $$Q = \left[\begin{array}{c c c c l} 10 & 0 & 0 & 0 \\ 0 & 40 & 0 & 0 \\ 0 & 0 & 120 & 0 \\ 0 & 0 & 0 & 60 \\  \end{array} \right] \hspace{1cm} R = \left[ 6 \right]$$
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 16cm]{stateSpaceFeedbackBlock.png}
 \end{center}
@@ -647,6 +706,40 @@ While implementing the system in Labview we used the Matlab script block which a
 
 \clearpage
 \section{Classical Controller}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{ClassicalLimitCycle.png}
+\end{center}
+\caption{Limit Cycle exerted by the Classical Controller when applied to the non-linear Model}
+\label{ClassicalLimitCycle}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{classicalLinearModel.png}
+\end{center}
+\caption{The Classical Controller successfully stabilizes the linearized system, however $\theta$ has a long settling time}
+\label{ClassicalLinearModel}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{classicaltransientLinearvsNonLinear.png}
+\end{center}
+\caption{The difference in the transient response of the classical controller applied to the linear and non-linear models}
+\label{q8classicaltransientCompare}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{transientNonLinear}
+\end{center}
+\caption{Comparison of the transient response of the non-linear model when controlled by the state-space controller and the classical controller.}
+\label{q8classicalvsStateSpace}
+\end{figure}
+
+\xxx{still need to compare model performance with reality}
 
 \clearpage
 \section{Another Swing Up Controller}

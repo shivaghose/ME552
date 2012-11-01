@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.32"
+    ComputedModelVersion    "1.36"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -26,9 +26,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "jrpeterson"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Oct 29 20:42:50 2012"
-  RTWModifiedTimeStamp	  273437168
-  ModelVersionFormat	  "1.%<AutoIncrement:32>"
+  LastModifiedDate	  "Thu Nov  1 17:09:13 2012"
+  RTWModifiedTimeStamp	  273690102
+  ModelVersionFormat	  "1.%<AutoIncrement:36>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -65,7 +65,6 @@ Model {
     $ObjectID		    1
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
     model_		    "LinearSimulinkModel"
-    signals_		    []
     overrideMode_	    [0.0]
     Array {
       Type		      "Cell"
@@ -131,7 +130,7 @@ Model {
 	  $ObjectID		  3
 	  Version		  "1.11.0"
 	  StartTime		  "0.0"
-	  StopTime		  "10.0"
+	  StopTime		  "60.0"
 	  AbsTol		  "auto"
 	  FixedStep		  "auto"
 	  InitialStep		  "auto"
@@ -145,7 +144,7 @@ Model {
 	  MaxStep		  "auto"
 	  MinStep		  "auto"
 	  MaxConsecutiveMinStep	  "1"
-	  RelTol		  "1e-3"
+	  RelTol		  "1e-6"
 	  SolverMode		  "Auto"
 	  ConcurrentTasks	  off
 	  Solver		  "ode45"
@@ -660,6 +659,12 @@ Model {
       PreserveConstantTs      off
     }
     Block {
+      BlockType		      Demux
+      Outputs		      "4"
+      DisplayOption	      "none"
+      BusSelectionMode	      off
+    }
+    Block {
       BlockType		      Gain
       Gain		      "1"
       Multiplication	      "Element-wise(K.*u)"
@@ -693,6 +698,21 @@ Model {
       Interpolate	      on
     }
     Block {
+      BlockType		      Integrator
+      ExternalReset	      "none"
+      InitialConditionSource  "internal"
+      InitialCondition	      "0"
+      LimitOutput	      off
+      UpperSaturationLimit    "inf"
+      LowerSaturationLimit    "-inf"
+      ShowSaturationPort      off
+      ShowStatePort	      off
+      AbsoluteTolerance	      "auto"
+      IgnoreLimit	      off
+      ZeroCross		      on
+      ContinuousStateAttributes	"''"
+    }
+    Block {
       BlockType		      Outport
       Port		      "1"
       OutMin		      "[]"
@@ -708,6 +728,13 @@ Model {
       SourceOfInitialOutputValue "Dialog"
       OutputWhenDisabled      "held"
       InitialOutput	      "[]"
+    }
+    Block {
+      BlockType		      S-Function
+      FunctionName	      "system"
+      SFunctionModules	      "''"
+      PortCounts	      "[]"
+      SFunctionDeploymentMode off
     }
     Block {
       BlockType		      Scope
@@ -765,6 +792,9 @@ Model {
       SampleTime	      "-1"
     }
     Block {
+      BlockType		      Terminator
+    }
+    Block {
       BlockType		      TransferFcn
       Numerator		      "[1]"
       Denominator	      "[1 2 1]"
@@ -775,7 +805,7 @@ Model {
   }
   System {
     Name		    "LinearSimulinkModel"
-    Location		    [1538, 256, 2758, 1057]
+    Location		    [491, 226, 1711, 1027]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -789,7 +819,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "40"
+    SIDHighWatermark	    "57"
     Block {
       BlockType		      SubSystem
       Name		      "Alpha Controller"
@@ -811,7 +841,7 @@ Model {
       }
       System {
 	Name			"Alpha Controller"
-	Location		[1936, 295, 2894, 691]
+	Location		[642, 159, 1600, 555]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -905,6 +935,13 @@ Model {
       SaturateOnIntegerOverflow	off
     }
     Block {
+      BlockType		      Constant
+      Name		      "Constant"
+      SID		      "57"
+      Position		      [490, 370, 520, 400]
+      Value		      "0"
+    }
+    Block {
       BlockType		      Gain
       Name		      "Driver"
       SID		      "13"
@@ -938,10 +975,528 @@ Model {
     }
     Block {
       BlockType		      SubSystem
-      Name		      "Plant"
+      Name		      "Plant Model"
+      SID		      "41"
+      Ports		      [1, 2]
+      Position		      [790, 184, 890, 226]
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Port {
+	PortNumber		1
+	Name			"Theta (radians)"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+      Port {
+	PortNumber		2
+	Name			"Alhpa (radians)"
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+      System {
+	Name			"Plant Model"
+	Location		[932, 318, 1884, 940]
+	Open			on
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"usletter"
+	PaperUnits		"inches"
+	TiledPaperMargins	[0.500000, 0.500000, 0.500000, 0.500000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "Motor Torque"
+	  SID			  "42"
+	  Position		  [130, 128, 160, 142]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Alpha 0"
+	  SID			  "43"
+	  Position		  [15, 220, 45, 250]
+	  Value			  "0.1"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Alphadot 0"
+	  SID			  "44"
+	  Position		  [15, 270, 45, 300]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  SubSystem
+	  Name			  "Eq Motion"
+	  SID			  "45"
+	  Ports			  [5, 4]
+	  Position		  [260, 114, 395, 356]
+	  LibraryVersion	  "1.32"
+	  ErrorFcn		  "Stateflow.Translate.translate"
+	  PermitHierarchicalResolution "ExplicitOnly"
+	  TreatAsAtomicUnit	  on
+	  MinAlgLoopOccurrences	  off
+	  PropExecContextOutsideSubsystem off
+	  RTWSystemCode		  "Auto"
+	  FunctionWithSeparateData off
+	  Opaque		  off
+	  RequestExecContextInheritance	off
+	  MaskHideContents	  off
+	  MaskType		  "Stateflow"
+	  MaskDescription	  "Embedded MATLAB block"
+	  MaskSelfModifiable	  on
+	  MaskDisplay		  "bgColor = Simulink.Root.ColorString2Rgb(get_param(gcbh, 'BackgroundColor')); image(imread('private/"
+	  "eml_membrane_16.png','png','BackgroundColor',bgColor(1:3)),'center'); disp([10 10 'eqMotionLinear']);"
+	  MaskIconFrame		  on
+	  MaskIconOpaque	  off
+	  MaskIconRotate	  "none"
+	  MaskPortRotate	  "default"
+	  MaskIconUnits		  "normalized"
+	  System {
+	    Name		    "Eq Motion"
+	    Location		    [257, 457, 812, 717]
+	    Open		    off
+	    ModelBrowserVisibility  off
+	    ModelBrowserWidth	    200
+	    ScreenColor		    "white"
+	    PaperOrientation	    "landscape"
+	    PaperPositionMode	    "auto"
+	    PaperType		    "usletter"
+	    PaperUnits		    "inches"
+	    TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
+	    TiledPageScale	    1
+	    ShowPageBoundaries	    off
+	    ZoomFactor		    "100"
+	    SIDHighWatermark	    "35"
+	    Block {
+	      BlockType		      Inport
+	      Name		      "Tm"
+	      SID		      "45::1"
+	      Position		      [20, 101, 40, 119]
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "theta"
+	      SID		      "45::18"
+	      Position		      [20, 136, 40, 154]
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "tdot"
+	      SID		      "45::19"
+	      Position		      [20, 171, 40, 189]
+	      Port		      "3"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "alpha"
+	      SID		      "45::20"
+	      Position		      [20, 206, 40, 224]
+	      Port		      "4"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "adot"
+	      SID		      "45::21"
+	      Position		      [20, 246, 40, 264]
+	      Port		      "5"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Demux
+	      Name		      " Demux "
+	      SID		      "45::15"
+	      Ports		      [1, 1]
+	      Position		      [270, 485, 320, 525]
+	      Outputs		      "1"
+	    }
+	    Block {
+	      BlockType		      S-Function
+	      Name		      " SFunction "
+	      SID		      "45::14"
+	      Tag		      "Stateflow S-Function LinearSimulinkModel 2"
+	      Ports		      [5, 5]
+	      Position		      [180, 136, 230, 484]
+	      FunctionName	      "sf_sfun"
+	      Parameters	      "I1zt,Ix2,Ixz2,Iy2,Iz2,ba,bt,g,l1,l2c,m2"
+	      PortCounts	      "[5 5]"
+	      EnableBusSupport	      on
+	      Port {
+		PortNumber		2
+		Name			"tdot_"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	      Port {
+		PortNumber		3
+		Name			"Tdotdot"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	      Port {
+		PortNumber		4
+		Name			"adot_"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	      Port {
+		PortNumber		5
+		Name			"Adotdot"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
+	    }
+	    Block {
+	      BlockType		      Terminator
+	      Name		      " Terminator "
+	      SID		      "45::17"
+	      Position		      [460, 496, 480, 514]
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "tdot_"
+	      SID		      "45::5"
+	      Position		      [460, 101, 480, 119]
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Tdotdot"
+	      SID		      "45::33"
+	      Position		      [460, 136, 480, 154]
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "adot_"
+	      SID		      "45::34"
+	      Position		      [460, 171, 480, 189]
+	      Port		      "3"
+	      IconDisplay	      "Port number"
+	    }
+	    Block {
+	      BlockType		      Outport
+	      Name		      "Adotdot"
+	      SID		      "45::35"
+	      Position		      [460, 206, 480, 224]
+	      Port		      "4"
+	      IconDisplay	      "Port number"
+	    }
+	    Line {
+	      SrcBlock		      "Tm"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "theta"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      2
+	    }
+	    Line {
+	      SrcBlock		      "tdot"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      3
+	    }
+	    Line {
+	      SrcBlock		      "alpha"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      4
+	    }
+	    Line {
+	      SrcBlock		      "adot"
+	      SrcPort		      1
+	      DstBlock		      " SFunction "
+	      DstPort		      5
+	    }
+	    Line {
+	      Name		      "tdot_"
+	      Labels		      [0, 0; 0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      2
+	      DstBlock		      "tdot_"
+	      DstPort		      1
+	    }
+	    Line {
+	      Name		      "Tdotdot"
+	      Labels		      [0, 0; 0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      3
+	      DstBlock		      "Tdotdot"
+	      DstPort		      1
+	    }
+	    Line {
+	      Name		      "adot_"
+	      Labels		      [0, 0; 0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      4
+	      DstBlock		      "adot_"
+	      DstPort		      1
+	    }
+	    Line {
+	      Name		      "Adotdot"
+	      Labels		      [0, 0; 0, 0]
+	      SrcBlock		      " SFunction "
+	      SrcPort		      5
+	      DstBlock		      "Adotdot"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      " Demux "
+	      SrcPort		      1
+	      DstBlock		      " Terminator "
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      " SFunction "
+	      SrcPort		      1
+	      DstBlock		      " Demux "
+	      DstPort		      1
+	    }
+	  }
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator"
+	  SID			  "46"
+	  Ports			  [2, 1]
+	  Position		  [475, 136, 520, 174]
+	  InitialConditionSource  "external"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator1"
+	  SID			  "47"
+	  Ports			  [2, 1]
+	  Position		  [475, 196, 520, 234]
+	  InitialConditionSource  "external"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator2"
+	  SID			  "48"
+	  Ports			  [2, 1]
+	  Position		  [475, 256, 520, 289]
+	  InitialConditionSource  "external"
+	}
+	Block {
+	  BlockType		  Integrator
+	  Name			  "Integrator3"
+	  SID			  "49"
+	  Ports			  [2, 1]
+	  Position		  [475, 316, 520, 349]
+	  InitialConditionSource  "external"
+	}
+	Block {
+	  BlockType		  Scope
+	  Name			  "Scope"
+	  SID			  "50"
+	  Ports			  [4]
+	  Position		  [520, 35, 570, 80]
+	  BlockRotation		  270
+	  Floating		  off
+	  Location		  [343, 158, 1431, 937]
+	  Open			  off
+	  NumInputPorts		  "4"
+	  List {
+	    ListType		    AxesTitles
+	    axes1		    "%<SignalLabel>"
+	    axes2		    "%<SignalLabel>"
+	    axes3		    "%<SignalLabel>"
+	    axes4		    "%<SignalLabel>"
+	  }
+	  YMin			  "-5~-5~-5~-5"
+	  YMax			  "5~5~5~5"
+	  SaveToWorkspace	  on
+	  SaveName		  "LinearSystemResponse"
+	  DataFormat		  "StructureWithTime"
+	  LimitDataPoints	  off
+	  SampleTime		  "0"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Theta 0"
+	  SID			  "51"
+	  Position		  [15, 115, 45, 145]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Thetadot 0"
+	  SID			  "52"
+	  Position		  [15, 170, 45, 200]
+	  Value			  "0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Theta"
+	  SID			  "53"
+	  Position		  [610, 148, 640, 162]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Alpha"
+	  SID			  "54"
+	  Position		  [610, 268, 640, 282]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Motor Torque"
+	  SrcPort		  1
+	  DstBlock		  "Eq Motion"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Eq Motion"
+	  SrcPort		  1
+	  DstBlock		  "Integrator"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Eq Motion"
+	  SrcPort		  2
+	  DstBlock		  "Integrator1"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Eq Motion"
+	  SrcPort		  3
+	  DstBlock		  "Integrator2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Eq Motion"
+	  SrcPort		  4
+	  DstBlock		  "Integrator3"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Integrator3"
+	  SrcPort		  1
+	  Points		  [5, 0]
+	  Branch {
+	    Points		    [0, 50; -285, 0]
+	    DstBlock		    "Eq Motion"
+	    DstPort		    5
+	  }
+	  Branch {
+	    Points		    [0, -215; 30, 0]
+	    DstBlock		    "Scope"
+	    DstPort		    4
+	  }
+	}
+	Line {
+	  SrcBlock		  "Integrator2"
+	  SrcPort		  1
+	  Points		  [15, 0]
+	  Branch {
+	    Points		    [0, 120; -310, 0; 0, -110]
+	    DstBlock		    "Eq Motion"
+	    DstPort		    4
+	  }
+	  Branch {
+	    DstBlock		    "Alpha"
+	    DstPort		    1
+	  }
+	  Branch {
+	    Points		    [0, -165; 10, 0]
+	    DstBlock		    "Scope"
+	    DstPort		    3
+	  }
+	}
+	Line {
+	  SrcBlock		  "Integrator1"
+	  SrcPort		  1
+	  Points		  [25, 0]
+	  Branch {
+	    Points		    [0, 185; -335, 0; 0, -165]
+	    DstBlock		    "Eq Motion"
+	    DstPort		    3
+	  }
+	  Branch {
+	    Points		    [0, -105; -10, 0]
+	    DstBlock		    "Scope"
+	    DstPort		    2
+	  }
+	}
+	Line {
+	  SrcBlock		  "Integrator"
+	  SrcPort		  1
+	  Points		  [30, 0]
+	  Branch {
+	    Points		    [5, 0]
+	    Branch {
+	      Points		      [0, 255; -355, 0; 0, -225]
+	      DstBlock		      "Eq Motion"
+	      DstPort		      2
+	    }
+	    Branch {
+	      Points		      [0, -55; -30, 0]
+	      DstBlock		      "Scope"
+	      DstPort		      1
+	    }
+	  }
+	  Branch {
+	    DstBlock		    "Theta"
+	    DstPort		    1
+	  }
+	}
+	Line {
+	  SrcBlock		  "Theta 0"
+	  SrcPort		  1
+	  Points		  [5, 0; 0, -90; 395, 0; 0, 125]
+	  DstBlock		  "Integrator"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Thetadot 0"
+	  SrcPort		  1
+	  Points		  [20, 0; 0, -130; 365, 0; 0, 170]
+	  DstBlock		  "Integrator1"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Alpha 0"
+	  SrcPort		  1
+	  Points		  [35, 0; 0, -165; 335, 0; 0, 210]
+	  DstBlock		  "Integrator2"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Alphadot 0"
+	  SrcPort		  1
+	  Points		  [50, 0; 0, -200; 305, 0; 0, 255]
+	  DstBlock		  "Integrator3"
+	  DstPort		  2
+	}
+      }
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "Plant Transfer Fucntions"
       SID		      "1"
       Ports		      [1, 2]
-      Position		      [795, 184, 895, 226]
+      Position		      [565, 364, 665, 406]
       MinAlgLoopOccurrences   off
       PropExecContextOutsideSubsystem off
       RTWSystemCode	      "Auto"
@@ -962,8 +1517,8 @@ Model {
 	DataLoggingNameMode	"SignalName"
       }
       System {
-	Name			"Plant"
-	Location		[1942, 302, 2613, 700]
+	Name			"Plant Transfer Fucntions"
+	Location		[624, 412, 1295, 810]
 	Open			off
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1092,7 +1647,21 @@ Model {
       YMin		      "-5~-5~-5"
       YMax		      "5~5~5"
       DataFormat	      "StructureWithTime"
+      LimitDataPoints	      off
       SampleTime	      "0"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator"
+      SID		      "55"
+      Position		      [745, 365, 765, 385]
+      NamePlacement	      "alternate"
+    }
+    Block {
+      BlockType		      Terminator
+      Name		      "Terminator1"
+      SID		      "56"
+      Position		      [745, 385, 765, 405]
     }
     Block {
       BlockType		      SubSystem
@@ -1109,7 +1678,7 @@ Model {
       MaskHideContents	      off
       System {
 	Name			"Theta Controller"
-	Location		[1214, 585, 1756, 886]
+	Location		[1238, 526, 1780, 827]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
@@ -1200,51 +1769,19 @@ Model {
       Value		      "0"
     }
     Line {
-      Name		      "Theta (rad)"
-      Labels		      [0, 0]
-      SrcBlock		      "Plant"
-      SrcPort		      1
-      Points		      [75, 0]
-      Branch {
-	DstBlock		"Scope"
-	DstPort			2
-      }
-      Branch {
-	Points			[0, 75; -860, 0]
-	DstBlock		"Theta Controller"
-	DstPort			2
-      }
-    }
-    Line {
-      Name		      "Alpha (rad)"
-      Labels		      [0, 0]
-      SrcBlock		      "Plant"
-      SrcPort		      2
-      Points		      [55, 0]
-      Branch {
-	Points			[0, 45; -685, 0]
-	DstBlock		"Alpha Controller"
-	DstPort			2
-      }
-      Branch {
-	DstBlock		"Scope"
-	DstPort			3
-      }
-    }
-    Line {
       Name		      "Torque (Nm)"
       Labels		      [0, 0]
       SrcBlock		      "Motor "
       SrcPort		      1
       Points		      [20, 0]
       Branch {
-	DstBlock		"Plant"
-	DstPort			1
-      }
-      Branch {
 	Labels			[2, 0]
 	Points			[0, -30]
 	DstBlock		"Scope"
+	DstPort			1
+      }
+      Branch {
+	DstBlock		"Plant Model"
 	DstPort			1
       }
     }
@@ -1282,6 +1819,60 @@ Model {
       DstBlock		      "Alpha Controller"
       DstPort		      1
     }
+    Line {
+      Name		      "Theta (radians)"
+      Labels		      [0, 0]
+      SrcBlock		      "Plant Model"
+      SrcPort		      1
+      Points		      [65, 0]
+      Branch {
+	DstBlock		"Scope"
+	DstPort			2
+      }
+      Branch {
+	Points			[5, 0; 0, 70; -850, 0]
+	DstBlock		"Theta Controller"
+	DstPort			2
+      }
+    }
+    Line {
+      Name		      "Alhpa (radians)"
+      SrcBlock		      "Plant Model"
+      SrcPort		      2
+      Points		      [15, 0]
+      Branch {
+	Labels			[1, 0]
+	DstBlock		"Scope"
+	DstPort			3
+      }
+      Branch {
+	Points			[0, 40; -640, 0]
+	DstBlock		"Alpha Controller"
+	DstPort			2
+      }
+    }
+    Line {
+      Name		      "Theta (rad)"
+      Labels		      [0, 0; 0, 0]
+      SrcBlock		      "Plant Transfer Fucntions"
+      SrcPort		      1
+      DstBlock		      "Terminator"
+      DstPort		      1
+    }
+    Line {
+      Name		      "Alpha (rad)"
+      Labels		      [0, 0; 0, 0]
+      SrcBlock		      "Plant Transfer Fucntions"
+      SrcPort		      2
+      DstBlock		      "Terminator1"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Constant"
+      SrcPort		      1
+      DstBlock		      "Plant Transfer Fucntions"
+      DstPort		      1
+    }
   }
 }
 # Finite State Machines
@@ -1297,11 +1888,550 @@ Stateflow {
     name		    "LinearSimulinkModel"
     created		    "29-Oct-2012 16:58:20"
     isLibrary		    0
-    firstTarget		    2
+    firstTarget		    27
     sfVersion		    75014001
   }
-  target {
+  chart {
     id			    2
+    name		    "Plant Model/Eq Motion"
+    windowPosition	    [390.75 188.25 200.25 189.75]
+    viewLimits		    [0 156.75 0 153.75]
+    screen		    [1 1 2560 1418 1.000477777777778]
+    treeNode		    [0 3 0 0]
+    firstTransition	    5
+    firstJunction	    4
+    viewObj		    2
+    machine		    1
+    toolbarMode		    LIBRARY_TOOLBAR
+    subviewS {
+    }
+    ssIdHighWaterMark	    23
+    decomposition	    CLUSTER_CHART
+    type		    EML_CHART
+    firstData		    6
+    chartFileNumber	    2
+    disableImplicitCasting  1
+    eml {
+      name		      "eqMotionLinear"
+    }
+  }
+  state {
+    id			    3
+    labelString		    "eML_blk_kernel()"
+    position		    [18 64.5 118 66]
+    fontSize		    12
+    chart		    2
+    treeNode		    [2 0 0 0]
+    superState		    SUBCHART
+    subviewer		    2
+    ssIdNumber		    1
+    type		    FUNC_STATE
+    decomposition	    CLUSTER_STATE
+    eml {
+      isEML		      1
+      script		      "function [tdot_, Tdotdot, adot_, Adotdot] = eqMotionLinear(Tm, theta,tdot,alpha,adot, m2, I1zt, I"
+      "x2, Iy2, Iz2, Ixz2, g, l1, l2c, ba, bt)\n% we currently assume differential coulomb friction and damping for the"
+      "ta,\n% but not for alpha\ntdot_ = tdot;\nadot_ = adot;\n\n%%%%%%%%%%%%\n% Linear Damping\n\n% Neglect Friction\n"
+      "\nC1 = Iz2+m2*l2c*l2c;  C2 = Iy2+m2*l2c*l2c;   C3 = m2*l1*l2c-Ixz2;  C4 = l2c*m2*g;\n\nC5 = I1zt + Ix2 + m2*l1*l"
+      "1;  C6 = C5*C1-C3*C3;\n\nTdotdot = (1/C6)*(C3*ba*adot - C3*C4*alpha - C1*bt*tdot + C1*Tm);\n\nAdotdot = (1/C6)*("
+      "-ba*adot*C5 + bt*tdot*C3 + alpha*C4*C5 - C3*Tm);\nend"
+      editorLayout	      "100 M4x1[205 227 1080 733]"
+    }
+  }
+  junction {
+    id			    4
+    position		    [23.5747 49.5747 7]
+    chart		    2
+    linkNode		    [2 0 0]
+    subviewer		    2
+    ssIdNumber		    3
+    type		    CONNECTIVE_JUNCTION
+  }
+  transition {
+    id			    5
+    labelString		    "{eML_blk_kernel();}"
+    labelPosition	    [32.125 19.875 102.544 14.964]
+    fontSize		    12
+    src {
+      intersection	      [0 0 1 0 23.5747 14.625 0 0]
+    }
+    dst {
+      id		      4
+      intersection	      [7 0 -1 -1 23.5747 42.5747 0 0]
+    }
+    midPoint		    [23.5747 24.9468]
+    chart		    2
+    linkNode		    [2 0 0]
+    dataLimits		    [23.575 23.575 14.625 34.575]
+    subviewer		    2
+    drawStyle		    SMART
+    executionOrder	    1
+    ssIdNumber		    2
+  }
+  data {
+    id			    6
+    ssIdNumber		    4
+    name		    "Tm"
+    linkNode		    [2 0 7]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+      }
+      complexity	      SF_COMPLEX_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    7
+    ssIdNumber		    5
+    name		    "tdot_"
+    linkNode		    [2 6 8]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    8
+    ssIdNumber		    6
+    name		    "theta"
+    linkNode		    [2 7 9]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    9
+    ssIdNumber		    7
+    name		    "tdot"
+    linkNode		    [2 8 10]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    10
+    ssIdNumber		    8
+    name		    "alpha"
+    linkNode		    [2 9 11]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    11
+    ssIdNumber		    9
+    name		    "adot"
+    linkNode		    [2 10 12]
+    scope		    INPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    12
+    ssIdNumber		    10
+    name		    "m2"
+    linkNode		    [2 11 13]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 10
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    13
+    ssIdNumber		    11
+    name		    "I1zt"
+    linkNode		    [2 12 14]
+    scope		    PARAMETER_DATA
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    14
+    ssIdNumber		    12
+    name		    "Ix2"
+    linkNode		    [2 13 15]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 1
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    15
+    ssIdNumber		    13
+    name		    "Iy2"
+    linkNode		    [2 14 16]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 3
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    16
+    ssIdNumber		    14
+    name		    "Iz2"
+    linkNode		    [2 15 17]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 4
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    17
+    ssIdNumber		    15
+    name		    "Ixz2"
+    linkNode		    [2 16 18]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 2
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    18
+    ssIdNumber		    16
+    name		    "g"
+    linkNode		    [2 17 19]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 7
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    19
+    ssIdNumber		    17
+    name		    "l1"
+    linkNode		    [2 18 20]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 8
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    20
+    ssIdNumber		    18
+    name		    "l2c"
+    linkNode		    [2 19 21]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 9
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    21
+    ssIdNumber		    19
+    name		    "ba"
+    linkNode		    [2 20 22]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 5
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    22
+    ssIdNumber		    20
+    name		    "bt"
+    linkNode		    [2 21 23]
+    scope		    PARAMETER_DATA
+    paramIndexForInitFromWorkspace 6
+    isNonTunable	    1
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_INHERITED
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    23
+    ssIdNumber		    21
+    name		    "Tdotdot"
+    linkNode		    [2 22 24]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    24
+    ssIdNumber		    22
+    name		    "adot_"
+    linkNode		    [2 23 25]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  data {
+    id			    25
+    ssIdNumber		    23
+    name		    "Adotdot"
+    linkNode		    [2 24 0]
+    scope		    OUTPUT_DATA
+    machine		    1
+    props {
+      array {
+	size			"-1"
+      }
+      type {
+	method			SF_INHERITED_TYPE
+	primitive		SF_DOUBLE_TYPE
+	isSigned		1
+	wordLength		"16"
+      }
+      complexity	      SF_COMPLEX_INHERITED
+      frame		      SF_FRAME_NO
+    }
+    dataType		    "Inherit: Same as Simulink"
+  }
+  instance {
+    id			    26
+    name		    "Plant Model/Eq Motion"
+    machine		    1
+    chart		    2
+  }
+  target {
+    id			    27
     name		    "sfun"
     description		    "Default Simulink S-Function Target."
     machine		    1
