@@ -954,7 +954,7 @@ We next examine how using the non-linear model, which includes the effects of fr
 \begin{center}
 \includegraphics[width = 15cm]{ClassicalLimitCycle.png}
 \end{center}
-\caption{Limit Cycle exerted by the Classical Controller when applied to the non-linear Model for an initial $\alpha$ of 0.1 radians}
+\caption{Limit cycle exerted by the classical controller when applied to the non-linear model for an initial $\alpha$ of 0.1 radians}
 \label{ClassicalLimitCycle}
 \end{figure}
 
@@ -980,9 +980,9 @@ Full state feedback control seems to be an easier system to design, simply const
 
 \clearpage
 \section{Another Swing Up Controller}
-When designing a new our goal was to use a very simple method that was still reliable. The controller we implemented shared some similarities with the method discussed in lecture, but simplified significantly. Rather than calculating the energy of the system or measuring the pendulum's position, our controller only looks at the direction of the pendulum and applies a constant voltage such that switches sign every time the pendulum switches direction. Our goal was for the motor to apply high torque in one direction until the pendulum had stopped moving upwards, and then apply high torque in the opposite direction. With proper tuning of the voltage used, we believed we could meet the goal of only two swings before balancing. However, in practice we were not able to achieve this as our motor accelerating quickly enough to raise the pendulum sufficiently before its cords began twisting up too much. Therefore, we had to settle for a relatively low voltage command which required more swings. \\
+When designing a new swing-up controller our goal was to use a very simple method that was still reliable. The controller we implemented shared some similarities with the method discussed in lecture, but simplified significantly. Rather than calculating the energy of the system or measuring the pendulum's position, our controller only looks at the direction of the pendulum and applies a constant voltage such that it switches sign every time the pendulum switches direction. Our goal was for the motor to apply high torque in one direction until the pendulum had stopped moving upwards, and then apply high torque in the opposite direction. With proper tuning of the voltage used, we believed we could meet the goal of only two swings before balancing. However, in practice we were not able to achieve this as our motor couldn't accelerate quickly enough to raise the pendulum sufficiently before its cords began twisting up too much. Therefore, we had to settle for a relatively low voltage command which required more swings. \\
 
-Figure \ref{q9_1} shows the simplified balance controller implemented on the real system. We used a controller switch over point of 0.3 radians (switching to our state-space balancer) and a command voltage of +- 3.0 Volts to get into balance mode in 19 swings (approximately 9.5 seconds). This was much worse than our prediction, which is shown in figure \ref{q9_2}. With our nonlinear simulink model we were able to reach balance mode in 4 swings (approximately 2.3 seconds) with a switch over setting of 0.6 radians and a command voltage of +- 2.2 Volts. Our controller on the real system requires a change over point much closer to the vertical position than the simulation does, which accounts for some of the difference in performance. Similarly, when we increased the command voltage to attempt to reduce the swings needed, the pendulum often overshot the vertical position and the balance controller was not able to catch it. Therefore, we decided to use a lower command input which takes more swings, but is much more reliable. Figures \ref{q9_3} and \ref{q9_4} show the simplified controllers as they were implemented in simulink and LabView, respectively.\\
+Figure \ref{q9_1} shows the simplified balance controller implemented on the real system. We used a controller switch-over point of 0.3 radians (switching to our state-space balancer) and a command voltage of +- 3.0$V$ to get into balance mode in 19 swings (approximately 9.5 seconds). This was much worse than our prediction, which is shown in figure \ref{q9_2}. With our nonlinear simulink model we were able to reach balance mode in 4 swings (approximately 2.3 seconds) with a switch-over setting of 0.6 radians and a command voltage of +- 2.2$V$. Our controller on the real system requires a switch-over point much closer to the vertical position than the simulation does, which accounts for some of the difference in performance. Similarly, when we increased the command voltage to attempt to reduce the swings needed, the pendulum often overshot the vertical position and the balance controller was not able to catch it. Therefore, we decided to use a lower command input which takes more swings, but is much more reliable. Figures \ref{q9_3} and \ref{q9_4} show the simplified controllers as they were implemented in simulink and LabView, respectively. In all cases, the state-space balancer was used along with the simplified swing-up controller.\\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -996,7 +996,7 @@ Figure \ref{q9_1} shows the simplified balance controller implemented on the rea
 \begin{center}
 \includegraphics[width = 13cm]{Q9sim.png}
 \end{center}
-\caption{Simplified Swing-Up Controller with Nonlinear Model}
+\caption{Simplified Swing-Up Controller with Nonlinear Simulink Model}
 \label{q9_2}
 \end{figure}
 
