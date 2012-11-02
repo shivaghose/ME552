@@ -208,12 +208,12 @@ $$ {\bf{\omega_{2}}}= \dot{\theta} ({\bf{^1\hat{z}}}) + \dot{\alpha}({\bf{^2\hat
 
 $$  {\bf{^2\omega_{2}}}= \left[ \begin{array}{c l}   \dot{\theta} \cos(\alpha) \\ -\dot{\theta} \sin(\alpha) \\ \dot{\alpha} \end{array} \right]$$
 
-Rather than concern our selves with the forwards kinematics of the horizontal arm, because we assume that its only motion is a rotation about $\bf{^0\hat{z}}$ which allows us to simply apply the parallel axis theorem to obtain its moment of inertia 
+Rather than concern ourselves with the forward kinematics of the horizontal arm, we assume that its only motion is a rotation about $\bf{^0\hat{z}}$ which allows us to simply apply the parallel axis theorem to obtain its moment of inertia 
 
 
 \subsubsection*{System Energy}
 
-Our system is composed of two rigid bodies, then the horizontal arm and the pendulum.  Each has an energy denoted $E_1$ and $E_2$ respectively.  Using the forwards kinematics derived above we can compute the kinetic and potential energies associated with each body as a function of $\theta$, $\alpha$, $\dot{\theta}$, and $\dot{\alpha}$.
+Our system is composed of two rigid bodies, the horizontal arm and the pendulum.  Each has an energy denoted $E_1$ and $E_2$ respectively.  Using the forward kinematics derived above we can compute the kinetic and potential energies associated with each body as a function of $\theta$, $\alpha$, $\dot{\theta}$, and $\dot{\alpha}$.
 
 $$ E_{1} = T_{1} + V_{1} \hspace{1cm} E_{2} = T_{2} + V_{2} $$
 
@@ -450,14 +450,14 @@ $$ \frac{\theta(s)}{\tau_{m}(s)} \approx \frac{s^2 C_1 - C_4}{s^2 \left[s^2 \lef
 
 $$ \frac{\alpha(s)}{\tau_{m}(s)} \approx \frac{- s^2 C_3}{s^2 \left[s^2 \left(C_5 C_1 - C_3^3 \right) - C_4 C_5\right]} $$
 
-In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
+In the simplified transfer function for $\alpha (s)$ above it appears as if we can cancel the $s^2$'s, but this not the case as we see when we examine equation \eqref{TF_Alpha}.  
 
 \clearpage
 
 \section{ Parameter Identification}
 The inverted pendulum system includes many parameters related to the mechanical and electrical properties of the system. To determine these, we used a combination of manufacturer data sheets, CAD modeling, physical measurements, and experimental regression.\\
 
-Most of the relevant motor parameters were previously determined in the DC motor lab. In that case, most of the parameters were provided by the manufacturer, but we performed regression on experimental data to fit our model with the test data and found that the true values were different from those on the data sheet. The relevant values are shown in table \ref{q2_1}. An abbreviated except from our DC motor lab is given below to show our procedure for determining these values. \\
+Most of the relevant motor parameters were previously determined in the DC motor lab. In that case, most of the parameters were provided by the manufacturer, but we performed regression on experimental data to fit our model with the test data and found that the true values were different from those on the data sheet. The relevant values are shown in table \ref{q2_1}. An abbreviated excerpt from our DC motor lab is given below to show our procedure for determining these values. \\
 
 \begin{table}[htb]
 \begin{center}
@@ -490,7 +490,7 @@ With this model and some intelligent guessing for new parameter values, we arriv
 \end{center}
 \end{figure}
 
-With the motor parameters largely known already, we focused on determining the parameters of the new components comprising the pendulum and horizontal arm. To ensure accuracy, we used multiple methods and compared results. For example, all of the mass of every component was determined on the scale provided in the mechatronics lab. We then built CAD models of every component in SolidWorks using a combination of engineering drawings, physical measurements, and already built models from McMaster-Carr. By setting the material properties correctly, SolidWorks can determine the mass of every part. We compared this calculated value to the measured values and they all matched within the limits of resolution of the scale. This gave us confidence in the ability of SolidWorks to calculate the other necessary parameters.Therefore, we built assemblies of the pendulum, the horizontal arm and complete system, and we used SolidWorks to calculate the masses, centers of mass, and moments of inertia that we needed. Figures \ref{q2_3}, \ref{q2_4}, and \ref{q2_5} show the CAD assemblies. The inertia matrix for the pendulum and other relevant values are given below. Note that the axes labels in the SolidWorks models are not the same as those in our derived equations.
+With the motor parameters largely known already, we focused on determining the parameters of the new components comprising the pendulum and horizontal arm. To ensure accuracy, we used multiple methods and compared results. For example, the mass of every component was determined on the scale provided in the mechatronics lab. We then built CAD models of every component in SolidWorks using a combination of engineering drawings, physical measurements, and already built models from McMaster-Carr. By setting the material properties correctly, SolidWorks can determine the mass of every part. We compared this calculated value to the measured values and they all matched within the limits of resolution of the scale. This gave us confidence in the ability of SolidWorks to calculate the other necessary parameters.Therefore, we built assemblies of the pendulum, the horizontal arm and complete system, and we used SolidWorks to calculate the masses, centers of mass, and moments of inertia that we needed. Figures \ref{q2_3}, \ref{q2_4}, and \ref{q2_5} show the CAD assemblies. The inertia matrix for the pendulum and other relevant values are given below. Note that the axes labels in the SolidWorks models are not the same as those in our derived equations.
 
 \begin{center} $ \begin{vmatrix}
 \bar{I}_{xx} & \bar{I}_{xy} & \bar{I}_{xz} \\
@@ -539,7 +539,7 @@ $$I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2 =  7.1305
 \end{center}
 \end{figure}
 
-For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ to be the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. \\
+For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ are the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. \\
 
 %To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
 $$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-6} \, N\cdot m$$
@@ -573,7 +573,7 @@ Figures \ref{q3_1} and \ref{q3_2} show the pendulum and horizontal arm angle res
 \label{q3_2}
 \end{figure}
 
-Figures \ref{q3_3} and \ref{q3_4} show the pendulum and horizontal arm angle response from the linearized model compared to experimental data. The predicted pendulum angle agrees with the experimental quite well for several periods. Somewhat surprisingly, the linear model matches the experimental data longer than the nonlinear model did. However, the linear model decays extremely slowly. This is largely because the friction terms are no longer present, and friciton on the horizontal arm played a large role in reducing the energy of the system. While the linear pendulum angle seems to perform reasonably well initially, the linear horizontal arm angle does not agree with the test data at all. If the angle data was not normalized, the predicted arm angle in figure \ref{q3_4} would grow without bound. A possible cause of this is that our linear model does not incorporate all of the friction and damping forces that act on the horizontal arm, and the encoder cable applies significant resistance to rotation on the arm.\\
+Figures \ref{q3_3} and \ref{q3_4} show the pendulum and horizontal arm angle response from the linearized model compared to experimental data. The predicted pendulum angle agrees with the experimental quite well for several periods. Somewhat surprisingly, the linear model matches the experimental data longer than the nonlinear model did. However, the linear model decays extremely slowly. This is largely because the friction terms are no longer present, and friction on the horizontal arm played a large role in reducing the energy of the system. While the linear pendulum angle seems to perform reasonably well initially, the linear horizontal arm angle does not agree with the test data at all. If the angle data was not normalized, the predicted arm angle in figure \ref{q3_4} would grow without bound. A possible cause of this is that our linear model does not incorporate all of the friction and damping forces that act on the horizontal arm, and the encoder cable applies significant resistance to rotation on the arm.\\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -674,13 +674,13 @@ else
 tout = sign*(t - floor(t*0.5/pi + 0.5) * 2 *pi);
 \end{verbatim}
 
-In the code above $t$ represents$\theta$. For our normalization, we require $t$ to be positive and we keep track of the original sign of $t$ through the variable $sign$. $tout$ represents the output value of $mod2\pi(\theta)$ . The $floor$ operation essentially finds the quotient of dividing $t$ by $2\pi$ and the the $+ 0.5$ operation allows the angle to be normalized between $+\pi$ on one side and $-\pi$ on the other. This way, we can constrain $\theta$ to stay between $\pm \pi$.\\
+In the code above $t$ represents $\theta$. For our normalization, we require $t$ to be positive and we keep track of the original sign of $t$ through the variable $sign$. $tout$ represents the output value of $mod2\pi(\theta)$ . The $floor$ operation essentially finds the quotient of dividing $t$ by $2\pi$ and the the $+ 0.5$ operation allows the angle to be normalized between $+\pi$ on one side and $-\pi$ on the other. This way, we can constrain $\theta$ to stay between $\pm \pi$.\\
 
 $mod2\pi$ is very useful for controlling $\alpha$. $\alpha$ will reach its unstable equilibrium every $2\pi$ radians and we are happy with it as long as the pendulum balances in the unstable equilibrium. Additionally the change from $+\pi$ to $-\pi$ occurs when the the pendulum is facing downwards, but at this point the swing-up controller would be operational and for the swing-up controller, the sign of $\cos(\alpha)$ in the $+\pi$ and $-\pi$ quadrants are the same, so this does not affect the system.\\
 
-For $\theta$ control we have to be a little careful - the horizontal arm moves a lot during swing up and generally during balancing as well, if we apply a $mod2\pi()$ operation before calculating $\dot{\theta}$, the derivative will spike up violently during the $\pm \pi$ crossover point - this in turn would destabilie the inverted pendulum system. Hence it is a good idea to calculate $\dot{\theta}$ from $\theta_{\text{Absolute}}$.\\
+For $\theta$ control we have to be a little careful - the horizontal arm moves a lot during swing up and generally during balancing as well, if we apply a $mod2\pi()$ operation before calculating $\dot{\theta}$, the derivative will spike up violently during the $\pm \pi$ crossover point - this in turn would destabilize the inverted pendulum system. Hence it is a good idea to calculate $\dot{\theta}$ from $\theta_{\text{Absolute}}$.\\
 
-In general it is good practice to use a $mod2\pi()$ operation on repetitive angular functions, it helps in numerical precision in trigonometric functions also captures the nature of the system - after a point, we get back to where we were.\\
+In general it is good practice to use a $mod2\pi()$ operation on repetitive angular functions, it helps in numerical precision in trigonometric functions and also captures the nature of the system - after a point, we get back to where we were.\\
 
 While implementing the system in Labview we used the Matlab script block which allowed us to write Matlab code for execution as opposed to creating a messy wire-block diagram. The front panel and the block diagram can be seen in figure \ref{q6_a}.
 
