@@ -806,6 +806,7 @@ Table \ref{q6_d_tab} shows the results for testing the system under various cond
 We noticed that the system performed robustly for major changes in the system. The only point where it could not swing up was when the masses were mounted \emph{much} lower than usual. We attribute this to the fact that the system is unable to accurately estimate the energy of the system and to the fact that our motor was not strong enough to swing up at that point.
 
 \begin{table}[htb]
+\begin{center}
     \begin{tabular}{|p{2.5cm}||p{3cm}|p{2cm}|p{2.5cm}|p{6cm}|}
         \hline
         \textbf{System}                        &\textbf{ Property}                           & \textbf{Value /}               & \textbf{Observations}                        & \textbf{Comments}                                                                                                 \\ 
@@ -820,15 +821,38 @@ We noticed that the system performed robustly for major changes in the system. T
         Modifying the Counter Weight  & ~                                  & 10.16 mm              & Swings up and balances              & Slow swing up due to higher inertia on motor                                                             \\
         \hline \hline
     \end{tabular}
+\end{center}
 \caption{Emperical results of various configurations to test system robustness}
 \label{q6_d_tab}
 \end{table}
 
 \clearpage
 \section{Effects of LabView Loop Rate on Stability}
+We ran the system at a loop rate of 0.01 seconds (100 Hz) and tuned our filter to reject noise at this rate. We had satisfactory system robustness and additionally, we were able to use stronger low pass filters to reject more noise.\\
+
+In order to test the limits of stability, we changed the loop rate logarithmically. As we can see from table \ref{q7}, there is a lower bound and an upper bound for the limits of stability. We can attribute the lower bound to the fact that our filters were not designed to operate at such high frequencies. The upper bound stability loss is attributed to the inability of the system to respond quickly enough to balance the system or capitalize on the swinging the pendulum in the opposite direction to lift it up.
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Loop Rate}(sec) & \textbf{Comment}\\ \hline\hline
+        0.003     & \emph{Balancing doesn't work} \\ \hline
+        0.004     & \emph{Swing Up doesn't work } \\ \hline
+        0.005     & Both work                    \\ \hline
+        0.006     & Both work                    \\ \hline
+        0.007     & Both work                    \\ \hline
+        0.008     & Both work                    \\ \hline
+        0.009     & Both work                    \\ \hline
+        0.01      & Both work                    \\ \hline
+        0.02      & \emph{Both Fail}             \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Emperical results of various configurations to test system robustness}
+\label{q7}
+\end{table}
 
 
-\clearpage
 \section{Classical Controller}
 
 \xxx{modify terminology to refer to block diagram}
