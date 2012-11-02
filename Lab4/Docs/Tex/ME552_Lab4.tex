@@ -802,7 +802,7 @@ For the comparison of the actual system with the simulink model, we positioned t
 \subsection*{d.}
 
 \clearpage
-\section{Effects on LabView Loop Rate on Stability}
+\section{Effects of LabView Loop Rate on Stability}
 
 
 \clearpage
@@ -822,7 +822,7 @@ In addition to State Space Controls as detailed earlier in this report we can al
 \label{alphaTF2}
 \end{equation}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 15cm]{classicalBlockDesign.png}
 \end{center}
@@ -830,7 +830,7 @@ In addition to State Space Controls as detailed earlier in this report we can al
 \label{classicalControllerBlock}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 17cm]{ClassicalControllerBlock.png}
 \end{center}
@@ -838,7 +838,7 @@ In addition to State Space Controls as detailed earlier in this report we can al
 \label{classicalSimulink}
 \end{figure}
 
-Because we have two coupled output variables that we wish to control, $\theta(s)$ and $\alpha(s)$ and only a single input to the system, we have constructed a non-traditional loop within a loop controller.  Rather than tightly control $\theta$ an then use that control to control $\alpha$, we instead tightly control $\alpha$ and then control $\theta$ in the outer loop as shown in \ref{classicalControllerBlock}.  Note the compensator block showed in figure \ref{classicalSimulink}.  The following transfer functions all are in terms of motor torque, however our controller does not output motor torque but rather a voltage which commands a current in the motor. If we assume a linear model of the current driver and the electrical properties of the motor, than the appropriate conversion factor is:
+Because we have two coupled output variables that we wish to control, $\theta(s)$ and $\alpha(s)$ and only a single input to the system, we have constructed a non-traditional loop within a loop controller.  Rather than tightly control $\theta$ and then use that control to control $\alpha$, we instead tightly control $\alpha$ and then control $\theta$ in the outer loop as shown in \ref{classicalControllerBlock}.  Note the compensator block shown in figure \ref{classicalSimulink}.  The following transfer functions are in terms of motor torque, however our controller does not output motor torque but rather a voltage which commands a current in the motor. If we assume a linear model of the current driver and the electrical properties of the motor, than the appropriate conversion factor is:
 
 $$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 0.0314499 $$
 
@@ -885,7 +885,7 @@ With the inner loop in place we now wish to control $\theta(s)$ which with just 
 \frac{\theta(s)}{R_{\alpha}(s)} = \frac{K_2(s)}{1 + K_2(s) G_2(s)} G_1(s)
 \end{equation}
 
-Numerically this transfer function is given by \eqref{numericaltfTwAC} with its 0 degree root locus shown in \ref{q8thetawAlphaControl}.
+Numerically this transfer function is given by \eqref{numericaltfTwAC} with its 0 degree root locus shown in figure \ref{q8thetawAlphaControl}.
 
 \begin{equation}
 \frac{\theta(s)}{R_{\alpha}(s)} = \frac{-0.003596 \, s^4 - 0.04174\,  s^3 + 0.1503 \, s^2 + 2.974\, s + 7.549}{(1.078\e{-6}) s^6 + (5.394\e{-5}) s^5 + 0.002641 \, s^4 + 0.02615 \, s^3 + 0.08098 \, s^2}
@@ -900,14 +900,14 @@ Numerically this transfer function is given by \eqref{numericaltfTwAC} with its 
 \label{q8thetawAlphaControl}
 \end{figure}
 
-Normally we would like to design a controller that implements negative feedback, however in this case a positive feed back is appropriate and allows us to use a simple Lead Controller shown in \eqref{classicalK1} to obtain a stable root locus.
+Normally we would like to design a controller that implements negative feedback, however in this case a positive feedback is appropriate and allows us to use a simple Lead Controller shown in \eqref{classicalK1} to obtain a stable root locus.
 
 \begin{equation}
 K_1(s) = 0.01784 \frac{s - 1}{s - 15}
 \label{classicalK1}
 \end{equation}
 
-The resulting root locus for the controlled system is shown in figures \ref{q8controlledTheta} and \ref{q8controlledThetaDetail}.  It is worth noting that we are assured that alpha will remain stable regardless of what the outer loop does to the set point because of all of its poles are in the left half plane, however this may not be true due to the effects of saturation which could reduce our open loop gain and shift the poles into the right half plane. 
+The resulting root locus for the controlled system is shown in figures \ref{q8controlledTheta} and \ref{q8controlledThetaDetail}.  It is worth noting that we are assured that alpha will remain stable regardless of what the outer loop does to the set point because all of its poles are in the left half plane, however this may not always be true due to the effects of saturation which could reduce our open loop gain and shift the poles into the right half plane. 
 
 \begin{figure}
 \begin{minipage}[b]{0.45\linewidth}
@@ -923,7 +923,7 @@ The resulting root locus for the controlled system is shown in figures \ref{q8co
 \end{minipage}
 \end{figure}
 
-With the classical controller constructed we first test it against the linear system model to confirm the design and it does prove to be stable, shown in .  However we do notice that $\theta(t)$ has a very long settling time.  
+With the classical controller constructed we first test it against the linear system model to confirm the design and it does prove to be stable, shown in \ref{ClassicalLinearModel}.  However we do notice that $\theta(t)$ has a very long settling time.  
 \begin{figure}
 \begin{center}
 \includegraphics[width = 15cm]{classicalLinearModel.png}
@@ -940,7 +940,7 @@ With the classical controller constructed we first test it against the linear sy
 \label{q8classicalvsStateSpace}
 \end{figure}
 
-We next examine the how using the non-linear model, which includes the effects of friction impacts the performance of the controller.  As can be seen in figure \ref{q8classicaltransientCompare} the transient response is not too greatly influence and is actually improved with decreased overshoot, however when looking at the response over longer time scales, shown in figure \ref{ClassicalLimitCycle} we see that the system exhibits a limit cycle likely caused by the friction.  
+We next examine how using the non-linear model, which includes the effects of friction, impacts the performance of the controller.  As can be seen in figure \ref{q8classicaltransientCompare} the transient response is not too greatly influence and is actually improved with decreased overshoot, however when looking at the response over longer time scales, shown in figure \ref{ClassicalLimitCycle}, we see that the system exhibits a limit cycle likely caused by the friction.  
 
 \begin{figure}
 \begin{center}
@@ -958,7 +958,7 @@ We next examine the how using the non-linear model, which includes the effects o
 \label{ClassicalLimitCycle}
 \end{figure}
 
-Still in simulation, we also wish to compare the performance of the classical controller with the state space controller on the non-linear model.  We note as mentioned earlier, the state space controller exhibits a large steady state error for $\theta$ while the classical controller exhibits a large amplitude limit cycle.  Considering just the transient response we see that the state space controller responds slightly faster than the classical controller.  Simulation also claims that the classical controller is able to stabilize the pendulum starting from and initial angle, $\alpha_0$ up to 0.6125 radians, while the state space controller has slightly worse performance being able stabilize initial $\alpha$ values up to 0.573 radians.  However we do not expect to see performance this good in reality because the real controller is running at much lower loop rates than these simulated controllers which likely helps stability.  Furthermore, there is no noise to corrupt our measurements and the models do not have to deal with un-modeled forces, specifically the cable which might limit our performance. 
+Still in simulation, we also wish to compare the performance of the classical controller with the state space controller on the non-linear model.  We note as mentioned earlier, the state space controller exhibits a large steady state error for $\theta$ while the classical controller exhibits a large amplitude limit cycle.  Considering just the transient response we see that the state space controller responds slightly faster than the classical controller.  Simulation also claims that the classical controller is able to stabilize the pendulum starting from and initial angle, $\alpha_0$ up to 0.6125 radians, while the state space controller has slightly worse performance being able stabilize initial $\alpha$ values up to 0.573 radians.  However we do not expect to see performance this good in reality because the real controller is running at much lower loop rates than these simulated controllers which likely helps the simulations' stability.  Furthermore, there is no noise to corrupt our measurements and the models do not have to deal with un-modeled forces, specifically the cable which might limit our performance. 
 
 Finally we implemented our classical controller in reality.  However the controller required some additional tuning of gains beyond the original design, but this did result in a stable system.
 
@@ -974,7 +974,7 @@ Plugging these modified values back into our classical controller in Simulink re
 \label{classicalSimulinkvsReal}
 \end{figure}
 
-Full state feedback control seems to be an easier system to design, simply construct a linear model of the system and run a function and we given a set of values that works pretty well on the actual system.  The main disadvantage of this approach is that we lose all of the Laplace domain intuition learned from classical controls, however, in designing this classical controller, we had already lost a great deal of that intuition and were left with playing with the root locus until a stable system appeared.  Despite these upsides, full state feedback has one major disadvantage compared to the classical controller.  All of the states must be observable for the method to work.  In this case we are forced to approximate the derivative using a lead controller which undoubtedly has negatively consequences on performance and in other examples we may have no way of measuring the internal state of the system.  In this case classical controls methods are still applicable and may be able to produce a stable system. 
+Full state feedback control seems to be an easier system to design, simply construct a linear model of the system and run a function and we are given a set of values that work pretty well on the actual system.  The main disadvantage of this approach is that we lose all of the Laplace domain intuition learned from classical controls. However, in designing this classical controller we had already lost a great deal of that intuition and were left with playing with the root locus until a stable system appeared.  Despite these upsides, full state feedback has one major disadvantage compared to the classical controller.  All of the states must be observable for the method to work.  In this case we are forced to approximate the derivative using a lead controller which undoubtedly has negative consequences on performance and in other examples we may have no way of measuring the internal state of the system.  In this case classical controls methods are still applicable and may be able to produce a stable system. 
 
 
 
@@ -1081,12 +1081,12 @@ Introducing backlash causes the system to take more time to reach the steady sta
 \end{figure}
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{q10_b2.png}
-\caption{Behavior of $\alpha$ with Friction On} \label{tex}
+\caption{Behavior of $\dot{\theta}$ with Friction On} \label{tex}
 \label{fig:q10_b2}
 \end{figure}
 
 \item Quantization (see Fig.~\ref{fig:q10_q1},~\ref{fig:q10_q2} and~\ref{fig:q10_q3})\\
-In the real system, both optical encoders introduce quantization to the angle measurements. The simulation results show that during steady state, oscillations occur in $\alpha$ and $\theta$.  Unlike the original model which outputs very nearly zero torque, these oscillations in the angle measurements causes oscillations in motor torque, within the range of $0.2 Nm$ to compensate for the perceived error.   
+In the real system, both optical encoders introduce quantization to the angle measurements. The simulation results show that during steady state, oscillations occur in $\alpha$ and $\theta$.  Unlike the original model which outputs very nearly zero torque, these oscillations in the angle measurements cause oscillations in motor torque, within the range of $0.2 Nm$ to compensate for the perceived error.   
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{q10_q1.png}
 \caption{Behavior of $\dot{\alpha}$ with Quantization} \label{tex}
@@ -1112,7 +1112,7 @@ The simulation results suggest that the system with discrete-time control perfor
 \end{figure}
 
 \item Saturation (see Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2})\\
-As can be seen in Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2}, more time is required for the first swing when the saturation is considered. It suggests that previously large torque is available to provide sufficient energy for the pendulum system to swing at the beginning, but now more time is needed to add the same amount of energy with the limited torque.      
+As can be seen in Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2}, more time is required for the first swing when the saturation is considered. It suggests that previously large torque was available to provide sufficient energy for the pendulum system to swing at the beginning, but now more time is needed to add the same amount of energy with the limited torque.      
 
 \begin{figure}[h]
 \includegraphics[width=1\textwidth]{q10_s1.png}
@@ -1126,7 +1126,6 @@ As can be seen in Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2}, more time is requi
 \end{figure}
 
 \item Noise (see Fig.~\ref{fig:q10_n1}~\ref{fig:q10_n2} and~\ref{fig:q10_n3})\\
-
 Both input and output disturbances have similar undesired influence on the system performance. Despite the tiny difference when the swing-up controller is working, during the balancing stage, oscillations occur in the $\alpha$ and $\theta$. The range of oscillations depends on the magnitudes of noise. Noise added to sensor measurements has the greatest impact resulting in motor torques applied to the system during steady state.  
 
 \begin{figure}[h]
@@ -1146,7 +1145,6 @@ Both input and output disturbances have similar undesired influence on the syste
 \end{figure}
 
 \item Time Delay (see Fig.~\ref{fig:q10_t1},~\ref{fig:q10_t2} and~\ref{fig:q10_t3})\\
-
 In the physical model, the dynamic response of the servo-amplifier, encoders, and NI-DAQ are assumed instantaneous. In order to simulate the real behavior, a small time delay was introduced to our simulink model. For the swing-up stage, time delay has a small effect which  simply causes the same amount of time shift. However, during the balancing stage, time delay has strong negative impact on the balancing control. $\alpha$ vibrates significantly as the time delay is increased; thus, the motor behaves aggressively and large torque is required during the transient response.     This behavior in steady state resembles the oscillations seen in the real system and we may conclude that time delay is contributing to the poor system behavior.
 
 \begin{figure}[h]
