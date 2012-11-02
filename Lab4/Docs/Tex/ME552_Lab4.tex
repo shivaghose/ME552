@@ -707,16 +707,122 @@ While implementing the system in Labview we used the Matlab script block which a
 \clearpage
 \section{Classical Controller}
 
-\xxx{Still need bode plots! for design process}
+\xxx{modify terminology to refer to block diagram}
+
+In addition to State Space Controls as detailed earlier in this report we can also attempt to apply our classical controls knowledge to design a controller in the Laplace domain.  The transfer functions of the system between motor torque, $\tau_m(s)$, $\alpha(s)$, and $\theta(s)$ computed earlier are repeated below.  As mentioned earlier, it is necessary to consider the effects of damping as they serve to make the system less stable, rather than more stable.  
+
+\begin{equation}
+ \frac{\theta(s)}{\tau_{m}(s)} = \frac{s^2 C_1 + s b_{\alpha} - C_4}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+\label{thetaTF1}
+\end{equation}
+
+\begin{equation}
+\frac{\alpha(s)}{\tau_{m}(s)} = \frac{-s^2 C_3}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+\label{alphaTF2}
+\end{equation}
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{ClassicalLimitCycle.png}
+\includegraphics[width = 15cm]{classicalBlockDesign.png}
 \end{center}
-\caption{Limit Cycle exerted by the Classical Controller when applied to the non-linear Model}
-\label{ClassicalLimitCycle}
+\caption{Block Diagram of Classical Balancing Controller}
+\label{classicalControllerBlock}
 \end{figure}
 
+\begin{figure}
+\begin{center}
+\includegraphics[width = 17cm]{ClassicalControllerBlock.png}
+\end{center}
+\caption{Loop within a loop to control both $\theta$ and $\alpha$ in Simulink Model}
+\label{classicalSimulink}
+\end{figure}
+
+Because we have two coupled output variables that we wish to control, $\theta(s)$ and $\alpha(s)$ and only a single input to the system, we have constructed a non-traditional loop within a loop controller.  Rather than tightly control $\theta$ an then use that control to control $\alpha$, we instead tightly control $\alpha$ and then control $\theta$ in the outer loop as shown in \ref{classicalControllerBlock}.  Note the compensator block showed in figure \ref{classicalSimulink}.  The following transfer functions all are in terms of motor torque, however our controller does not output motor torque but rather a voltage which commands a current in the motor. If we assume a linear model of the current driver and the electrical properties of the motor, than the appropriate conversion factor is:
+
+$$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 0.0314499 $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{alpha-1closedLoop.png}
+\end{center}
+\caption{180 Degree Root Locus of Transfer Function Relating $\alpha$ to input torque with a negative K}
+\label{q8alphaInit}
+\end{figure}
+
+\xxx{do we really need this}
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Zeros & 0 & 0        & ~       & ~       \\ \hline
+        Poles & 0 & -10.3814 & 10.3623 & -0.0177 \\
+        \hline
+    \end{tabular}
+\caption{Poles and Zeros of \eqref{alphaTF2}}
+\label{Alpharoots}
+\end{center}
+\end{table}
+
+Substituting constants, we can get the open loop poles and zeros for the alpha transfer function, shown in table \ref{Alpharoots}. Because of the zero at the origin and the pole at the right half plane, all normal controllers such as lead, lead lag, PID, will all fail to bring that branch of the root locus out of the right half plane.  Our controller shown below in \eqref{alphaController} uses a pole at the origin to cancel the system zero and a pair of zeros to pull the root locus out of the right half plane.  We added a filtering pole to try and make the system more robust to noise.  The resulting system root locus is shown in figure  \ref{q8controlledAlpha}  The proportional gain term was chosen to make the dominant pair of poles critically damped.  
+
+\begin{equation}
+K_{2} = -3.7203\frac{(s - 3.75)(s - 7.85)}{s(s-50)} 
+\label{alphaController}
+\end{equation}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{controlledAlpha.png}
+\end{center}
+\caption{Root Locus for Alpha with Classical Controller}
+\label{q8controlledAlpha}
+\end{figure}
+
+With the inner loop in place we now wish to control $\theta(s)$ which with just the inner loop is unstable and diverges.  First we must compute a new effective transfer function between the set point of the inner loop, $R_{\alpha}(s)$ and $\theta(s)$
+
+\begin{equation}
+\frac{\theta(s)}{R_{\alpha}(s)} = \frac{K_2(s)}{1 + K_2(s) G_2(s)} G_1(s)
+\end{equation}
+
+Numerically this transfer function is given by \eqref{numericaltfTwAC} with its 0 degree root locus shown in \ref{q8thetawAlphaControl}.
+
+\begin{equation}
+\frac{\theta(s)}{R_{\alpha}(s)} = \frac{-0.003596 \, s^4 - 0.04174\,  s^3 + 0.1503 \, s^2 + 2.974\, s + 7.549}{(1.078\e{-6}) s^6 + (5.394\e{-5}) s^5 + 0.002641 \, s^4 + 0.02615 \, s^3 + 0.08098 \, s^2}
+\label{numericaltfTwAC}
+\end{equation}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 10cm]{thetaAlphaControl.png}
+\end{center}
+\caption{Transfer Function for Theta with Alpha Controlled}
+\label{q8thetawAlphaControl}
+\end{figure}
+
+Normally we would like to design a controller that implements negative feedback, however in this case a positive feed back is appropriate and allows us to use a simple Lead Controller shown in \eqref{classicalK1} to obtain a stable root locus.
+
+\begin{equation}
+K_1(s) = 0.01784 \frac{s - 1}{s - 15}
+\label{classicalK1}
+\end{equation}
+
+The resulting root locus for the controlled system is shown in figures \ref{q8controlledTheta} and \ref{q8controlledThetaDetail}.  It is worth noting that we are assured that alpha will remain stable regardless of what the outer loop does to the set point because of all of its poles are in the left half plane, however this may not be true due to the effects of saturation which could reduce our open loop gain and shift the poles into the right half plane. 
+
+\begin{figure}
+\begin{minipage}[b]{0.45\linewidth}
+\includegraphics[width = 8cm]{controlledTheta.png}
+\caption{Root Locus of Controlled $\theta$}
+\label{q8controlledTheta}
+\end{minipage}
+\hspace{0.5cm}
+\begin{minipage}[b]{0.45\linewidth}
+\includegraphics[width = 8cm]{controlledThetaDetail.png}
+\caption{Detail of Root Locus to Left}
+\label{q8controlledThetaDetail}
+\end{minipage}
+\end{figure}
+
+With the classical controller constructed we first test it against the linear system model to confirm the design and it does prove to be stable, shown in .  However we do notice that $\theta(t)$ has a very long settling time.  
 \begin{figure}
 \begin{center}
 \includegraphics[width = 15cm]{classicalLinearModel.png}
@@ -724,6 +830,16 @@ While implementing the system in Labview we used the Matlab script block which a
 \caption{The Classical Controller successfully stabilizes the linearized system, however $\theta$ has a long settling time}
 \label{ClassicalLinearModel}
 \end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 15cm]{transientNonLinear}
+\end{center}
+\caption{Comparison of the transient response of the non-linear model when controlled by the state-space controller and the classical controller.}
+\label{q8classicalvsStateSpace}
+\end{figure}
+
+We next examine the how using the non-linear model, which includes the effects of friction impacts the performance of the controller.  As can be seen in figure \ref{q8classicaltransientCompare} the transient response is not too greatly influence and is actually improved with decreased overshoot, however when looking at the response over longer time scales, shown in figure \ref{ClassicalLimitCycle} we see that the system exhibits a limit cycle likely caused by the friction.  
 
 \begin{figure}
 \begin{center}
@@ -735,13 +851,31 @@ While implementing the system in Labview we used the Matlab script block which a
 
 \begin{figure}
 \begin{center}
-\includegraphics[width = 15cm]{transientNonLinear}
+\includegraphics[width = 15cm]{ClassicalLimitCycle.png}
 \end{center}
-\caption{Comparison of the transient response of the non-linear model when controlled by the state-space controller and the classical controller.}
-\label{q8classicalvsStateSpace}
+\caption{Limit Cycle exerted by the Classical Controller when applied to the non-linear Model for an initial $\alpha$ of 0.1 radians}
+\label{ClassicalLimitCycle}
 \end{figure}
 
-\xxx{still need to compare model performance with reality}
+Still in simulation, we also wish to compare the performance of the classical controller with the state space controller on the non-linear model.  We note as mentioned earlier, the state space controller exhibits a large steady state error for $\theta$ while the classical controller exhibits a large amplitude limit cycle.  Considering just the transient response we see that the state space controller responds slightly faster than the classical controller.  Simulation also claims that the classical controller is able to stabilize the pendulum starting from and initial angle, $\alpha_0$ up to 0.6125 radians, while the state space controller has slightly worse performance being able stabilize initial $\alpha$ values up to 0.573 radians.  However we do not expect to see performance this good in reality because the real controller is running at much lower loop rates than these simulated controllers which likely helps stability.  Furthermore, there is no noise to corrupt our measurements and the models do not have to deal with un-modeled forces, specifically the cable which might limit our performance. 
+
+Finally we implemented our classical controller in reality.  However the controller required some additional tuning of gains beyond the original design, but this did result in a stable system.
+
+$$K_{1 \, adjusted} = 0.2676 \hspace{1cm} K_{compensator \, adjusted} = 50 $$
+
+Plugging these modified values back into our classical controller in Simulink resulted in a stable system and the two responses are shown in figure \ref{classicalSimulinkvsReal}.  We see a similarity between the $\theta$ plots.  Both experience limit cycles and our estimate of the amplitude and frequencies of this cycle do not seem to be very far off.  On the $\alpha$ plot we see a large difference in the initial transient response, with the real system oscillating rapidly before settling, while the simulated system overshoots once and quickly settles into its limit cycle.  All of our experiments so far have failed to produce smooth motion from the pendulum and this case is no different.  However we again note a similarity between the limit cycles in the two graphs.  We see that observed alpha shows very small peaks that correspond to $\dot{\theta}$ changing signs as our simulated system also shows. 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 16cm]{modifiedrealvsSimulation.png}
+\end{center}
+\caption{Comparison of simulated non-linear system with modified gains against the real response}
+\label{classicalSimulinkvsReal}
+\end{figure}
+
+Full state feedback control seems to be an easier system to design, simply construct a linear model of the system and run a function and we given a set of values that works pretty well on the actual system.  The main disadvantage of this approach is that we lose all of the Laplace domain intuition learned from classical controls, however, in designing this classical controller, we had already lost a great deal of that intuition and were left with playing with the root locus until a stable system appeared.  Despite these upsides, full state feedback has one major disadvantage compared to the classical controller.  All of the states must be observable for the method to work.  In this case we are forced to approximate the derivative using a lead controller which undoubtedly has negatively consequences on performance and in other examples we may have no way of measuring the internal state of the system.  In this case classical controls methods are still applicable and may be able to produce a stable system. 
+
+
 
 \clearpage
 \section{Another Swing Up Controller}
