@@ -777,13 +777,13 @@ Figures \ref{q6_b2} through \ref{q6_b8} show the various front panels and block 
 \subsection*{c.}
 For the comparison of the actual system with the simulink model, we positioned the pendulum at $\alpha = 0.2$ radians so that the balance controller could grab the pendulum and balance it. A comparison between the predicted response and actual response can be seen in figure \ref{q6_c_alpha} and \ref{q6_c_theta}. 0.1 seconds of lag can be accounted for the delay we purposefully introduced in $\alpha$ and $\theta$ so that they are in phase with $\dot{\alpha}$ and $\dot{\theta}$. This minor introduction of lag helps stabilize the system better as the angle will not lead the angular velocity. Other delays and discrepancies can be attributed to unmodeled  system properties, unaccounted motor inertia and external disturbances.\\
 
- The trends for $\alpha$ (theoretical and observed) seem similar and the predicted model closely resembles the real system. However, for $\theta$, we see a considerable gap in the prediction v.s. the actual behavior. We attribute these differences to the fact that we have much tighter constraints for $\alpha$ and we are less worried about $\theta$. In fact in reality, we would like $\dot{\theta}$ to be zero and we are not too concerned about $\theta$.
+ The trends for $\alpha$ (theoretical and observed) seem similar and the predicted model closely resembles the real system. However, for $\theta$, we see a considerable gap in the prediction v.s. the actual behavior. We attribute these differences to the fact that we manually lifted the pendulum up to $\alpha = 0.2$ radians - which was an imperfect operation, which in itself changes the initial starting condition for $\theta$. When combined with the fact that we are more interested in holding $\alpha$ at zero, the system will stabilize $\alpha$ much faster than $\theta$.
 
 
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 12cm]{Q6_C_Alpha.png}
+\includegraphics[width = 16cm]{Q6_C_Alpha.png}
 \end{center}
 \caption{Alpha response during balancing - theoretical v.s. actual}
 \label{q6_c_alpha}
@@ -791,7 +791,7 @@ For the comparison of the actual system with the simulink model, we positioned t
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 11cm]{Q6_C_Theta.png}
+\includegraphics[width = 16cm]{Q6_C_Theta.png}
 \end{center}
 \caption{Theta response during balancing - theoretical v.s. actual}
 \label{q6_c_theta}
@@ -800,6 +800,29 @@ For the comparison of the actual system with the simulink model, we positioned t
 \clearpage
 
 \subsection*{d.}
+
+Table \ref{q6_d_tab} shows the results for testing the system under various conditions. Distances were measured using a vernier caliper between the outer edges of the objects and the closest part of the pendulum's body. For the counter-weight, this was between the weight and the keyless bushing and for the pendulum masses, it was between the weight mounted lowest on the shaft to the aluminum connector.\\
+
+We noticed that the system performed robustly for major changes in the system. The only point where it could not swing up was when the masses were mounted \emph{much} lower than usual. We attribute this to the fact that the system is unable to accurately estimate the energy of the system and to the fact that our motor was not strong enough to swing up at that point.
+
+\begin{table}[htb]
+    \begin{tabular}{|p{2.5cm}||p{3cm}|p{2cm}|p{2.5cm}|p{6cm}|}
+        \hline
+        \textbf{System}                        &\textbf{ Property}                           & \textbf{Value /}               & \textbf{Observations}                        & \textbf{Comments}                                                                                                 \\ 
+        \textbf{Configuration}                 & ~                                  & \textbf{Position}              & ~                                   & ~                                                                                                        \\ \hline \hline
+        Standard                      & Counter Weight position            & 67.45 mm              & Normal                              & -                                                                                                        \\ \hline
+        ~                             & Pendulum Mass                      & 2 weights at 135.41mm & Normal                              & -                                                                                                        \\ \hline \hline
+        Modifying Weights             & No Counter Weight                  & -                     & Swings up and balances              & Shudders more, this could be due to less inertia.                                                        \\ \hline
+        ~                             & No pendulum mass                   & -                     & Swings up and balances              & Had to increase aggressivity, balancing is slightly shaky                                                \\ \hline
+        ~                             & No pendulum mass or Counter Weight & -                     & Swings up and balances              & Had to increase aggressivity, balancing is VERY shaky                                                    \\ \hline \hline
+        Modifying the Pendulum Masses & 1 mass                             & End of pendulum       & Swings up and balances              & No noticeable change                                                                                     \\ \hline
+        ~                             & 2 masses                           & 32.52 mm              & Able to balance, unable to swing up & Energy calculations could be off: system thinks it has more Energy than it does. Also our motor is weak \\ \hline\hline
+        Modifying the Counter Weight  & ~                                  & 10.16 mm              & Swings up and balances              & Slow swing up due to higher inertia on motor                                                             \\
+        \hline \hline
+    \end{tabular}
+\caption{Emperical results of various configurations to test system robustness}
+\label{q6_d_tab}
+\end{table}
 
 \clearpage
 \section{Effects on LabView Loop Rate on Stability}
