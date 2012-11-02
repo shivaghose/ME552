@@ -663,7 +663,7 @@ Figure \ref{LvsNonLwF} introduces frictional forces to the non-linear model.  He
 \subsection*{a.}
 Angle normalization was implemented using the $mod2\pi()$ function. The function works by limiting an input angle, $\theta$ to $\pm \pi $ radians which effectively represents the entire angular spectrum of $2\pi$ radians. The advantage of using $mod2\pi()$ over a function that normalizes $\theta$ from $0$ to $2\pi$ is that the angular reset point is at $\pm \pi$ as opposed to $0$ radians. For our inverted pendulum we would like to ensure that $\alpha$ and $\theta$ are close to zero. Using $mod2\pi()$ ensures that spikes do not occur about the transition point.\\
 
-The code for the $mod2\pi$ operation is as follows:
+The code for the $mod2\pi()$ operation is as follows:
 
 \begin{verbatim}
 if t<0
@@ -674,17 +674,14 @@ else
 tout = sign*(t - floor(t*0.5/pi + 0.5) * 2 *pi);
 \end{verbatim}
 
-$\theta$ is represented as $t$. For our normalization, we require $t$ to be positive and we keep track of the original sign of $t$ through the variable $sign$. $tout$ represents the output value of $mod2\pi(\theta)$ . The $floor$ operation essentially finds the quotient of dividing $t$ by $2\pi$ and the the $+ 0.5$ operation allows the angle to be normalized between $+\pi$ on one side and $-\pi$ on the other. This way, we can constrain $\theta$ to stay between $\pm \pi$.
-
-
+In the code above $t$ represents$\theta$. For our normalization, we require $t$ to be positive and we keep track of the original sign of $t$ through the variable $sign$. $tout$ represents the output value of $mod2\pi(\theta)$ . The $floor$ operation essentially finds the quotient of dividing $t$ by $2\pi$ and the the $+ 0.5$ operation allows the angle to be normalized between $+\pi$ on one side and $-\pi$ on the other. This way, we can constrain $\theta$ to stay between $\pm \pi$.\\
 
 $mod2\pi$ is very useful for controlling $\alpha$. $\alpha$ will reach its unstable equilibrium every $2\pi$ radians and we are happy with it as long as the pendulum balances in the unstable equilibrium. Additionally the change from $+\pi$ to $-\pi$ occurs when the the pendulum is facing downwards, but at this point the swing-up controller would be operational and for the swing-up controller, the sign of $\cos(\alpha)$ in the $+\pi$ and $-\pi$ quadrants are the same, so this does not affect the system.\\
 
 For $\theta$ control we have to be a little careful - the horizontal arm moves a lot during swing up and generally during balancing as well, if we apply a $mod2\pi()$ operation before calculating $\dot{\theta}$, the derivative will spike up violently during the $\pm \pi$ crossover point - this in turn would destabilie the inverted pendulum system. Hence it is a good idea to calculate $\dot{\theta}$ from $\theta_{\text{Absolute}}$.\\
 
-In general it is good practice to use a $mod2\pi()$ operation on repetitive angular functions, it helps in numerical precision in trigonometric functions also captures the nature of the system - after a point, we get back to where we were.
+In general it is good practice to use a $mod2\pi()$ operation on repetitive angular functions, it helps in numerical precision in trigonometric functions also captures the nature of the system - after a point, we get back to where we were.\\
 
-\subsection*{b.}
 While implementing the system in Labview we used the Matlab script block which allowed us to write Matlab code for execution as opposed to creating a messy wire-block diagram. The front panel and the block diagram can be seen in figure \ref{q6_a}.
 
 \begin{figure}[htb]
@@ -694,9 +691,108 @@ While implementing the system in Labview we used the Matlab script block which a
 \caption{Front panel and block diagram of $mod2\pi$.}
 \label{q6_a}
 \end{figure}
+
+\clearpage
+
+\subsection*{b.}
+
+Figures \ref{q6_b2} through \ref{q6_b8} show the various front panels and block diagrams of the various VIs and subVIs that make up the LabView controllers.
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 16cm, height = 14cm]{q6_b2.png}
+\end{center}
+\caption{Block diagram of State-Space Controller VI.}
+\label{q6_b2}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{q6_b1.png}
+\end{center}
+\caption{Front panel of State-Space Controller VI.}
+\label{q6_b1}
+\end{figure}
+
+
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{q6_b3.png}
+\end{center}
+\caption{Front panel of the swing up controller. The \emph{Theta Breaking Constant} is used to limit the excessive overshoot of the pendulum - this could happen during swing-up or even if someone adds excessive energy to the system by tapping the pendulum very aggressively. The theta breaking algorithm attempts to move the motor in such a way that it opposes movement in $\theta$, this would dissipate excessive energy from the system.}
+\label{q6_b3}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 16cm, height = 12cm]{q6_b4.png}
+\end{center}
+\caption{Block diagram of the swing up controller. Theta breaking is achieved by pulsing in the opposite direction of $\theta$. The magnitude is manually tuned. If it is too high, it would inevitably add energy to the system, too small and it does not make a difference. The best hand tuned value was found to be 1.}
+\label{q6_b4}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 9cm]{q6_b5.png}
+\end{center}
+\caption{Front panel energy calculation subVI.}
+\label{q6_b5}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q6_b6.png}
+\end{center}
+\caption{Block diagram of the energy calculation subVI. We used the Matlab script block again to aide in the writing the complicated equations instead of using block-based logic. The code is available in the Appendix.}
+\label{q6_b6}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 10cm]{q6_b7.png}
+\end{center}
+\caption{Front panel of the State Space Controller.}
+\label{q6_b7}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 14cm]{q6_b8.png}
+\end{center}
+\caption{Block diagram of the State Space Controller.}
+\label{q6_b8}
+\end{figure}
+
 \clearpage
 
 \subsection*{c.}
+A comparison between the predicted response and actual response can be seen in figure \ref{q6_c_alpha} and \ref{q6_c_theta}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{Q6_C_Alpha.png}
+\end{center}
+\caption{Alpha response during balancing - theoretical v.s. actual}
+\label{q6_c_alpha}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 12cm]{Q6_C_Alpha.png}
+\end{center}
+\caption{Theta response during balancing - theoretical v.s. actual}
+\label{q6_c_theta}
+\end{figure}
+
+\clearpage
 
 \subsection*{d.}
 
