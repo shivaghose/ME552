@@ -294,7 +294,6 @@ $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} = C_1 \ddot{\alpha}
 
 $$ \frac{\partial \Lagr}{\partial \alpha} = \dot{\theta}^2 \left( C_2 \sin(\alpha) \cos(\alpha) - I_{2xx} \cos(\alpha) \sin(\alpha)\right) - C_3 \dot{\theta} \dot{\alpha} sin(\alpha) + C_4  \sin(\alpha) $$
 
-\xxx{fix centering on this equation and probably the next one}
 \begin{align} 
 \ddot{\theta} \left( I_{1z1} + C_2 \sin^2(\alpha) + I_{2xx} \cos^2(\alpha) + m_2 l_1^2\right) + 2 (C_2 - I_{2xx}) \dot{\theta} \dot{\alpha}  \sin(\alpha)  \cos(\alpha) \nonumber \\ {} + C_3  \ddot{\alpha}  \cos(\alpha)  - C_3  \dot{\alpha}^2 \sin(\alpha)  = -b_{\theta}  \dot{\theta} + \tau_{m} + \tau_{C \theta}
 \label{NonLin1}
@@ -392,10 +391,10 @@ As noted above the matrices A, B, C, and D may in general be functions of time, 
 
 \xxx{need to format this matrix to look better}
 $$ A = \left[ \begin{array}{c c c c l}
-	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\
-	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\
-	\frac{\partial \dot{\alpha}}{\partial \theta} & \frac{\partial \dot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \dot{\alpha}}{\partial \alpha} & \frac{\partial \dot{\alpha}}{\partial \dot{\alpha}}\\
-	\frac{\partial \ddot{\alpha}}{\partial \theta} & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}}\\
+	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \dot{\alpha}}{\partial \theta} & \frac{\partial \dot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \dot{\alpha}}{\partial \alpha} & \frac{\partial \dot{\alpha}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \ddot{\alpha}}{\partial \theta} & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}}\\[6pt]
  \end{array} \right] = 
 \left[ \begin{array}{c c c c l} 
 0 & 1 & 0 & 0 \\
