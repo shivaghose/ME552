@@ -839,6 +839,41 @@ A comparison between the predicted response and actual response can be seen in f
 
 \clearpage
 \section{Another Swing Up Controller}
+When designing a new our goal was to use a very simple method that was still reliable. The controller we implemented shared some similarities with the method discussed in lecture, but simplified significantly. Rather than calculating the energy of the system or measuring the pendulum's position, our controller only looks at the direction of the pendulum and applies a constant voltage such that switches sign every time the pendulum switches direction. Our goal was for the motor to apply high torque in one direction until the pendulum had stopped moving upwards, and then apply high torque in the opposite direction. With proper tuning of the voltage used, we believed we could meet the goal of only two swings before balancing. However, in practice we were not able to achieve this as our motor accelerating quickly enough to raise the pendulum sufficiently before its cords began twisting up too much. Therefore, we had to settle for a relatively low voltage command which required more swings. \\
+
+Figure \ref{q9_1} shows the simplified balance controller implemented on the real system. We used a controller switch over point of 0.3 radians (switching to our state-space balancer) and a command voltage of +- 3.0 Volts to get into balance mode in 19 swings (approximately 9.5 seconds). This was much worse than our prediction, which is shown in figure \ref{q9_2}. With our nonlinear simulink model we were able to reach balance mode in 4 swings (approximately 2.3 seconds) with a switch over setting of 0.6 radians and a command voltage of +- 2.2 Volts. Our controller on the real system requires a change over point much closer to the vertical position than the simulation does, which accounts for some of the difference in performance. Similarly, when we increased the command voltage to attempt to reduce the swings needed, the pendulum often overshot the vertical position and the balance controller was not able to catch it. Therefore, we decided to use a lower command input which takes more swings, but is much more reliable. Figures \ref{q9_3} and \ref{q9_4} show the simplified controllers as they were implemented in simulink and LabView, respectively.\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Q9.png}
+\end{center}
+\caption{Simplified Swing-Up Controller on Real System}
+\label{q9_1}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{Q9sim.png}
+\end{center}
+\caption{Simplified Swing-Up Controller with Nonlinear Model}
+\label{q9_2}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{Q9simulink.png}
+\end{center}
+\caption{Simplified Swing-Up Controller in Simulink Model}
+\label{q9_3}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 8cm]{Q9labview.png}
+\end{center}
+\caption{Simplified Swing-Up Controller in LabView}
+\label{q9_4}
+\end{figure}
 
 \clearpage
 \section{Parasitic Effects}
