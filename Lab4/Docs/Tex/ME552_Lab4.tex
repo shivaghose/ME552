@@ -384,7 +384,7 @@ $$ {\bf{Y}}(t) = C(t) \dot{\bf{X}}(t) + D(t) {\bf{u}}(t) = C(t) \left\{ A(t) {\b
 
 As noted above the matrices A, B, C, and D may in general be functions of time, however because our system is time invariant, these matrices become independent of time.  The notation below has been simplified accordingly.  The matrices A and B may be obtained directly from our linearized equations of motion above.  
 
-\xxx{need to format this matrix to look better}
+
 $$ A = \left[ \begin{array}{c c c c l}
 	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\[6pt]
 	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\[6pt]
@@ -531,7 +531,7 @@ $$I_{1zt} = \left(6.78 \e{-4} + 3.50514 \e{-5} \right) \, kg \cdot m^2 =  7.1305
 \end{center}
 \end{figure}
 
-For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ are the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. \\
+For the pendulum we assume that frictional torque, $\tau_{F \alpha}$, and the viscous damping coefficient, $b_{\alpha}$ are the same in each direction. These terms for the pendulum were estimated in an experiment where the horizontal arm was fixed in place and the pendulum was allowed to swing freely from an initial angle.  By comparing the decaying envelope, extracted as the maximum and minimum of each oscillation, of the actual system motion with a similar plot generated from a simulated model, we formed a rough estimate of these terms. MATLAB initialization files containing these parameters can be found in the appendix.\\
 
 %To determine the viscous damping and coulomb friction of the pendulum and bearings, we used non-linear regression with MATLAB's numerical differential equation solver, just as we did with the DC motor parameter identification. To do this we clamped the horizontal arm in place and allowed the pendulum to oscillate freely from several starting positions. Because of the large number of data points obtained during the time it takes the pendulum to come to rest, we extracted the peak of each oscillation for the regression instead of using every point. The damping and friction values are given below; because the friction and damping in the pendulum and bearings are so small, we assumed that they were approximately equal in both directions.\\
 $$b_{\alpha} = 6.5\cdot10^{-6}\, N\cdot s \qquad \tau_{F \alpha} = 7.0\cdot10^{-6} \, N\cdot m$$
@@ -946,7 +946,7 @@ $$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 
 Substituting constants, we can get the open loop poles and zeros for the alpha transfer function, shown in table \ref{Alpharoots}. Because of the zero at the origin and the pole at the right half plane, all normal controllers such as lead, lead lag, PID, will all fail to bring that branch of the root locus out of the right half plane.  Our controller shown below in \eqref{alphaController} uses a pole at the origin to cancel the system zero and a pair of zeros to pull the root locus out of the right half plane.  We added a filtering pole to try and make the system more robust to noise.  The resulting system root locus is shown in figure  \ref{q8controlledAlpha}  The proportional gain term was chosen to make the dominant pair of poles critically damped.  
 
 \begin{equation}
-K_{2} = -3.7203\frac{(s - 3.75)(s - 7.85)}{s(s-50)} 
+K_{2} = -3.7203\frac{(s + 3.75)(s + 7.85)}{s(s+50)} 
 \label{alphaController}
 \end{equation}
 
@@ -982,7 +982,7 @@ Numerically this transfer function is given by \eqref{numericaltfTwAC} with its 
 Normally we would like to design a controller that implements negative feedback, however in this case a positive feedback is appropriate and allows us to use a simple Lead Controller shown in \eqref{classicalK1} to obtain a stable root locus.
 
 \begin{equation}
-K_1(s) = 0.01784 \frac{s - 1}{s - 15}
+K_1(s) = 0.01784 \frac{s + 1}{s + 15}
 \label{classicalK1}
 \end{equation}
 
@@ -1041,7 +1041,7 @@ Still in simulation, we also wish to compare the performance of the classical co
 
 Finally we implemented our classical controller in reality.  However the controller required some additional tuning of gains beyond the original design to successfully balance the pendulum, but this did result in a stable system.
 
-$$K_{1 \, adjusted} = 0.2676\frac{s - 1}{s - 15} \hspace{1cm} K_{compensator \, adjusted} = 50 $$
+$$K_{1 \, adjusted} = 0.2676\frac{s + 1}{s + 15} \hspace{1cm} K_{compensator \, adjusted} = 50 $$
 
 Plugging these modified values back into our classical controller in Simulink resulted in a stable system and its response is plotted along side the response of the physical system in figure \ref{classicalSimulinkvsReal}.  We see a similarity between the $\theta$ plots.  Both experience limit cycles and our estimate of the amplitude and frequencies of this cycle do not seem to be very far off.  On the $\alpha$ plot we see a large difference in the initial transient response, with the real system oscillating rapidly before settling, while the simulated system overshoots once and quickly settles into its limit cycle.  All of our experiments so far have failed to produce smooth motion from the pendulum and this case is no different.  However we again note a similarity between the limit cycles in the two graphs.  We see that observed alpha shows very small peaks that correspond to $\dot{\theta}$ changing signs as our simulated system also shows. 
 
