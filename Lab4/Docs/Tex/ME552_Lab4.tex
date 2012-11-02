@@ -775,7 +775,12 @@ Figures \ref{q6_b2} through \ref{q6_b8} show the various front panels and block 
 \clearpage
 
 \subsection*{c.}
-A comparison between the predicted response and actual response can be seen in figure \ref{q6_c_alpha} and \ref{q6_c_theta}
+For the comparison of the actual system with the simulink model, we positioned the pendulum at $\alpha = 0.2$ radians so that the balance controller could grab the pendulum and balance it. A comparison between the predicted response and actual response can be seen in figure \ref{q6_c_alpha} and \ref{q6_c_theta}. 0.1 seconds of lag can be accounted for the delay we purposefully introduced in $\alpha$ and $\theta$ so that they are in phase with $\dot{\alpha}$ and $\dot{\theta}$. This minor introduction of lag helps stabilize the system better as the angle will not lead the angular velocity. Other delays and discrepancies can be attributed to unmodeled  system properties, unaccounted motor inertia and external disturbances.\\
+
+ The trends for $\alpha$ (theoretical and observed) seem similar and the predicted model closely resembles the real system. However, for $\theta$, we see a considerable gap in the prediction v.s. the actual behavior. We attribute these differences to the fact that we have much tighter constraints for $\alpha$ and we are less worried about $\theta$. In fact in reality, we would like $\dot{\theta}$ to be zero and we are not too concerned about $\theta$.
+
+
+
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 12cm]{Q6_C_Alpha.png}
@@ -786,7 +791,7 @@ A comparison between the predicted response and actual response can be seen in f
 
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width = 12cm]{Q6_C_Alpha.png}
+\includegraphics[width = 11cm]{Q6_C_Theta.png}
 \end{center}
 \caption{Theta response during balancing - theoretical v.s. actual}
 \label{q6_c_theta}
@@ -842,6 +847,153 @@ A comparison between the predicted response and actual response can be seen in f
 
 \clearpage
 \section{Parasitic Effects}
+\begin{itemize}
+\item Overview of Modeling Parasitic Effects
+\begin{itemize}
+\item Friction (see Fig.~\ref{fig:q10_1})\\
+Add friction switch control in the equations of motion (Matlab function code). The friction value was identified by the expreimental results.
+\item Backlash/Deadband\\
+Considering the elastic behavior of coupling between the motor shaft and the horizontal arm, the backlash/deadband function was added into the equations of motion (Matlab function code).  
+\item Quantization (see Fig.~\ref{fig:q10_3})\\
+Two quantizer blocks were introduced to simulate the real behavior of optical encoders. According to the datasheets, the one used for measuring $\alpha$ has 1200 pulses per revolution (PPR), and the other one which measures $\theta$ has 2000 PPR.  
+\item Discretization\\
+Discretization was realized by replacing all continuous Simulink blocks with discrete equivalents.  
+\item Saturation (see Fig.~\ref{fig:q10_5})\\
+Considering the current limit of the servo amplifier and the physical behavior of the motor, a saturation block with$\pm$ 3V (based on the driver datasheet) was added before the command voltage, and the motor characteristic was simulated as well.
+\item Noise (see Fig.~\ref{fig:q10_6})\\
+The input and output disturbances were taken into account separately. The frequency for both of them was set to 60Hz. The input one sourced from the motor driver, and the output one came into both sensors.   
+\item Time Delay (see Fig.~\ref{fig:q10_7})\\
+A time delay block was introduced between two functional blocks, "motor and driver model" and "Inverted Pendulum".    
+\end{itemize}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q10_1.png}
+\caption{Modeling of Friction} \label{tex}
+\label{fig:q10_1}
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q10_3.png}
+\caption{Modeling of Quantization} \label{tex}
+\label{fig:q10_3}
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q10_5.png}
+\caption{Modeling of Saturation} \label{tex}
+\label{fig:q10_5}
+\end{figure}
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q10_6.png}
+\caption{Modeling of Noise} \label{tex}
+\label{fig:q10_6}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_7.png}
+\caption{Modeling of Time Delay} \label{tex}
+\label{fig:q10_7}
+\end{figure}
+
+
+\item Friction (see Fig.~\ref{fig:q10_f1})\\
+ Friction produces more energy dissipation; as a result, more swings are needed for the pendulum to reach the range of the balancing controller; that is, it takes more time for the system to reach the balancing steady-state.
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_f1.png}
+\caption{Behavior of $\alpha$ with Friction On} \label{tex}
+\label{fig:q10_f1}
+\end{figure}
+
+\item Backlash / Deadband (see Fig.~\ref{fig:q10_b1} and~\ref{fig:q10_b2})\\
+The backlash behavior takes more time for the system to reach the steady state. Furthermore, the magnitude of $\dot{\theta}$ seems to be smaller when swinging up but it oscillates within a small range during the balacing stage.
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_b1.png}
+\caption{Behavior of $\alpha$ with Friction On} \label{tex}
+\label{fig:q10_b1}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_b2.png}
+\caption{Behavior of $\alpha$ with Friction On} \label{tex}
+\label{fig:q10_b2}
+\end{figure}
+
+\item Quantization (see Fig.~\ref{fig:q10_q1},~\ref{fig:q10_q2} and~\ref{fig:q10_q3})\\
+In the real system, both optical encoders are quantized. The simulation results show that during the steady state, oscillations occur in both $\dot{\alpha}$ and $\dot{\theta}$, which means $\alpha$ and $\theta$ also have oscillations but smaller. In terms of the motor torque, compared to nearly zero torque in the original model, it oscillates within a range of 0.2 Nm to compensate the behavior of quantization.  
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_q1.png}
+\caption{Behavior of $\dot{\alpha}$ with Quantization} \label{tex}
+\label{fig:q10_q1}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_q2.png}
+\caption{Behavior of $\dot{\theta}$ with Quantization} \label{tex}
+\label{fig:q10_q2}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_q3.png}
+\caption{Behavior of Motor Toque with Quantization} \label{tex}
+\label{fig:q10_q3}
+\end{figure}
+
+\item Discretization (see Fig.~\ref{fig:q10_d1})\\
+The simulation results suggest that the system with discrete-time control performs better during the swing-up stage because the cycle time for reaching the steady state is shorter. However, if we increase the time step to a certain degree (Ts=0.005), the system becomes unstable, which means the discretization affects the system stability.
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_d1.png}
+\caption{Behavior of $\alpha$ with Discretization} \label{tex}
+\label{fig:q10_d1}
+\end{figure}
+
+\item Saturation (see Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2})\\
+As can be seen in Fig.~\ref{fig:q10_s1} and~\ref{fig:q10_s2}, more time is required for the first swing when the saturation is considered. It suggests that previously large torque is available to provide sufficient energy for the pendulum system to swing at the beginning, but now more time is needed for generating the same amout of enegy with the limited torque.      
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_s1.png}
+\caption{Behavior of $\alpha$ with Saturation} \label{tex}
+\label{fig:q10_s1}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_s2.png}
+\caption{Behavior of Motor Torque with Saturation} \label{tex}
+\label{fig:q10_s2}
+\end{figure}
+
+\item Noise (see Fig.~\ref{fig:q10_n1}~\ref{fig:q10_n2} and~\ref{fig:q10_n3})\\
+
+Both input and output disturbances have similar undesired influence on the system performance. Despite the tiny difference when the swing-up controller is working, during the balancing stage, oscillations occur in the $\alpha$ and $\theta$. The range of oscillations depends on the magnitudes of noise. In particular, the output disturbance dominant the behavior. Therefore, the motor torque is still required to reject the noise during the steady state.   
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_n1.png}
+\caption{Behavior of $\dot{\alpha}$ with Noise} \label{tex}
+\label{fig:q10_n1}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_n2.png}
+\caption{Behavior of $\dot{\theta}$ with Noise} \label{tex}
+\label{fig:q10_n2}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_n3.png}
+\caption{Behavior of Motor Torque with Noise} \label{tex}
+\label{fig:q10_n3}
+\end{figure}
+
+\item Time Delay (see Fig.~\ref{fig:q10_t1},~\ref{fig:q10_t2} and~\ref{fig:q10_t3})\\
+
+In the physical model, the dynamic response of the servo-amplifier, encoders, and NI-DAQ are assumed instantaneous. In order to simulate the real behavior, a small time delay was introduced to our simulink model. For the swing-up stage, time delay has a small effect which  simply causes the same amount of time shift. However, during the balancing stage, time delay has strong negative impact on the balacing control. $\alpha$ vibrates significantly as the time delay is increased; thus, the motor behaves aggressively and large torque is required during the transient response.     
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_t1.png}
+\caption{Behavior of $\alpha$ with Time Delay} \label{tex}
+\label{fig:q10_t1}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_t2.png}
+\caption{Behavior of $\theta$ with Time Delay} \label{tex}
+\label{fig:q10_t2}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{q10_t3.png}
+\caption{Behavior of Motor Torque with Time Delay} \label{tex}
+\label{fig:q10_t3}
+\end{figure}
+\end{itemize}
 
 \clearpage
 \section*{Appendix.}
