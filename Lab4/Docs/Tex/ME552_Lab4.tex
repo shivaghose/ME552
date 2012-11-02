@@ -290,7 +290,6 @@ $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} = C_1 \ddot{\alpha}
 
 $$ \frac{\partial \Lagr}{\partial \alpha} = \dot{\theta}^2 \left( C_2 \sin(\alpha) \cos(\alpha) - I_{2xx} \cos(\alpha) \sin(\alpha)\right) - C_3 \dot{\theta} \dot{\alpha} sin(\alpha) + C_4  \sin(\alpha) $$
 
-\xxx{fix centering on this equation and probably the next one}
 \begin{align} 
 \ddot{\theta} \left( I_{1z1} + C_2 \sin^2(\alpha) + I_{2xx} \cos^2(\alpha) + m_2 l_1^2\right) + 2 (C_2 - I_{2xx}) \dot{\theta} \dot{\alpha}  \sin(\alpha)  \cos(\alpha) \nonumber \\ {} + C_3  \ddot{\alpha}  \cos(\alpha)  - C_3  \dot{\alpha}^2 \sin(\alpha)  = -b_{\theta}  \dot{\theta} + \tau_{m} + \tau_{C \theta}
 \label{NonLin1}
@@ -387,10 +386,10 @@ As noted above the matrices A, B, C, and D may in general be functions of time, 
 
 \xxx{need to format this matrix to look better}
 $$ A = \left[ \begin{array}{c c c c l}
-	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\
-	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\
-	\frac{\partial \dot{\alpha}}{\partial \theta} & \frac{\partial \dot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \dot{\alpha}}{\partial \alpha} & \frac{\partial \dot{\alpha}}{\partial \dot{\alpha}}\\
-	\frac{\partial \ddot{\alpha}}{\partial \theta} & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}}\\
+	\frac{\partial \dot{\theta}}{\partial \theta} & \frac{\partial \dot{\theta}}{\partial \dot{\theta}} & \frac{\partial \dot{\theta}}{\partial \alpha} & \frac{\partial \dot{\theta}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \ddot{\theta}}{\partial \theta} & \frac{\partial \ddot{\theta}}{\partial \dot{\theta}} & \frac{\partial \ddot{\theta}}{\partial \alpha} & \frac{\partial \ddot{\theta}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \dot{\alpha}}{\partial \theta} & \frac{\partial \dot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \dot{\alpha}}{\partial \alpha} & \frac{\partial \dot{\alpha}}{\partial \dot{\alpha}}\\[6pt]
+	\frac{\partial \ddot{\alpha}}{\partial \theta} & \frac{\partial \ddot{\alpha}}{\partial \dot{\theta}} & \frac{\partial \ddot{\alpha}}{\partial \alpha} & \frac{\partial \ddot{\alpha}}{\partial \dot{\alpha}}\\[6pt]
  \end{array} \right] = 
 \left[ \begin{array}{c c c c l} 
 0 & 1 & 0 & 0 \\
@@ -799,6 +798,7 @@ Table \ref{q6_d_tab} shows the results for testing the system under various cond
 We noticed that the system performed robustly for major changes in the system. The only point where it could not swing up was when the masses were mounted \emph{much} lower than usual. We attribute this to the fact that the system is unable to accurately estimate the energy of the system and to the fact that our motor was not strong enough to swing up at that point.
 
 \begin{table}[htb]
+\begin{center}
     \begin{tabular}{|p{2.5cm}||p{3cm}|p{2cm}|p{2.5cm}|p{6cm}|}
         \hline
         \textbf{System}                        &\textbf{ Property}                           & \textbf{Value /}               & \textbf{Observations}                        & \textbf{Comments}                                                                                                 \\ 
@@ -813,15 +813,38 @@ We noticed that the system performed robustly for major changes in the system. T
         Modifying the Counter Weight  & ~                                  & 10.16 mm              & Swings up and balances              & Slow swing up due to higher inertia on motor                                                             \\
         \hline \hline
     \end{tabular}
+\end{center}
 \caption{Emperical results of various configurations to test system robustness}
 \label{q6_d_tab}
 \end{table}
 
 \clearpage
 \section{Effects of LabView Loop Rate on Stability}
+We ran the system at a loop rate of 0.01 seconds (100 Hz) and tuned our filter to reject noise at this rate. We had satisfactory system robustness and additionally, we were able to use stronger low pass filters to reject more noise.\\
+
+In order to test the limits of stability, we changed the loop rate logarithmically. As we can see from table \ref{q7}, there is a lower bound and an upper bound for the limits of stability. We can attribute the lower bound to the fact that our filters were not designed to operate at such high frequencies. The upper bound stability loss is attributed to the inability of the system to respond quickly enough to balance the system or capitalize on the swinging the pendulum in the opposite direction to lift it up.
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Loop Rate}(sec) & \textbf{Comment}\\ \hline\hline
+        0.003     & \emph{Balancing doesn't work} \\ \hline
+        0.004     & \emph{Swing Up doesn't work } \\ \hline
+        0.005     & Both work                    \\ \hline
+        0.006     & Both work                    \\ \hline
+        0.007     & Both work                    \\ \hline
+        0.008     & Both work                    \\ \hline
+        0.009     & Both work                    \\ \hline
+        0.01      & Both work                    \\ \hline
+        0.02      & \emph{Both Fail}             \\
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Emperical results of various configurations to test system robustness}
+\label{q7}
+\end{table}
 
 
-\clearpage
 \section{Classical Controller}
 
 In addition to State Space Controls as detailed earlier in this report we can also attempt to apply our classical controls knowledge to design a controller in the Laplace domain.  The transfer functions of the system, $G_1(s)$ and $G_2(s)$ between motor torque, $\tau_m(s)$, $\theta(s)$ and  $\alpha(s)$ respectively computed earlier are repeated below.  As mentioned earlier, it is necessary to consider the effects of damping as they serve to make the system less, rather than more stable.  
