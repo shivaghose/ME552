@@ -647,7 +647,50 @@ Figure \ref{LvsNonLwF} introduces frictional forces to the non-linear model.  He
 \clearpage
 \section{Swing Up Controller in Simulink}
 
+The objective of the swing-up controller is to provide the pendulum enough energy to allow the it to reach the top position where it's potential energy is maximized.  Fig.~\ref{fig:q5_1} shows the overall scheme of the swing-up controller. This design follows the equation provided in the lecture slides: V=Ka(E-Eo)sgn(d$\alpha$/dt cos$\alpha$). $E_{set}$ is set to 0 which represented the desired total energy, and E is the total energy consisting of the kinetic and potential energy of both motor and pendulum arms.  Fig.~\ref{fig:q5_2} shows the switching mechanism between the balancing controller and the swing-up controller. Both controllers have four main inputs:  $\alpha$, $\dot{\alpha}$, $\theta$, $\dot{\theta}$, and the balancing controller has two additional inputs including the equilibrium points of $\alpha$ and $\theta$. The lead filters used to estimate the derivatives of $\theta$ and $\alpha$ introduce some lag into $\dot{\theta}$ and $\dot{\alpha}$.  Without compensation this causes the estimates of kinetic energy and potential energy to be out of phase with one another resulting in an incorrect energy total.  To compensate, we applied the same lag to the $\theta$ and $\alpha$ channels.  We use the angle $\alpha$ to determine when to switch from the swing up controller to the balancing controller described earlier. The swing-up controller shuts off at $0.45 \, radians$ and the balancing controller activate at $0.35 \, radians$.  The dead-band of 0.1 rad, provides a buffer for the pendulum to decrease its speed so that the balancing controller could catch it more easily.\\
+\begin{figure}[b!]
+\includegraphics[width=1\textwidth]{q5_1.png}
+\caption{Swing-up and Balancing Controllers with a Switching Mechanism} \label{tex}
+\label{fig:q5_1}
+\end{figure}
 
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q5_2.png}
+\caption{Swing-Up Controller} \label{tex}
+\label{fig:q5_2}
+\end{figure}
+
+Fig.~\ref{fig:q5_3} and~\ref{fig:q5_4} show the simulation results for two different initial conditions (3.14 rad, 0.5 rad) of $\alpha$ with the aggressive gain equal to 6. As we can see in both conditions, it takes less than 3 seconds to reach the steady state. The one with IC=3.14 required 4 swings to reach the balancing range, while the other one with IC=0.5 even achieved the goal in 1 second since it had more potential energy at the beginning.\\
+
+We have added two additional features to our swing up controller beyond the original specification.  The first is a mechanism to reasonably convert from the energy error produced by the difference of the total energy to a command.  We can estimate the amount of energy that will be imparted to the system by applying a particular torque.  
+$$ Work = \tau \cdot \delta \theta \approx \tau \cdot \dot{\theta} \cdot \Delta time $$
+The other additional feature is an alternate system to reduce system energy when it exceeds the set point.  The default swing up controller can get trapped in a cycle where it continues to add more energy because it has too much energy.  For $|\alpha| > \frac{\pi}{2}$ and $\dot{\alpha} > 0$ we would normally swing increase $\dot{\alpha}$ however, if we have too much energy we will attempt to decrease $\dot{\alpha}$ by increasing $\dot{\theta}$.  When $\dot{\alpha}$ is negative we will do the opposite and the system can become trapped in a loop where the horizontal arm is rotating rapidly.  
+The net result of these additional features is that the system performed even much better than the previous one. As shown in Fig.~\ref{fig:q5_6}, the pendulum reaches the balancing steady-state with only one swing.       
+
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q5_3.png}
+\caption{Behavior of $\alpha$ with IC=3.14 rad} \label{tex}
+\label{fig:q5_3}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q5_4.png}
+\caption{Behavior of $\alpha$ with IC=0.5 rad} \label{tex}
+\label{fig:q5_4}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q5_5.png}
+\caption{Swing-Up Controller with Energy-Limit Mechanism} \label{tex}
+\label{fig:q5_5}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{q5_6.png}
+\caption{Behavior of $\alpha$ with IC=3.14 rad} \label{tex}
+\label{fig:q5_6}
+\end{figure}
 
 \clearpage
 \section{LabView Implementation}
