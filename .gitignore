@@ -197,3 +197,6 @@ pip-log.txt
 *.vrb
 *.xdy
 *.tdo
+
+###Shiva's custom ignores
+ME552_Lab4.pdf
