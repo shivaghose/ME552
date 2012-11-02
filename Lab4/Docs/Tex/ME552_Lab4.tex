@@ -235,7 +235,7 @@ The rotational kinetic energy of the pendulum is given by the following expressi
 
 $$ T_{2R} = \frac{1}{2} {\bf{^2\omega_{2}}}^T I_{2} {\bf{ ^2 \omega_{2}}} = \frac{1}{2} \left[ \dot{\theta}^2 \left(I_{2xx} \cos^2(\alpha) - 2 I_{2xy} \sin(\alpha)  \cos(\alpha) + I_{2yy}  \sin^2(\alpha)  \right) + 2 I_{2xz} \dot{\theta} \dot{\alpha} \sin(\alpha) + I_{2zz} \dot{\alpha}^2 \right]$$
 
-\xxx{Note this is where the arbitrary sign flip is!!!}
+%\xxx{Note this is where the arbitrary sign flip is!!!}
 
 As discussed later $I_{2xy}$ and $I_{2yz}$ are very nearly $0$ and have been neglected for the rest of the derivation.
 
@@ -246,11 +246,7 @@ The Lagrange method can be used to compute the equations of motion of complex dy
 
 $$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{q_i}} - \frac{\partial \Lagr}{\partial q_i} = Q_{NCi} $$
 
-$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta}  $$
-\begin{equation}
- \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} 
-\end{equation}
-
+$$ \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\theta}} - \frac{\partial \Lagr}{\partial \theta} = -b_{\theta} \dot{\theta} + \tau_m + \tau_{C \theta}  \hspace{1cm} \frac{d}{dt} \frac{\partial \Lagr}{\partial \dot{\alpha}} - \frac{\partial \Lagr}{\partial \alpha} = -b_{\alpha} \dot{\alpha} + \tau_{C \alpha} $$
 
 For our friction model here we must make a simplifying assumption to avoid having to estimate internal constraint forces.  In a correct model to handle static friction correctly if the joint angle, $\dot{\theta}$ or $\dot{\alpha}$ is $0$, then we must estimate the torque exerted on the joint attempting to overcome static friction.  This torque can really be thought of as the constraint torque required to keep the angle fixed, but our Lagrange method sacrifices knowledge of these constraint forces to simplify the equation of motion.  To avoid having to estimate this constraint torque we make a simplifying assumption.  We only consider the external torques acting on each joint, rather than the internal forces at the joint.  These external torques are known, simply the motor torque, $\tau_m$ for the horizontal arm and the torque exerted by gravity on the pendulum $\tau_g$.
 
@@ -313,7 +309,6 @@ We also modeled the effects of motor back emf which serves to limit the maximum 
 
 \subsection*{d.}
 See figure \ref{NonLinearBlock} for the block diagram of the non-linear model within Simulink.  See the included code in the Appendix for the implemented functions. \\
-\xxx{add matlab code to Appendix}
 
 \begin{figure}
 \begin{center}
@@ -829,17 +824,15 @@ We noticed that the system performed robustly for major changes in the system. T
 \clearpage
 \section{Classical Controller}
 
-\xxx{modify terminology to refer to block diagram}
-
-In addition to State Space Controls as detailed earlier in this report we can also attempt to apply our classical controls knowledge to design a controller in the Laplace domain.  The transfer functions of the system between motor torque, $\tau_m(s)$, $\alpha(s)$, and $\theta(s)$ computed earlier are repeated below.  As mentioned earlier, it is necessary to consider the effects of damping as they serve to make the system less stable, rather than more stable.  
+In addition to State Space Controls as detailed earlier in this report we can also attempt to apply our classical controls knowledge to design a controller in the Laplace domain.  The transfer functions of the system, $G_1(s)$ and $G_2(s)$ between motor torque, $\tau_m(s)$, $\theta(s)$ and  $\alpha(s)$ respectively computed earlier are repeated below.  As mentioned earlier, it is necessary to consider the effects of damping as they serve to make the system less, rather than more stable.  
 
 \begin{equation}
- \frac{\theta(s)}{\tau_{m}(s)} = \frac{s^2 C_1 + s b_{\alpha} - C_4}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+ G_1(s) = \frac{\theta(s)}{\tau_{m}(s)} = \frac{s^2 C_1 + s b_{\alpha} - C_4}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
 \label{thetaTF1}
 \end{equation}
 
 \begin{equation}
-\frac{\alpha(s)}{\tau_{m}(s)} = \frac{-s^2 C_3}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
+G_2(s) = \frac{\alpha(s)}{\tau_{m}(s)} = \frac{-s^2 C_3}{\left(s^2C_1 + s b_{\alpha} - C_4 \right) \left(s^2 C_5  + s b_{\theta} \right) - s^4 C_3^2}
 \label{alphaTF2}
 \end{equation}
 
@@ -859,7 +852,7 @@ In addition to State Space Controls as detailed earlier in this report we can al
 \label{classicalSimulink}
 \end{figure}
 
-Because we have two coupled output variables that we wish to control, $\theta(s)$ and $\alpha(s)$ and only a single input to the system, we have constructed a non-traditional loop within a loop controller.  Rather than tightly control $\theta$ and then use that control to control $\alpha$, we instead tightly control $\alpha$ and then control $\theta$ in the outer loop as shown in \ref{classicalControllerBlock}.  Note the compensator block shown in figure \ref{classicalSimulink}.  The following transfer functions are in terms of motor torque, however our controller does not output motor torque but rather a voltage which commands a current in the motor. If we assume a linear model of the current driver and the electrical properties of the motor, than the appropriate conversion factor is:
+Because we have two coupled output variables that we wish to control, $\theta(s)$ and $\alpha(s)$ and only a single input to the system, we have constructed a non-traditional loop within a loop controller.  Rather than tightly control $\theta(t)$ and then use that control to control $\alpha(t)$, we instead tightly control $\alpha(t)$ and then control $\theta(t)$ in the outer loop as shown in \ref{classicalControllerBlock}.  Note the compensator block shown in figure \ref{classicalSimulink}.  The following transfer functions are in terms of motor torque, however our controller does not output motor torque but rather a voltage which commands a current in the motor. If we assume a linear model of the current driver and the electrical properties of the motor, than the appropriate conversion factor is:
 
 $$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 0.0314499 $$
 
@@ -871,7 +864,6 @@ $$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 
 \label{q8alphaInit}
 \end{figure}
 
-\xxx{do we really need this}
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|}
@@ -880,7 +872,7 @@ $$ K_{compensator} = \frac{1}{K_a K_t} \hspace{1cm} K_a = 1 \hspace{1cm}  K_t = 
         Poles & 0 & -10.3814 & 10.3623 & -0.0177 \\
         \hline
     \end{tabular}
-\caption{Poles and Zeros of \eqref{alphaTF2}}
+\caption{Poles and Zeros of equation \eqref{alphaTF2}}
 \label{Alpharoots}
 \end{center}
 \end{table}
@@ -961,7 +953,7 @@ With the classical controller constructed we first test it against the linear sy
 \label{q8classicalvsStateSpace}
 \end{figure}
 
-We next examine how using the non-linear model, which includes the effects of friction, impacts the performance of the controller.  As can be seen in figure \ref{q8classicaltransientCompare} the transient response is not too greatly influence and is actually improved with decreased overshoot, however when looking at the response over longer time scales, shown in figure \ref{ClassicalLimitCycle}, we see that the system exhibits a limit cycle likely caused by the friction.  
+We next examine how using the non-linear model, which includes the effects of friction, impacts the performance of the controller.  Figure \ref{q8classicaltransientCompare} shows the limited effects of friction on the transient response.  There is actually a slight improvement with decreased overshoot.  However, when looking at the response over longer time scales, shown in figure \ref{ClassicalLimitCycle}, we see that the system exhibits a limit cycle likely caused by the friction.  
 
 \begin{figure}
 \begin{center}
@@ -979,13 +971,13 @@ We next examine how using the non-linear model, which includes the effects of fr
 \label{ClassicalLimitCycle}
 \end{figure}
 
-Still in simulation, we also wish to compare the performance of the classical controller with the state space controller on the non-linear model.  We note as mentioned earlier, the state space controller exhibits a large steady state error for $\theta$ while the classical controller exhibits a large amplitude limit cycle.  Considering just the transient response we see that the state space controller responds slightly faster than the classical controller.  Simulation also claims that the classical controller is able to stabilize the pendulum starting from and initial angle, $\alpha_0$ up to 0.6125 radians, while the state space controller has slightly worse performance being able stabilize initial $\alpha$ values up to 0.573 radians.  However we do not expect to see performance this good in reality because the real controller is running at much lower loop rates than these simulated controllers which likely helps the simulations' stability.  Furthermore, there is no noise to corrupt our measurements and the models do not have to deal with un-modeled forces, specifically the cable which might limit our performance. 
+Still in simulation, we also wish to compare the performance of the classical controller with the state space controller on the non-linear model.  We note as mentioned earlier, the state space controller exhibits a large steady state error for $\theta$ while the classical controller exhibits a large amplitude limit cycle.  Considering just the transient response we see that the state space controller responds slightly faster than the classical controller.  Simulation also claims that the classical controller is able to stabilize the pendulum starting from and initial angle, $\alpha_0$ up to $0.6125 radians$, while the state space controller has slightly worse performance being able stabilize initial $\alpha$ values up to $0.573 radians$.  However we do not expect to see performance this good in reality because the real controller is running at much lower loop rates than these simulated controllers which likely helps the simulations' stability.  Furthermore, there is no noise to corrupt our measurements and the models do not have to deal with un-modeled forces, specifically the cable which might limit our performance. 
 
-Finally we implemented our classical controller in reality.  However the controller required some additional tuning of gains beyond the original design, but this did result in a stable system.
+Finally we implemented our classical controller in reality.  However the controller required some additional tuning of gains beyond the original design to successfully balance the pendulum, but this did result in a stable system.
 
-$$K_{1 \, adjusted} = 0.2676 \hspace{1cm} K_{compensator \, adjusted} = 50 $$
+$$K_{1 \, adjusted} = 0.2676\frac{s - 1}{s - 15} \hspace{1cm} K_{compensator \, adjusted} = 50 $$
 
-Plugging these modified values back into our classical controller in Simulink resulted in a stable system and the two responses are shown in figure \ref{classicalSimulinkvsReal}.  We see a similarity between the $\theta$ plots.  Both experience limit cycles and our estimate of the amplitude and frequencies of this cycle do not seem to be very far off.  On the $\alpha$ plot we see a large difference in the initial transient response, with the real system oscillating rapidly before settling, while the simulated system overshoots once and quickly settles into its limit cycle.  All of our experiments so far have failed to produce smooth motion from the pendulum and this case is no different.  However we again note a similarity between the limit cycles in the two graphs.  We see that observed alpha shows very small peaks that correspond to $\dot{\theta}$ changing signs as our simulated system also shows. 
+Plugging these modified values back into our classical controller in Simulink resulted in a stable system and its response is plotted along side the response of the physical system in figure \ref{classicalSimulinkvsReal}.  We see a similarity between the $\theta$ plots.  Both experience limit cycles and our estimate of the amplitude and frequencies of this cycle do not seem to be very far off.  On the $\alpha$ plot we see a large difference in the initial transient response, with the real system oscillating rapidly before settling, while the simulated system overshoots once and quickly settles into its limit cycle.  All of our experiments so far have failed to produce smooth motion from the pendulum and this case is no different.  However we again note a similarity between the limit cycles in the two graphs.  We see that observed alpha shows very small peaks that correspond to $\dot{\theta}$ changing signs as our simulated system also shows. 
 
 \begin{figure}
 \begin{center}
