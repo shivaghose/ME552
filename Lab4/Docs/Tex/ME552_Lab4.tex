@@ -176,13 +176,13 @@ Apart from the above list, the standard set of control systems assumptions are a
 
 \subsection*{c. Mathematical Modeling}
 \subsubsection*{Forwards Kinematics}
-Let $^0F$ represent the fixed world coordinate frame, with $\bf{^0\hat{z}}$ aligned with the motor shaft and with $\bf{^0\hat{x}}$ pointing along the initial direction of the horizontal arm as seen in figure \ref{q1_coords} on page \pageref{q1_coords}.  Let the origin of $^0F$ be located to coincide with the motor axis and the axis of rotation of the pendulum.  Let $^1F$, representing the local frame of the horizontal arm, be attached to the horizontal arm, with $\bf{^1\hat{z}}$ aligned with the motor shaft and $\bf{^1\hat{x}}$ aligned with the motor arm pointed towards the pendulum.  Let $^2F$ be located such that its origin is along $\bf{^1\hat{x}}$ at a distance $l_1$, with $\bf{^2\hat{x}}$ pointing along the pendulum and $\bf{^2\hat{z}}$ along the $\bf{-^1\hat{x}}$ direction.  Where $l_1$ is the distance from the axis of rotation of the motor to the center of mass of the pendulum along the $\bf{^1\hat{x}}$ direction.  Let $\theta$ denote the angle between $\bf{^0\hat{x}}$ and $\bf{^1\hat{x}}$ and let $\alpha$ denote the angle between $\bf{^1\hat{z}}$ and $\bf{^2\hat{x}}$ measured clockwise when viewed from $\bf{^1\hat{x}}$.  We assume that the motor and the horizontal arm are rigidly connected and can be treated as a single inertia for purposes of our energy calculations below.\\
+Let $^0F$ represent the fixed world coordinate frame, with $\bf{^0\hat{z}}$ aligned with the motor shaft and with $\bf{^0\hat{x}}$ pointing along the initial direction of the horizontal arm as seen in figure \ref{q1_coords} on page \pageref{q1_coords}.  Let the origin of $^0F$ be located to coincide with the motor axis and the axis of rotation of the pendulum.  Let $^1F$, representing the local frame of the horizontal arm, be attached to the horizontal arm, with $\bf{^1\hat{z}}$ aligned with the motor shaft and $\bf{^1\hat{x}}$ aligned with the motor arm pointed towards the pendulum.  Let $^2F$ be located such that its origin is along $\bf{^1\hat{x}}$ at a distance $l_1$, with $\bf{^2\hat{x}}$ pointing along the pendulum and $\bf{^2\hat{z}}$ along the $\bf{-^1\hat{x}}$ direction.  Where $l_1$ is the distance from the axis of rotation of the motor to the center of mass of the pendulum along the $\bf{^1\hat{x}}$ direction, shown in figure \ref{q2_5}.  Let $\theta$ denote the angle between $\bf{^0\hat{x}}$ and $\bf{^1\hat{x}}$ and let $\alpha$ denote the angle between $\bf{^1\hat{z}}$ and $\bf{^2\hat{x}}$ measured clockwise when viewed from $\bf{^1\hat{x}}$.  We assume that the motor and the horizontal arm are rigidly connected and can be treated as a single inertia for purposes of our energy calculations below.\\
 
 Then:
 
 $$ ^0F = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left(^2F\right) $$
 
-Let $l_{2c}$ be the distance along $\bf{^2x}$ from the origin of $^2F$ to the center of mass of the pendulum.  Then the location of the center of mass of the pendulum in the world coordinate system $\bf{^0P_{2c}}$ is given as:
+Let $l_{2c}$ be the distance along $\bf{^2x}$ from the origin of $^2F$ to the center of mass of the pendulum, shown in figure \ref{q2_3}.  Then the location of the center of mass of the pendulum in the world coordinate system $\bf{^0P_{2c}}$ is given as:
 
 $$ {\bf{^0P_{2c}}} = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left(\bf{^2P_{2c}}\right) = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\alpha) \left[l_{2c}, 0, 0\right]^T$$
 
@@ -195,7 +195,7 @@ $$ {\bf{^0P_{2c}}} = R_{z}(\theta) T_{x}(l_{1}) R_{y}(-\sfrac{\pi}{2}) R_{z}(\al
   \end{array} \right]
 \]
 
-From this position we can then determine the linear velocity of the center of mass of the pendulum in the world frame denoted $\bf{^0\dot{P}_{2c}}$.  Let $J$ denote the matrix of partial derivatives of $\bf{^0P_{2c}}$ with respect to $\theta$ and $\alpha$.  Then the $\bf{^0\dot{P}_{2c}}$ is given by.
+From this position we can then determine the linear velocity of the center of mass of the pendulum in the world frame denoted $\bf{^0\dot{P}_{2c}}$.  Let $J$ denote the matrix of partial derivatives of $\bf{^0P_{2c}}$ with respect to $\theta$ and $\alpha$.  Then the $\bf{^0\dot{P}_{2c}}$ is given by:
 
 $$ {\bf{^0\dot{P}_{2c}}} = J \left[ \begin{array}{c l} \dot{\theta} \\ \dot{\alpha} \end{array} \right] = \left[ \begin{array}{c c l} 
 	-l_{2c} sin(\alpha) \cos(\theta) - l_{1} \sin(\theta)  &  -l_{2c} \sin(\theta) \cos(\alpha) \\
@@ -208,7 +208,7 @@ $$ {\bf{\omega_{2}}}= \dot{\theta} ({\bf{^1\hat{z}}}) + \dot{\alpha}({\bf{^2\hat
 
 $$  {\bf{^2\omega_{2}}}= \left[ \begin{array}{c l}   \dot{\theta} \cos(\alpha) \\ -\dot{\theta} \sin(\alpha) \\ \dot{\alpha} \end{array} \right]$$
 
-Rather than concern ourselves with the forward kinematics of the horizontal arm, we assume that its only motion is a rotation about $\bf{^0\hat{z}}$ which allows us to simply apply the parallel axis theorem to obtain its moment of inertia 
+Rather than concern ourselves with the forward kinematics of the horizontal arm, we assume that its only motion is a rotation about $\bf{^0\hat{z}}$ which allows us to simply apply the parallel axis theorem to obtain its moment of inertia about $\bf{^0\hat{z}}$.
 
 
 \subsubsection*{System Energy}
@@ -217,17 +217,15 @@ Our system is composed of two rigid bodies, the horizontal arm and the pendulum.
 
 $$ E_{1} = T_{1} + V_{1} \hspace{1cm} E_{2} = T_{2} + V_{2} $$
 
-By our assumption above that $\bf{^1\hat{z}}$ is parallel to the direction of gravity, the term $V_{1}$ can be taken to be 0.  Furthermore, rather than expand $T_{1}$ into linear and rotational components, we can simply use a single rotation term with a modified moment of inertia, $I_{1z1}$.  Let $l_{1c}$ be the distance along $\bf{^1\hat{x}}$ from the origin to the center of mass of the rotor $^1P_{1c}$, and let $m_{1}$ be the mass of the horizontal arm.  Note that we must also include the rotor inertia :
+By our assumption that $\bf{^1\hat{z}}$ is parallel to the direction of gravity, the term $V_{1}$ can be taken to be 0.  Furthermore, rather than expand $T_{1}$ into linear and rotational components, we can simply use a single rotation term with a modified moment of inertia, $I_{1z1}$.  Let $l_{1c}$ be the distance along $\bf{^1\hat{x}}$ from the origin to the center of mass of the rotor $^1P_{1c}$, and let $m_{1}$ be the mass of the horizontal arm, and let $I_{rotor}$ be the moment of inertia of the rotor. Then the total energy of the horizontal arm is given by:
 
 $$ E_{1} = I_{1z1} \dot{\theta}^2 = \left( I_{1zzc} + I_{rotor} + m_{1} l_{1c}^2 \right) \dot{\theta}^2$$
 
-The expression for $E_{2}$ is much more complex, we will break the kinetic energy into a translational and a rotational component. 
-
-Because the pendulum is perpendicular to the horizontal arm which is perpendicular to the ground, the potential energy of the pendulum, $V_{2}$ only depends on alpha, the distance from the axis of rotation to the center of mass along $\bf{^2\hat{x}}$, $l_{2c}$, the mass of the pendulum, $m_{2}$, and the acceleration due to gravity, $g$.  Without loss of generality, we assume that zero potential energy occurs for $\alpha = 0$.
+Because the pendulum is perpendicular to the horizontal arm which is perpendicular to the ground, the potential energy of the pendulum, $V_{2}$ only depends on $\alpha$, the distance from the axis of rotation to the center of mass along $\bf{^2\hat{x}}$, $l_{2c}$, the mass of the pendulum, $m_{2}$, and the acceleration due to gravity, $g$.  Without loss of generality, we assume that zero potential energy occurs for $\alpha = 0$.
 
 $$ V_{2} = \left( \cos(\alpha) - 1 \right) l_{2c} m_2 g $$
 
-The translation kinetic energy of the pendulum $T_{2T}$ is given by the following expression: 
+The expression for kinetic energy of the pendulum, $T_{2}$ is broken into a translational and a rotational component.  The translation kinetic energy of the pendulum $T_{2T}$ is given by the following expression: 
 
 $$ T_{2T} = \frac{1}{2} m_{2} \left( \bf{^0\dot{P}_{2c}} \right)^2 = \frac{1}{2} m_{2} \left( \bf{^0\dot{P}_{2c}} \right)^T\left( \bf{^0\dot{P}_{2c}} \right) = \frac{1}{2} m_{2} \left[ \dot{\theta}, \dot{\alpha} \right] J^T J \left[ \begin{array}{c l} \dot{\theta} \\ \dot{\alpha} \end{array} \right] $$
 
@@ -1167,6 +1165,40 @@ In the physical model, the dynamic response of the servo-amplifier, encoders, an
 \clearpage
 \section*{Appendix.}
 
-\xxx{Add matlab code and stuff here}
+\subsection*{Equation of Motion from Lagrange Method}
+\verbatiminput{eqMotionLagrange.m}
+
+\subsection*{Linearized Equation of Motion about $\alpha = 0$}
+\verbatiminput{eqMotionLinear.m}
+
+\subsection*{Linearized Equation of Motion about $\alpha = \pi$}
+\verbatiminput{eqMotionLinearDown.m}
+
+\subsection*{Envelop Extraction}
+\verbatiminput{extractEnvelop.m}
+
+\subsection*{Variable Initialization for Linear Simulink model}
+\verbatiminput{LinearPrelim.m}
+
+\subsection*{Angle Normalization}
+\verbatiminput{mod2pi.m}
+
+\subsection*{Pendulum Equation of Motion}
+\verbatiminput{pendulumEQMotion.m}
+
+\subsection*{Prototype for Pendulum Parameter Regression}
+\verbatiminput{pendulumEstimation.m}
+
+\subsection*{Helper Function}
+\verbatiminput{polyCoadd.m}
+
+\subsection*{Motor supply voltage saturation modeling}
+\verbatiminput{saturation.m}
+
+\subsection*{Variable Initialization for State Space Controller}
+\verbatiminput{StateSpacePrelimv2.m}
+
+\subsection*{System Energy Computation}
+\verbatiminput{totalEnergy.m}
 
 \end{document}
