@@ -189,10 +189,10 @@ $$t_{off} = R_T C_T$$
 
 The EasyDriver uses $R_T = 20k\Omega$ and $C_T = 680 pF$, hence $t_{off} = 0.0000136$s.\\
 
-\subsubsection*{Pin3 - SLEEP}
+\subsubsection*{Pin3 - $\overline{\text{SLEEP}}$}
 This terminal allows us to minimize power consumption when not in use. It works by disabling most of the internal circuitry and switching of the outputs of the chip. It is an active-low terminla, meaning that for normal operation a 1-logic command/high voltage signal needs to be sent to it, while in order to set the system to sleep, a 0-logic command/low voltage signal needs to be sent instead. When starting up from a sleep command, the device will return to its default/home position.\\
 
-The EasyDriver provides a pull up resistor in series with this terminal to ensure it doesn't load the circuit it is connected to and also to prevent currents from flowing through it.
+The EasyDriver provides a pull up resistor in series with this terminal to ensure it doesn't load the circuit it is connected to and also to prevent currents from flowing through it. Additionally the terminal is set high by default which in turn can be toggled off by an external controller.
 
 
 \subsubsection*{Pin4 - OUT2B, Pin9 - OUT2A, Pin16 - OUT1A, Pin21 - OUT1B}
@@ -213,29 +213,98 @@ Connects various elements of the chip to the ground. The EasyDriver circuit take
 The sense-terminals are connected to senseristors which measure the current flowing across them in order to control the output of the H-bridge. It forms a feed-back loop by acting as a \emph{sensor}. The EasyDriver PCB has 2 external sense-resistors of $0.75\Omega$, one for each H-bridge.
 
 \subsubsection*{Pin10 - STEP}
-The Step-terminal is an edge detector that operates on negative-positive changes in logic. On detecting such a transition, the  translator is told to advance the motor by one increment. Note that the input to the DACs and the direction of rotation are controlled by the translator itself, while the size of the increment is determined by the state of MS1  and MS2.\\
+The Step-terminal is an edge detector that operates on negative-to-positive changes in logic. On detecting such a transition, the  translator is told to advance the motor by one increment. Note that the input to the DACs and the direction of rotation are controlled by the translator itself, while the size of the increment is determined by the state of MS1  and MS2.\\
 
 The EasyDriver provides direct access to this terminal through jumper 2 (JP2) and no external circuitry is required. A pull up resistor could be used just to be safe though.
 
 \subsubsection*{Pin11 - DIR}
-This pin determines the direction of rotation of the motor. The physical wiring of the motor decides which way the motor will actually rotate, however knowing that, this pin lets the user switch the direction digitally. The EasyDriver pcb allows for direct access of this pin through jumper 2 (JP2). Like the step control pin, a  pull up resistor could be used just to be safe.
+This pin determines the direction of rotation of the motor. The physical wiring of the motor decides which way the motor will actually rotate, however knowing that, this pin lets the user switch the direction digitally. The EasyDriver pcb allows for direct access of this pin through jumper 2 (JP2). The control logic for this pin is level dependent. Like the step control pin, a  pull up resistor could be used just to be safe.\\
 
 \subsubsection*{Pin12 - MS1, Pin13 - MS2}
+MS1 and MS2 together determine the size of an incremental step when a step command is given They are binary control variables with MS2 as the most significant bit and MS1 as the least significant bit. The corresponding results can be found in table \ref{q1_b3}.\\
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        MS2 & MS1  & Increment Size          \\ \hline
+        0   & 0    & Full step (2 phase) \\ 
+        0   & 1    & Half step           \\ 
+        1   & 0    & Quarter step        \\ 
+        1   & 1    & Eighth step         \\
+        \hline
+    \end{tabular}
+\caption{MS1 - MS2 based increment size determination.}
+\label{q1_b3}
+\end{center}
+\end{table}
+
+The EasyDriver puts a 10K buffer resistance before the MS1 and MS2 pins to increase the overall impedance of the pin and keeps both of them at a logic level of 1 by default (when unconnected) thereby resulting in the motor always taking 1/8 micro-steps. An external controller can drop the voltages by forcing a drop to the terminals.
+
+\subsubsection*{Pin14 - LOGIC SUPPLY}
+The logic supply voltage, $V_{CC}$  can be set from $3.0$V up to $5.5$V \footnote{Subject to an absolute maximum of 7.0V}. On start-up if the logic supply is significantly below rated values, the system will go into its Under Voltage Lock Out (UVLO) mode where it switches off itself, there by preemptively preventing damage.\\
+
+The EasyDriver circuit provides a direct connection to $V_{CC}$ for this terminal. It is important to provide regulated voltage to this pin.
+
+\subsubsection*{Pin15 - $\overline{\text{ENABLE}}$}
+The Enable pin enables or disables the outputs. It is n active-low pin meaning that a logic-low should be sent in order to enable the chip. It is important to note however that the inputs to the translator (Step, Dir, MS1 , MS2) are all active independent of the Enable input state.\\
+
+The EasyDriver pcb pulls the Enable pin down to the ground potential by default.
 
 
 
+\subsubsection*{Pin22 - $\overline{\text{RESET}}$}
+The Reset pin, as its name implies, resets the chip to its default operating points. It is n active-low pin meaning that a logic-low would reset the chip. When the chip is reset, the translator sets the DACs and phase current polarity to their initial home state, and sets the current regulator for both phases to mixed-decay mode. This simulates turning the chip off and then on again and it is useful while locally calibrating the chip back to its default home position to prevent errors from accumulating.\\
 
+By default the EasyDriver sets this pin high, there by preventing reset. An external control circuit would have to pull it down to ground potential manually.
 
-\subsubsection*{Pin24 - \xxx{PFD}}
-When an input signal commands lowers the output current from the previous step, it switches the output current decay to either slow-, fast-, or mixed-decay depending on the voltage level at the RC terminal.  If the voltage is greater than 0.6$V_{CC}$ then slow-decay mode is selected.  If the voltage is less than 0.21$V_{CC}$ then fast-decay mode is selected.  Mixed decay is between these two levels and works by initially allowing for a steep current drop and then switching to a gradual drop.\\
+\subsubsection*{Pin24 - PFD}
+The percentage fat decay controls the rate at which the current decays in the H-bridge. When an input signal commands lowers the output current from the previous step, it switches the output current decay to slow, fast, or mixed-decay depending on the voltage level at PFD terminal and the setting of the RC terminals. If the voltage is greater than 0.6$V_{CC}$ then slow-decay mode is selected.  If the voltage is less than 0.21$V_{CC}$ then fast-decay mode is selected.  Mixed decay is between these two levels and works by initially allowing for a steep current drop and then switching to a gradual drop.\\
 
+The EasyDriver pcb has a 10k$\Omega$ attached to the pin by default and has a pin-out that enables us to attach an external resistor. 
 
 \clearpage
 
 \subsection*{c.}
-\subsection*{d.}
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width = 18cm]{lab5_q1_c.png}
+\caption{Ideal Sleep, Enable, MS1 and MS2 pins connection diagram. \emph{Note all grounds are common}}
+\label{q1_c}
+\end{center}
+\end{figure}
 
-\clearpage
+Figure \ref{q1_c} shows the ideal connection diagrams for the EasyDriver pcb along with some of the default connections already made on the board. The Sleep and Enable pins are low-enable pins. As we do not explicitly need to control them, we leave them in their default connection - with the EasyDriver pulling them up to $V_{cc}$.\\
+
+$V_{cc}$is generated through passing the main supply voltage through an LM317 voltage regulator that provides a relatively clean and stable 5V \footnote{Or 3.3V depending on the settings.}. This $V_{cc}$ is then used by the EasyDriver circuit to pull up pins as required. We use a 10$k\Omega$ resistor in series with the pin to act as a buffer resistor and so that if an external circuit is used to ground the pin, $V_{cc}$ is not connected to the ground directly.\\
+
+For MS1 and MS2, we wish to control their states. By default the EasyDriver circuit pulls MS1 and MS2 upto $V_{cc}$.Ideally to pull them to the ground potential we should use a decoupling transistor circuit as shown in figure \ref{q1_c}. This would then require the MS1 and MS2 control logic to be inverted as a high output would power the transistors to bring the pin potential to the ground. This design would electrically isolate the DAQ from the circuits.\\
+
+ However, in our actual implementation, we connected the pin directly to the DAQ. This works as we have high quality DAQ that can handle small circulating currents if they do arise\footnote{Due to mismatches in voltages.}.\\
+
+The only change from defaults we incorporated was connecting MS1 and MS2. this was done to control the step size. 
+
+
+\subsection*{d.}
+We provided the 5V supply to our optical encoder from our external power source, the T60c switching power supply. Doing so has the following advantage:
+\begin{itemize}
+\item It provides a cleaner 5V - The circuitry on board the main power supply has more sophisticated circuitry than the LM741 regulator.
+
+\item It has better cooling - The T60c is designed for high power output and as such is equipped for cooling.
+
+\item Loading effects of the motor are not seen - if the motor draws a lot of power, its effects would be seen across the output of the voltage regulator. By decoupling the encoder power source from the motor driver, we can provide power irrespective of the power demands of the motor.
+\end{itemize}
+
+However it does also have the following disadvantages:
+\begin{itemize}
+\item 5V source could be contaminated with 60Hz noise - the T60 takes in 60Hz AC supply which could cause electromagnetic interference in the 5V supply.
+
+\item The system becomes more spread out - using the 5V supply of the EasyDriver provides a more compact solution which helps us treat the system like a black box. Choosing the T60c would mean more wires come out of the system and hence more cabling costs.
+
+\end{itemize}
+
+Given the advantages and disadvantages, we chose the more reliable choice as we are only building a stationary prototype. Hence we can ignore any space constraints.
+
 
 \section{LabView Implementation}
 
