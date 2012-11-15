@@ -336,11 +336,57 @@ In the middle of the block diagram is the position control section. At all times
 
 At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, to the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
 
+Additional VI's were created to fulfill the specialized objectives of some of the laboratory questions.\\
 \clearpage
 
 \section{Experimental Characterization}
 \subsection*{a.}
+Step response data was obtained using the previous VI at 1000 Hz in both the loaded and unloaded conditions, as well as in the clockwise and counter-clockwise directions. Even at LabView's max frequency the number of data points recorded of th motor's oscillations was not enough to generate a smooth curve on their own. Curve fitting was attempted, but had little effect (as shown in figure \ref{q3a_1}). Additionally, the relatively low resolution of the encoder made accurate measures of the amplitude of oscillations impossible. Figure \ref{q3a_1} shows one data set from our tests. After the initial overshoot, all of the oscillations have the same amplitude. This would make it appear that the system is undamped, when in reality, the encoder is not able to tell the difference between the oscillations. This quantization error had a significant impact on the estimations of overshoot, and therefore on the damping ratio ($\zeta$).\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 14cm]{StepResponse.png}
+\caption{Step response of stepper motor.}
+\label{q3a_1}
+\end{center}
+\end{figure}
+
 \subsubsection*{i}
+Table \ref{q3ai_1} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this was conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
+
+Table \ref{q3ai_2} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of th encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates.
+
+\xxx{Add how frequencies were determined, transfer function, and answer analysis questions.}  
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        Condition & Rise Time (s)  & Overshoot (\%) & Oscillations (\#) &  Absolute Steady-State Error (degree)   \\ \hline
+        Loaded   & 0.00267    & 19.512 & 7.5 &   0.065 \\ 
+        Unloaded   & 0.00203    & 12.830 & 11 & 0.109         \\         
+        \hline
+    \end{tabular}
+\caption{Average step-response parameters.}
+\label{q3ai_1}
+\end{center}
+\end{table}
+
+\begin{table}[htb]
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Condition & Natural Freq. (Hz)  & Natural Freq. (rad/sec) & Damped Freq. (Hz) &  Damped Freq. (rad/sec) & Damping Ratio, $\zeta$   \\ \hline
+        Loaded   & 0   & 0 & 0 &  0 & 0.4616\\ 
+        Unloaded   & 0    & 0 & 0 & 0 & 0.5552         \\         
+        \hline
+    \end{tabular}
+\caption{Average natural and damped frequency values. \xxx{Will fill in when I get data off lab computer}}
+\label{q3ai_2}
+\end{center}
+\end{table}
+
+\clearpage
 \subsubsection*{ii}
 \subsection*{b.}
 
