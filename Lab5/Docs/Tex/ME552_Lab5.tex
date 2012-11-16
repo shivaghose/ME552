@@ -455,6 +455,25 @@ The oscillations of the motor shaft are affected very much like the overshoot. T
 
 \clearpage
 \subsubsection*{ii}
+
+Despite sweeping a variety of frequencies using a function generator we were unable to to cause the system to become unstable until we exceeded the pull-out frequency.  However, while the motor did remain stable, there was a noticeable decrease in response quality at some frequencies.  This was characterized by a highly under-damped response as shown in \xxx{FIGURE}.  
+
+\xxx{We still want additional figure of normal response vs resonant response}
+
+To quantify the response quality we constructed a metric where we measured the number of loop iterations for which the angle reported by the encoder was beyond 1 full step off from the commanded value.  This measure would be expected to perform poorly for high step rates, as the rise time would become large compared to the length of each step.  For low to intermediate frequencies this metric seemed to characterize the quality of response well enough.  We commanded full steps at rates between $25$ Hz to $600$ Hz at $25$ Hz intervals and measured this excursion fraction for the loaded and unloaded cases, as shown in figure \ref{q3aii}.
+
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 15cm]{ResonanceData.png}
+\caption{Percentage of Time of Response differed from Commanded Angle by more than 1 full step.}
+\label{q3aii}
+\end{center}
+\end{figure}
+
+We also performed additional trials at the resonant frequency, half of that frequency, and double that frequency for the loaded and unloaded cases.  The data confirms our estimates of the natural frequencies with peaks in the expected regions.  However we also notice poor response at other frequencies as well interrupted by occasional frequencies that ran very smoothly. 
+
 \subsection*{b.}
 
 \clearpage
