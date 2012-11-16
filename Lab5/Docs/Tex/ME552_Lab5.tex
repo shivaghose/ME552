@@ -346,17 +346,16 @@ Step response data was obtained using the previous VI at 1000 Hz in both the loa
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 14cm]{StepResponse.png}
-\caption{Step response of stepper motor.}
+\caption{Step response of loaded stepper motor.}
 \label{q3a_1}
 \end{center}
 \end{figure}
 
 \subsubsection*{i}
-Table \ref{q3ai_1} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this was conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
+Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this was conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
 
-Table \ref{q3ai_2} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of th encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates.
+Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of th encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
 
-\xxx{Add how frequencies were determined, transfer function, and answer analysis questions.}  
 
 \begin{table}[htb]
 \begin{center}
@@ -368,7 +367,7 @@ Table \ref{q3ai_2} shows the calculated frequency values and damping ratio for t
         \hline
     \end{tabular}
 \caption{Average step-response parameters.}
-\label{q3ai_1}
+\label{q3ai_!}
 \end{center}
 \end{table}
 
@@ -376,15 +375,83 @@ Table \ref{q3ai_2} shows the calculated frequency values and damping ratio for t
 \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
-        Condition & Natural Freq. (Hz)  & Natural Freq. (rad/sec) & Damped Freq. (Hz) &  Damped Freq. (rad/sec) & Damping Ratio, $\zeta$   \\ \hline
-        Loaded   & 0   & 0 & 0 &  0 & 0.4616\\ 
-        Unloaded   & 0    & 0 & 0 & 0 & 0.5552         \\         
+        Condition & $f _n$ (Hz)  & $\omega _n$ ($\frac{rad}{sec}$) & $f _d$ (Hz) &  $\omega _d$ ($\frac{rad}{sec}$) & Damping Ratio, $\zeta$   \\ \hline
+        Loaded   & 295.495   & 1856.651 & 262.146 &  1647.110 & 0.4616\\ 
+        Unloaded   & 330.474   & 2076.431 & 272.690 & 1713.361 & 0.5552         \\         
         \hline
     \end{tabular}
-\caption{Average natural and damped frequency values. \xxx{Will fill in when I get data off lab computer}}
-\label{q3ai_2}
+\caption{Average natural and damped frequency values.}
+\label{q3ai_@}
 \end{center}
 \end{table}
+
+The generic second order transfer function is given by equation \ref{q3a1_A} where K is the system gain based on the average steady-state error. Plugging in the calculated values for the loaded condition gives the result shown in equation \ref{q3ai_B} and in figure \ref{q3ai_1}. The figure shows that the transfer function is not a very good fit to the experimental data. First, the overshoot is not large enough, and the oscillations die out too fast. As mentioned previously, the quantization of the encoder leads to an overestimation of the damping ratio, so this behavior is not very surprising. Also the rise time is too short. This is likely caused in part because the model does not include the effect of the finite rise of the current and coulomb friction in the system. This can especially be seen in the shallower slope between the first two points on the experimental curve. By reducing the damping ratio until the overshoot was greater than the overshoot of the experimental data set by an amount equal to the encoder resolution (which also resulted in a new value for natural frequency because we had directly measured the damped frequency then calculated the natural frequency using the damping ratio) we obtained the transfer function shown in equation \ref{q3ai_C} and in figure \ref{q3ai_2}. This fits the data much better, particularly the time of the first several peaks. However, the model still dies out much faster than the real system.\\
+
+\begin{equation}
+\label{q3ai_A}
+T(s) = K \frac{\omega _n^2}{s^2 + 2\zeta \omega _n s + \omega _n^2}
+\end{equation}
+
+\begin{equation}
+\label{q3ai_B}
+T(s) = K \frac{3322707.14}{s^2 + 1715.55 s + 3447149.22}
+\end{equation}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{LoadedStepUnFit.png}
+\caption{Theoretical step response of loaded motor using calculated values.}
+\label{q3ai_1}
+\end{center}
+\end{figure}
+
+\begin{equation}
+\label{q3ai_C}
+T(s) = K \frac{2956844.29}{s^2 + 1190.99 s + 3067584.07}
+\end{equation}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{LoadedStepFit.png}
+\caption{Theoretical step response of loaded motor using fit values.}
+\label{q3ai_2}
+\end{center}
+\end{figure}
+\vspace{5mm}
+The same procedure was performed for the unloaded condition. As before, the calculated values result in a poor fit with the experimental data (see equation \ref{q3ai_D} and figure \ref{q3ai_3})  due to the inaccurate damping ratio and unmodeled dynamics. Adjusting the damping ratio to account for the theoretical higher overshoot that the encoder cuts off gives the results shown in equation \ref{q3ai_E} and figure \ref{q3ai_4}. Again, this is a better fit, but the model still dies out much faster than the real system.\\
+
+\begin{equation}
+\label{q3ai_D}
+T(s) = K \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
+\end{equation}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{UnloadedStepUnFit.png}
+\caption{Theoretical step response of unloaded motor using calculated values.}
+\label{q3ai_3}
+\end{center}
+\end{figure}
+
+\begin{equation}
+\label{q3ai_E}
+T(s) = K \frac{3314951.55}{s^2 + 1540.38 s + 3528796.63}
+\end{equation}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{UnloadedStepFit.png}
+\caption{Theoretical step response of unloaded motor using fit values.}
+\label{q3ai_4}
+\end{center}
+\end{figure}
+\vspace{3mm}
+The rise time of the system is affected by a combination of the inertia of the rotor (and transmission in the loaded condition) and the finite rise time of the current. The addition of the load increases the rise time by over 25\%. Because the current cannot immediately jump to its max value, the motor torque starts low and increases as the current increases, increasing the rise time over the theoretical value. Viscous and coulomb friction also affect the rise time, particularly as the current/torque need time to increase to the point where the static friction can be overcome. However, the static friction in this system is not very large.\\
+
+The overshoot is also affected by the inertia of the system, as the rotor/belt/pulley want to keep moving past the commanded position. The viscous and coulomb friction affect the overshoot as they act to slow the system, but the values are not significant, so their effect on damping the overshoot and oscillations is negligible (the springiness of the belt could have a large effect but is highly nonlinear and could contribute positively or negatively). A larger effect is provided by the magnetic stiffness. With the coils energized, the shaft is always pulled towards the stable equilibrium. This is what brings the motor shaft back towards the set point after it overshoots. Because the magnetic stiffness is dependent on the current from the driver, the finite decay and rise time in the chopper circuit affect the overshoot.\\
+
+The oscillations of the motor shaft are affected very much like the overshoot. The inertia of the system is what keeps the oscillations moving, while the magnetic stiffness is what drives the shaft towards the set point. Viscous and coulomb friction act to damp out the oscillations, and the current rise/decay causes the magnetic stiffness to vary. Finally, the steady-state error is primarily affected by the magnetic stiffness. The coils always try to pull the shaft into stable equilibrium. However, the quantization error of the encoder means that the motor might have zero error, but our position reading could be slightly off.\\
+
 
 \clearpage
 \subsubsection*{ii}
