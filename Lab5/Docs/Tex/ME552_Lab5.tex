@@ -456,7 +456,7 @@ The oscillations of the motor shaft are affected very much like the overshoot. T
 \clearpage
 \subsubsection*{ii}
 
-Despite sweeping a variety of frequencies using a function generator we were unable to to cause the system to become unstable until we exceeded the pull-out frequency.  However, while the motor did remain stable, there was a noticeable decrease in response quality at some frequencies.  This was characterized by a highly under-damped response as shown in \xxx{FIGURE}.  
+Despite sweeping a variety of frequencies using a function generator we were unable to to cause the system to become unstable until we exceeded the pull-out frequency.  However, while the motor did remain stable, there was a noticeable decrease in response quality at some frequencies.  This was characterized by a highly under-damped response as shown in figure \xxx{FIGURE}.  
 
 \xxx{We still want additional figure of normal response vs resonant response}
 
@@ -475,6 +475,53 @@ To quantify the response quality we constructed a metric where we measured the n
 We also performed additional trials at the resonant frequency, half of that frequency, and double that frequency for the loaded and unloaded cases.  The data confirms our estimates of the natural frequencies with peaks in the expected regions.  However we also notice poor response at other frequencies as well interrupted by occasional frequencies that ran very smoothly. 
 
 \subsection*{b.}
+\xxx{We may want to reexamine the pull in frequency using the function generator rather than our own system, its likely the reason for the inconsistent behavior.  We can just use exactly the same method as before to figure it out, just run the vi and then start the function generator}
+
+Pull-in frequencies were measured with the driver in full step mode by starting from rest and using our Lab View system to send a pulse train at a specific frequency with exactly 20 pulses.  We measured the final angle reported by the encoder and computed an equivalent number of steps.  Comparing these two numbers would then tell us if the stepper motor had skipped steps.  However we found that performance was inconsistent.  For a wide range of frequencies in both the loaded and unloaded cases, the system would match the number of pulses within the quantization error introduced by the encoder, but in a few cases the motor would be off by a large number of steps.  This lack of a clear dividing line made it difficult to compute a pull-in frequency.  
+
+We conducted 50 trials using the system in the loaded and unloaded cases at $490$ Hz and compared the number of failures reported in table \ref{q3b_table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                    & Unloaded & Loaded \\ \hline
+        Failures (out of 50) & 1        & 2      \\
+        \hline
+    \end{tabular}
+\caption{Failure rate at $490$ Hz in the loaded and unloaded cases}
+\label{q3b_table}
+\end{center}
+\end{table}
+
+\xxx{incomplete need to talk about how these aren't really all that different unless we redo the section}
+
+Our LabView system was unable to provide sufficient maximum frequencies to cause the system to desynchronize so we again resorted to the function generator to determine the pull-out frequency.  Testing the system at full steps, we used the extra counter input to record the number of pulses sent by the function generator.  It was then quite simple to compare the measured number of steps, computed from the encoder angle, with the recorded number of steps as shown in figure \xxx{FIGURE}.  
+
+\xxx{picture of labview, had the wrong number entered for the computation, change to 1.8 for full steps, remove extra clutter}
+
+When these two numbers diverge, we know that the stepper motor has lost synchronization.  \xxx{Unlike our trials to determine the pull-in frequencies, this proved to be very clear cut and very repeatable}  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                       & Unloaded & Loaded \\ \hline
+        Pull out Frequency (Hz) & 1088.6   & 1077.9 \\
+        \hline
+    \end{tabular}
+\caption{Pull-out frequencies for loaded and unloaded cases}
+\label{q3b_table2}
+\end{center}
+\end{table}
+
+It is quite clear from these two experiments that the pull-out speed is greater than the pull-in speed.  This is simply because of the dynamics of the rotor.  The rotor has some inertia and to accelerate it at some rate requires a certain amount of torque.  To achieve some stepping rate from rest, we must accelerate to that angular velocity in the period of a single step.   Even if we ignore the additional electrical dynamics which mean that coil current has some non-zero rise time, the torque exerted by the stepper motor is some finite amount.  This imposes an upper limit on the changes in angular velocity that can be made while keeping the rotor synchronized with the command pulse train.  The maximum speed that can be commanded from rest is known as the pull-in speed.
+
+$$ \sum \tau = J \dot{\omega} = \tau_m - \tau_{Load} \hspace{1cm} \dot{\omega} \approx \frac{\Delta \theta}{(\Delta t)^2} \hspace{1cm} \Delta t = \frac{1}{f_{command}}$$
+
+$$ f_{command \, max} \approx \sqrt{\frac{J \, \Delta \theta}{\tau_{m} - \tau_{Load}}} $$
+
+Effectively some motor torque is being used to accelerate the rotor while the rest is working against the load.  So for large accelerations, less of the motor torque is available to overcome the load torque.  However if accelerations are kept sufficiently small, then all of the motor torque is available to overcome load torque, allowing the rotor to reach higher angular velocities while remaining synchronized with the command pulse train, than it could in a single step change in angular velocity.  
 
 \clearpage
 
