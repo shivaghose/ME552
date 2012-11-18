@@ -541,6 +541,40 @@ Effectively some motor torque is being used to accelerate the rotor while the re
 \subsection*{b.}
 \subsection*{c.}
 
+We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ using the function generator.  This maximum speed was limited only by the pull-out speed of the stepper motor.  As shown in figure \ref{Q4c_ProfileDetail} a not insubstantial amount of the error between the desired angular position and actual angular position seen in \ref{Q4c_PE} is due to the dynamics of the stepper motor and its discrete positions.  We also see a difference between the commanded position and the desired position, shown in \ref{Q4c_CE} which is due to the discrete nature of the position commands issued to the stepper motor.  Using a finer step setting on the driver would reduce this error.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{4cProfile.png}
+\caption{Commanded Profile vs Recorded Position vs Target Position}
+\label{Q4c_Profile}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{4cProfileDetail1.png}
+\caption{Commanded Profile vs Recorded Position vs Desired Position}
+\label{Q4c_ProfileDetail}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{4cCommandError.png}
+\caption{Error between Commanded Profile and Desired Profile}
+\label{Q4c_CE}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{4cProfileError.png}
+\caption{Error between Desired Profile and Actual Profile}
+\label{Q4c_PE}
+\end{center}
+\end{figure}
+
 \clearpage
 
 
