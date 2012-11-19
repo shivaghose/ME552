@@ -337,6 +337,38 @@ In the middle of the block diagram is the position control section. At all times
 At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, to the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
 
 Additional VI's were created to fulfill the specialized objectives of some of the laboratory questions.\\
+
+\subsection*{LabView Difficulties}
+
+Labview is not fundamentally well suited to the task of driving the stepper motor because of our limited ability to reconstruct output signals of different frequencies.  Even avoiding the use of slow control and simulation loops and resorting to just a while loop, LabView only has access to a clock with a resolution of just $1 \, ms$.  This means that as we approach the maximum frequency that this timer will allow us to reconstruct, $500 \, Hz$ we run into additional quantization issues illustrated in table \ref{Q2_T2}, which prevent us from outputting arbitrary frequencies.  This problem is less important for low frequencies, however this issue is still present.  
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        Signal    & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\ \hline
+        500 Hz    & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 1 & 0  \\ 
+        333.33 Hz & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1  \\ 
+        250 Hz    & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 1 & 1  \\ 
+        200 Hz    & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0  \\
+        \hline
+    \end{tabular}
+\caption{LabView Frequency Discretization}
+\label{Q2_T2}
+\end{center}
+\end{table}
+
+We can physically illustrate this issue by commanding a linear velocity output from LabView.  If the velocity profile was linear, then we would expect a quadratic position output.  However, as shown in figure \ref{Q2_3} we see roughly linear regions in the position output, the last two of which are at $333.33 \, Hz$ and $500 \, Hz$ respectively. 
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{frequencyQuantization.png}
+\caption{Illustration of LabView Frequency Quantization}
+\label{Q2_3}
+\end{center}
+\end{figure}
+
 \clearpage
 
 \section{Experimental Characterization}
@@ -543,7 +575,7 @@ Effectively some motor torque is being used to accelerate the rotor while the re
 
 We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ using the function generator.  This maximum speed was limited only by the pull-out speed of the stepper motor.  As shown in figure \ref{Q4c_ProfileDetail} a not insubstantial amount of the error between the desired angular position and actual angular position seen in \ref{Q4c_PE} is due to the dynamics of the stepper motor and its discrete positions.  We also see a difference between the commanded position and the desired position, shown in \ref{Q4c_CE} which is due to the discrete nature of the position commands issued to the stepper motor.  Using a finer step setting on the driver would reduce this error.
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 13cm]{4cProfile.png}
 \caption{Commanded Profile vs Recorded Position vs Target Position}
@@ -551,7 +583,7 @@ We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ usin
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 13cm]{4cProfileDetail1.png}
 \caption{Commanded Profile vs Recorded Position vs Desired Position}
@@ -559,7 +591,7 @@ We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ usin
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 13cm]{4cCommandError.png}
 \caption{Error between Commanded Profile and Desired Profile}
@@ -567,7 +599,7 @@ We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ usin
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 13cm]{4cProfileError.png}
 \caption{Error between Desired Profile and Actual Profile}
