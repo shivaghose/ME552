@@ -170,7 +170,7 @@ and that I have read and understood the X50 Lab Rules.\\
 \end{figure}
 
 \subsubsection*{Pin1 - REF}
-The \emph{REF} pin of the A3967 chip takes set the reference voltage for the logic circuit $V_{REF}$. It works with tandem with the senseristor to control the magnitude of the H-bridge current in the following manner:
+The \emph{REF} pin of the A3967 chip takes set the reference voltage for the logic circuit $V_{REF}$. It works in tandem with the senseristor to control the magnitude of the H-bridge current in the following manner:
 \begin{itemize}
 \item At $V_{REF} = 5$V max current will be 833mA.
 \item At $V_{REF} = 3.3$V max current will be 550mA.
@@ -190,20 +190,20 @@ $$t_{off} = R_T C_T$$
 The EasyDriver uses $R_T = 20k\Omega$ and $C_T = 680 pF$, hence $t_{off} = 0.0000136$s.\\
 
 \subsubsection*{Pin3 - $\overline{\text{SLEEP}}$}
-This terminal allows us to minimize power consumption when not in use. It works by disabling most of the internal circuitry and switching of the outputs of the chip. It is an active-low terminla, meaning that for normal operation a 1-logic command/high voltage signal needs to be sent to it, while in order to set the system to sleep, a 0-logic command/low voltage signal needs to be sent instead. When starting up from a sleep command, the device will return to its default/home position.\\
+This terminal allows us to minimize power consumption when not in use. It works by disabling most of the internal circuitry and switching off the outputs of the chip. It is an active-low terminal, meaning that for normal operation a 1-logic command/high voltage signal needs to be sent to it, while in order to set the system to sleep, a 0-logic command/low voltage signal needs to be sent instead. When starting up from a sleep command, the device will return to its default/home position.\\
 
-The EasyDriver provides a pull up resistor in series with this terminal to ensure it doesn't load the circuit it is connected to and also to prevent currents from flowing through it. Additionally the terminal is set high by default which in turn can be toggled off by an external controller.
+The EasyDriver provides a pull up resistor in series with this terminal to ensure it doesn't load the circuit it is connected to and also to prevent currents from flowing through it. Additionally, the terminal is set high by default which in turn can be toggled off by an external controller.
 
 
 \subsubsection*{Pin4 - OUT2B, Pin9 - OUT2A, Pin16 - OUT1A, Pin21 - OUT1B}
-These pins are the outputs of the H-bridge. As seen in the functional bloack diagram (figure \ref{q1_b2}), OUT-\emph{x}-A and OUT-\emph{x}-B represent the outputs of H-bridge \emph{x} and together complete the circuit of the respective phase of the motor.\\
+These pins are the outputs of the H-bridge. As seen in the functional block diagram (figure \ref{q1_b2}), OUT-\emph{x}-A and OUT-\emph{x}-B represent the outputs of H-bridge \emph{x} and together complete the circuit of the respective phase of the motor.\\
 
 The EasyDriver provides pin-outs for these terminals through jumper 3 (JP3).
 
 \subsubsection*{Pin5 - LOAD SUPPLY2, Pin17 - LOAD SUPPLY1}
 These pins provide the input power for the H-bridge to supply the motors. The data-sheet of the A3967 chip suggests that the supply voltage should be decoupled with an electrolytic capacitor ($>$47 $\mu$F is recommended). This decoupling is not provided in the EasyDriver PCB.\\
 
-The decoupling capacitors would provide isolation from the supply sources noise as well as provide temporary boosting-effects if the load changes suddenly. The EasyDriver circuit assumes that the supply-source can react instantaneously and is relatively noise free.
+The decoupling capacitors would provide isolation from the supply source's noise as well as provide temporary boosting-effects if the load changes suddenly. The EasyDriver circuit assumes that the supply-source can react instantaneously and is relatively noise free.
 \xxx{PHYSICAL EXTRA IMPLEMENTATION}
 
 \subsubsection*{Pin6 - GND, Pin7 - GND, Pin18 - GND, Pin19 - GND}
@@ -218,7 +218,7 @@ The Step-terminal is an edge detector that operates on negative-to-positive chan
 The EasyDriver provides direct access to this terminal through jumper 2 (JP2) and no external circuitry is required. A pull up resistor could be used just to be safe though.
 
 \subsubsection*{Pin11 - DIR}
-This pin determines the direction of rotation of the motor. The physical wiring of the motor decides which way the motor will actually rotate, however knowing that, this pin lets the user switch the direction digitally. The EasyDriver pcb allows for direct access of this pin through jumper 2 (JP2). The control logic for this pin is level dependent. Like the step control pin, a  pull up resistor could be used just to be safe.\\
+This pin determines the direction of rotation of the motor. The physical wiring of the motor decides which way the motor will actually rotate, however knowing that, this pin lets the user switch the direction digitally. The EasyDriver PCB allows for direct access of this pin through jumper 2 (JP2). The control logic for this pin is level dependent. Like the step control pin, a  pull up resistor could be used just to be safe.\\
 
 \subsubsection*{Pin12 - MS1, Pin13 - MS2}
 MS1 and MS2 together determine the size of an incremental step when a step command is given They are binary control variables with MS2 as the most significant bit and MS1 as the least significant bit. The corresponding results can be found in table \ref{q1_b3}.\\
@@ -239,17 +239,17 @@ MS1 and MS2 together determine the size of an incremental step when a step comma
 \end{center}
 \end{table}
 
-The EasyDriver puts a 10K buffer resistance before the MS1 and MS2 pins to increase the overall impedance of the pin and keeps both of them at a logic level of 1 by default (when unconnected) thereby resulting in the motor always taking 1/8 micro-steps. An external controller can drop the voltages by forcing a drop to the terminals.
+The EasyDriver puts a 10K buffer resistance before the MS1 and MS2 pins to increase the overall impedance of the pin and keeps both of them at a logic level of 1 by default (when unconnected) thereby resulting in the motor always taking 1/8$^{th}$ steps. An external controller can drop the voltages by forcing a drop to the terminals.
 
 \subsubsection*{Pin14 - LOGIC SUPPLY}
-The logic supply voltage, $V_{CC}$  can be set from $3.0$V up to $5.5$V \footnote{Subject to an absolute maximum of 7.0V}. On start-up if the logic supply is significantly below rated values, the system will go into its Under Voltage Lock Out (UVLO) mode where it switches off itself, there by preemptively preventing damage.\\
+The logic supply voltage, $V_{CC}$  can be set from $3.0$V up to $5.5$V \footnote{Subject to an absolute maximum of 7.0V}. On start-up if the logic supply is significantly below rated values, the system will go into its Under Voltage Lock Out (UVLO) mode where it switches off itself, thereby preemptively preventing damage.\\
 
 The EasyDriver circuit provides a direct connection to $V_{CC}$ for this terminal. It is important to provide regulated voltage to this pin.
 
 \subsubsection*{Pin15 - $\overline{\text{ENABLE}}$}
-The Enable pin enables or disables the outputs. It is n active-low pin meaning that a logic-low should be sent in order to enable the chip. It is important to note however that the inputs to the translator (Step, Dir, MS1 , MS2) are all active independent of the Enable input state.\\
+The Enable pin enables or disables the outputs. It is an active-low pin meaning that a logic-low should be sent in order to enable the chip. It is important to note however that the inputs to the translator (Step, Dir, MS1 , MS2) are all active independent of the Enable input state.\\
 
-The EasyDriver pcb pulls the Enable pin down to the ground potential by default.
+The EasyDriver PCB pulls the Enable pin down to the ground potential by default.
 
 
 
@@ -259,7 +259,7 @@ The Reset pin, as its name implies, resets the chip to its default operating poi
 By default the EasyDriver sets this pin high, there by preventing reset. An external control circuit would have to pull it down to ground potential manually.
 
 \subsubsection*{Pin24 - PFD}
-The percentage fat decay controls the rate at which the current decays in the H-bridge. When an input signal commands lowers the output current from the previous step, it switches the output current decay to slow, fast, or mixed-decay depending on the voltage level at PFD terminal and the setting of the RC terminals. If the voltage is greater than 0.6$V_{CC}$ then slow-decay mode is selected.  If the voltage is less than 0.21$V_{CC}$ then fast-decay mode is selected.  Mixed decay is between these two levels and works by initially allowing for a steep current drop and then switching to a gradual drop.\\
+The percentage fast decay controls the rate at which the current decays in the H-bridge. When an input signal command lowers the output current from the previous step, it switches the output current decay to slow, fast, or mixed-decay depending on the voltage level at the PFD terminal and the setting of the RC terminals. If the voltage is greater than 0.6$V_{CC}$ then slow-decay mode is selected.  If the voltage is less than 0.21$V_{CC}$ then fast-decay mode is selected.  Mixed decay is between these two levels and works by initially allowing for a steep current drop and then switching to a gradual drop.\\
 
 The EasyDriver pcb has a 10k$\Omega$ attached to the pin by default and has a pin-out that enables us to attach an external resistor. 
 
@@ -269,20 +269,20 @@ The EasyDriver pcb has a 10k$\Omega$ attached to the pin by default and has a pi
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 18cm]{lab5_q1_c.png}
-\caption{Ideal Sleep, Enable, MS1 and MS2 pins connection diagram. \emph{Note all grounds are common}}
+\caption{Ideal Sleep, Enable, MS1 and MS2 pins connection diagram. \emph{Note: all grounds are common.}}
 \label{q1_c}
 \end{center}
 \end{figure}
 
-Figure \ref{q1_c} shows the ideal connection diagrams for the EasyDriver pcb along with some of the default connections already made on the board. The Sleep and Enable pins are low-enable pins. As we do not explicitly need to control them, we leave them in their default connection - with the EasyDriver pulling them up to $V_{cc}$.\\
+Figure \ref{q1_c} shows the ideal connection diagrams for the EasyDriver PCB along with some of the default connections already made on the board. The Sleep and Enable pins are low-enable pins. As we do not explicitly need to control them, we leave them in their default connection - with the EasyDriver pulling them up to $V_{cc}$.\\
 
-$V_{cc}$is generated through passing the main supply voltage through an LM317 voltage regulator that provides a relatively clean and stable 5V \footnote{Or 3.3V depending on the settings.}. This $V_{cc}$ is then used by the EasyDriver circuit to pull up pins as required. We use a 10$k\Omega$ resistor in series with the pin to act as a buffer resistor and so that if an external circuit is used to ground the pin, $V_{cc}$ is not connected to the ground directly.\\
+$V_{cc}$ is generated by passing the main supply voltage through an LM317 voltage regulator that provides a relatively clean and stable 5V \footnote{Or 3.3V depending on the settings.}. This $V_{cc}$ is then used by the EasyDriver circuit to pull up pins as required. We use a 10$k\Omega$ resistor in series with the pin to act as a buffer resistor and so that if an external circuit is used to ground the pin, $V_{cc}$ is not connected to the ground directly.\\
 
-For MS1 and MS2, we wish to control their states. By default the EasyDriver circuit pulls MS1 and MS2 upto $V_{cc}$.Ideally to pull them to the ground potential we should use a decoupling transistor circuit as shown in figure \ref{q1_c}. This would then require the MS1 and MS2 control logic to be inverted as a high output would power the transistors to bring the pin potential to the ground. This design would electrically isolate the DAQ from the circuits.\\
+For MS1 and MS2, we wish to control their states. By default the EasyDriver circuit pulls MS1 and MS2 up to $V_{cc}$. Ideally, to pull them to the ground potential we should use a decoupling transistor circuit as shown in figure \ref{q1_c}. This would then require the MS1 and MS2 control logic to be inverted as a high output would power the transistors to bring the pin potential to the ground. This design would electrically isolate the DAQ from the circuits.\\
 
- However, in our actual implementation, we connected the pin directly to the DAQ. This works as we have high quality DAQ that can handle small circulating currents if they do arise\footnote{Due to mismatches in voltages.}.\\
+ However, in our actual implementation, we connected the pin directly to the DAQ. This works as we have high a quality DAQ that can handle small circulating currents if they do arise\footnote{Due to mismatches in voltages.}.\\
 
-The only change from defaults we incorporated was connecting MS1 and MS2. this was done to control the step size. 
+The only change from default we incorporated was connecting MS1 and MS2. this was done to control the step size. 
 
 
 \subsection*{d.}
@@ -307,15 +307,15 @@ Given the advantages and disadvantages, we chose the more reliable choice as we 
 
 
 \section{LabView Implementation}
-Figures \ref{q2_1} and \ref{q2_2} show the front panel and block diagram, respectively, of the LabView VI created to meet the requirements in the Lab 5 Instructions, as well as additional inputs and outputs for debugging. The front panel includes inputs for the user to select the mode (velocity vs. position), direction of rotation, step size, and input value with options for type of units (ie. position as number of degrees or number of steps). Additionally, there is an overall power button (labeled "GO") and an option to save the encoder data using the "Write to Measurement File" block. In practice this option was rarely used as it tended to slow down the simulation loop when set to high frequencies (over about 200 Hz).\\
+Figures \ref{q2_1} and \ref{q2_2} show the front panel and block diagram, respectively, of the LabView VI created to meet the requirements in the Lab 5 Instructions, as well as additional inputs and outputs for debugging. The front panel includes inputs for the user to select the mode (velocity vs. position), direction of rotation, step size, and input value with options for type of units (i.e. position as number of degrees or number of steps). Additionally, there is an overall power button (labeled "GO") and an option to save the encoder data using the "Write to Measurement File" block. In practice the data saving option was rarely used as it tended to slow down the simulation loop when set to high frequencies (over about 200 Hz).\\
 
-The main output on the front panel is the "Motor Angle" waveform chart which displays the angular displacement obtained from the encoder via quadrature decoding. There is also a waveform chart for angular velocity which is only used for steady-state estimations for debugging as the filter used creates a significant delay. More accurate velocity values were obtained by exporting the displacement data and fitting lines to calculate slope. Additional debugging outputs consist of the "sum" indicator (which displays the current value of the edge counter), and LEDs for each of the outputs to the motor driver.     \\
+The main output on the front panel is the "Motor Angle" waveform chart which displays the angular displacement obtained from the encoder via quadrature decoding. There is also a waveform chart for angular velocity which is only used for steady-state estimations for debugging because the filter used creates a significant delay. More accurate velocity values were obtained by exporting the displacement data and fitting lines to calculate slope. Additional debugging outputs consist of the "sum" indicator (which displays the current value of the edge counter), and LEDs for each of the outputs to the motor driver.     \\
 
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 18cm]{VIFrontPanel.png}
-\caption{Front panel of primary LabView VI.}
+\caption{Front panel of LabView VI.}
 \label{q2_1}
 \end{center}
 \end{figure}
@@ -323,25 +323,25 @@ The main output on the front panel is the "Motor Angle" waveform chart which dis
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 18cm]{VIBlockDiagram.png}
-\caption{Block diagram of primary LabView VI.}
+\caption{Block diagram of LabView VI.}
 \label{q2_2}
 \end{center}
 \end{figure}
 
 The VI uses a control \& simulation loop running at 1000 Hz. At the top of the block diagram in figure \ref{q2_2} is a radio button block connected to a case structure. This is the step size selector. Depending on the button selected by the user, a constant is output corresponding to the degrees per step for that step size, and booleans are output for MS1 and MS2 according to the settings given in table \ref{q1_b3}.\\
 
-Below the case structure is the velocity control segment of the VI. Based on the users desired velocity, unit type, and step size, the number of steps per second is calculated and used to set the period of a "Pulse Signal" block. A greater than comparator is then used to convert the 1's and 0's of the pulse signal into a stream of true and false booleans. This stream is put into an array along with a boolean for the direction of rotation and booleans for MS1 and MS2. This array is then sent to a DAQ Assistant block, which sends the array elements to the motor driver. Smaller step sizes resulted in smoother operation, but were not achievable at high velocities. Therefore, we left the step size as selectable rather than setting a specific step size.\\
+Below the case structure is the velocity control segment of the VI. Based on the user's desired velocity, unit type, and step size, the number of steps per second is calculated and used to set the period of a "Pulse Signal" block. A greater-than comparator is then used to convert the 1's and 0's of the pulse signal into a stream of true and false booleans. This stream is put into an array along with a boolean for the direction of rotation and booleans for MS1 and MS2. This array is then sent to a DAQ Assistant block, which sends the array elements to the motor driver. Smaller step sizes resulted in smoother operation, but were not achievable at high velocities. Therefore, we left the step size as selectable rather than setting a specific step size.\\
 
 In the middle of the block diagram is the position control section. At all times, a pulse generator is running at 10 Hz (arbitrarily selected; this could be a user input). The pulse signal is shifted downwards so that a zero crossing block can be used to detect the rising edges of the signal. Every time a rising edge is detected, the zero crossing block sends out a true boolean. However, this value only reaches the output array if the user has selected position mode and has selected the GO button. To stop after the desired number of steps has been taken, the output of the zero crossing block is also sent to a "Collector" block, which stores the values like an array. Summing the values within the collector gives the number of steps that have been taken. However, the collector is only enabled when the user selects position mode and the GO button (this makes the VI run faster in velocity mode, allowing for higher velocities). Additionally, the collector continuously resets itself when GO is not selected. This allows for multiple runs, and prevents the always running pulse signal from storing edge counts when not desired. The user's desired displacement is converted to the number of steps required, and a less-than-or-equal-to comparator is used to stop the stream of pulses to the output when the edge count reaches the required number of steps.\\
 
-At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, to the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
+At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, so the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
 
-Additional VI's were created to fulfill the specialized objectives of some of the laboratory questions.\\
+Additional VI's were created to fulfill the specialized objectives of some of the assignment questions.\\
 \clearpage
 
 \section{Experimental Characterization}
 \subsection*{a.}
-Step response data was obtained using the previous VI at 1000 Hz in both the loaded and unloaded conditions, as well as in the clockwise and counter-clockwise directions. Even at LabView's max frequency the number of data points recorded of th motor's oscillations was not enough to generate a smooth curve on their own. Curve fitting was attempted, but had little effect (as shown in figure \ref{q3a_1}). Additionally, the relatively low resolution of the encoder made accurate measures of the amplitude of oscillations impossible. Figure \ref{q3a_1} shows one data set from our tests. After the initial overshoot, all of the oscillations have the same amplitude. This would make it appear that the system is undamped, when in reality, the encoder is not able to tell the difference between the oscillations. This quantization error had a significant impact on the estimations of overshoot, and therefore on the damping ratio ($\zeta$).\\
+Step response data was obtained using the previous VI at 1000 Hz in both the loaded and unloaded conditions, as well as in the clockwise and counter-clockwise directions. Even at LabView's max frequency the number of data points recorded of the motor's oscillations was not enough to generate a smooth curve on their own. Curve fitting was attempted, but had little effect (as shown in figure \ref{q3a_1}). Additionally, the relatively low resolution of the encoder made accurate measures of the amplitude of oscillations impossible. Figure \ref{q3a_1} shows one data set from our tests. After the initial overshoot, all of the oscillations have the same amplitude. This would make it appear that the system is undamped, when in reality, the encoder is not able to tell the difference between the oscillations. This quantization error had a significant impact on the estimations of overshoot, and therefore on the damping ratio ($\zeta$).\\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -352,9 +352,9 @@ Step response data was obtained using the previous VI at 1000 Hz in both the loa
 \end{figure}
 
 \subsubsection*{i}
-Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this was conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
+Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this conflicts with the unloaded case having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an inaccurate estimation of steady-state error. \\
 
-Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of th encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
+Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of the encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
 
 
 \begin{table}[htb]
@@ -385,7 +385,7 @@ Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for t
 \end{center}
 \end{table}
 
-The generic second order transfer function is given by equation \ref{q3a1_A} where K is the system gain based on the average steady-state error. Plugging in the calculated values for the loaded condition gives the result shown in equation \ref{q3ai_B} and in figure \ref{q3ai_1}. The figure shows that the transfer function is not a very good fit to the experimental data. First, the overshoot is not large enough, and the oscillations die out too fast. As mentioned previously, the quantization of the encoder leads to an overestimation of the damping ratio, so this behavior is not very surprising. Also the rise time is too short. This is likely caused in part because the model does not include the effect of the finite rise of the current and coulomb friction in the system. This can especially be seen in the shallower slope between the first two points on the experimental curve. By reducing the damping ratio until the overshoot was greater than the overshoot of the experimental data set by an amount equal to the encoder resolution (which also resulted in a new value for natural frequency because we had directly measured the damped frequency then calculated the natural frequency using the damping ratio) we obtained the transfer function shown in equation \ref{q3ai_C} and in figure \ref{q3ai_2}. This fits the data much better, particularly the time of the first several peaks. However, the model still dies out much faster than the real system.\\
+The generic second order transfer function is given by equation \ref{q3ai_A} where K is the system gain based on the average steady-state error. Plugging in the calculated values for the loaded condition gives the result shown in equation \ref{q3ai_B} and in figure \ref{q3ai_1}. The figure shows that the transfer function is not a very good fit to the experimental data. First, the overshoot is not large enough, and the oscillations die out too fast. As mentioned previously, the quantization of the encoder leads to an overestimation of the damping ratio, so this behavior is not very surprising. Also the rise time is too short. This is likely caused in part because the model does not include the effect of the finite rise of the current and coulomb friction in the system. This can especially be seen in the shallower slope between the first two points on the experimental curve. By reducing the damping ratio until the overshoot was greater than the overshoot of the experimental data set by an amount equal to the encoder resolution (which also resulted in a new value for natural frequency because we had directly measured the damped frequency and then calculated the natural frequency using the damping ratio) we obtained the transfer function shown in equation \ref{q3ai_C} and in figure \ref{q3ai_2}. This fits the data much better, particularly the time of the first several peaks. However, the model still dies out much faster than the real system.\\
 
 \begin{equation}
 \label{q3ai_A}
@@ -394,7 +394,7 @@ T(s) = K \frac{\omega _n^2}{s^2 + 2\zeta \omega _n s + \omega _n^2}
 
 \begin{equation}
 \label{q3ai_B}
-T(s) = K \frac{3322707.14}{s^2 + 1715.55 s + 3447149.22}
+T(s) = \frac{3322707.14}{s^2 + 1715.55 s + 3447149.22}
 \end{equation}
 
 \begin{figure}[hbt]
@@ -407,7 +407,7 @@ T(s) = K \frac{3322707.14}{s^2 + 1715.55 s + 3447149.22}
 
 \begin{equation}
 \label{q3ai_C}
-T(s) = K \frac{2956844.29}{s^2 + 1190.99 s + 3067584.07}
+T(s) = \frac{2956844.29}{s^2 + 1190.99 s + 3067584.07}
 \end{equation}
 
 \begin{figure}[hbt]
@@ -422,7 +422,7 @@ The same procedure was performed for the unloaded condition. As before, the calc
 
 \begin{equation}
 \label{q3ai_D}
-T(s) = K \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
+T(s) = \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
 \end{equation}
 
 \begin{figure}[hbt]
@@ -435,7 +435,7 @@ T(s) = K \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
 
 \begin{equation}
 \label{q3ai_E}
-T(s) = K \frac{3314951.55}{s^2 + 1540.38 s + 3528796.63}
+T(s) = \frac{3314951.55}{s^2 + 1540.38 s + 3528796.63}
 \end{equation}
 
 \begin{figure}[hbt]
