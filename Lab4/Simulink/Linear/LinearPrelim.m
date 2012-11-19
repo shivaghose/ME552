@@ -122,11 +122,4 @@ NumTF = conv(NumTBwAC,NumTC);
 DenTF = conv(DenTBwAC,DenTC);
 tfTF = tf(NumTF,DenTF);
 %rlocus(tfTF);
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Other Controller Parameters
-%CONTROLLER_SWITCH_POINT = .30;  % switch over to balancing controller here
-%tau = .01;                      % time constant for derivative filter
-    
     
