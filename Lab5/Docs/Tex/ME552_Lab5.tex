@@ -570,7 +570,131 @@ Effectively some motor torque is being used to accelerate the rotor while the re
 
 \section{Motion Control}
 \subsection*{a.}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_CommandGeneration_VI.png}
+\caption{Trapezoidal Velocity Profile Generation- Example VI} \label{tex}
+\label{fig:q4_1}
+\end{figure}
+
+Based on the specified constraints of velocity profile, the velocity command would be a function of time. Instead of the previous numeric input of velocity control, the ramp and step signals were combined together as a velocity command to generate the desired trapezoidal profile. As shown in Figure~\ref{fig:q4_1}, the step signal was used for the constant speed region with all values equal to 180, and two ramp signals were used to create the acceleration and deceleration regions with +90 and -90 acceleration [deg/s$^{2}$], respectively. Next, the matlab code switched the correct signal to the output y in the right time: (1) 0-2 sec: the rising ramp; (2) 2-8 sec: the step input; (3) 8-10 sec: the descending ramp. The output y was simply conneted to the velocity input in the block diagram of main VI (see Figure 5), so that the desired function of velocity commands could be achieved. Figure~\ref{fig:q4_2} plots the resulting trapezoidal velocity profile, which satisfies all the requirements without considering the rest of control loop.
+
+However, the actual velocity and displacement profiles from the experimental results seemed far different from the expected profiles (see Figure~\ref{fig:q4_3} and~\ref{fig:q4_4}). Despite the total displacement was close to 1440deg, the velocity seemed to changed disorderly with respect to the time frame. One possible reason is that the pulse generator is unable to be sychronized with the reference command; some pulses may be missed or thier frequencies could be incorrect at some certain time. Furthermore, the computation time by the matlab code or other logic control may lead to time delay since the step size cannot be too small in order to sychronize the real time. Additionally, the ideal trapezoidal profile is based on the assumption of unlimited jerk, so that the real behavior of the stepper motor might deviate what we expect.
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_CommandGeneration.png}
+\caption{Trapezoidal Velocity Command} \label{tex}
+\label{fig:q4_2}
+\end{figure}
+
+\begin{figure}[b!]
+\includegraphics[width=1\textwidth]{Q4_Trapezoid_Velocity_Fail.png}
+\caption{Actual Velocity Profile} \label{tex}
+\label{fig:q4_3}
+\end{figure}
+  
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_Trapezoid_Displacement_Fail.png}
+\caption{Actual Displacement Profile} \label{tex}
+\label{fig:q4_4}
+\end{figure}
+
+Considering the above concerns, the function generator was used to overcome the issues. Because the step command into the chip was directly come from the function generator, the pulse train could be generated with extremely high frequency, breaking through the frequency limit (1kHz) of labview. Figure~\ref{fig:q4_5} and~\ref{fig:q4_6} show the VI front panel and block diagram used to accomplish various stepping modes including full, half, quarter and 1/${_8}$ steps.\\
+
+[The way of generating the desired pulse train using the function generator]  \\
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_BlockDiagram_VI.png}
+\caption{Block Diagram of VI for Trapezoidal Velocity Profile} \label{tex}
+\label{fig:q4_5}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_FrontPanel_VI.png}
+\caption{Front Panel of VI for Trapezoidal Velocity Profile} \label{tex}
+\label{fig:q4_6}
+\end{figure}
+
+Figure~\ref{fig:q4_7},~\ref{fig:q4_8},~\ref{fig:q4_9} and Figure~\ref{fig:q4_10} show the command and actual displacement based on four stepping modes. As a whole, it seems only small difference between the reference and the real angular position. The total motion for any stepping mode is 1440deg read by the optical encoder, which is exactly the desired position. Figure~\ref{fig:q4_11},~\ref{fig:q4_12},~\ref{fig:q4_13} and Figure~\ref{fig:q4_14} show the velocity profiles estimated by the low-pass filter with $\tau$=0.25. The results suggest that as the increment step decreases, the amplitude of oscillations in the region of constant speed becomes smaller. All stepping modes met the criteria of velocity, (1) oscillations of speed $<$5\%; (2) constant speed = 180 deg/sec, except the 1/${_8}$ mode, which only generated the constant speed around 165 deg/sec, failing to achieve the goal. \\
+
+[For the criterion that the region of constant speed should be at least 1080 deg], 
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{Q4_CommandPosition.png}
+\caption{Command Displacement vs. Time} \label{tex}
+\label{fig:q4_7}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{Q4_CommandPosition_L.png}
+\caption{Command Displacement vs. Time (Zoom In)} \label{tex}
+\label{fig:q4_8}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{Q4_ActualPosition.png}
+\caption{Actual Displacement vs. Time} \label{tex}
+\label{fig:q4_9}
+\end{figure}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{Q4_ActualPosition_L.png}
+\caption{Actual Displacement vs. Time (Zoom In)} \label{tex}
+\label{fig:q4_10}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_full_step.png}
+\caption{Velocity Profile: Full-Step Mode} \label{tex}
+\label{fig:q4_11}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_half_step.png}
+\caption{Velocity Profile: Half-Step Mode} \label{tex}
+\label{fig:q4_12}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_quarter_step.png}
+\caption{Velocity Profile: Quarter-Step Mode} \label{tex}
+\label{fig:q4_13}
+\end{figure}
+
+\begin{figure}[h!]
+\includegraphics[width=1\textwidth]{Q4_eighth_step.png}
+\caption{Velocity Profile: 1/8-Step Mode} \label{tex}
+\label{fig:q4_14}
+\end{figure}
+\clearpage
+
 \subsection*{b.}
+
+As can be seen in Figure~\ref{fig:q4_10}, the smaller increment step provides greater resolution and smoother motor operation, i.e. smoother velocity and displacement, while the undesired behavior of overshoot seems to become more serious. Since the resolution of the optical encoder is relatively low compared the increment step, the real profiles for all modes are expected to be smoother. Figure~\ref{fig:q4_15},~\ref{fig:q4_16},~\ref{fig:q4_17} and Figure~\ref{fig:q4_18} show the details of profile comparison between the command and actual displacement. We can observe that the overshoot in the full-step mode is less than 50\%, while approximately 100\% overshoot occurs in the half-step mode. For the quarter and 1/8 stepping modes, the oscillation behavior is hardly observed because of the low resolution. 
+
+\begin{figure}[b]
+\includegraphics[width=1\textwidth]{Q4_full_step_L.png}
+\caption{Full-Step: Command vs. Actual Displacement} \label{tex}
+\label{fig:q4_15}
+\end{figure}
+
+\begin{figure}[b]
+\includegraphics[width=1\textwidth]{Q4_half_step_L.png}
+\caption{Half-Step: Command vs. Actual Displacement} \label{tex}
+\label{fig:q4_16}
+\end{figure}
+
+\begin{figure}[b]
+\includegraphics[width=1\textwidth]{Q4_quarter_step_L.png}
+\caption{Quarterl-Step: Command vs. Actual Displacement} \label{tex}
+\label{fig:q4_17}
+\end{figure}
+
+\begin{figure}[b]
+\includegraphics[width=1\textwidth]{Q4_eighth_step_L.png}
+\caption{1/8l-Step: Command vs. Actual Displacement} \label{tex}
+\label{fig:q4_18}
+\end{figure}
 \subsection*{c.}
 
 We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ using the function generator.  This maximum speed was limited only by the pull-out speed of the stepper motor.  As shown in figure \ref{Q4c_ProfileDetail} a not insubstantial amount of the error between the desired angular position and actual angular position seen in \ref{Q4c_PE} is due to the dynamics of the stepper motor and its discrete positions.  We also see a difference between the commanded position and the desired position, shown in \ref{Q4c_CE} which is due to the discrete nature of the position commands issued to the stepper motor.  Using a finer step setting on the driver would reduce this error.
