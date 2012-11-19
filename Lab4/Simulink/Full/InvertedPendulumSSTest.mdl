@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.245"
+    ComputedModelVersion    "1.246"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -27,9 +27,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "jrpeterson"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Nov  1 16:55:48 2012"
-  RTWModifiedTimeStamp	  273680193
-  ModelVersionFormat	  "1.%<AutoIncrement:245>"
+  LastModifiedDate	  "Thu Nov  1 23:25:42 2012"
+  RTWModifiedTimeStamp	  273713139
+  ModelVersionFormat	  "1.%<AutoIncrement:246>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -66,6 +66,7 @@ Model {
     $ObjectID		    1
     $ClassName		    "Simulink.SimulationData.ModelLoggingInfo"
     model_		    "InvertedPendulumSSTest"
+    signals_		    []
     overrideMode_	    [0.0]
     Array {
       Type		      "Cell"
@@ -919,7 +920,7 @@ Model {
   }
   System {
     Name		    "InvertedPendulumSSTest"
-    Location		    [407, 158, 1666, 679]
+    Location		    [1291, 148, 2550, 669]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -933,7 +934,7 @@ Model {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    "301"
+    SIDHighWatermark	    "302"
     Block {
       BlockType		      SubSystem
       Name		      "Computer"
@@ -956,8 +957,8 @@ Model {
       }
       System {
 	Name			"Computer"
-	Location		[1159, 331, 2343, 1073]
-	Open			off
+	Location		[1159, 353, 2343, 1095]
+	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -1049,8 +1050,8 @@ Model {
 	  }
 	  System {
 	    Name		    "Controller"
-	    Location		    [1364, 163, 2793, 1057]
-	    Open		    off
+	    Location		    [1252, 147, 2681, 1041]
+	    Open		    on
 	    ModelBrowserVisibility  off
 	    ModelBrowserWidth	    200
 	    ScreenColor		    "white"
@@ -1370,6 +1371,19 @@ Model {
 	      SID		      "273"
 	      Position		      [335, 117, 395, 153]
 	      Denominator	      "[tau 1]"
+	    }
+	    Block {
+	      BlockType		      Gain
+	      Name		      "Gain"
+	      SID		      "302"
+	      Position		      [930, 185, 960, 215]
+	      BlockRotation	      270
+	      BlockMirror	      on
+	      NamePlacement	      "alternate"
+	      Gain		      "0"
+	      ParamDataTypeStr	      "Inherit: Inherit via internal rule"
+	      OutDataTypeStr	      "Inherit: Inherit via internal rule"
+	      SaturateOnIntegerOverflow	off
 	    }
 	    Block {
 	      BlockType		      If
@@ -3040,8 +3054,8 @@ Model {
 	    Line {
 	      SrcBlock		      "Swing Up Controller"
 	      SrcPort		      1
-	      Points		      [20, 0; 0, 110]
-	      DstBlock		      "Switch"
+	      Points		      [20, 0]
+	      DstBlock		      "Gain"
 	      DstPort		      1
 	    }
 	    Line {
@@ -3142,6 +3156,13 @@ Model {
 	      SrcBlock		      "mod2pi4"
 	      SrcPort		      1
 	      DstBlock		      "Sum"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Gain"
+	      SrcPort		      1
+	      Points		      [0, 45]
+	      DstBlock		      "Switch"
 	      DstPort		      1
 	    }
 	  }
@@ -3680,7 +3701,7 @@ Model {
       }
       System {
 	Name			"Inverted Pendulum"
-	Location		[209, 316, 1424, 970]
+	Location		[1488, 425, 2703, 1079]
 	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
