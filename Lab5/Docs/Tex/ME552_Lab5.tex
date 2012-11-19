@@ -342,7 +342,7 @@ Additional VI's were created to fulfill the specialized objectives of some of th
 
 \subsection*{LabView Difficulties}
 
-Labview is not fundamentally well suited to the task of driving the stepper motor because of our limited ability to reconstruct output signals of different frequencies.  Even avoiding the use of slow control and simulation loops and resorting to just a while loop, LabView only has access to a clock with a resolution of just $1 \, ms$.  This means that as we approach the maximum frequency that this timer will allow us to reconstruct, $500 \, Hz$ we run into additional quantization issues illustrated in table \ref{Q2_T2}, which prevent us from outputting arbitrary frequencies.  This problem is less important for low frequencies, however this issue is still present.  
+Labview is not fundamentally well suited to the task of driving the stepper motor because of our limited ability to reconstruct output signals of different frequencies.  Even avoiding the use of slow control and simulation loops and resorting to just a while loop, LabView only has access to a clock with a resolution of just $1$ ms.  This means that as we approach the maximum frequency that this timer will allow us to reconstruct, $500$ Hz we run into quantization issues illustrated in table \ref{Q2_T2}, which prevent us from outputting arbitrary frequencies.  This problem is less important for low frequencies, but it is still present.  
 
 \begin{table}
 \begin{center}
@@ -360,8 +360,7 @@ Labview is not fundamentally well suited to the task of driving the stepper moto
 \end{center}
 \end{table}
 
-We can physically illustrate this issue by commanding a linear velocity output from LabView.  If the velocity profile was linear, then we would expect a quadratic position output.  However, as shown in figure \ref{Q2_3} we see roughly linear regions in the position output, the last two of which are at $333.33 \, Hz$ and $500 \, Hz$ respectively. 
-
+We can physically illustrate this issue by commanding a linear velocity output from LabView.  If the velocity profile was linear, then we would expect a quadratic position output.  However, as shown in figure \ref{Q2_3} we see roughly linear regions in the position output, the last two of which are at $333.33 \, Hz$ and $500 \, Hz$ respectively. Indicating that we are indeed seeing quantized frequency outputs.
 
 \begin{figure}[hbt]
 \begin{center}
@@ -486,7 +485,7 @@ The rise time of the system is affected by a combination of the inertia of the r
 
 The overshoot is also affected by the inertia of the system, as the rotor/belt/pulley want to keep moving past the commanded position. The viscous and coulomb friction affect the overshoot as they act to slow the system, but the values are not significant, so their effect on damping the overshoot and oscillations is negligible (the springiness of the belt could have a large effect but is highly nonlinear and could contribute positively or negatively). A larger effect is provided by the magnetic stiffness. With the coils energized, the shaft is always pulled towards the stable equilibrium. This is what brings the motor shaft back towards the set point after it overshoots. Because the magnetic stiffness is dependent on the current from the driver, the finite decay and rise time in the chopper circuit affect the overshoot.\\
 
-The oscillations of the motor shaft are affected very much like the overshoot. The inertia of the system is what keeps the oscillations moving, while the magnetic stiffness is what drives the shaft towards the set point. Viscous and coulomb friction act to damp out the oscillations, and the current rise/decay causes the magnetic stiffness to vary. Finally, the steady-state error is primarily affected by the magnetic stiffness. The coils always try to pull the shaft into stable equilibrium. However, the quantization error of the encoder means that the motor might have zero error, but our position reading could be slightly off.\\
+The oscillations of the motor shaft are affected very much like the overshoot. The inertia of the system is what keeps the oscillations moving, while the magnetic stiffness is what drives the shaft towards the set point. Viscous and coulomb friction act to damp out the oscillations, and the current rise/decay causes the magnetic stiffness to vary. Finally, the steady-state error is determined by the magnetic stiffness and external loads. The coils always try to pull the shaft into stable equilibrium while the only steady state load on the system is static friction.  The motor might have reached 0 steady state error, however the quantization error of the encoder means that our position reading could be slightly off.\\
 
 
 \clearpage
