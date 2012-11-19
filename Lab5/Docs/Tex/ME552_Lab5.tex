@@ -204,7 +204,7 @@ The EasyDriver provides pin-outs for these terminals through jumper 3 (JP3).
 These pins provide the input power for the H-bridge to supply the motors. The data-sheet of the A3967 chip suggests that the supply voltage should be decoupled with an electrolytic capacitor ($>$47 $\mu$F is recommended). This decoupling is not provided in the EasyDriver PCB.\\
 
 The decoupling capacitors would provide isolation from the supply sources noise as well as provide temporary boosting-effects if the load changes suddenly. The EasyDriver circuit assumes that the supply-source can react instantaneously and is relatively noise free.
-\xxx{PHYSICAL EXTRA IMPLEMENTATION}
+
 
 \subsubsection*{Pin6 - GND, Pin7 - GND, Pin18 - GND, Pin19 - GND}
 Connects various elements of the chip to the ground. The EasyDriver circuit takes care of this internally.
@@ -312,7 +312,7 @@ Figures \ref{q2_1} and \ref{q2_2} show the front panel and block diagram, respec
 The main output on the front panel is the "Motor Angle" waveform chart which displays the angular displacement obtained from the encoder via quadrature decoding. There is also a waveform chart for angular velocity which is only used for steady-state estimations for debugging as the filter used creates a significant delay. More accurate velocity values were obtained by exporting the displacement data and fitting lines to calculate slope. Additional debugging outputs consist of the "sum" indicator (which displays the current value of the edge counter), and LEDs for each of the outputs to the motor driver.     \\
 
 
-\begin{figure}[hbt]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width = 18cm]{VIFrontPanel.png}
 \caption{Front panel of primary LabView VI.}
@@ -320,7 +320,7 @@ The main output on the front panel is the "Motor Angle" waveform chart which dis
 \end{center}
 \end{figure}
 
-\begin{figure}[hbt]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width = 18cm]{VIBlockDiagram.png}
 \caption{Block diagram of primary LabView VI.}
@@ -328,7 +328,7 @@ The main output on the front panel is the "Motor Angle" waveform chart which dis
 \end{center}
 \end{figure}
 
-The VI uses a control \& simulation loop running at 1000 Hz. At the top of the block diagram in figure \ref{q2_2} is a radio button block connected to a case structure. This is the step size selector. Depending on the button selected by the user, a constant is output corresponding to the degrees per step for that step size, and booleans are output for MS1 and MS2 according to the settings given in table \ref{q1_b3}.\\
+The VI uses a \emph{control \& simulation} loop running at 1000 Hz. At the top of the block diagram in figure \ref{q2_2} is a radio button block connected to a case structure. This is the step size selector. Depending on the button selected by the user, a constant is output corresponding to the degrees per step for that step size, and booleans are output for MS1 and MS2 according to the settings given in table \ref{q1_b3}.\\
 
 Below the case structure is the velocity control segment of the VI. Based on the users desired velocity, unit type, and step size, the number of steps per second is calculated and used to set the period of a "Pulse Signal" block. A greater than comparator is then used to convert the 1's and 0's of the pulse signal into a stream of true and false booleans. This stream is put into an array along with a boolean for the direction of rotation and booleans for MS1 and MS2. This array is then sent to a DAQ Assistant block, which sends the array elements to the motor driver. Smaller step sizes resulted in smoother operation, but were not achievable at high velocities. Therefore, we left the step size as selectable rather than setting a specific step size.\\
 
@@ -340,7 +340,7 @@ Additional VI's were created to fulfill the specialized objectives of some of th
 
 \subsection*{LabView Difficulties}
 
-Labview is not fundamentally well suited to the task of driving the stepper motor because of our limited ability to reconstruct output signals of different frequencies.  Even avoiding the use of slow control and simulation loops and resorting to just a while loop, LabView only has access to a clock with a resolution of just $1 \, ms$.  This means that as we approach the maximum frequency that this timer will allow us to reconstruct, $500 \, Hz$ we run into additional quantization issues illustrated in table \ref{Q2_T2}, which prevent us from outputting arbitrary frequencies.  This problem is less important for low frequencies, however this issue is still present.  
+Labview is not fundamentally well suited to the task of driving the stepper motor because of our limited ability to reconstruct output signals of different frequencies.  Even avoiding the use of slow control and simulation loops and resorting to just a while loop, LabView only has access to a clock with a resolution of just $1 \, ms$.  This means that as we approach the maximum frequency that this timer will allow us to reconstruct, $500 \, Hz$ we run into additional quantization issues illustrated in table \ref{Q2_T2}, which prevent us from outputting arbitrary frequencies.  This problem is less important for low frequencies, however this issue is still present.\\
 
 \begin{table}
 \begin{center}
@@ -384,9 +384,9 @@ Step response data was obtained using the previous VI at 1000 Hz in both the loa
 \end{figure}
 
 \subsubsection*{i}
-Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this was conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
+Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this conflicts with the unloaded case also having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an overestimation of steady-state error. \\
 
-Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of th encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
+Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of the encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
 
 
 \begin{table}[htb]
