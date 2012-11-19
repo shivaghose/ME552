@@ -203,8 +203,9 @@ The EasyDriver provides pin-outs for these terminals through jumper 3 (JP3).
 \subsubsection*{Pin5 - LOAD SUPPLY2, Pin17 - LOAD SUPPLY1}
 These pins provide the input power for the H-bridge to supply the motors. The data-sheet of the A3967 chip suggests that the supply voltage should be decoupled with an electrolytic capacitor ($>$47 $\mu$F is recommended). This decoupling is not provided in the EasyDriver PCB.\\
 
-The decoupling capacitors would provide isolation from the supply source's noise as well as provide temporary boosting-effects if the load changes suddenly. The EasyDriver circuit assumes that the supply-source can react instantaneously and is relatively noise free.
-\xxx{PHYSICAL EXTRA IMPLEMENTATION}
+
+The decoupling capacitors would provide isolation from the supply sources noise as well as provide temporary boosting-effects if the load changes suddenly. The EasyDriver circuit assumes that the supply-source can react instantaneously and is relatively noise free.
+
 
 \subsubsection*{Pin6 - GND, Pin7 - GND, Pin18 - GND, Pin19 - GND}
 Connects various elements of the chip to the ground. The EasyDriver circuit takes care of this internally.
@@ -312,7 +313,7 @@ Figures \ref{q2_1} and \ref{q2_2} show the front panel and block diagram, respec
 The main output on the front panel is the "Motor Angle" waveform chart which displays the angular displacement obtained from the encoder via quadrature decoding. There is also a waveform chart for angular velocity which is only used for steady-state estimations for debugging because the filter used creates a significant delay. More accurate velocity values were obtained by exporting the displacement data and fitting lines to calculate slope. Additional debugging outputs consist of the "sum" indicator (which displays the current value of the edge counter), and LEDs for each of the outputs to the motor driver.     \\
 
 
-\begin{figure}[hbt]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width = 18cm]{VIFrontPanel.png}
 \caption{Front panel of LabView VI.}
@@ -320,7 +321,7 @@ The main output on the front panel is the "Motor Angle" waveform chart which dis
 \end{center}
 \end{figure}
 
-\begin{figure}[hbt]
+\begin{figure}[h]
 \begin{center}
 \includegraphics[width = 18cm]{VIBlockDiagram.png}
 \caption{Block diagram of LabView VI.}
@@ -328,13 +329,14 @@ The main output on the front panel is the "Motor Angle" waveform chart which dis
 \end{center}
 \end{figure}
 
-The VI uses a control \& simulation loop running at 1000 Hz. At the top of the block diagram in figure \ref{q2_2} is a radio button block connected to a case structure. This is the step size selector. Depending on the button selected by the user, a constant is output corresponding to the degrees per step for that step size, and booleans are output for MS1 and MS2 according to the settings given in table \ref{q1_b3}.\\
+The VI uses a \emph{control \& simulation} loop running at 1000 Hz. At the top of the block diagram in figure \ref{q2_2} is a radio button block connected to a case structure. This is the step size selector. Depending on the button selected by the user, a constant is output corresponding to the degrees per step for that step size, and booleans are output for MS1 and MS2 according to the settings given in table \ref{q1_b3}.\\
 
 Below the case structure is the velocity control segment of the VI. Based on the user's desired velocity, unit type, and step size, the number of steps per second is calculated and used to set the period of a "Pulse Signal" block. A greater-than comparator is then used to convert the 1's and 0's of the pulse signal into a stream of true and false booleans. This stream is put into an array along with a boolean for the direction of rotation and booleans for MS1 and MS2. This array is then sent to a DAQ Assistant block, which sends the array elements to the motor driver. Smaller step sizes resulted in smoother operation, but were not achievable at high velocities. Therefore, we left the step size as selectable rather than setting a specific step size.\\
 
 In the middle of the block diagram is the position control section. At all times, a pulse generator is running at 10 Hz (arbitrarily selected; this could be a user input). The pulse signal is shifted downwards so that a zero crossing block can be used to detect the rising edges of the signal. Every time a rising edge is detected, the zero crossing block sends out a true boolean. However, this value only reaches the output array if the user has selected position mode and has selected the GO button. To stop after the desired number of steps has been taken, the output of the zero crossing block is also sent to a "Collector" block, which stores the values like an array. Summing the values within the collector gives the number of steps that have been taken. However, the collector is only enabled when the user selects position mode and the GO button (this makes the VI run faster in velocity mode, allowing for higher velocities). Additionally, the collector continuously resets itself when GO is not selected. This allows for multiple runs, and prevents the always running pulse signal from storing edge counts when not desired. The user's desired displacement is converted to the number of steps required, and a less-than-or-equal-to comparator is used to stop the stream of pulses to the output when the edge count reaches the required number of steps.\\
 
 At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, so the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
+
 
 Additional VI's were created to fulfill the specialized objectives of some of the laboratory questions.\\
 
@@ -384,7 +386,9 @@ Step response data was obtained using the previous VI at 1000 Hz in both the loa
 \end{figure}
 
 \subsubsection*{i}
+
 Table \ref{q3ai_!} shows the average rise time and other parameters for both the loaded and unloaded conditions. The unloaded motor had a slightly smaller overshoot, leading to a larger damping ratio. However, this conflicts with the unloaded case having more oscillations before becoming steady. We found that the belt system had a significant amount of "springiness," which is likely affecting our results. Also, the steady-state error values are not very reliable due to the quantization of the encoder. It is possible that the motor stepped perfectly to 1.8$\circ$ (one full step), but if the encoder does not have a "tick" at that exact point, it would output the closest possible reading (in either direction depending on how the oscillations settle). This leads to an inaccurate estimation of steady-state error. \\
+
 
 Table \ref{q3ai_@} shows the calculated frequency values and damping ratio for the loaded and unloaded conditions. The damping ratio was calculated using the percent overshoot. Because the overshoot is affected by the quantization error of the encoder, the damping ratio also has a large amount of error. Because the encoder tends to cut-off the peak of the overshoot, the damping ratios given here should be considered underestimates. The damped frequency was calculated from the peak-to-peak period of the oscillations, and the natural frequency was calculated using the damped frequency and the damping ratio.\\
 
@@ -460,7 +464,7 @@ T(s) = \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 11cm]{UnloadedStepUnFit.png}
-\caption{Theoretical step response of unloaded motor using calculated values.}
+\caption{Theoretica vs empirical step response of unloaded motor using calculated values.}
 \label{q3ai_3}
 \end{center}
 \end{figure}
@@ -473,7 +477,7 @@ T(s) = \frac{3314951.55}{s^2 + 1540.38 s + 3528796.63}
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 11cm]{UnloadedStepFit.png}
-\caption{Theoretical step response of unloaded motor using fit values.}
+\caption{Theoretical vs empirical step response of unloaded motor using fit values.}
 \label{q3ai_4}
 \end{center}
 \end{figure}
@@ -508,11 +512,12 @@ We also performed additional trials at the resonant frequency, half of that freq
 
 \subsection*{b.}
 
-Pull-in speed is defined as the maximum step-rate command that may be issued to the stepper motor from rest such that the stepper motor remains synchronized with the pulse train.  Due to the frequency quantization issues caused by LabView, it was necessary to conduct these experiments using an external function generator.  LabView was then used to record the number of pulses sent by the function generator and encoder pulses as shown in figures \ref{q3b_Front} and \ref{q3b_Back}.  Knowing the angle per full step, we can then directly compare the commanded position with the actual position.  However this comparison is very difficult while the system is still in motion when we wish to determine the pull-in speed, because we do not expect the two values to diverge, even when we have lost synchronization.  Instead we expect for values just above the pull-in speed, but below the pull-out speed, that there will be some approximately constant offset between the two equal to the number of steps lost when starting up.   But this offset is difficult to see while the system is in motion, especially for small numbers of missing steps.  
+Pull-in speed is defined as the maximum step-rate command that may be issued to the stepper motor from rest such that the stepper motor remains synchronized with the pulse train.  Due to the frequency quantization issues caused by LabView, it was necessary to conduct these experiments using an external function generator.  LabView was then used to record the number of pulses sent by the function generator and encoder pulses as shown in figures \ref{q3b_Front} and \ref{q3b_Back}.  Knowing the angle per full step, we can then directly compare the commanded position with the actual position.  However this comparison is very difficult while the system is still in motion when we wish to determine the pull-in speed, because we do not expect the two values to diverge, even when we have lost synchronization.  Instead we expect for values just above the pull-in speed, but below the pull-out speed, that there will be some approximately constant offset between the two equal to the number of steps lost when starting up.   But this offset is difficult to see while the system is in motion, especially for small numbers of missing steps.\\  
 
 To deal with this issue, the offset was evaluated after the system was brought to a complete stop. For each trial, with the stepper motor at rest, the LabView VI was started.  Then the function generator was activated outputting a square wave of some frequency.  The pulses from the function generator and the encoder were recorded and the function generator stopped.  Then the final commanded position was compared with the actual stepper motor angle.  If these values differed by at least 1 step, then we say that the speed was above the pull-in speed of the system.  In practice, the difference was always either very small, due to encoder discretization, or off by integer steps, again, up to encoder discretization.  After some testing the pull-in frequencies for the full step setting were determined and are shown in table \ref{q3b_table1}.
 
-\begin{figure}
+
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{ExternalSourceFront.png}
 \caption{VI Front panel used for Pull-In and Pull-out torque estimates}
@@ -520,7 +525,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{ExternalSourceBack.png}
 \caption{VI used for Pull-In and Pull-out torque estimates}
@@ -528,7 +533,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -544,7 +549,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 
 We used the same VI as shown in figures \ref{q3b_Front} and \ref{q3b_Back} to determine the pull-out speeds for the loaded and unloaded cases.  Again we monitored the recorded number of pulses sent to the stepper motor and the current position of the stepper motor measured in steps.   When these two values diverged, we knew that the stepper motor had lost synchronization.  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
