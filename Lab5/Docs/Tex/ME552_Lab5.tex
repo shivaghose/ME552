@@ -467,7 +467,7 @@ T(s) = \frac{4050280.92}{s^2 + 2305.67 s + 4311561.54}
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 11cm]{UnloadedStepUnFit.png}
-\caption{Theoretical step response of unloaded motor using calculated values.}
+\caption{Theoretica vs empirical step response of unloaded motor using calculated values.}
 \label{q3ai_3}
 \end{center}
 \end{figure}
@@ -480,7 +480,7 @@ T(s) = \frac{3314951.55}{s^2 + 1540.38 s + 3528796.63}
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 11cm]{UnloadedStepFit.png}
-\caption{Theoretical step response of unloaded motor using fit values.}
+\caption{Theoretical vs empirical step response of unloaded motor using fit values.}
 \label{q3ai_4}
 \end{center}
 \end{figure}
@@ -515,11 +515,11 @@ We also performed additional trials at the resonant frequency, half of that freq
 
 \subsection*{b.}
 
-Pull-in speed is defined as the maximum step-rate command that may be issued to the stepper motor from rest such that the stepper motor remains synchronized with the pulse train.  Due to the frequency quantization issues caused by LabView, it was necessary to conduct these experiments using an external function generator.  LabView was then used to record the number of pulses sent by the function generator and encoder pulses as shown in figures \ref{q3b_Front} and \ref{q3b_Back}.  Knowing the angle per full step, we can then directly compare the commanded position with the actual position.  However this comparison is very difficult while the system is still in motion when we wish to determine the pull-in speed, because we do not expect the two values to diverge, even when we have lost synchronization.  Instead we expect for values just above the pull-in speed, but below the pull-out speed, that there will be some approximately constant offset between the two equal to the number of steps lost when starting up.   But this offset is difficult to see while the system is in motion, especially for small numbers of missing steps.  
+Pull-in speed is defined as the maximum step-rate command that may be issued to the stepper motor from rest such that the stepper motor remains synchronized with the pulse train.  Due to the frequency quantization issues caused by LabView, it was necessary to conduct these experiments using an external function generator.  LabView was then used to record the number of pulses sent by the function generator and encoder pulses as shown in figures \ref{q3b_Front} and \ref{q3b_Back}.  Knowing the angle per full step, we can then directly compare the commanded position with the actual position.  However this comparison is very difficult while the system is still in motion when we wish to determine the pull-in speed, because we do not expect the two values to diverge, even when we have lost synchronization.  Instead we expect for values just above the pull-in speed, but below the pull-out speed, that there will be some approximately constant offset between the two equal to the number of steps lost when starting up.   But this offset is difficult to see while the system is in motion, especially for small numbers of missing steps.\\  
 
-To deal with this issue, the offset was evaluated after the system was brought to a complete stop. For each trial, with the stepper motor at rest, the LabView Vi was started.  Then the function generator was activated outputting a square wave of some frequency.  The pulses from the function generator and the encoder were recorded and the function generator stopped.  Then the final commanded position was compared with the actual stepper motor angle.  If these values differed by at least 1 step, then we say that the speed was above the pull-in speed of the system.  In practice, the difference was always either very small, due to encoder discretization, or off by integer steps, again, up to encoder discretization.  After some testing the pull-in frequencies for the full step setting were determined and are shown in \ref{q3b_table1}.
+To deal with this issue, the offset was evaluated after the system was brought to a complete stop. For each trial, with the stepper motor at rest, the LabView Vi was started.  Then the function generator was activated outputting a square wave of some frequency.  The pulses from the function generator and the encoder were recorded and the function generator stopped.  Then the final commanded position was compared with the actual stepper motor angle.  If these values differed by at least 1 step, then we say that the speed was above the pull-in speed of the system.  In practice, the difference was always either very small, due to encoder discretization, or off by integer steps, again, up to encoder discretization.  After some testing the pull-in frequencies for the full step setting were determined and are shown in \ref{q3b_table1}.\\
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{ExternalSourceFront.png}
 \caption{VI Front panel used for Pull-In and Pull-out torque estimates}
@@ -527,7 +527,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width = 13cm]{ExternalSourceBack.png}
 \caption{VI used for Pull-In and Pull-out torque estimates}
@@ -535,7 +535,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -549,9 +549,9 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{table}
 
-We used the same VI as shown in figures \ref{q3b_Front} and \ref{q3b_Back} to determine the pull-out speeds for the loaded and unloaded cases.  Again we monitored the recorded number of pulses sent to the stepper motor and the current position of the stepper motor measured in steps.   When these two values diverged, we knew that the stepper motor has lost synchronization.  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.
+We used the same VI as shown in figures \ref{q3b_Front} and \ref{q3b_Back} to determine the pull-out speeds for the loaded and unloaded cases.  Again we monitored the recorded number of pulses sent to the stepper motor and the current position of the stepper motor measured in steps.   When these two values diverged, we knew that the stepper motor has lost synchronization.  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.\\
 
-\begin{table}
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
