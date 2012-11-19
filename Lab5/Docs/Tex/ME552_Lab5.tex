@@ -620,6 +620,76 @@ However, the actual velocity and displacement profiles from the experimental res
 \label{fig:q4_4}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%
+% here is John's new stuff with the alternate Matlab stuff
+
+\clearpage
+
+We devised an alternative LabView Vi to attempt to fulfill the specification shown in figures \ref{Q4a_Alt1} and \ref{Q4a_Alt2}.  By avoiding the use of computationally expensive "Blue Blocks" where possible and sticking with an inexpensive while loop, we hoped to achieve as much performance as possible.  This version generates linear velocity profiles by sampling a frequency after the previous half period has elapsed and using this sampled frequency to compute a new period to wait for.  This behavior is approximately correct for high frequencies but diverges for low frequencies from the intended profile.  For example, a command of $0 \, Hz$ with a slope of $1 \, Hz$ per second, we would expect a pulse roughly at the 1 second mark, however, this version will wait infinitely long before giving any pulses.  
+
+This bug was addressed by starting at a non-zero frequency, which results in the actual position getting ahead of the desired position, as shown in figures \ref{Q4a_Alt3}, \ref{Q4a_Alt4}, and \ref{Q4a_Alt7}.  This lead to a profile that was not quite correct but was relatively close and most importantly did get to the final position.  We do see in figure \ref{Q4a_Alt6} that the stepper motor easily remains synchronized with these commands.  This bug could have potentially been eliminated by including a look ahead of some sort in the profile, but this look ahead would have a rather complicated dependence on the value of the frequency at this look ahead position.  Also considering that LabView would be unable to reproduce frequencies significantly higher with any degree of accuracy anyway, we switched over to using a function generator to drive the stepper motor.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 16cm]{trapezoidLabViewFront.png}
+\caption{Alternative Trapezoid Velocity Profile LabView Front Panel}
+\label{Q4a_Alt1}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 16cm]{trapezoidLabViewBlock.png}
+\caption{Alternative Trapezoid Velocity Profile LabView Block Diagram}
+\label{Q4a_Alt2}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{labViewProfile.png}
+\caption{Alternative trapezoidal Velocity Profile}
+\label{Q4a_Alt3}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{labViewProfile_Detail2.png}
+\caption{Alternative Trapezoid Velocity Profile LabView Front Panel Detail}
+\label{Q4a_Alt4}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{labViewProfile_Detail1.png}
+\caption{Alternative Trapezoid Velocity Profile LabView Front Panel Detail}
+\label{Q4a_Alt5}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{labViewCommandError.png}
+\caption{Error between commanded and actual position vs time}
+\label{Q4a_Alt6}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{labViewProfileError.png}
+\caption{Error between desired position and actual position.}
+\label{Q4a_Alt7}
+\end{center}
+\end{figure}
+
+\clearpage
+
+% end john's stuff
+%%%%%%%%%%%%%%%%%%%%%%%
+
 Considering the above concerns, the function generator was used to overcome the issues. Because the step command into the driver chip comes directly from the function generator, the pulse train could be generated with extremely high frequency, breaking through the frequency limit (1kHz; 500Hz step frequency) of LabView. Figure~\ref{fig:q4_5} and~\ref{fig:q4_6} show the VI front panel and block diagram used to accomplish various stepping modes including full, half, quarter and 1/8$^{th}$ steps.\\
 
 [The way of generating the desired pulse train using the function generator]  \\
