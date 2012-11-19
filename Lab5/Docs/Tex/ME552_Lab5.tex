@@ -722,7 +722,28 @@ The function generator used was an Agilent 33521A. To generate the trapezoidal p
 
 Figure~\ref{fig:q4_7},~\ref{fig:q4_8},~\ref{fig:q4_9} and Figure~\ref{fig:q4_10} show the command and actual displacement based on four stepping modes. As a whole, it seems only small difference between the reference and the real angular position. The total motion for any stepping mode is 1440deg read by the optical encoder, which is exactly the desired position. Figure~\ref{fig:q4_11},~\ref{fig:q4_12},~\ref{fig:q4_13} and Figure~\ref{fig:q4_14} show the velocity profiles estimated by the low-pass filter with $\tau$=0.25. The results suggest that as the increment step decreases, the amplitude of oscillations in the region of constant speed becomes smaller. All stepping modes met the criteria of velocity, (1) oscillations of speed $<$5\%; (2) constant speed = 180 deg/sec, except the 1/${_8}$ mode, which only generated the constant speed around 165 deg/sec, failing to achieve the goal. \\
 
-\xxx{[For the criterion that the region of constant speed should be at least 1080 deg]}, 
+For the criterion that the region of constant speed should be at least 1080 deg, the results of various stepping modes are shwon in Table~\ref{table:Q4_1}. The following are two steps to calculate the total displacement during the constant speed stage. First, determine the starting and end time of the constant speed region. Considering the rough estimation of velocity, the starting time was defined when the velocity began to reach \%95 of 180 deg/sec; the end time was defined when the velocity went down less than \%95 of 180 deg/sec. Second, once these times were known, we could find the corresponding displacement with respect to time, and the total displacement could be calculated. The results show that the displacement for all modes are close to 1080 deg. Even though some values are lower than 1080 deg which is the minimum requirement, this condition could be attributed to the inaccurate velocity estimation by the low-pass filter.   
+
+\begin{table}[ht]
+\caption{Estimation of Constant Speed Region} % title of Table
+\centering  % used for centering table
+\begin{tabular}{c c c c c}\\ % centered columns (5 columns)
+\hline                        %inserts a horizontal line
+
+ & Full & Half & Quarter & Eighth\\ [0.5ex] % inserts table 
+%heading
+\hline                  % inserts single horizontal line
+Starting Time & 2.044 & 2.122 & 2.070 & 2.560 \\ % inserting body of the table
+Ending Time & 7.962 & 8.103 & 8.059 & 8.567 \\
+Starting Angle & 224.5 & 224.8 & 211.6 & 224.5 \\
+Ending Angle & 1302 & 1302 & 1305 & 1303 \\
+\hline \\%inserts single line
+Total Displacement & 1077.5 & 1077.2 & 1093.4 & 1078.5\\[1ex]      % [1ex] adds vertical space
+
+\hline %inserts single line
+\end{tabular}
+\label{table:Q4_1} % is used to refer this table in the text
+\end{table}
 
 \begin{figure}[hbt]
 \begin{center}
