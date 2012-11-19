@@ -336,9 +336,6 @@ In the middle of the block diagram is the position control section. At all times
 
 At the bottom of the block diagram is the input from the encoder, which is not used for control feedback. A derivative and filter are used to display the angular velocity. However, there is a significant delay, so the velocity chart was only used for debugging at steady-state. A block to save the encoder data to a file is provided, but was rarely used as it had a significant negative impact on the speed of the simulation loop.   \\
 
-<<<<<<< HEAD
-Additional VI's were created to fulfill the specialized objectives of some of the assignment questions.\\
-=======
 Additional VI's were created to fulfill the specialized objectives of some of the laboratory questions.\\
 
 \subsection*{LabView Difficulties}
@@ -372,7 +369,6 @@ We can physically illustrate this issue by commanding a linear velocity output f
 \end{center}
 \end{figure}
 
->>>>>>> c322c4c0459f5081b19420ed005098d6b022226a
 \clearpage
 
 \section{Experimental Characterization}
@@ -514,7 +510,7 @@ We also performed additional trials at the resonant frequency, half of that freq
 
 Pull-in speed is defined as the maximum step-rate command that may be issued to the stepper motor from rest such that the stepper motor remains synchronized with the pulse train.  Due to the frequency quantization issues caused by LabView, it was necessary to conduct these experiments using an external function generator.  LabView was then used to record the number of pulses sent by the function generator and encoder pulses as shown in figures \ref{q3b_Front} and \ref{q3b_Back}.  Knowing the angle per full step, we can then directly compare the commanded position with the actual position.  However this comparison is very difficult while the system is still in motion when we wish to determine the pull-in speed, because we do not expect the two values to diverge, even when we have lost synchronization.  Instead we expect for values just above the pull-in speed, but below the pull-out speed, that there will be some approximately constant offset between the two equal to the number of steps lost when starting up.   But this offset is difficult to see while the system is in motion, especially for small numbers of missing steps.  
 
-To deal with this issue, the offset was evaluated after the system was brought to a complete stop. For each trial, with the stepper motor at rest, the LabView Vi was started.  Then the function generator was activated outputting a square wave of some frequency.  The pulses from the function generator and the encoder were recorded and the function generator stopped.  Then the final commanded position was compared with the actual stepper motor angle.  If these values differed by at least 1 step, then we say that the speed was above the pull-in speed of the system.  In practice, the difference was always either very small, due to encoder discretization, or off by integer steps, again, up to encoder discretization.  After some testing the pull-in frequencies for the full step setting were determined and are shown in \ref{q3b_table1}.
+To deal with this issue, the offset was evaluated after the system was brought to a complete stop. For each trial, with the stepper motor at rest, the LabView VI was started.  Then the function generator was activated outputting a square wave of some frequency.  The pulses from the function generator and the encoder were recorded and the function generator stopped.  Then the final commanded position was compared with the actual stepper motor angle.  If these values differed by at least 1 step, then we say that the speed was above the pull-in speed of the system.  In practice, the difference was always either very small, due to encoder discretization, or off by integer steps, again, up to encoder discretization.  After some testing the pull-in frequencies for the full step setting were determined and are shown in table \ref{q3b_table1}.
 
 \begin{figure}
 \begin{center}
@@ -546,7 +542,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{table}
 
-We used the same VI as shown in figures \ref{q3b_Front} and \ref{q3b_Back} to determine the pull-out speeds for the loaded and unloaded cases.  Again we monitored the recorded number of pulses sent to the stepper motor and the current position of the stepper motor measured in steps.   When these two values diverged, we knew that the stepper motor has lost synchronization.  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.
+We used the same VI as shown in figures \ref{q3b_Front} and \ref{q3b_Back} to determine the pull-out speeds for the loaded and unloaded cases.  Again we monitored the recorded number of pulses sent to the stepper motor and the current position of the stepper motor measured in steps.   When these two values diverged, we knew that the stepper motor had lost synchronization.  The pull-out frequency was determined simply by using the function generator and manually ramping the output frequency up until the motor lost synchronism.  The frequencies determined by these tests for the loaded and unloaded cases are shown in table \ref{q3b_table2}.
 
 \begin{table}
 \begin{center}
@@ -568,7 +564,7 @@ $$ \sum \tau = J \dot{\omega} = \tau_m - \tau_{Load} \hspace{1cm} \dot{\omega} \
 
 $$ f_{command \, max} \approx \sqrt{\frac{J \, \Delta \theta}{\tau_{m} - \tau_{Load}}} $$
 
-Effectively some motor torque is being used to accelerate the rotor while the rest is working against the load.  So for large accelerations, less of the motor torque is available to overcome the load torque.  However if accelerations are kept sufficiently small, then all of the motor torque is available to overcome load torque, allowing the rotor to reach higher angular velocities while remaining synchronized with the command pulse train, than it could in a single step change in angular velocity.  
+Effectively some motor torque is being used to accelerate the rotor while the rest is working against the load.  So for large accelerations, less of the motor torque is available to overcome the load torque.  However if accelerations are kept sufficiently small, then all of the motor torque is available to overcome load torque, allowing the rotor to reach higher angular velocities while remaining synchronized with the command pulse train than it could in a single step change in angular velocity.  
 
 \clearpage
 
@@ -583,7 +579,7 @@ Effectively some motor torque is being used to accelerate the rotor while the re
 
 Based on the specified constraints of velocity profile, the velocity command would be a function of time. Instead of the previous numeric input of velocity control, the ramp and step signals were combined together as a velocity command to generate the desired trapezoidal profile. As shown in Figure~\ref{fig:q4_1}, the step signal was used for the constant speed region with all values equal to 180, and two ramp signals were used to create the acceleration and deceleration regions with +90 and -90 acceleration [deg/s$^{2}$], respectively. Next, the matlab code switched the correct signal to the output y in the right time: (1) 0-2 sec: the rising ramp; (2) 2-8 sec: the step input; (3) 8-10 sec: the descending ramp. The output y was simply conneted to the velocity input in the block diagram of main VI (see Figure 5), so that the desired function of velocity commands could be achieved. Figure~\ref{fig:q4_2} plots the resulting trapezoidal velocity profile, which satisfies all the requirements without considering the rest of control loop.
 
-However, the actual velocity and displacement profiles from the experimental results seemed far different from the expected profiles (see Figure~\ref{fig:q4_3} and~\ref{fig:q4_4}). Despite the total displacement was close to 1440deg, the velocity seemed to changed disorderly with respect to the time frame. One possible reason is that the pulse generator is unable to be sychronized with the reference command; some pulses may be missed or thier frequencies could be incorrect at some certain time. Furthermore, the computation time by the matlab code or other logic control may lead to time delay since the step size cannot be too small in order to sychronize the real time. Additionally, the ideal trapezoidal profile is based on the assumption of unlimited jerk, so that the real behavior of the stepper motor might deviate what we expect.
+However, the actual velocity and displacement profiles from the experimental results seemed far different from the expected profiles (see Figure~\ref{fig:q4_3} and~\ref{fig:q4_4}). Despite the total displacement being close to 1440deg, the velocity seemed to changed disorderly with respect to the time frame. One possible reason is that the pulse generator is unable to be sychronized with the reference command; some pulses may be missed or their frequencies could be incorrect at some certain time. Furthermore, the computation time by the matlab code or other logic control may lead to time delay since the step size cannot be too small in order to synchronize with real time. Additionally, the ideal trapezoidal profile is based on the assumption of unlimited jerk, so that the real behavior of the stepper motor might deviate from what we expect.
 
 \begin{figure}[h!]
 \includegraphics[width=1\textwidth]{Q4_CommandGeneration.png}
@@ -603,7 +599,7 @@ However, the actual velocity and displacement profiles from the experimental res
 \label{fig:q4_4}
 \end{figure}
 
-Considering the above concerns, the function generator was used to overcome the issues. Because the step command into the chip was directly come from the function generator, the pulse train could be generated with extremely high frequency, breaking through the frequency limit (1kHz) of labview. Figure~\ref{fig:q4_5} and~\ref{fig:q4_6} show the VI front panel and block diagram used to accomplish various stepping modes including full, half, quarter and 1/${_8}$ steps.\\
+Considering the above concerns, the function generator was used to overcome the issues. Because the step command into the driver chip comes directly from the function generator, the pulse train could be generated with extremely high frequency, breaking through the frequency limit (1kHz; 500Hz step frequency) of LabView. Figure~\ref{fig:q4_5} and~\ref{fig:q4_6} show the VI front panel and block diagram used to accomplish various stepping modes including full, half, quarter and 1/8$^{th}$ steps.\\
 
 [The way of generating the desired pulse train using the function generator]  \\
 
