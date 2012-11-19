@@ -488,9 +488,23 @@ The oscillations of the motor shaft are affected very much like the overshoot. T
 \clearpage
 \subsubsection*{ii}
 
-Despite sweeping a variety of frequencies using a function generator we were unable to to cause the system to become unstable until we exceeded the pull-out frequency.  However, while the motor did remain stable, there was a noticeable decrease in response quality at some frequencies.  This was characterized by a highly under-damped response as shown in figure \xxx{FIGURE}.  
+Despite sweeping a variety of frequencies using a function generator we were unable to to cause the system to become unstable until we exceeded the pull-out frequency.  However, while the motor did remain stable, there was a noticeable decrease in response quality at some frequencies.  This was characterized by a highly under-damped response as shown in figure \ref{Q3_aii1} at resonance compared to the much more damped out response shown in figure \ref{Q3_aii2} away from resonance.  
 
-\xxx{We still want additional figure of normal response vs resonant response}
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{262Hz_Response.png}
+\caption{Undamped response at Resonance, Loaded, full-step, 262 Hz}
+\label{Q3_aii1}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{10Hz_Response.png}
+\caption{Damped response at away from Resonance, Loaded, full-step, 10 Hz}
+\label{Q3_aii2}
+\end{center}
+\end{figure}
 
 To quantify the response quality we constructed a metric where we measured the number of loop iterations for which the angle reported by the encoder was beyond 1 full step off from the commanded value.  This measure would be expected to perform poorly for high step rates, as the rise time would become large compared to the length of each step.  For low to intermediate frequencies this metric seemed to characterize the quality of response well enough.  We commanded full steps at rates between $25$ Hz to $600$ Hz at $25$ Hz intervals and measured this excursion fraction for the loaded and unloaded cases, as shown in figure \ref{q3aii}.
 
@@ -505,6 +519,8 @@ To quantify the response quality we constructed a metric where we measured the n
 \end{figure}
 
 We also performed additional trials at the resonant frequency, half of that frequency, and double that frequency for the loaded and unloaded cases.  The data confirms our estimates of the natural frequencies with peaks in the expected regions.  However we also notice poor response at other frequencies as well interrupted by occasional frequencies that ran very smoothly. 
+
+\clearpage
 
 \subsection*{b.}
 
@@ -528,7 +544,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 \end{center}
 \end{figure}
 
-\begin{table}
+\begin{table}[hbt]
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
@@ -537,7 +553,7 @@ To deal with this issue, the offset was evaluated after the system was brought t
 	Pull-In Speed $(\sfrac{deg}{s})$ & 981 & 844.2 \\
         \hline
     \end{tabular}
-\caption{Failure rate at $490$ Hz in the loaded and unloaded cases}
+\caption{Pull-in Frequencies and speeds found for full step in the loaded and unloaded cases.}
 \label{q3b_table1}
 \end{center}
 \end{table}
@@ -604,13 +620,13 @@ Considering the above concerns, the function generator was used to overcome the 
 [The way of generating the desired pulse train using the function generator]  \\
 
 \begin{figure}[h!]
-\includegraphics[width=1\textwidth]{Q4_BlockDiagram_VI.png}
+\includegraphics[width=1\textwidth]{ExternalsourceBack.png}
 \caption{Block Diagram of VI for Trapezoidal Velocity Profile} \label{tex}
 \label{fig:q4_5}
 \end{figure}
 
 \begin{figure}[h!]
-\includegraphics[width=1\textwidth]{Q4_FrontPanel_VI.png}
+\includegraphics[width=1\textwidth]{ExternalSourceFront.png}
 \caption{Front Panel of VI for Trapezoidal Velocity Profile} \label{tex}
 \label{fig:q4_6}
 \end{figure}
@@ -619,25 +635,25 @@ Figure~\ref{fig:q4_7},~\ref{fig:q4_8},~\ref{fig:q4_9} and Figure~\ref{fig:q4_10}
 
 [For the criterion that the region of constant speed should be at least 1080 deg], 
 
-\begin{figure}[h]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_CommandPosition.png}
 \caption{Command Displacement vs. Time} \label{tex}
 \label{fig:q4_7}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_CommandPosition_L.png}
 \caption{Command Displacement vs. Time (Zoom In)} \label{tex}
 \label{fig:q4_8}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_ActualPosition.png}
 \caption{Actual Displacement vs. Time} \label{tex}
 \label{fig:q4_9}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_ActualPosition_L.png}
 \caption{Actual Displacement vs. Time (Zoom In)} \label{tex}
 \label{fig:q4_10}
@@ -666,35 +682,39 @@ Figure~\ref{fig:q4_7},~\ref{fig:q4_8},~\ref{fig:q4_9} and Figure~\ref{fig:q4_10}
 \caption{Velocity Profile: 1/8-Step Mode} \label{tex}
 \label{fig:q4_14}
 \end{figure}
+
 \clearpage
 
 \subsection*{b.}
 
 As can be seen in Figure~\ref{fig:q4_10}, the smaller increment step provides greater resolution and smoother motor operation, i.e. smoother velocity and displacement, while the undesired behavior of overshoot seems to become more serious. Since the resolution of the optical encoder is relatively low compared the increment step, the real profiles for all modes are expected to be smoother. Figure~\ref{fig:q4_15},~\ref{fig:q4_16},~\ref{fig:q4_17} and Figure~\ref{fig:q4_18} show the details of profile comparison between the command and actual displacement. We can observe that the overshoot in the full-step mode is less than 50\%, while approximately 100\% overshoot occurs in the half-step mode. For the quarter and 1/8 stepping modes, the oscillation behavior is hardly observed because of the low resolution. 
 
-\begin{figure}[b]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_full_step_L.png}
 \caption{Full-Step: Command vs. Actual Displacement} \label{tex}
 \label{fig:q4_15}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_half_step_L.png}
 \caption{Half-Step: Command vs. Actual Displacement} \label{tex}
 \label{fig:q4_16}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_quarter_step_L.png}
 \caption{Quarterl-Step: Command vs. Actual Displacement} \label{tex}
 \label{fig:q4_17}
 \end{figure}
 
-\begin{figure}[b]
+\begin{figure}[hbt]
 \includegraphics[width=1\textwidth]{Q4_eighth_step_L.png}
 \caption{1/8l-Step: Command vs. Actual Displacement} \label{tex}
 \label{fig:q4_18}
 \end{figure}
+
+\clearpage
+
 \subsection*{c.}
 
 We were able to achieve angular velocities up to $1939.7 \, \sfrac{deg}{s}$ using the function generator.  This maximum speed was limited only by the pull-out speed of the stepper motor.  As shown in figure \ref{Q4c_ProfileDetail} a not insubstantial amount of the error between the desired angular position and actual angular position seen in \ref{Q4c_PE} is due to the dynamics of the stepper motor and its discrete positions.  We also see a difference between the commanded position and the desired position, shown in \ref{Q4c_CE} which is due to the discrete nature of the position commands issued to the stepper motor.  Using a finer step setting on the driver would reduce this error.
