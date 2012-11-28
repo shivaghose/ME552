@@ -165,7 +165,7 @@ V_{out} = V_{bias} + \Sens \ddot{u} \quad V_{bias} \approx \frac{V_{supply}}{2}
 This response to acceleration can be also be used to measure the acceleration due to gravity along the sensitive axis of an accelerometer allowing the angle between the accelerometer and vertical to be determined.  Let $\theta$ be the measured angle from vertical to the $\hat{y}$ direction of our system.  We can consider two situations, when the sensitive axis is aligned with $\hat{y}$ axis and when it is perpendicular to it.  Let $Y$ and $Z$ denote these situations respectively which correspond to the $\hat{y}$ and $\hat{z}$ axes of our accelerometer.  Then the output voltage of each axis is given as follows:
 
 \begin{equation}
-V_{Yout} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Zout} = V_{Zbias} + \Sens_{Z} g \sin(\theta)
+V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z} g \sin(\theta)
 \label{ParamID_EQ2}
 \end{equation}
 
@@ -204,6 +204,61 @@ We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis
 
 \clearpage
 \section{Low Frequency Characterization}
+
+\subsection{Horizontal Accelerometer}
+
+\subsubsection{Angle Measurement}
+
+Using a single accelerometer in the horizontal configuration is equivalent to just using the Z axis in our configuration.  Where $V_{Z}$ is given as follows: 
+
+$$ V_{Z} = V_{Zbias} + \Sens_{Z} g \sin(\theta) $$
+
+$\theta$ can be easily computed by the following expression:
+
+$$ \theta = \sin^{-1}\left( \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g}\right) $$
+
+When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.
+
+\xxx{Signal Conditioning?}
+
+\subsection{Vertical Accelerometer}
+
+\subsubsection{Angle Measurement}
+
+Using a single accelerometer in the vertical configuration is equivalent to using just the Y axis in our configuration.  Where $V_{Y}$ is given as follows:
+
+$$ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) $$
+
+Then $\theta$ is given by the following expression:
+
+$$ \theta = \cos^{-1}\left( \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g}\right) $$
+
+When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$. 
+
+\xxx{Signal Conditioning?}
+
+\subsection{Two Accelerometers}
+
+\subsubsection{Angle Measurement}
+
+We can overcome the aliasing issue  presented in the two configuration by using both the horizontal and vertical, the Z and Y axis, simultaneously.  
+
+$$ \cos(\theta) = \frac{V_Y-V_{Ybias}}{\Sens_{Y} g} \quad \sin(\theta) = \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} $$
+
+Combining the two equations gives the following:
+
+$$ \tan(\theta) = \frac{\sin(\theta)}{\cos(\theta)} = \left(\frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g}\right) \left( \frac{\Sens_{Y} g}{V_Y-V_{Ybias}} \right) = \frac{\Sens_{Y}}{\Sens_{Z}} \left( \frac{V_{Z} - V_{Zbias}}{V_{Y} - V_{Ybias}} \right)$$
+
+Using the atan2 function avoids the quadrant ambiguities present in the ordinary $\tan^{-1}$ function giving us an expression for $\theta$ valid for all angles.
+
+$$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{Z} \left( V_{Y} - V_{Ybias}\right) \big)$$
+
+\xxx{Signal Conditioning?}
+\subsection{Rate Gyro}
+
+\subsubsection{Angle Measurement}
+
+
 
 \clearpage
 \section{Higher Frequency Characterization}
