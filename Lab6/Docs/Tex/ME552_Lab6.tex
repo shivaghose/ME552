@@ -81,6 +81,7 @@
 \newcommand{\defeq}{\stackrel{\textrm{def}}{=}}
 \newcommand{\Prob}{\textrm{Prob}}
 \newcommand{\Lagr}{\mathcal{L}}
+\newcommand{\Sens}{\mathcal{S}}
 %==
 \usepackage{graphicx}
 \usepackage{xfrac}
@@ -141,7 +142,65 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \newpage
 
-\section{Accelerometer Wiring} 
+\section{Accelerometer Wiring \& Configuration} 
+
+\subsection{Configuration}
+
+The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the \xxx{AXIS} axis of the rate gyro.  \\
+
+\xxx{Still missing gyro details}
+
+\xxx{We may want a picture of each axis including gyro}
+
+\clearpage
+\section{Parameter Identification}
+
+The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor,$V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
+
+\begin{equation}
+V_{out} = V_{bias} + \Sens \ddot{u} \quad V_{bias} \approx \frac{V_{supply}}{2}
+\label{ParamID_EQ1}
+\end{equation}
+
+This response to acceleration can be also be used to measure the acceleration due to gravity along the sensitive axis of an accelerometer allowing the angle between the accelerometer and vertical to be determined.  Let $\theta$ be the measured angle from vertical to the $\hat{y}$ direction of our system.  We can consider two situations, when the sensitive axis is aligned with $\hat{y}$ axis and when it is perpendicular to it.  Let $Y$ and $Z$ denote these situations respectively which correspond to the $\hat{y}$ and $\hat{z}$ axes of our accelerometer.  Then the output voltage of each axis is given as follows:
+
+\begin{equation}
+V_{Yout} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Zout} = V_{Zbias} + \Sens_{Z} g \sin(\theta)
+\label{ParamID_EQ2}
+\end{equation}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 11cm]{Accelerometer_Cartoon.png}
+\caption{Y and Z axis accelerometer}
+\label{Accel_cartoon}
+\end{center}
+\end{figure}
+
+\xxx{need two pictures of the cartoon proof mass}
+
+We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \xxx{not the right table?} \\
+
+\xxx{units for variance}
+% values as reported by matlab SY = 0.034002931081677, SZ = 0.033903141625302, EY = 2.642681255078259\e{-5}, EZ = 2.774354019095888\e{-4}
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        Axis                              & Y                     & Z                     \\ \hline
+        $V_{bias} \, (V)$                        & 1.617433958           & 1.671451851           \\ 
+        $\sigma^2 \, (V^2)$                        & 1.24553\e{-5}           & 0.001852504           \\ 
+        $\Sens \, \left(\sfrac{V s^2}{m} \right)$                           & $0.03400293$     & $0.03390314$     \\ 
+        Fitting Error $(V)$ & $2.642681\e{-5}$ & $2.774354\e{-4}$ \\
+        \hline
+    \end{tabular}
+\label{ParamID_T}
+\caption{Fitting error denotes average error per sample}
+\end{center}
+\end{table}
+
+We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis, but it is to a much greater degree than the data sheet would suggest.  We also see that this extra noise is reflected in the higher fitting errors for the Z-axis data.  
+
 
 \clearpage
 \section{Low Frequency Characterization}
