@@ -148,11 +148,20 @@ and that I have read and understood the X50 Lab Rules.\\
 
 The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the \xxx{AXIS} axis of the rate gyro.  \\
 
+\xxx{Confirm that the wiring diagram is correct specifically whether we are using the high or low sensitivity outputs.}
+
 \xxx{Still missing gyro details}
 
 \xxx{We may want a picture of each axis including gyro}
 
 \clearpage
+
+\section{Modeling Assumptions}
+% there is probably more stuff
+\begin{itemize}
+\item{Assume that outputs of each axis of the accelerometer and the gyro are independent of one another}
+\end{itemize}
+
 \section{Parameter Identification}
 
 The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor,$V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
@@ -215,11 +224,28 @@ $$ V_{Z} = V_{Zbias} + \Sens_{Z} g \sin(\theta) $$
 
 $\theta$ can be easily computed by the following expression:
 
-$$ \theta = \sin^{-1}\left( \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g}\right) $$
+\begin{equation}
+\theta = \sin^{-1}\left( \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g}\right) 
+\label{horizontalEQ}
+\end{equation}
 
 When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.
 
 \xxx{Signal Conditioning?}
+
+\subsubsection{Sensitivity}
+
+\subsubsection{Noise}
+
+An estimate for the expected noise in measurement of $\theta$ can be obtained by performing a variance projection through the partial derivative of equation \ref{horizontalEQ}.
+
+$$ \frac{\partial \theta}{\partial V_{Z}} =  \frac{1}{\sqrt{(\Sens_{Z} g)^2 - (V_{Z} - V_{Zbias})^2}}$$
+
+$$ \sigma^2_{\theta} = \frac{\partial \theta}{\partial V_{Z}} \sigma^2_{V_{Z}} \frac{\partial \theta}{\partial V_{Z}} $$
+
+$$ \sigma^2_{\theta} = \frac{\sigma^2_{V_{Z}}}{(\Sens_{Z} g)^2 - (V_{Z} - V_{Zbias})^2}$$
+
+\xxx{estimate nominal voltage, linearize about that point and compare to real system}
 
 \subsection{Vertical Accelerometer}
 
@@ -231,11 +257,30 @@ $$ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) $$
 
 Then $\theta$ is given by the following expression:
 
-$$ \theta = \cos^{-1}\left( \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g}\right) $$
+\begin{equation}
+\theta = \cos^{-1}\left( \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g}\right)
+\label{verticalEQ}
+\end{equation}
 
 When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$. 
 
 \xxx{Signal Conditioning?}
+
+\subsubsection{Sensitivity}
+
+\subsubsection{Noise}
+
+We can again use variance projection to estimate the noise in our angle measurements, taking the partial derivative of equation \ref{verticalEQ}.
+
+$$ \frac{\partial \theta}{\partial V_{Y}} = -\frac{1}{\sqrt{(\Sens_{Y} g)^2 - (V_{Y} - V_{Ybias})^2}}$$
+
+$$ \sigma^2_{\theta} = \frac{\partial \theta}{\partial V_{Y}} \sigma^2_{V_{Y}} \frac{\partial \theta}{\partial V_{Y}} $$
+
+$$ \sigma^2_{\theta} = \frac{\sigma^2_{V_{Y}}}{(\Sens_{Y} g)^2 - (V_{Y} - V_{Ybias})^2}$$
+
+As we would expect, this appears identical to the equation for noise of the horizontally mounted accelerometer.  The difference in behavior is simply the voltage around which we linearize.  
+
+\xxx{estimate nominal voltage, linearize about that point and compare to real system}
 
 \subsection{Two Accelerometers}
 
@@ -254,11 +299,43 @@ Using the atan2 function avoids the quadrant ambiguities present in the ordinary
 $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{Z} \left( V_{Y} - V_{Ybias}\right) \big)$$
 
 \xxx{Signal Conditioning?}
+
+\subsubsection{Sensitivity}
+
+\subsubsection{Noise}
+
+$$ \theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})$$
+
+Let 
+
+$$ \vec{x} = \left[ V_Y, V_Z \right]^T $$
+
+Then
+
+$$ \theta = f(\vec{x}) \approx J|_{\vec{x}_0} \left( \vec{x} - \vec{x}_{0}\right) \quad J = \left[ \frac{\partial f}{\partial V_{Y}}, \frac{\partial f }{\partial V_Z} \right] $$
+
+$$ \sigma^2_{\theta} = \Sigma_{\theta} = J \Sigma_{\vec{x}} J^T  \quad 
+\Sigma_{\vec{x}} = \left[
+\begin{matrix}
+\sigma^2_{V_{Y}}  & 0 \\
+0 & \sigma^2_{V_{Z}} 
+\end{matrix} \right]$$
+
+$$ \sigma^2_{\theta} = \left(\frac{\partial f}{\partial V_{Y}}\right)^2 \sigma^2_{V_{Y}} + \left(\frac{\partial f }{\partial V_Z} \right)^2 \sigma^2_{V_{Z}} $$
+
+$$ \frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zbias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
+
+$$ \frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
+
+\xxx{estimate nominal voltage, linearize about that point and compare to real system}
+
 \subsection{Rate Gyro}
 
 \subsubsection{Angle Measurement}
 
+\subsubsection{Sensitivity}
 
+\subsubsection{Noise}
 
 \clearpage
 \section{Higher Frequency Characterization}
