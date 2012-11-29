@@ -261,6 +261,23 @@ $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Z}}}{(\Se
 % we could plot \sigma^2_theta with respect to theta if we wanted to
 \xxx{need to compare to real noise about this point, but our math should be exactly correct}
 
+% comparison to real data here
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                   & Theoretical  & Actual \\ \hline
+        $\sigma^2_{V_{Z}}$    & 0.001852504            & ~      \\ 
+        $\sigma^2_{\theta}$ & ~            & ~      \\ 
+        $\mu_{V_{Z}}$       & 1.671451851            & ~      \\ 
+        $\mu_{\theta}$      & ~            & ~      \\
+        \hline
+    \end{tabular}
+\label{Noise_horizontal_T}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage was measured in another trial.}}
+\end{center}
+\end{table}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Vertical Accelerometer}
 
@@ -305,6 +322,23 @@ As we would expect, this appears identical to the equation for noise of the hori
 
 $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Y}}}{(\Sens_{Y} g)^2 - (V_{Ybias} + \Sens_{Y} g - V_{Ybias})^2} = \infty$$
 
+% comparison to real data here
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                   & Theoretical  & Actual \\ \hline
+        $\sigma^2_{V_{Y}}$    & 1.24553\e{-5}  & ~      \\ 
+	$\sigma^2_{\theta}$ & $\infty$           & ~      \\ 
+	$\mu_{V_{Y}}$       & 1.95100270            & ~      \\
+        $\mu_{\theta}$      & 0            & ~      \\
+        \hline
+    \end{tabular}
+\label{Noise_vertical_T}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage was measured in another trial.}}
+\end{center}
+\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -362,6 +396,26 @@ $$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partia
 $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{\Sens_{Z} g} \right)^2 \sigma^2_{V_{Z}} = \left( \frac{\sigma_{V_Z}}{\Sens_{Z} g} \right)^2$$
 
 \xxx{compare to real system}
+
+% comparison to real system
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                   & Theoretical  & Actual \\ \hline
+        $\sigma^2_{V_{Z}}$    & 0.001852504            & ~      \\ 
+	$\mu_{V_{Z}}$       & 1.671451851            & ~      \\ 
+	$\sigma^2_{V_{Y}}$ & 1.24553\e{-5}		& ~ \\
+	$\mu_{V_{Y}}$       & ~            & ~      \\ 
+        $\sigma^2_{\theta}$ & ~            & ~      \\ 
+        $\mu_{\theta}$      & ~            & ~      \\
+        \hline
+    \end{tabular}
+\label{Noise_dual_T}
+\caption{Comparison of expected noise and actual noise for $\theta = 0$}
+\end{center}
+\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
