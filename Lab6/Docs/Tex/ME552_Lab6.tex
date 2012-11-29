@@ -146,7 +146,15 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \subsection{Configuration}
 
-The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the \xxx{AXIS} axis of the rate gyro.  \\
+Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the X axis of the rate gyro (standard and X4.5). We also connected the auto-zero and temperature sensor pins. We are not using the X axis of the accelerometer, the Y axis of the rate gyro (standard and Y4.5), the self-test, or the VRef pins. We used an Arduino Uno as a voltage regulator to provide the encoder with 5V and the IMU with 3.3V.m the Arduino itself was powered from a wall outlet via an AC-to-DC converter.   \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 15cm]{WiringDiagram.png}
+\caption{Wiring Connections of Inertial Sensor System.}
+\label{wiring}
+\end{center}
+\end{figure}
 
 \xxx{Confirm that the wiring diagram is correct specifically whether we are using the high or low sensitivity outputs.}
 
