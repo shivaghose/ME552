@@ -221,7 +221,7 @@ We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis
 
 Using a single accelerometer in the horizontal configuration is equivalent to just using the Z axis in our configuration.  Where $V_{Z}$ is given as follows: 
 
-$$ V_{Z} = V_{Zbias} + \Sens_{Z} g \sin(\theta) $$
+$$ V_{Z}(\theta) = V_{Zbias} + \Sens_{Z} g \sin(\theta) $$
 
 $\theta$ can be easily computed by the following expression:
 
@@ -238,7 +238,7 @@ When using a single accelerometer in the horizontal configuration aliasing occur
 
 The relationship between sensor output voltage and angle is non-linear, but we are able to linearize about a particular operating point, for this experiment, $\theta = 0$, and obtain an estimate of the sensitivity.
 
-$$ V_{Z} \approx V_{Zbias} + \Sens_{Z} g \sin(0) + \Sens_{Z} g \cos(0) \left(\theta - 0\right) = V_{Zbias} + \Sens_{Z} g \theta $$
+$$ V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \sin(0) + \Sens_{Z} g \cos(0) \left(\theta - 0\right) = V_{Zbias} + \Sens_{Z} g \theta $$
 
 For the horizontal accelerometer, we expect the sensitivity to be $\Sens_{Z} g$. 
 
@@ -285,7 +285,7 @@ When using a single accelerometer in this configuration aliasing occurs for angl
 
 However attempting to linearize about $\theta = 0$ for the accelerometer in the vertical configuration is not nearly as successful.  Yielding a relationship that does not depend on $\theta$ at all.  This result is expected from our earlier assesment of the angle ambiguity between positive values of $\theta$ and negative values.  
 
-$$V_{Y} \approx V_{Ybias} + \Sens_{Y} g \cos(0) - \Sens_{Y} g \sin(0) (\theta - 0) = V_{Ybias} + \Sens_{Y} g $$
+$$V_{Y}(\theta) \approx V_{Ybias} + \Sens_{Y} g \cos(0) - \Sens_{Y} g \sin(0) (\theta - 0) = V_{Ybias} + \Sens_{Y} g $$
 
 \xxx{still need the real results here}
 
@@ -353,7 +353,17 @@ $$ \frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zb
 
 $$ \frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
 
-\xxx{estimate nominal voltage, linearize about that point and compare to real system}
+For $\theta = 0$ we can simply plug in the nominal voltages earlier to estimate the noise in this angle measurement.
+
+$$ \theta \approx 0 \quad V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \theta \quad V_{Y}(\theta)  \approx V_{Ybias} + \Sens_{Y} g $$
+
+$$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partial V_Z} = \frac{1}{\Sens_{Z} g}$$
+
+$$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{\Sens_{Z} g} \right)^2 \sigma^2_{V_{Z}} = \left( \frac{\sigma_{V_Z}}{\Sens_{Z} g} \right)^2$$
+
+\xxx{compare to real system}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Rate Gyro}
 
