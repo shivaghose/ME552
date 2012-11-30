@@ -150,7 +150,7 @@ Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The 
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 15cm]{WiringDiagram.png}
+\includegraphics[width = 16cm]{WiringDiagram.png}
 \caption{Wiring Connections of Inertial Sensor System.}
 \label{wiring}
 \end{center}
@@ -167,13 +167,21 @@ Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The 
 \subsection{Pin Functionality}
 
 \subsubsection{Accelerometer}
-Figure \ref{accelPins} shows the arrangement of the pins on the accelerometer. 
+Figures \ref{accelPins} and \ref{accelFunc} show the arrangement of the pins on the accelerometer and its functional block diagram, respectively. \\
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 9cm]{ADXL335Pins.png}
+\includegraphics[width = 7cm]{ADXL335Pins.png}
 \caption{Pin Configuration of the ADXL335 3-Axis Accelerometer.}
 \label{accelPins}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{ADXL335Functional.png}
+\caption{Functional Diagram of the ADXL335 3-Axis Accelerometer.}
+\label{accelFunc}
 \end{center}
 \end{figure}
 
@@ -184,7 +192,7 @@ These pins are not connected to the accelerometer's internal circuitry. They are
 This pin is for the self-test feature of the accelerometer. When the pin is set high by applying the supply voltage an electrostatic force is applied to the accelerometer axes. This results in a known change in the voltage output from each axis. If the change is not seen in the output, this is an indication that there is a problem with the accelerometer. The pin can be connected to ground or left unconnected when not needed. THe PCB provides a connection for this pin, which we did not use.\\
 
 \textbf{Pins 3, 5, 6, and 7 - COM}\\
-These pins connect various elements of the accelerometer chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the COM pins.\\
+These pins connect various elements of the accelerometer chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the COM pins. We connected this to the ground terminal of the Arduino.\\
 
 \textbf{Pins 8, 10, and 12 - Z$_{out}$, Y$_{out}$, and X$_{out}$ (respectively)}\\ 
 Analog voltage output of the 3 axes of the accelerometer. The accelerometer outputs voltage corresponding to acceleration in the each direction with a range of $\pm$ 3g according to equation \ref{ParamID_EQ1}. The Z axis accelerometer nominally has greater noise density and lower bandwidth compared to the X and Y axes, which are nominally equal. The PCB provides connections for these pins. We connected pins 8 and 10 to the NI breakout board to read with LabView, but did not use pin 12 because that axis (X) was oriented along the shaft's axis of rotation.\\
@@ -192,7 +200,60 @@ Analog voltage output of the 3 axes of the accelerometer. The accelerometer outp
 \textbf{Pins 14 and 15 - V$_s$}\\
 Supply voltage for the accelerometer. The accelerometer has a functional supply range of 1.8 V to 3.6 V, with a maximum range of -0.3 V to 3.6 V (based on operation reasonably safe from damage, not functional operation). The accelerometer is ratiometric with typical performance values given based on a V$_s$ of 3 V. Because the output is ratiometric, it is important to use a regulated power supply providing constant voltage. The PCB provides a connection for these pins, which we connected to the 3.3 V terminal of an Arduino Uno.\\ 
 
-\clearpage
+\subsubsection{Rate Gyro}
+Figures \ref{gyroPins} and \ref{gyroFunc} show the arrangement of the pins on the rate gyro and its functional block diagram, respectively. \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 8cm]{IDG500Pins.png}
+\caption{Pin Configuration of the IDG500 Dual-Axis Gyro.}
+\label{gyroPins}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 16cm]{IDG500Functional.png}
+\caption{Functional Diagram of the IDG500 Dual-Axis Gyro.}
+\label{gyroFunc}
+\end{center}
+\end{figure}
+
+\textbf{Pins 1 and 20 - X-OUT and Y-OUT (respectively)}\\
+Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage proportional to the angular rate about the X and Y axes according to equation \ref{} \xxx{need equation}. The outputs are not ratiometric and have a nominal full scale range of $\pm$500$^{\circ}$ and sensitivity of 2 $\frac{mV}{^{\circ}/s}$. A low-pass filter is provided internally. The PCB provides connections to these pins. We connected X-OUT to the NI breakout board to read with LabView, but did not connect Y-OUT because our setup did not rotate about that axis.\\
+
+\textbf{Pins 2, 8, 26, 27, and 28 - GND}\\
+These pins connect various elements of the gyro chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the GND pins. We connected this to the ground terminal of the Arduino.\\
+
+\textbf{Pins 3, 4, 17, and 18 - NC}\\
+These pins are not connected to the gyro's internal circuitry. The data sheet notes that they can be used for PCB trace routing.\\
+
+\textbf{Pins 5 and 16 - X4.5IN and Y4.5IN (respectively)}\\
+These pins are inputs to amplifiers which can be connected to X-OUT and Y-OUT to provide higher sensitivity outputs. The connections are optional but are provided internally by the PCB.\\
+
+\textbf{Pins 6 and 15 - XAGC and YAGC (respectively)}\\
+These pins provide connections for amplitude control capacitors. 0.22 $\mu$F capacitors are internally used to connect these pins to ground. The capacitors are part of a control loop which controls the amplitude of the internal gains to ensure the sensitivity does not vary with temperature.\\
+
+\textbf{Pins 7 and 14 - X4.5OUT and Y4.5OUT (respectively)}\\
+Analog output voltage of the X and Y axes of the gyro. These pins increase the output of X-OUT and Y-OUT by a gain of 4.5 - effectively increasing the sensitivity at the expense of range. The output has a nominal full scale range of $\pm$110$^{\circ}$ and sensitivity of 9.1 $\frac{mV}{^{\circ}/s}$. The PCB provides connections to these pins. We connected X4.5OUT to the NI breakout board to read with LabView, but did not connect Y4.5OUT because our setup did not rotate about that axis.\\
+
+\textbf{Pins 9 and 19 - VDD}\\
+Supply voltage for the gyro. The gyro has a functional supply range of 2.7 V to 3.3 V, with a maximum range of -0.3 V to 6.0 V (based on operation reasonably safe from damage, not functional operation). The gyro is not ratiometric and all performance values are based on a VDD of 3 V. The PCB provides a connection for these pins, which we connected to the 3.3 V terminal of an Arduino Uno. A voltage regulator (likely a MIC5205) is included on the PCB betweent the VDD pins and the 3.3 V input connection to ensure the gyro receives 3.0 V. \\ 
+
+\textbf{Pins 10, 11, 13, 21, and 25 - RESV}\\
+These pins are reserved and are not connected.\\
+
+\textbf{Pin 12 - CPOUT}\\
+Provides an internal connection from ground to a charge pump regulator via a 0.1 $\mu$F capacitor. A charge pump is used for DC/DC regulation and can boost voltages without needing an inductor. \xxx{Might need more explanation here}\\
+
+\textbf{Pin 22 - VREF}\\
+A precision reference output which is nominally 1.35 V. Ideally VREF will be a constant 1.35 V and is used with the auto-zero function to reset the zero-rate output to its nominal value of 1.35 V in the event of steady-state drift. The PCB provides a connection to this pin which we did not use.\\
+
+\textbf{Pin23 - PTATS}\\
+Provides an output voltage from a temperature sensor within the gyro chip. Output is proportional to temperature with a nominal bias voltage of 1.25 V and a sensitivity of 4 mV/$^{\circ}$C. The PCB provides a connection to this pin which we connected to the NI breakout board and read in LabView (though we did not end up using the data).\\
+
+\textbf{Pin 24 - AZ}\\
+This pin is an input to an auto-zero funciton for the X and Y axis gyros. When activated, the auto-zero resets the zero-rate output to be equal to VREF. The auto-zero is typically used when the gyro is not moving to prevent steady-state drift and is supposed to increase the usable range of the high sensitivity outputs (X4.5OUT and Y4.5OUT). The auto-zero is intiated by setting the pin high with a pulse between 2 and 1500 $\mu$s. The PCB provides a connection to this pin with we connected to a digital output of the NI breakout board. In our LabView VI we boolean momentary switch to this output so the user could activate the auto-zero, but this was rarely used.\\ 
 
 \section{Modeling Assumptions}
 % there is probably more stuff
