@@ -259,10 +259,13 @@ This pin is an input to an auto-zero funciton for the X and Y axis gyros. When a
 % there is probably more stuff
 \begin{itemize}
 \item{Assume that outputs of each axis of the accelerometer and the gyro are independent of one another}
+\item{Assume zero bias of each accelerometer axis is stationary} % we may eliminate this assumption if we do online calibration
+\item{$g = 9.81 \, \left( \sfrac{m^2}{s}\right) $}
 \end{itemize}
 
 \section{Parameter Identification}
 
+\subsection*{Accelerometers}
 The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor, $V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
 
 \begin{equation}
@@ -285,30 +288,85 @@ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z}
 \end{center}
 \end{figure}
 
-\xxx{need two pictures of the cartoon proof mass}
-
 We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \xxx{not the right table?} \\
 
-\xxx{units for variance}
+% adjust the data sheet values to correspond to if we had a supply voltage of 3.295 Volts, it is ratio metric so it should work
 % values as reported by matlab SY = 0.034002931081677, SZ = 0.033903141625302, EY = 2.642681255078259\e{-5}, EZ = 2.774354019095888\e{-4}
 \begin{table}
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|}
         \hline
-        Axis                              & Y                     & Z                     \\ \hline
-        $V_{bias} \, (V)$                        & 1.617433958           & 1.671451851           \\ 
-        $\sigma^2 \, (V^2)$                        & 1.24553\e{-5}           & 0.001852504           \\ 
-        $\Sens \, \left(\sfrac{V s^2}{m} \right)$                           & $0.03400293$     & $0.03390314$     \\ 
-        Fitting Error $(V)$ & $2.642681\e{-5}$ & $2.774354\e{-4}$ \\
+        Axis                              & Y Specification & Y   Fit & Z Specification                & Z    Fit                \\ \hline
+        $V_{bias} \, (V)$                & 1.5        & 1.617433958  & 1.5         & 1.671451851           \\ 
+        $\sigma^2 \, (V^2)$                  & ~      & 1.24553\e{-5}    & ~       & 0.001852504           \\ 
+        $\Sens \, \left(\sfrac{V s^2}{m} \right)$                & 0.03058104           & $0.03400293$  & 0.03058104   & $0.03390314$     \\ 
+        Fitting Error $(V)$  & - & $2.642681\e{-5}$  & - & $2.774354\e{-4}$ \\
         \hline
     \end{tabular}
 \label{ParamID_T}
-\caption{Fitting error denotes average error per sample}
+\caption{Fitting error denotes average error per sample.  Note that the bias voltage and sensitivities quoted in the data sheet are for a supply voltage of 3.0 V, while we are using a supply voltage of 3.295 V}
 \end{center}
 \end{table}
 
 We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis, but it is to a much greater degree than the data sheet would suggest.  We also see that this extra noise is reflected in the higher fitting errors for the Z-axis data.  
 
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{YaxisAccel_Calib.png}
+\label{YaccelCalib}
+\caption{Expected vs Measured Voltages for the Y axis accelerometer}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{ZaxisAccel_Calib.png}
+\label{ZaccelCalib}
+\caption{Expected vs Measured Voltages for the Z axis accelerometer}
+\end{center}
+\end{figure}
+
+\xxx{Compare to the data sheet values still need sigma, they give Noise density, we want sigma, Y = 150 ug/sqrt(Hz) rms, Z = 300}
+
+\subsection*{Rate Gyro}
+
+% note that these calibration results were obtained from the natural frequency with the normal pendulum
+
+A rate gyro gives outputs a voltage proportional to the angular rate about the sensitive axis of the gyro with some offset, the Zero Rate which is not ratiometric.  
+
+$$V_{out} = ZeroRate + \Sens_{Gyro} \dot{\theta} $$
+
+However even of the time period of a few seconds, we encountered several difficulties in trying to apply such a model.  First of all, the rate gyro's response is limited to higher frequencies requiring us to use an oscillating calibration run at the natural frequency of our pendulum sensor set up, of approximately 1.41 Hz.  The data was trimmed to only include the region of the response of a high enough frequency to be within the bandwidth of the sensor.  Secondly, even over this shorter calibration run, the Zero Rate was no constant.  To overcome these difficulties, we fit a slightly more complex model to obtain a good value for the sensitivity.
+
+$$V_{out} = A t + B + \Sens_{Gyro} \dot{\theta} $$
+
+Both $A$ and $B$ vary with time and other variables, such as temperature, so $B$, the zero rate of the gyro is determined on line and A is neglected, so their values for this particular run are irrelevant.  
+
+\xxx{redo at a higher frequency?}
+% note that these results were taken at 1.41 Hz, the natural frequency of the normal pendulum
+% quoted sensitivity = 1 / 8.635380
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        ~                                                         & Data Sheet Value & Fit Value \\ \hline
+        $\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36             & 0.115803  \\
+	$\sigma \, \left( V^2 \right)$ & - & $3.77300 \e{-6}$ \\
+	Fitting Error $(rad)$ & - &  $3.35845 \e{-4}$ \\
+        \hline
+    \end{tabular}
+\label{ParamID_TGyro}
+\caption{Gyro Sensitivity at 1.41 Hz.}  
+\end{center}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{rateGyroCalibResultsS8_636380.png}
+\label{gyroCalib}
+\caption{Actual Angle vs Fitted Angle from integrating rate gyro output}
+\end{center}
+\end{figure}
 
 \clearpage
 \section{Low Frequency Characterization}
