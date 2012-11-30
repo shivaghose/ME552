@@ -164,6 +164,36 @@ Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The 
 
 \clearpage
 
+\subsection{Pin Functionality}
+
+\subsubsection{Accelerometer}
+Figure \ref{accelPins} shows the arrangement of the pins on the accelerometer. 
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 9cm]{ADXL335Pins.png}
+\caption{Pin Configuration of the ADXL335 3-Axis Accelerometer.}
+\label{accelPins}
+\end{center}
+\end{figure}
+
+\textbf{Pins 1, 4, 9, 11, 13, and 16 - NC}\\
+These pins are not connected to the accelerometer's internal circuitry. They are not funcitonal, but they can be connected to ground (the COM pins).\\
+
+\textbf{ Pin 2 - ST}\\
+This pin is for the self-test feature of the accelerometer. When the pin is set high by applying the supply voltage an electrostatic force is applied to the accelerometer axes. This results in a known change in the voltage output from each axis. If the change is not seen in the output, this is an indication that there is a problem with the accelerometer. The pin can be connected to ground or left unconnected when not needed. THe PCB provides a connection for this pin, which we did not use.\\
+
+\textbf{Pins 3, 5, 6, and 7 - COM}\\
+These pins connect various elements of the accelerometer chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the COM pins.\\
+
+\textbf{Pins 8, 10, and 12 - Z$_{out}$, Y$_{out}$, and X$_{out}$ (respectively)}\\ 
+Analog voltage output of the 3 axes of the accelerometer. The accelerometer outputs voltage corresponding to acceleration in the each direction with a range of $\pm$ 3g according to equation \ref{ParamID_EQ1}. The Z axis accelerometer nominally has greater noise density and lower bandwidth compared to the X and Y axes, which are nominally equal. The PCB provides connections for these pins. We connected pins 8 and 10 to the NI breakout board to read with LabView, but did not use pin 12 because that axis (X) was oriented along the shaft's axis of rotation.\\
+
+\textbf{Pins 14 and 15 - V$_s$}\\
+Supply voltage for the accelerometer. The accelerometer has a functional supply range of 1.8 V to 3.6 V, with a maximum range of -0.3 V to 3.6 V (based on operation reasonably safe from damage, not functional operation). The accelerometer is ratiometric with typical performance values given based on a V$_s$ of 3 V. Because the output is ratiometric, it is important to use a regulated power supply providing constant voltage. The PCB provides a connection for these pins, which we connected to the 3.3 V terminal of an Arduino Uno.\\ 
+
+\clearpage
+
 \section{Modeling Assumptions}
 % there is probably more stuff
 \begin{itemize}
@@ -172,7 +202,7 @@ Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The 
 
 \section{Parameter Identification}
 
-The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor,$V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
+The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor, $V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
 
 \begin{equation}
 V_{out} = V_{bias} + \Sens \ddot{u} \quad V_{bias} \approx \frac{V_{supply}}{2}
