@@ -645,15 +645,53 @@ Because $\theta$ is given as a function of the sum of previous measurements, err
 
 $$ \sigma_{\theta}(t) \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) \left\{ \frac{t(1) - t(0)}{2} + \sum_{i = 1}^{n-1} \big( t(i) - t(i-1) \big) + \frac{t(n) - t(n-1)}{2} \right\} \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) t$$
 
-\emph{Where n is the sample taken at time, t.}
+\emph{Where n is the sample taken at time, t.} \\
+
+It is important to note, that despite this high variance, the actual output will look quite smooth because of the high degree of correlation between subsequent position estimates.  
 
 \xxx{compare to real variance?}
 
 \clearpage
+%%%%%%%%%%%%%%%%%%%
+
 \section{Higher Frequency Characterization}
 
-\clearpage
-\section{Sensor Fusion}
+
+\subsection{Horizontal Accelerometer}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
 
 \clearpage
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Vertical Accelerometer}
+\subsubsection{High Frequency}
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Two Accelerometer}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Rate Gyro}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\section{Sensor Fusion}
+
+\subsection{Construction}
+
+\subsection{Filter Design}
+
+\subsection{Block Diagram}
+
+\subsection{Experimental Evaluation}
+
 \end{document}
