@@ -367,6 +367,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 \begin{center}
 	\begin{tabular}{|c|c|}
 		\hline
+		
 		$\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36 \\ 
 		Total RMS Noise $(mV \, rms)$ & 0.8 \\ 
 		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ 
@@ -687,10 +688,30 @@ It is important to note, that despite this high variance, the actual output will
 \section{Sensor Fusion}
 
 \subsection{Construction}
+We make use of the all three inertial sensors discussed in the previous sections, the horizontal and vertical accelerometers and the rate gyro.  Using both accelerometers eliminates sign ambiguities to provide angle measurements for a full 360 degrees, but it suffers from poor performance at higher angular rates because of dynamic effects.  To overcome this issue we use the rate-gryo which suffers from poor performance at lower angular rates, but is able to provide accurate angles at higher rates.  By combining these sensors we can achieve performance across a broader range of frequencies and angles than by using a single sensor alone.  
+
+As in the set up that we have used for the entire lab, the Y-axis of the accelerometer points in the vertical direction at $\theta = 0$ while the Z-axis points in the horizontal direction, while the X-axis of the gyro is parallel to the axis of the encoder and perpendicular to the Y and Z axes of the accelerometer.  
 
 \subsection{Filter Design}
 
+We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometer and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning}  A 1st order filter was selected to limit the phase lag at 1 Hz to 45 degrees.  Higher order filters woudl have introduced a greater amount of lag.   
+
 \subsection{Block Diagram}
+
+For encoder angle $\alpha$, we have already shown that the pair of accelerometers provide an estimate $\theta$ and the rate gyro provides $\dot{\theta}$.  Applying a low pass filter to $\theta$ and a high pass filter to $\dot{\theta}$ yields the following two expressions which can be added to obtain $\theta$ which is approximately equal to $\alpha$.  
+
+$$ \theta \frac{1}{\tau s + 1} = \frac{\theta}{\tau s + 1} $$
+$$ \dot{\theta} \frac{\tau}{\tau s + 1} = \theta s \frac{\tau}{\tau s + 1} = \theta \frac{\tau s}{\tau s + 1} $$
+$$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \left(\frac{1}{\tau s + 1} + \frac{\tau s}{\tau s + 1}  \right) = \theta \approx \alpha $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{fusion_BlockDiagram.png}
+\label{fusion_Block}
+\caption{Block Digram for Sensor Fusion}
+\end{center}
+\end{figure}
+\xxx{Block Diagram}
 
 \subsection{Experimental Evaluation}
 
