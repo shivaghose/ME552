@@ -290,6 +290,25 @@ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z}
 
 We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \xxx{not the right table?} \\
 
+
+$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+
+\begin{table}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		Bandwidth $(Hz)$ & 50 \\ \hline
+		Noise Density $Y_{out} \, \sfrac{\mu g}{\sqrt{Hz}} \, rms$ & 150 \\ \hline
+		Noise Density $Z_{out} \, \left(\sfrac{\mu g}{\sqrt{Hz}} \, rms\right)$ & 300 \\ \hline
+		Sensitivity $\left( \sfrac{mV}{g} \right)$ & 300 \\ \hline
+		$\sigma^2 \,Y_{out} \, (V^2)$ & $1.62 \e{-7}$ \\ \hline
+		$\sigma^2 \,Z_{out} \, (V^2)$ & $6.48 \e{-7}$ \\ \hline
+		
+	\end{tabular}
+\label{ParamID_AccelT}
+\end{center}
+\end{table}
+
 % adjust the data sheet values to correspond to if we had a supply voltage of 3.295 Volts, it is ratio metric so it should work
 % values as reported by matlab SY = 0.034002931081677, SZ = 0.033903141625302, EY = 2.642681255078259\e{-5}, EZ = 2.774354019095888\e{-4}
 \begin{table}
@@ -298,7 +317,7 @@ We measured the bias voltage of each axis by fixing the accelerometer such that 
         \hline
         Axis                              & Y Specification & Y   Fit & Z Specification                & Z    Fit                \\ \hline
         $V_{bias} \, (V)$                & 1.5        & 1.617433958  & 1.5         & 1.671451851           \\ 
-        $\sigma^2 \, (V^2)$                  & ~      & 1.24553\e{-5}    & ~       & 0.001852504           \\ 
+        $\sigma^2 \, (V^2)$                  & $1.62 \e{-7}$      & 1.24553\e{-5}    & $6.48 \e{-7}$       & 0.001852504           \\ 
         $\Sens \, \left(\sfrac{V s^2}{m} \right)$                & 0.03058104           & $0.03400293$  & 0.03058104   & $0.03390314$     \\ 
         Fitting Error $(V)$  & - & $2.642681\e{-5}$  & - & $2.774354\e{-4}$ \\
         \hline
@@ -342,23 +361,44 @@ $$V_{out} = A t + B + \Sens_{Gyro} \dot{\theta} $$
 
 Both $A$ and $B$ vary with time and other variables, such as temperature, so $B$, the zero rate of the gyro is determined on line and A is neglected, so their values for this particular run are irrelevant.  
 
-\xxx{redo at a higher frequency?}
-% note that these results were taken at 1.41 Hz, the natural frequency of the normal pendulum
+Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as described in the data sheet.  Noise density was computed from the total RMS noise value in the data sheet using the following formula, which was also then used to compute the expected noise over the lower bandwidth.
+
+$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+
 % quoted sensitivity = 1 / 8.635380
 \begin{table}
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|}
         \hline
-        ~                                                         & Data Sheet Value & Fit Value \\ \hline
-        $\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36             & 0.115803  \\
-	$\sigma \, \left( V^2 \right)$ & - & $3.77300 \e{-6}$ \\
-	Fitting Error $(rad)$ & - &  $3.35845 \e{-4}$ \\
+        ~   & Natural Frequency 1 & Natural Frequency 2 & Manual 1 & Manual 2\\ \hline
+	Data Set Frequency (Hz)  & 1.41  & 1.76 & 2.42 & 5.13\\
+        $\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$  & 0.115803  & 0.11672 & 0.11358 & 0.114821\\
+	$\sigma \, \left( V^2 \right)$  & $3.773 \e{-6}$ & $4.1077\e{-6}$ & 4.7680 \e{-6} & 4.1615\e{-5}\\
+	Fitting Error $(rad)$ &  $3.358 \e{-4}$ & $4.206 \e{-4}$ & 2.814 \e{-4} & 2.050 \e{-4}\\
         \hline
     \end{tabular}
 \label{ParamID_TGyro}
-\caption{Gyro Sensitivity at 1.41 Hz.}  
+\caption{Gyro Sensitivity at a variety of frequencies within the full scale range.}  
 \end{center}
 \end{table}
+
+\begin{table}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		$\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36 \\ \hline
+		Total RMS Noise $(mV \, rms)$ & 0.8 \\ \hline
+		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ \hline
+		Bandwidth $(Hz)$ & 140 \\ \hline
+		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
+		\hline
+	\end{tabular}
+\label{ParamID_DatasheetGyro}
+\caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
+\end{center}
+\end{table}
+
+
 
 \begin{figure}
 \begin{center}
