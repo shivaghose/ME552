@@ -404,7 +404,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 \begin{center}
 \includegraphics[width = 13cm]{rateGyroCalibResultsS8_636380.png}
 \label{gyroCalib}
-\caption{Actual Angle vs Fitted Angle from integrating rate gyro output}
+\caption{Actual Angle vs Fitted Angle from integrating rate gyro output for Natural Frequency 1 trial}
 \end{center}
 \end{figure}
 
@@ -559,6 +559,8 @@ $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{
 
 \subsubsection{Sensitivity}
 
+\xxx{TODO}
+
 \subsubsection{Noise}
 
 $$ \theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})$$
@@ -620,9 +622,32 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 
 \subsubsection{Angle Measurement}
 
+As mentioned earlier, the output voltage of the rate gyro is assumed to be linearly related to the the angular velocity about the sensitive axis of the gyro as shown in the equation repeated below.  The Zero Rate and the sensitivity of the gyro are assumed to be time invariant.  Solving for $\dot{\theta}$ yields:
+
+$$V_{Gyro}(t) = ZeroRate_{Gyro} + \Sens_{Gyro} \dot{\theta}(t) $$
+
+$$\dot{\theta}(t) = \frac{V_{Gyro}(t) - ZeroRate_{Gyro}}{\Sens_{Gyro}} $$
+
+Integrating the expression for $\dot{\theta}$ yields $\theta$, and this integral is approximated by applying the trapezoid rule for numerical quadrature.
+
+$$ \theta(t) = \int_0^t \dot{\theta}(\tau) d\tau = \int_0^t \frac{V_{Gyro}(\tau) - ZeroRate_{Gyro}}{\Sens_{Gyro}} d\tau$$
+$$ \theta(t) \approx \sum_{i=1}^n \left(\frac{t(i) - t(i-1)}{ \Sens_{Gyro}} \right) \left( \frac{V_{Gyro}(i) + V_{Gyro}(i - 1)}{2} - ZeroRate_{Gyro} \right) $$
+
+\xxx{Signal Conditioning}
+
 \subsubsection{Sensitivity}
 
+\xxx{TODO}
+
 \subsubsection{Noise}
+
+Because $\theta$ is given as a function of the sum of previous measurements, errors in $\theta$ are cumulative and will diverge from the true value over time.  This is reflected in time increasing variance, here expressed in terms of the number of measurements made.  Note that the following derivation neglects the variance in the zero rate which will only worsen performance and assumes that gyro variance is independent of time.
+
+$$ \sigma_{\theta}(t) \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) \left\{ \frac{t(1) - t(0)}{2} + \sum_{i = 1}^{n-1} \big( t(i) - t(i-1) \big) + \frac{t(n) - t(n-1)}{2} \right\} \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) t$$
+
+\emph{Where n is the sample taken at time, t.}
+
+\xxx{compare to real variance?}
 
 \clearpage
 \section{Higher Frequency Characterization}
