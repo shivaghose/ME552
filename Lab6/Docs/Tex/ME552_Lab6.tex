@@ -297,12 +297,12 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 \begin{center}
 	\begin{tabular}{|c|c|}
 		\hline
-		Bandwidth $(Hz)$ & 50 \\ \hline
-		Noise Density $Y_{out} \, \sfrac{\mu g}{\sqrt{Hz}} \, rms$ & 150 \\ \hline
-		Noise Density $Z_{out} \, \left(\sfrac{\mu g}{\sqrt{Hz}} \, rms\right)$ & 300 \\ \hline
-		Sensitivity $\left( \sfrac{mV}{g} \right)$ & 300 \\ \hline
-		$\sigma^2 \,Y_{out} \, (V^2)$ & $1.62 \e{-7}$ \\ \hline
-		$\sigma^2 \,Z_{out} \, (V^2)$ & $6.48 \e{-7}$ \\ \hline
+		Bandwidth $(Hz)$ & 50 \\ 
+		Noise Density $Y_{out} \, \sfrac{\mu g}{\sqrt{Hz}} \, rms$ & 150 \\ 
+		Noise Density $Z_{out} \, \left(\sfrac{\mu g}{\sqrt{Hz}} \, rms\right)$ & 300 \\ 
+		Sensitivity $\left( \sfrac{mV}{g} \right)$ & 300 \\  
+		$\sigma^2 \,Y_{out} \, (V^2)$ & $1.62 \e{-7}$ \\ 
+		$\sigma^2 \,Z_{out} \, (V^2)$ & $6.48 \e{-7}$ \\[0.1cm] \hline
 		
 	\end{tabular}
 \label{ParamID_AccelT}
@@ -345,8 +345,6 @@ We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis
 \end{center}
 \end{figure}
 
-\xxx{Compare to the data sheet values still need sigma, they give Noise density, we want sigma, Y = 150 ug/sqrt(Hz) rms, Z = 300}
-
 \subsection*{Rate Gyro}
 
 % note that these calibration results were obtained from the natural frequency with the normal pendulum
@@ -365,6 +363,22 @@ Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as descri
 
 $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 
+\begin{table}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		$\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36 \\ 
+		Total RMS Noise $(mV \, rms)$ & 0.8 \\ 
+		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ 
+		Bandwidth $(Hz)$ & 140 \\ 
+		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
+		\hline
+	\end{tabular}
+\label{ParamID_DatasheetGyro}
+\caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
+\end{center}
+\end{table}
+
 % quoted sensitivity = 1 / 8.635380
 \begin{table}
 \begin{center}
@@ -382,21 +396,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 \end{center}
 \end{table}
 
-\begin{table}
-\begin{center}
-	\begin{tabular}{|c|c|}
-		\hline
-		$\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36 \\ \hline
-		Total RMS Noise $(mV \, rms)$ & 0.8 \\ \hline
-		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ \hline
-		Bandwidth $(Hz)$ & 140 \\ \hline
-		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
-		\hline
-	\end{tabular}
-\label{ParamID_DatasheetGyro}
-\caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
-\end{center}
-\end{table}
+
 
 
 
