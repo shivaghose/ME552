@@ -259,10 +259,13 @@ This pin is an input to an auto-zero funciton for the X and Y axis gyros. When a
 % there is probably more stuff
 \begin{itemize}
 \item{Assume that outputs of each axis of the accelerometer and the gyro are independent of one another}
+\item{Assume zero bias of each accelerometer axis is stationary} % we may eliminate this assumption if we do online calibration
+\item{$g = 9.81 \, \left( \sfrac{m^2}{s}\right) $}
 \end{itemize}
 
 \section{Parameter Identification}
 
+\subsection*{Accelerometers}
 The basic behavior of an accelerometer, sensitive in the $\hat{u}$ direction is given by equation \ref{ParamID_EQ1} for quasi-static accelerations.  Where $V_{out}$ is the output voltage of the sensor, $V_{bias}$ is the output of the sensor under no acceleration, $V_{supply}$ is the supply voltage to the sensor, and $\Sens$ is a linear approximation of sensor behavior.
 
 \begin{equation}
@@ -285,30 +288,126 @@ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z}
 \end{center}
 \end{figure}
 
-\xxx{need two pictures of the cartoon proof mass}
-
 We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \xxx{not the right table?} \\
 
-\xxx{units for variance}
+
+$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+
+\begin{table}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		Bandwidth $(Hz)$ & 50 \\ 
+		Noise Density $Y_{out} \, \sfrac{\mu g}{\sqrt{Hz}} \, rms$ & 150 \\ 
+		Noise Density $Z_{out} \, \left(\sfrac{\mu g}{\sqrt{Hz}} \, rms\right)$ & 300 \\ 
+		Sensitivity $\left( \sfrac{mV}{g} \right)$ & 300 \\  
+		$\sigma^2 \,Y_{out} \, (V^2)$ & $1.62 \e{-7}$ \\ 
+		$\sigma^2 \,Z_{out} \, (V^2)$ & $6.48 \e{-7}$ \\[0.1cm] \hline
+		
+	\end{tabular}
+\label{ParamID_AccelT}
+\end{center}
+\end{table}
+
+% adjust the data sheet values to correspond to if we had a supply voltage of 3.295 Volts, it is ratio metric so it should work
 % values as reported by matlab SY = 0.034002931081677, SZ = 0.033903141625302, EY = 2.642681255078259\e{-5}, EZ = 2.774354019095888\e{-4}
 \begin{table}
 \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|}
         \hline
-        Axis                              & Y                     & Z                     \\ \hline
-        $V_{bias} \, (V)$                        & 1.617433958           & 1.671451851           \\ 
-        $\sigma^2 \, (V^2)$                        & 1.24553\e{-5}           & 0.001852504           \\ 
-        $\Sens \, \left(\sfrac{V s^2}{m} \right)$                           & $0.03400293$     & $0.03390314$     \\ 
-        Fitting Error $(V)$ & $2.642681\e{-5}$ & $2.774354\e{-4}$ \\
+        Axis                              & Y Specification & Y   Fit & Z Specification                & Z    Fit                \\ \hline
+        $V_{bias} \, (V)$                & 1.5        & 1.617433958  & 1.5         & 1.671451851           \\ 
+        $\sigma^2 \, (V^2)$                  & $1.62 \e{-7}$      & 1.24553\e{-5}    & $6.48 \e{-7}$       & 0.001852504           \\ 
+        $\Sens \, \left(\sfrac{V s^2}{m} \right)$                & 0.03058104           & $0.03400293$  & 0.03058104   & $0.03390314$     \\ 
+        Fitting Error $(V)$  & - & $2.642681\e{-5}$  & - & $2.774354\e{-4}$ \\
         \hline
     \end{tabular}
 \label{ParamID_T}
-\caption{Fitting error denotes average error per sample}
+\caption{Fitting error denotes average error per sample.  Note that the bias voltage and sensitivities quoted in the data sheet are for a supply voltage of 3.0 V, while we are using a supply voltage of 3.295 V}
 \end{center}
 \end{table}
 
 We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis, but it is to a much greater degree than the data sheet would suggest.  We also see that this extra noise is reflected in the higher fitting errors for the Z-axis data.  
 
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{YaxisAccel_Calib.png}
+\label{YaccelCalib}
+\caption{Expected vs Measured Voltages for the Y axis accelerometer}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{ZaxisAccel_Calib.png}
+\label{ZaccelCalib}
+\caption{Expected vs Measured Voltages for the Z axis accelerometer}
+\end{center}
+\end{figure}
+
+\subsection*{Rate Gyro}
+
+% note that these calibration results were obtained from the natural frequency with the normal pendulum
+
+A rate gyro gives outputs a voltage proportional to the angular rate about the sensitive axis of the gyro with some offset, the Zero Rate which is not ratiometric.  
+
+$$V_{out} = ZeroRate + \Sens_{Gyro} \dot{\theta} $$
+
+However even of the time period of a few seconds, we encountered several difficulties in trying to apply such a model.  First of all, the rate gyro's response is limited to higher frequencies requiring us to use an oscillating calibration run at the natural frequency of our pendulum sensor set up, of approximately 1.41 Hz.  The data was trimmed to only include the region of the response of a high enough frequency to be within the bandwidth of the sensor.  Secondly, even over this shorter calibration run, the Zero Rate was no constant.  To overcome these difficulties, we fit a slightly more complex model to obtain a good value for the sensitivity.
+
+$$V_{out} = A t + B + \Sens_{Gyro} \dot{\theta} $$
+
+Both $A$ and $B$ vary with time and other variables, such as temperature, so $B$, the zero rate of the gyro is determined on line and A is neglected, so their values for this particular run are irrelevant.  
+
+Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as described in the data sheet.  Noise density was computed from the total RMS noise value in the data sheet using the following formula, which was also then used to compute the expected noise over the lower bandwidth.
+
+$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+
+\begin{table}
+\begin{center}
+	\begin{tabular}{|c|c|}
+		\hline
+		
+		$\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$ & 0.36 \\ 
+		Total RMS Noise $(mV \, rms)$ & 0.8 \\ 
+		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ 
+		Bandwidth $(Hz)$ & 140 \\ 
+		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
+		\hline
+	\end{tabular}
+\label{ParamID_DatasheetGyro}
+\caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
+\end{center}
+\end{table}
+
+% quoted sensitivity = 1 / 8.635380
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        ~   & Natural Frequency 1 & Natural Frequency 2 & Manual 1 & Manual 2\\ \hline
+	Data Set Frequency (Hz)  & 1.41  & 1.76 & 2.42 & 5.13\\
+        $\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$  & 0.115803  & 0.11672 & 0.11358 & 0.114821\\
+	$\sigma \, \left( V^2 \right)$  & $3.773 \e{-6}$ & $4.1077\e{-6}$ & 4.7680 \e{-6} & 4.1615\e{-5}\\
+	Fitting Error $(rad)$ &  $3.358 \e{-4}$ & $4.206 \e{-4}$ & 2.814 \e{-4} & 2.050 \e{-4}\\
+        \hline
+    \end{tabular}
+\label{ParamID_TGyro}
+\caption{Gyro Sensitivity at a variety of frequencies within the full scale range.}  
+\end{center}
+\end{table}
+
+
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 13cm]{rateGyroCalibResultsS8_636380.png}
+\label{gyroCalib}
+\caption{Actual Angle vs Fitted Angle from integrating rate gyro output for Natural Frequency 1 trial}
+\end{center}
+\end{figure}
 
 \clearpage
 \section{Low Frequency Characterization}
@@ -329,9 +428,19 @@ $\theta$ can be easily computed by the following expression:
 \label{horizontalEQ}
 \end{equation}
 
-When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.
+When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.  It is important to note that the arcsine function has a restricted domain and is only valid on inputs between -1 and 1.  Noise and inaccurate estimates of the bias voltage, sensitivity and gravity can all drive the input quantity beyond this range.  To address this, we simply saturate inputs to restrict them to the valid range.
 
-\xxx{Signal Conditioning?}
+$$\theta = \left\{ 
+	\begin{array}{l l}
+		\sin^{-1} \left(\frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} \right) & {\bf{if }} \, \left| \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} \right| \leq 1 \\[6pt]
+		\frac{\pi}{2} & {\bf{if }} \, \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} > 1 \\[6pt]
+		-\frac{\pi}{2} & {\bf{if} } \, \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} < -1
+	\end{array} \right. $$
+
+%%%%%%
+% Need real Data for part i
+\xxx{still need the real results here?}
+%%%%%%
 
 \subsubsection{Sensitivity}
 
@@ -340,8 +449,6 @@ The relationship between sensor output voltage and angle is non-linear, but we a
 $$ V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \sin(0) + \Sens_{Z} g \cos(0) \left(\theta - 0\right) = V_{Zbias} + \Sens_{Z} g \theta $$
 
 For the horizontal accelerometer, we expect the sensitivity to be $\Sens_{Z} g$. 
-
-\xxx{still need the real results here?}
 
 \subsubsection{Noise}
 
@@ -357,8 +464,7 @@ For $\theta \approx 0$ we would expect the noise of our angle measurements to be
 
 $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Z}}}{(\Sens_{Z} g)^2}$$
 
-% we could plot \sigma^2_theta with respect to theta if we wanted to
-\xxx{need to compare to real noise about this point, but our math should be exactly correct}
+The following data was collected for a fixed vertical pendulum, $\alpha = 0$.  It seems that there was a discrepancy betweeen the earlier recorded bias voltage for the Z-axis, and the bias voltage for this trial.  Besides that difference, the mean and variance very closely resemble the expected values, but as noted earlier the noise is significantly worse than promised by the data sheet.  
 
 % comparison to real data here
 \begin{table}
@@ -366,14 +472,14 @@ $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Z}}}{(\Se
     \begin{tabular}{|c|c|c|}
         \hline
         ~                   & Theoretical  & Actual \\ \hline
-        $\sigma^2_{V_{Z}}$    & 0.001852504            & ~      \\ 
-        $\sigma^2_{\theta}$ & ~            & ~      \\ 
-        $\mu_{V_{Z}}$       & 1.671451851            & ~      \\ 
-        $\mu_{\theta}$      & ~            & ~      \\
+        $\sigma^2_{V_{Z}} \, (V^2)$    & 0.001852504            &  0.00185231      \\ 
+        $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716            & 0.0169008      \\ 
+        $\mu_{V_{Z}} \, (V)$       & 1.671451851            &  1.701057      \\ 
+        $\mu_{\theta} \, (rad)$      & 0            &  -1.219912 \e{-5}     \\
         \hline
     \end{tabular}
 \label{Noise_horizontal_T}
-\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage was measured in another trial.}}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage and bias were measured in another trial.}}
 \end{center}
 \end{table}
 
@@ -393,21 +499,29 @@ Then $\theta$ is given by the following expression:
 \label{verticalEQ}
 \end{equation}
 
-When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$. 
+When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$.  The arccosine function also has a limited domain, from 1 to -1, and we simply limit it to the valid range as in the horizontal accelerometer case above.
 
-\xxx{Signal Conditioning?}
+$$\theta = \left\{ 
+	\begin{array}{l l}
+		\cos^{-1}\left( \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g}\right) & {\bf{if }} \, \left| \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right| \leq 1 \\[6pt]
+		0 & {\bf{if }} \, \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} > 1 \\[6pt]
+		-\pi & {\bf{if} } \, \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} < -1
+	\end{array} \right. $$
+
+%%%%%%%
+% Real Results
+\xxx{still need the real results here}
+%%%%%%%
 
 \subsubsection{Sensitivity}
 
-However attempting to linearize about $\theta = 0$ for the accelerometer in the vertical configuration is not nearly as successful.  Yielding a relationship that does not depend on $\theta$ at all.  This result is expected from our earlier assesment of the angle ambiguity between positive values of $\theta$ and negative values.  
+However linearizing about $\theta = 0$ for the accelerometer in the vertical configuration is not particularly successful,  yielding a relationship that does not depend on $\theta$ at all.  This result is expected from our earlier assessment of the angle ambiguity between positive values of $\theta$ and negative values.  
 
 $$V_{Y}(\theta) \approx V_{Ybias} + \Sens_{Y} g \cos(0) - \Sens_{Y} g \sin(0) (\theta - 0) = V_{Ybias} + \Sens_{Y} g $$
 
-\xxx{still need the real results here}
-
 \subsubsection{Noise}
 
-We can again use variance projection to estimate the noise in our angle measurements, taking the partial derivative of equation \ref{verticalEQ}.
+As before, the following noise trial was conducted for a fixed vertical pendulum, with $\alpha = 0$. We can again use variance projection to estimate the noise in our angle measurements, taking the partial derivative of equation \ref{verticalEQ}.
 
 $$ \frac{\partial \theta}{\partial V_{Y}} = -\frac{1}{\sqrt{(\Sens_{Y} g)^2 - (V_{Y} - V_{Ybias})^2}}$$
 
@@ -415,30 +529,53 @@ $$ \sigma^2_{\theta} = \frac{\partial \theta}{\partial V_{Y}} \sigma^2_{V_{Y}} \
 
 $$ \sigma^2_{\theta} = \frac{\sigma^2_{V_{Y}}}{(\Sens_{Y} g)^2 - (V_{Y} - V_{Ybias})^2}$$
 
-As we would expect, this appears identical to the equation for noise of the horizontally mounted accelerometer.  The difference in behavior is simply the voltage around which we linearize.  Substituting the value for $V_{Y}$ about $\theta = 0$  yields absolutely terrible data compared to the horizontal case.
+As we would expect, this appears identical to the equation for noise of the horizontally mounted accelerometer.  The difference in behavior is simply the voltage around which we linearize.  Substituting the value for $V_{Y}$ about $\theta = 0$  yields a surprising result.
 
 % is this result just a quirk of the linearization?
 
 $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Y}}}{(\Sens_{Y} g)^2 - (V_{Ybias} + \Sens_{Y} g - V_{Ybias})^2} = \infty$$
 
-% comparison to real data here
+What has happened, is that the above calculation neglected the effects of our earlier signal conditioning.  While the expected voltage is $V_{Ybias} + \Sens_Y g$.  The expected value of the quantity within the arccosine is not 1.  Because of the saturation conditioning used to prevent arccosine from failing, the actual distribution is no longer Gaussian, and most importantly is not symmetric about 0 which leads to the relatively large deviation from the expected mean of desired mean of 0.  Instead the expectation is given by:
 
+$$ E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right] \approx 0.5 \cdot 1 + 0.5 \cdot \big(1 - \sigma_{V_Y} \sqrt{\sfrac{2}{\pi}} \big) = 0.99859205 $$
+
+$$ E\left[ \cos^{-1} \left(  E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right]  \right)  \right] = 0.0530713 \, (rad) $$
+
+The variance of this sort of distribution is given by: 
+
+% think I'm a bit off in this calculation, I didn't quite take into account the fact that it isn't just a half gaussian, we've got that spike at 1, http://en.wikipedia.org/wiki/Half-normal_distribution
+% what I have is a clipped normal distribution
+\xxx{verify this one calculation, it seems a little bit off - - - - - - -   V}
+$$ \sigma_{arg1}^2 = \frac{\sigma^2_{V_Y}}{(\Sens_Y g)^2} = 1.11939534 \e{-4} \quad \sigma_{arg2}^2 = \sigma_{arg}^2 \left(1 - \frac{2}{\pi} \right) = 4.06766136 \e{-5}$$
+
+Then all that is left to do is to linearize the arccosine about this new mean:
+
+$$ \frac{d}{dx} \cos^-1(0.99859205) = -\frac{1}{\sqrt{1 - 0.99859205^2}} = -18.85143028 $$
+
+\emph{Because the function is highly nonlinear in this region, the variance estimate is not going to particularly accurate.}  
+
+Finally the variance can be obtained:
+
+$$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma_{arg2}^2 = 0.01445551 $$
+
+% comparison to real data here
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
         ~                   & Theoretical  & Actual \\ \hline
-        $\sigma^2_{V_{Y}}$    & 1.24553\e{-5}  & ~      \\ 
-	$\sigma^2_{\theta}$ & $\infty$           & ~      \\ 
-	$\mu_{V_{Y}}$       & 1.95100270            & ~      \\
-        $\mu_{\theta}$      & 0            & ~      \\
+        $\sigma^2_{V_{Y}} \, (V^2)$    & 1.24553\e{-5}  & 5.807739 \e{-5}      \\ 
+	$\sigma^2_{\theta} \, (rad^2)$ & 0.01445551           &  0.009754764     \\ 
+	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.95268     \\
+        $\mu_{\theta} \, (rad)$      & 0.0530713            & 0.09371065      \\
         \hline
     \end{tabular}
 \label{Noise_vertical_T}
-\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage was measured in another trial.}}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}}
 \end{center}
 \end{table}
 
+The trial verifies our suspicions that the mean would not be 0, and in fact in the trial, the variance was greater, than in our measurements causing the mean angle to be further from 0 than expected. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Two Accelerometers}
@@ -459,11 +596,39 @@ $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{
 
 \xxx{Signal Conditioning?}
 
+%%%%%%%
+% Still need real results
+\xxx{Real Results here}
+%%%%%%%
+
 \subsubsection{Sensitivity}
+
+Sensitivity of our angle measurement, $\theta$ is simply given by the partial derivatives, shown in equations \ref{dualAccel_partialVY} and \ref{dualAccel_partialVZ} of our expression for $\theta$ shown in equation \ref{dualAccel_EQ}.
+
+\begin{equation}
+\theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})
+\label{dualAccel_EQ}
+\end{equation}
+
+\begin{equation}
+\frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zbias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}
+\label{dualAccel_partialVY}
+\end{equation}
+
+\begin{equation}
+\frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}
+\label{dualAccel_partialVZ}
+\end{equation}
+
+For $\theta \approx 0$, the sensitivity to the Y axis drops to 0 and the sensitivity to the Z axis is given by the same expression as before. 
+
+\xxx{do they want sensitivity from V to $\theta$ or the other way around}
+
+$$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partial V_Z} = \frac{1}{\Sens_{Z} g}$$
 
 \subsubsection{Noise}
 
-$$ \theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})$$
+Determining the expected noise is a bit more complicated for functions of several variables and requires a bit more math, shown below.   
 
 Let 
 
@@ -482,11 +647,7 @@ $$ \sigma^2_{\theta} = \Sigma_{\theta} = J \Sigma_{\vec{x}} J^T  \quad
 
 $$ \sigma^2_{\theta} = \left(\frac{\partial f}{\partial V_{Y}}\right)^2 \sigma^2_{V_{Y}} + \left(\frac{\partial f }{\partial V_Z} \right)^2 \sigma^2_{V_{Z}} $$
 
-$$ \frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zbias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
-
-$$ \frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
-
-For $\theta = 0$ we can simply plug in the nominal voltages earlier to estimate the noise in this angle measurement.
+For our trial conducted with the pendulum in the vertical position, $\alpha = 0$, we can simply plug in $\theta = 0$ into our earlier equations to estimate the noise in this angle measurement.  For $\theta = 0$, the noise is approximately equal to the noise using only the horizontal axis of the accelerometer, which turns out ot be almost exactly true, though the variance does not quite match the actual value considering just the horizontal axis.
 
 $$ \theta \approx 0 \quad V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \theta \quad V_{Y}(\theta)  \approx V_{Ybias} + \Sens_{Y} g $$
 
@@ -494,25 +655,22 @@ $$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partia
 
 $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{\Sens_{Z} g} \right)^2 \sigma^2_{V_{Z}} = \left( \frac{\sigma_{V_Z}}{\Sens_{Z} g} \right)^2$$
 
-\xxx{compare to real system}
-
 % comparison to real system
-
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|}
         \hline
         ~                   & Theoretical  & Actual \\ \hline
-        $\sigma^2_{V_{Z}}$    & 0.001852504            & ~      \\ 
-	$\mu_{V_{Z}}$       & 1.671451851            & ~      \\ 
-	$\sigma^2_{V_{Y}}$ & 1.24553\e{-5}		& ~ \\
-	$\mu_{V_{Y}}$       & ~            & ~      \\ 
-        $\sigma^2_{\theta}$ & ~            & ~      \\ 
-        $\mu_{\theta}$      & ~            & ~      \\
+        $\sigma^2_{V_{Z}} \, (V^2)$    & 0.001852504            & 0.001852312     \\ 
+	$\mu_{V_{Z}} \, (V)$       & 1.671451851            & 1.7010571      \\ 
+	$\sigma^2_{V_{Y}} \, (V^2)$ & 1.24553\e{-5}		& 5.8077389 \e{-5} \\
+	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.619099      \\ 
+        $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716             &  0.01647518     \\ 
+        $\mu_{\theta} \, (rad)$      & 0            & -0.002390427      \\
         \hline
     \end{tabular}
 \label{Noise_dual_T}
-\caption{Comparison of expected noise and actual noise for $\theta = 0$}
+\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.}
 \end{center}
 \end{table}
 
@@ -522,15 +680,130 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 
 \subsubsection{Angle Measurement}
 
+As mentioned earlier, the output voltage of the rate gyro is assumed to be linearly related to the the angular velocity about the sensitive axis of the gyro as shown in the equation repeated below.  The Zero Rate and the sensitivity of the gyro are assumed to be time invariant.  Solving for $\dot{\theta}$ yields:
+
+$$V_{Gyro}(t) = ZeroRate_{Gyro} + \Sens_{Gyro} \dot{\theta}(t) $$
+
+$$\dot{\theta}(t) = \frac{V_{Gyro}(t) - ZeroRate_{Gyro}}{\Sens_{Gyro}} $$
+
+Integrating the expression for $\dot{\theta}$ yields $\theta$, and this integral is approximated by applying the trapezoid rule for numerical quadrature.
+
+$$ \theta(t) = \int_0^t \dot{\theta}(\tau) d\tau = \int_0^t \frac{V_{Gyro}(\tau) - ZeroRate_{Gyro}}{\Sens_{Gyro}} d\tau$$
+$$ \theta(t) \approx \sum_{i=1}^n \left(\frac{t(i) - t(i-1)}{ \Sens_{Gyro}} \right) \left( \frac{V_{Gyro}(i) + V_{Gyro}(i - 1)}{2} - ZeroRate_{Gyro} \right) $$
+
+%%%%%
+% results here
+\xxx{need results here}
+%%%%%
+
+\xxx{Signal Conditioning}
+
 \subsubsection{Sensitivity}
+
+As described above, there is no linear relationship between the voltage reported by the rate gyro and the angular position of the pendulum.  
 
 \subsubsection{Noise}
 
+Because $\theta$ is given as a function of the sum of previous measurements, errors in $\theta$ are cumulative and will diverge from the true value over time.  This is reflected in time increasing variance, here expressed in terms of the number of measurements made.  Note that the following derivation neglects the variance in the zero rate which will only worsen performance and assumes that gyro variance is independent of time.
+
+$$ \sigma_{\theta}(t) \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) \left\{ \frac{t(1) - t(0)}{2} + \sum_{i = 1}^{n-1} \big( t(i) - t(i-1) \big) + \frac{t(n) - t(n-1)}{2} \right\} \approx \left( \frac{\sigma_{Gyro}^2}{\Sens_{Gyro}} \right) t$$
+
+\emph{Where n is the sample taken at time, t.} \\
+
+It is important to note, that despite this high variance, the actual output will look quite smooth because of the high degree of correlation between subsequent position estimates.  \\
+
+The following trial was conducted for a fixed vertical pendulum angle, $\alpha = 0$.  Because our noise trial was done stationary, the gyro's lack of sensitivity to low frequency motion was not important, and its superior noise characteristics to the other sensors lead to very little noise in $\theta$.  In this trial, the Zero Rate was estimated from data within the first second.  Notice the slight discrepancy between the mean gyro voltage, and the zero rate.  This discrepancy leads to the divergent behavior seen in figure \ref{static_Gyro}.   Compared to the effect of zero rate drift, the effect of accumulating errors due to integration is essentially negligible.  
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        ~                     & Actual \\ \hline
+        $\sigma^2_{V_{Gyro}} \, (V^2)$              &  1.0179178 \e{-6}      \\ 
+        $\sigma^2_{\theta} \, (rad^2)$             & 3.3233613 \e{-6}      \\ 
+        $\mu_{V_{Gyro}} \, (V)$                &  1.360523703     \\ 
+	$ ZeroRate_{Gyro} \, (V)$ 	     &  1.360478444 \\
+        $\mu_{\theta} \, (rad)$               &  0.002894257     \\
+        \hline
+    \end{tabular}
+\label{Noise_horizontal_T}
+\caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.}
+\end{center}
+\end{table}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{rateGyro_Static.png}
+\label{static_Gyro}
+\caption{Rate Gyro Angle estimate with static pendulum at $\theta = 0$}
+\end{center}
+\end{figure}
+
 \clearpage
+%%%%%%%%%%%%%%%%%%%
+
+\section{Filter Results}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%
+
 \section{Higher Frequency Characterization}
 
-\clearpage
-\section{Sensor Fusion}
+
+\subsection{Horizontal Accelerometer}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
 
 \clearpage
+%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Vertical Accelerometer}
+\subsubsection{High Frequency}
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Two Accelerometer}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Rate Gyro}
+\subsubsection{High Frequency}
+
+\subsubsection{High Frequency with Horizontal Arm Disturbance}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%%%
+\section{Sensor Fusion}
+
+\subsection{Construction}
+We make use of the all three inertial sensors discussed in the previous sections, the horizontal and vertical accelerometers and the rate gyro.  Using both accelerometers eliminates sign ambiguities to provide angle measurements for a full 360 degrees, but it suffers from poor performance at higher angular rates because of dynamic effects.  To overcome this issue we use the rate-gryo which suffers from poor performance at lower angular rates, but is able to provide accurate angles at higher rates.  By combining these sensors we can achieve performance across a broader range of frequencies and angles than by using a single sensor alone.  
+
+As in the set up that we have used for the entire lab, the Y-axis of the accelerometer points in the vertical direction at $\theta = 0$ while the Z-axis points in the horizontal direction, while the X-axis of the gyro is parallel to the axis of the encoder and perpendicular to the Y and Z axes of the accelerometer.  
+
+\subsection{Filter Design}
+
+We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometer and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
+
+\subsection{Block Diagram}
+
+For encoder angle $\alpha$, we have already shown that the pair of accelerometers provide an estimate $\theta$ and the rate gyro provides $\dot{\theta}$.  Applying a low pass filter to $\theta$ and a high pass filter to $\dot{\theta}$ yields the following two expressions which can be added to obtain $\theta$ which is approximately equal to $\alpha$.  
+
+$$ \theta \frac{1}{\tau s + 1} = \frac{\theta}{\tau s + 1} $$
+$$ \dot{\theta} \frac{\tau}{\tau s + 1} = \theta s \frac{\tau}{\tau s + 1} = \theta \frac{\tau s}{\tau s + 1} $$
+$$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \left(\frac{1}{\tau s + 1} + \frac{\tau s}{\tau s + 1}  \right) = \theta \approx \alpha $$
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 14cm]{fusion_BlockDiagram.png}
+\label{fusion_Block}
+\caption{Block Digram for Sensor Fusion}
+\end{center}
+\end{figure}
+
+\subsection{Experimental Evaluation}
+
 \end{document}
