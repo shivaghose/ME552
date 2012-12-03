@@ -428,8 +428,14 @@ $\theta$ can be easily computed by the following expression:
 \label{horizontalEQ}
 \end{equation}
 
-When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.
+When using a single accelerometer in the horizontal configuration aliasing occurs for $|\theta| \geq \sfrac{\pi}{2}$.  It is important to note that the arcsine function has a restricted domain and is only valid on inputs between -1 and 1.  Noise and inaccurate estimates of the bias voltage, sensitivity and gravity can all drive the input quantity beyond this range.  To address this, we simply saturate inputs to restrict them to the valid range.
 
+$$\theta = \left\{ 
+	\begin{array}{l l}
+		\sin^{-1} \left(\frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} \right) & {\bf{if }} \, \left| \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} \right| \leq 1 \\[6pt]
+		\frac{\pi}{2} & {\bf{if }} \, \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} > 1 \\[6pt]
+		-\frac{\pi}{2} & {\bf{if} } \, \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} < -1
+	\end{array} \right. $$
 \xxx{Signal Conditioning?}
 
 \subsubsection{Sensitivity}
@@ -492,7 +498,14 @@ Then $\theta$ is given by the following expression:
 \label{verticalEQ}
 \end{equation}
 
-When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$. 
+When using a single accelerometer in this configuration aliasing occurs for angles beyond the range $0 \leq \theta \leq \pi$.  This range is much less useful than the range for a single accelerometer in the horizontal configuration because we are unable to read negative angles immediately next to our starting condition, $\theta = 0$.  The arccosine function also has a limited domain and we simply limit it to the valid range as in the horizontal accelerometer case above.
+
+$$\theta = \left\{ 
+	\begin{array}{l l}
+		\cos^{-1}\left( \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g}\right) & {\bf{if }} \, \left| \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right| \leq 1 \\[6pt]
+		0 & {\bf{if }} \, \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} > 1 \\[6pt]
+		-\pi & {\bf{if} } \, \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} < -1
+	\end{array} \right. $$
 
 \xxx{Signal Conditioning?}
 
