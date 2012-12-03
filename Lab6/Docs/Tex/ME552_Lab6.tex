@@ -596,15 +596,39 @@ $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{
 
 \xxx{Signal Conditioning?}
 
+%%%%%%%
+% Still need real results
+\xxx{Real Results here}
+%%%%%%%
+
 \subsubsection{Sensitivity}
 
-\xxx{TODO}
+Sensitivity of our angle measurement, $\theta$ is simply given by the partial derivatives, shown in equations \ref{dualAccel_partialVY} and \ref{dualAccel_partialVZ} of our expression for $\theta$ shown in equation \ref{dualAccel_EQ}.
+
+\begin{equation}
+\theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})
+\label{dualAccel_EQ}
+\end{equation}
+
+\begin{equation}
+\frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zbias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}
+\label{dualAccel_partialVY}
+\end{equation}
+
+\begin{equation}
+\frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}
+\label{dualAccel_partialVZ}
+\end{equation}
+
+For $\theta \approx 0$, the sensitivity to the Y axis drops to 0 and the sensitivity to the Z axis is given by the same expression as before. 
+
+\xxx{do they want sensitivity from V to $\theta$ or the other way around}
+
+$$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partial V_Z} = \frac{1}{\Sens_{Z} g}$$
 
 \subsubsection{Noise}
 
 Determining the expected noise is a bit more complicated for functions of several variables and requires a bit more math, shown below.   
-
-$$ \theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})$$
 
 Let 
 
@@ -623,10 +647,6 @@ $$ \sigma^2_{\theta} = \Sigma_{\theta} = J \Sigma_{\vec{x}} J^T  \quad
 
 $$ \sigma^2_{\theta} = \left(\frac{\partial f}{\partial V_{Y}}\right)^2 \sigma^2_{V_{Y}} + \left(\frac{\partial f }{\partial V_Z} \right)^2 \sigma^2_{V_{Z}} $$
 
-$$ \frac{\partial f}{\partial V_{Y}} = \frac{\Sens_Z \Sens_Y \left(V_{Z} - V_{Zbias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
-
-$$ \frac{\partial f }{\partial V_Z} = \frac{\Sens_Z \Sens_Y \left(V_{Y} - V_{Ybias} \right)}{\Sens^2_Y \left(V_Z - V_{Zbias} \right) ^2 + \Sens^2_Z \left( V_Y - V_{Ybias}\right)^2}$$
-
 For our trial conducted with the pendulum in the vertical position, $\alpha = 0$, we can simply plug in $\theta = 0$ into our earlier equations to estimate the noise in this angle measurement.  For $\theta = 0$, the noise is approximately equal to the noise using only the horizontal axis of the accelerometer, which turns out ot be almost exactly true, though the variance does not quite match the actual value considering just the horizontal axis.
 
 $$ \theta \approx 0 \quad V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \theta \quad V_{Y}(\theta)  \approx V_{Ybias} + \Sens_{Y} g $$
@@ -635,10 +655,7 @@ $$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partia
 
 $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{\Sens_{Z} g} \right)^2 \sigma^2_{V_{Z}} = \left( \frac{\sigma_{V_Z}}{\Sens_{Z} g} \right)^2$$
 
-\xxx{compare to real system}
-
 % comparison to real system
-
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|}
@@ -653,7 +670,7 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
         \hline
     \end{tabular}
 \label{Noise_dual_T}
-\caption{Comparison of expected noise and actual noise for $\theta = 0$}
+\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.}
 \end{center}
 \end{table}
 
@@ -673,6 +690,11 @@ Integrating the expression for $\dot{\theta}$ yields $\theta$, and this integral
 
 $$ \theta(t) = \int_0^t \dot{\theta}(\tau) d\tau = \int_0^t \frac{V_{Gyro}(\tau) - ZeroRate_{Gyro}}{\Sens_{Gyro}} d\tau$$
 $$ \theta(t) \approx \sum_{i=1}^n \left(\frac{t(i) - t(i-1)}{ \Sens_{Gyro}} \right) \left( \frac{V_{Gyro}(i) + V_{Gyro}(i - 1)}{2} - ZeroRate_{Gyro} \right) $$
+
+%%%%%
+% results here
+\xxx{need results here}
+%%%%%
 
 \xxx{Signal Conditioning}
 
@@ -716,6 +738,11 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \caption{Rate Gyro Angle estimate with static pendulum at $\theta = 0$}
 \end{center}
 \end{figure}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%
+
+\section{Filter Results}
 
 \clearpage
 %%%%%%%%%%%%%%%%%%%
