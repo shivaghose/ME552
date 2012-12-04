@@ -851,10 +851,9 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \subsection{Vertical Accelerometer}
 \subsubsection{High Frequency}
 
+Figure \ref{full_vertical} shows the angular range of the vertical accelerometer when the pendulum undergoes a full rotation at high speed. The accelerometer was capable of an ouput range of 0$^{\circ}$to 152.4$^{\circ}$. However, it is not capable of distinguishing direction of rotation (ie. it can't distinguish positive from negative angles from the intial vertical position). \\
 
-Figure \ref{full_vertical} shows the angular range of the vertical accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of 0$^{\circ}$to  152.4$^{\circ}$. Howevr, it is not capable of distinguishing direction of rotation (ie. it can't distinguish positive from negative angles from the intial vertical position). \\
-
-Figure \ref{normal_horizontal} shows one test of the pendulum oscilating naturally. In this case, the magnitude of angle output matched the encoder decently, but because it can't distinguish negative angles, it isn't accurate for anything but magnitude. The magnitude was under 10\% for all tests up to 1.7606 Hz (though it tended to be slightly greater than for the horizontal acclereometer), but the phase lag was never below 10$^{\circ}$ (at 5.4772 Hz the phase lag is only 9.8590$^{\circ}$, but this is likely a misleading result caused by the noise from manually shaking the pendulum). The smallest lag was 20.7696$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 9.479$^{\circ}$. This is greater than with the horizontal arm and is likely caused by the pendulum not being perfectly vertical at the start of the test, and greater observed noise in the anglular output.\\ 
+Figure \ref{normal_horizontal} shows one test of the pendulum oscilating naturally. In this case, the magnitude of angle output matched the encoder decently, but because it can't distinguish negative angles, it isn't accurate for anything but magnitude. The magnitude was under 10\% for all tests up to 1.7606 Hz (though it tended to be slightly greater than for the horizontal acclereometer), but the phase lag was never below 10$^{\circ}$ (at 5.4772 Hz the phase lag is only 9.8590$^{\circ}$, but this is likely a misleading result caused by the noise from manually shaking the pendulum). The smallest lag was 20.7696$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 9.479$^{\circ}$. This is greater than with the horizontal accelerometer and is likely caused by the pendulum not being perfectly vertical at the start of the test, and greater observed noise in the anglular output.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
@@ -927,6 +926,10 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 \subsection{Two Accelerometer}
 \subsubsection{High Frequency}
 
+Figure \ref{full_Dual} shows the angular range using the atan2 funtion with two accelerometers. The accelerometer was capable of an ouput range from 0$^{\circ}$to 359.6$^{\circ}$, following the encoder through the full rotation. However, while this method can cover a full circle, the user has too choose whether they want it output as 0 to 2$\pi$ or -$\pi$ to $\pi$. In this case we chose 0 to 2$\pi$, which results in step changes when the pendulum is oscilating near 0. For the natural and forced oscilation tests, we chose instead to use -$\pi$ to $\pi$ to cover the full range of the pendulum's motion. \\
+
+Figure \ref{normal_dual} shows one test of the pendulum oscilating naturally. The dual encoder method matches the magnitude well in both directions, but there is still some steady-state error . Like the previous accelerometers, the magnitude was under 10\% for all tests up to 1.7606 Hz, but the phase lag was never below 10$^{\circ}$. Because it depends on the output of the two accelerometers, it makes sense that the magnitude and phase are similar, but this method gives better range. The smallest lag was 22.89$^{\circ}$ at 1.3902 Hz. The average steady-state error was 6.6766$^{\circ}$, which is less than the two individual accelerometers.\\ 
+
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Dual.png}
@@ -943,22 +946,32 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 \end{center}
 \end{figure}
 
+Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 function with two accelerometers and tables \ref{dual_tableA} and \ref{dual_tableB} give the performance measures. The bode plot generally resembles that of the horizontal acceleromter with the magnitude of the angular output is close to unity until about 1.5 Hz before dropping at a constant slope. Because this method is dependant on both accelerometers, it is subject to their sensitivity to $\ddot{\theta}$ and has a time lag caused by the filters that exacerbates the phase lag as frequency increases. \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{DualBode.png}
+\label{dualBode}
+\caption{Dual accelerometers' frequency response}
+\end{center}
+\end{figure}
+
 
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|c|}
         \hline
         Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
-	1.3902  &   &  & \\
-       1.5846  &   &  & \\
-	1.7606  &  &  &   \\
-	2.2029 &   &  &    \\
-	5.4772 &   &  &   \\
-	10.0358 &  &  &  \\
+	1.3902  & -0.7455  & -22.89 & 8.22\\
+       1.5846  & -0.6154  & -30.0906 & 6.84\\
+	1.7606  & -0.8154 & -29.7897 & 8.96  \\
+	2.2029 & -1.5767  & -34.6961 & 16.6   \\
+	5.4772 & -3.5125  & -74.9282 & 33.0799  \\
+	10.0358 & -4.8405 & -79.4837 & 42.2778 \\
         \hline
     \end{tabular}
 \label{dual_tableA}
-\caption{Dual accelerometer performance measures A}  
+\caption{Dual accelerometer performance measures - A}  
 \end{center}
 \end{table}
 
@@ -967,16 +980,16 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
     \begin{tabular}{|c|c|c|c|}
         \hline
         Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
-	1.3902  &   &  & \\
-       1.5846  &   &  &  \\
-	1.7606  &  &  &   \\
-	2.2029 &   &  &    \\
-	5.4772 &   &  &   \\
-	10.0358 &  &  &  \\
+	1.3902  & 0.167  & 1.26 & 4.9211\\
+       1.5846  & 0.211  & 1.397 & 2.5075 \\
+	1.7606  & 0.174 & 1.529 & 6.1495  \\
+	2.2029 & 0.252  & 1.22 & 6.1335   \\
+	5.4772 & 1.087  & 1.398 & 6.8185  \\
+	10.0358 & 1.214 & 1.572 & 13.5295 \\
         \hline
     \end{tabular}
 \label{dual_tableB}
-\caption{Dual accelerometer performance measures B}  
+\caption{Dual accelerometer performance measures - B}  
 \end{center}
 \end{table}
 
@@ -986,6 +999,12 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Rate Gyro}
 \subsubsection{High Frequency}
+
+To calculate the angular position with the rate gyros, the voltage output was converted to angular rate as mentioned previously, and then integrated using a Riemann sum method. \\
+
+Figures \ref{full_gyro} and \ref{full_gyro45} show the angular range using the standard rate gyro and the 4.5 gyro, respectively. The standard gyro output to 130.4$^{\circ}$ while the 4.5 gyro only reached 96.08$^{\circ}$. In both cases the gyro's output voltage saturated, effectively limiting the max rate that they could output (as shown by the differences in slope between the encoder and gyro). This saturation is a large cause of the steady-state error at the end of the test.\\
+
+Figures \ref{normal_gyro} and \ref{normal_gyro45} show tests of the pendulum oscilating naturally. The 4.5 gyro experienced saturation in every oscilation test, leading to very large steady-state errors. However, both gyros tended to show very minimal magnitude errors. The standard gyro was well under 10\% for all frequencies tested, and the 4.5 gyro was only over 10\% at 5.4772 Hz, but back under 10\% at 10.0358 Hz. The phase difference of both gyros was always under 10$^{\circ}$, in fact never going above 2.71$^{\circ}$. The voltage noise for both was also very small, chiefly because of the low-pass filter integrated into the gyro chip. Additionally, the integration method resulted in effectively no noise in the angle output. However,  steady-state error of the standard gyro was not much different from the accelerometers and was much worse for the 4.5 gyro, largely because of the saturation issues mentioned previously.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
@@ -997,18 +1016,17 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{NormalMass_Gyro.png}
-\label{normal_gyro}
-\caption{Rate gyro at pendulum's natural frequency}
-\end{center}
-\end{figure}
-
-
-\begin{figure}[hbt]
-\begin{center}
 \includegraphics[width = 12cm]{FullRotation_Gyro45.png}
 \label{full_gyro45}
 \caption{4.5 Rate gyro with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Gyro.png}
+\label{normal_gyro}
+\caption{Rate gyro at pendulum's natural frequency}
 \end{center}
 \end{figure}
 
@@ -1020,23 +1038,39 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 \end{center}
 \end{figure}
 
+Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode plot for the standard and 4.5 gryos, and tables \ref{gyro_tableA} through \ref{gyro45_tableB} give the performance measures. The bode plot for both stays very flat across the frequency range tested, with only a small drop in the magnitude of the 4.5 gyro. The phase for both was very small, and in some cases was even  about zero or leading. This is likely a somewhat misleading effect of using right-Riemann sums for integration, causing the response plot to shift to the left and upwards slightly. The small effect of these high frequencies is to be expected. The output of the gyro is based on the coriolis acceleration of the proof-mass which shows up in the pick-up direction of the proof-mass. The excitation frequency in the primary direction is known (and is the same as the coriolis) and can be used to filter out unwanted excitations at other frequencies, and then a demodulator is used to extract only the amplitude in the pick-up direction with (ideally) no dependancy on the outside excitation frequency. \\ 
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{GyroBode.png}
+\label{gyroBode}
+\caption{Rate gyro's frequency response}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{Gyro45Bode.png}
+\label{gyro45Bode}
+\caption{4.5 gyro's frequency response}
+\end{center}
+\end{figure}
 
 \begin{table}
 \begin{center}
     \begin{tabular}{|c|c|c|c|}
         \hline
         Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
-	1.3902  &   &  & \\
-       1.5846  &   &  & \\
-	1.7606  &  &  &   \\
-	2.2029 &   &  &    \\
-	5.4772 &   &  &   \\
-	10.0358 &  &  &  \\
+	1.3902  & -0.1300  & 0 & 1.4859\\
+       1.5846  & -0.1441  & 2.72E-13 & 1.6347\\
+	1.7606  & -0.0811 & 0.1665 & 0.9185  \\
+	2.2029 & -0.1460  & -0.6067 & 1.6654   \\
+	5.4772 & -0.0749  & -0.6320 & 0.8537  \\
+	10.0358 & -0.0440 & 2.7097 & 0.4544 \\
         \hline
     \end{tabular}
 \label{gyro_tableA}
-\caption{Rate gyro performance measures A}  
+\caption{Rate gyro performance measures - A}  
 \end{center}
 \end{table}
 
@@ -1054,7 +1088,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
         \hline
     \end{tabular}
 \label{gyro_tableB}
-\caption{Rate gyro performance measures B}  
+\caption{Rate gyro performance measures - B}  
 \end{center}
 \end{table}
 
@@ -1072,7 +1106,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
         \hline
     \end{tabular}
 \label{gyro45_tableA}
-\caption{4.5 Rate gyro performance measures A}  
+\caption{4.5 Rate gyro performance measures - A}  
 \end{center}
 \end{table}
 
@@ -1090,7 +1124,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
         \hline
     \end{tabular}
 \label{gyro45_tableB}
-\caption{4.5 Rate gyro performance measures B}  
+\caption{4.5 Rate gyro performance measures - B}  
 \end{center}
 \end{table}
 
