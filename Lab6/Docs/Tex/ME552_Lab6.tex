@@ -186,7 +186,7 @@ Figures \ref{accelPins} and \ref{accelFunc} show the arrangement of the pins on 
 \end{figure}
 
 \textbf{Pins 1, 4, 9, 11, 13, and 16 - NC}\\
-These pins are not connected to the accelerometer's internal circuitry. They are not funcitonal, but they can be connected to ground (the COM pins).\\
+These pins are not connected to the accelerometer's internal circuitry. They are not functional, but they can be connected to ground (the COM pins).\\
 
 \textbf{ Pin 2 - ST}\\
 This pin is for the self-test feature of the accelerometer. When the pin is set high by applying the supply voltage an electrostatic force is applied to the accelerometer axes. This results in a known change in the voltage output from each axis. If the change is not seen in the output, this is an indication that there is a problem with the accelerometer. The pin can be connected to ground or left unconnected when not needed. THe PCB provides a connection for this pin, which we did not use.\\
@@ -220,7 +220,7 @@ Figures \ref{gyroPins} and \ref{gyroFunc} show the arrangement of the pins on th
 \end{figure}
 
 \textbf{Pins 1 and 20 - X-OUT and Y-OUT (respectively)}\\
-Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage proportional to the angular rate about the X and Y axes according to equation \ref{} \xxx{need equation}. The outputs are not ratiometric and have a nominal full scale range of $\pm$500$^{\circ}$ and sensitivity of 2 $\frac{mV}{^{\circ}/s}$. A low-pass filter is provided internally. The PCB provides connections to these pins. We connected X-OUT to the NI breakout board to read with LabView, but did not connect Y-OUT because our setup did not rotate about that axis.\\
+Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage proportional to the angular rate about the X and Y axes. The outputs are not ratiometric and have a nominal full scale range of $\pm$500$^{\circ}$ and sensitivity of 2 $\frac{mV}{^{\circ}/s}$. A low-pass filter is provided internally. The PCB provides connections to these pins. We connected X-OUT to the NI breakout board to read with LabView, but did not connect Y-OUT because our setup did not rotate about that axis.\\
 
 \textbf{Pins 2, 8, 26, 27, and 28 - GND}\\
 These pins connect various elements of the gyro chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the GND pins. We connected this to the ground terminal of the Arduino.\\
@@ -747,10 +747,31 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \clearpage
 %%%%%%%%%%%%%%%%%%%
 
+\section{Low Frequency Characterization}
+
+\clearpage
+%%%%%%%%%%%%%%%%%%%
+
 \section{Higher Frequency Characterization}
 
-
 \subsection{Horizontal Accelerometer}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{FullRotation_Horizontal.png}
+\label{full_horizontal}
+\caption{Horizontal accelerometer with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Horizontal.png}
+\label{normal_vertical}
+\caption{Horizontal accelerometer at pendulum's natural frequency}
+\end{center}
+\end{figure}
+
 \subsubsection{High Frequency}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
@@ -760,6 +781,23 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 
 \subsection{Vertical Accelerometer}
 \subsubsection{High Frequency}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{FullRotation_Vertical.png}
+\label{full_vertical}
+\caption{Vertical accelerometer with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Vertical.png}
+\label{normal_vertical}
+\caption{Vertical accelerometer at pendulum's natural frequency}
+\end{center}
+\end{figure}
+
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
