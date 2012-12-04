@@ -764,11 +764,11 @@ The three filtering methods used with the accelerometers had similar performance
 
 \subsection{Horizontal Accelerometer}
 
-Figure \ref{full_horizontal} shows the angular range of the horizontal accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of $\pm$90$^{\circ}$ and is capable of distinguishing direction of rotation, but in this case the encoder was outputting 0 to 2$\pi$, leading to  some disagreement. Had the encoder been outputting -$\pi$ to $\pi$, there would be more agreement within the accelerometer's range\\
+\subsubsection{High Frequency}
 
-Figure \ref{normal_vertical} shows one test of the pendulum oscilating naturally. The horizontal accelerometer's magnitude was under 10\% for all tests up to 2.2029 Hz, but the phase lag was never below 10$^{\circ}$. The smallest lag was 23.6469$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 6.955$^{\circ}$, which may have been caused by the pendulum not being perfectly vertical when the tests began.\\ 
+Figure \ref{full_horizontal} shows the angular range of the horizontal accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of $\pm$90$^{\circ}$ and is capable of distinguishing direction of rotation, but in this case the encoder was outputting 0 to 2$\pi$, leading to  some disagreement. Had the encoder been outputting -$\pi$ to $\pi$, there would be more agreement within the accelerometer's range.\\
 
-
+Figure \ref{normal_horizontal} shows one test of the pendulum oscilating naturally. The horizontal accelerometer's magnitude was under 10\% for all tests up to 1.7606 Hz, but the phase lag was never below 10$^{\circ}$. The smallest lag was 23.6469$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 6.955$^{\circ}$, which may have been caused by the pendulum not being perfectly vertical when the tests began.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
@@ -786,7 +786,7 @@ Figure \ref{normal_vertical} shows one test of the pendulum oscilating naturally
 \end{center}
 \end{figure}
 
-Figure \ref{horizontalBode} shows the experimentally derived bode plot for the horizontal accelerometer and table \ref{} gives the performance measures. The magnitude of the angular output is close to unity until around 1.5 Hz, and then drops significantly. The voltage output of the accelerometer (and therefore the angle calculated) is not only dependant on the $\theta$, but also $\ddot{\theta}$ (eqn. \ref{Vout}).  $\ddot{\theta}$ is a function of frequency (eqn. \ref{thetadoubledot}), so we expect that as the frequency increases, the accuracy of the sensor will diminish.  \\
+Figure \ref{horizontalBode} shows the experimentally derived bode plot for the horizontal accelerometer and tablse \ref{horizontal_tableA} and \ref{horizontal_tableB} give the performance measures. The magnitude of the angular output is close to unity until around 1.5 Hz, and then drops significantly. The voltage output of the accelerometer (and therefore the angle calculated) is not only dependant on the $\theta$, but also $\ddot{\theta}$ (eqn. \ref{Vout}).  $\ddot{\theta}$ is a function of frequency (eqn. \ref{thetadoubledot}), so we expect that as the frequency increases, the accuracy of the sensor will diminish. The filters produce some minimum level of time lag, so as the frequency increases, the phase difference that the time lag corresponds to increases. \\
 
 \begin{equation}
 V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
@@ -798,8 +798,6 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \label{thetadoubledot}
 \end{equation}
 
-
-
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{HorizontalBode.png}
@@ -808,7 +806,42 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \end{center}
 \end{figure}
 
-\subsubsection{High Frequency}
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
+	1.3902  & -0.4914  & -23.6469 & 5.5\\
+       1.5846  & -0.3881  & -32.6575 & 4.37 \\
+	1.7606  & -0.5181  & -29.7897  & 5.79  \\
+	2.2029 &  -1.1301 & -34.6961 &  12.2  \\
+	5.4772 & -3.4578  & -75.4212 & 32.6519  \\
+	10.0358 & -4.4619 & -64.1289 & 39.6921 \\
+        \hline
+    \end{tabular}
+\label{horizontal_tableA}
+\caption{Horizontal accelerometer performance measures - A}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
+	1.3902  & 0.138  & 2.18 & 5.076\\
+       1.5846  & 0.142  & 1.471 & 3.128 \\
+	1.7606  & 0.136 & 1.609 & 6.1605  \\
+	2.2029 & 0.134  & 1.99 & 7.7865   \\
+	5.4772 & 0.343  & 2.223 & 6.842  \\
+	10.0358 & 0.677 & 1.524 & 12.739 \\
+        \hline
+    \end{tabular}
+\label{horizontal_tableB}
+\caption{Horizontal accelerometer performance measures - B}  
+\end{center}
+\end{table}
+
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
@@ -817,6 +850,11 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 
 \subsection{Vertical Accelerometer}
 \subsubsection{High Frequency}
+
+
+Figure \ref{full_vertical} shows the angular range of the vertical accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of 0$^{\circ}$to  152.4$^{\circ}$. Howevr, it is not capable of distinguishing direction of rotation (ie. it can't distinguish positive from negative angles from the intial vertical position). \\
+
+Figure \ref{normal_horizontal} shows one test of the pendulum oscilating naturally. In this case, the magnitude of angle output matched the encoder decently, but because it can't distinguish negative angles, it isn't accurate for anything but magnitude. The magnitude was under 10\% for all tests up to 1.7606 Hz (though it tended to be slightly greater than for the horizontal acclereometer), but the phase lag was never below 10$^{\circ}$ (at 5.4772 Hz the phase lag is only 9.8590$^{\circ}$, but this is likely a misleading result caused by the noise from manually shaking the pendulum). The smallest lag was 20.7696$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 9.479$^{\circ}$. This is greater than with the horizontal arm and is likely caused by the pendulum not being perfectly vertical at the start of the test, and greater observed noise in the anglular output.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
@@ -833,6 +871,55 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \caption{Vertical accelerometer at pendulum's natural frequency}
 \end{center}
 \end{figure}
+
+Figure \ref{verticalBode} shows the experimentally derived bode plot for the vertical accelerometer and tables \ref{vertical_tableA} and \ref{vertical_tableB} give the performance measures. The magnitude of the angular output is close to unity until about 1.5 Hz, then it drops slightly before increasing. As mentioned with the horizontal accelerometer, voltage output  (and therefore the angle calculated) is not only dependant on the $\theta$, but also $\ddot{\theta}$ (eqn. \ref{Vout}).  $\ddot{\theta}$ is a function of frequency (eqn. \ref{thetadoubledot}), so we expect that as the frequency increases, the accuracy of the sensor will diminish. The increasing magnitude at higher frequencies may be attributed to the greater level of noise with this sensor, and the issues related to its inability to show direction of motion. The filters produce some minimum level of time lag, so as the frequency increases, the phase difference that the time lag corresponds to increases. \\
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{VerticalBode.png}
+\label{verticalBode}
+\caption{Vertical accelerometer's frequency response}
+\end{center}
+\end{figure}
+
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
+	1.3902  & -0.7497  & -20.7696 & 8.27\\
+       1.5846  & -0.3428  & -21.3914 & 3.87 \\
+	1.7606  & -0.9113 & -25.1945 & 9.96  \\
+	2.2029 & -5.6566  & -36.0839 & 47.86   \\
+	5.4772 & 3.2533  & -9.8590 & 45.6211  \\
+	10.0358 & 9.7344 & -93.9352 & 213.6681 \\
+        \hline
+    \end{tabular}
+\label{vertical_tableA}
+\caption{Vertical accelerometer performance measures - A}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
+	1.3902  & 0.029  & 4.426 & 4.7005\\
+       1.5846  & 0.069  & 3.0877 & 2.74 \\
+	1.7606  & 0.038 & 1.759 & 8.9485  \\
+	2.2029 & 0.118  & 1.05 & 9.035   \\
+	5.4772 & 0.744  & 1.47 & 12.195  \\
+	10.0358 & 0.537 & 13.48 & 19.255 \\
+        \hline
+    \end{tabular}
+\label{Vertical_tableB}
+\caption{Vertical accelerometer performance measures - B}  
+\end{center}
+\end{table}
+
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 \clearpage
@@ -855,6 +942,43 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \caption{Dual accelerometers at pendulum's natural frequency}
 \end{center}
 \end{figure}
+
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  & \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{dual_tableA}
+\caption{Dual accelerometer performance measures A}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  &  \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{dual_tableB}
+\caption{Dual accelerometer performance measures B}  
+\end{center}
+\end{table}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
@@ -895,6 +1019,80 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 \caption{4.5 Rate gyro at pendulum's natural frequency}
 \end{center}
 \end{figure}
+
+
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  & \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{gyro_tableA}
+\caption{Rate gyro performance measures A}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  &  \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{gyro_tableB}
+\caption{Rate gyro performance measures B}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Magnitude (dB) & Phase (deg.) & \% Magnitude Error \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  & \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{gyro45_tableA}
+\caption{4.5 Rate gyro performance measures A}  
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        Frequency (Hz)  & Voltage Noise (V) & Observed Angle Error (deg.) & Steady-State Error (deg.) \\ \hline
+	1.3902  &   &  & \\
+       1.5846  &   &  &  \\
+	1.7606  &  &  &   \\
+	2.2029 &   &  &    \\
+	5.4772 &   &  &   \\
+	10.0358 &  &  &  \\
+        \hline
+    \end{tabular}
+\label{gyro45_tableB}
+\caption{4.5 Rate gyro performance measures B}  
+\end{center}
+\end{table}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
