@@ -754,9 +754,13 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 
 \section{Higher Frequency Characterization}
 
+To determine the range of motiion that could be measured, the pendulum was moved through a full rotation at highspeed. To determine the magnitude, phase, and other performance measures as a function of frequency, the pendulum was allowed to osciallate naturally with the shaft collars at differect positions along its length to alter the center-of-mass. Then, the pendulm was manually oscilated at several frequencies (as consistently as possible). In all cases the low-pass filter time constant and the kalman filter variance were kept constant (0.05 and 0.07, respectively) for all of the accelerometer calculations. The time constant of the high-pass filter used with the rate gyro's was changed with every trial.\\  
+
 \subsection{Horizontal Accelerometer}
 
-\begin{figure}
+Figure \ref{full_horizontal} shows the angular range of the horizontal accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of $\pm$90$^{\circ}$ and is capable of distinguishing direction of rotation, but in this case the encoder was outputting 0 to 2$\pi$, leading to  some disagreement. Had the encoder been outputting -$\pi$ to $\pi$, there would be more agreement within the accelerometer's range
+
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Horizontal.png}
 \label{full_horizontal}
@@ -764,7 +768,7 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Horizontal.png}
 \label{normal_vertical}
@@ -782,7 +786,7 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \subsection{Vertical Accelerometer}
 \subsubsection{High Frequency}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Vertical.png}
 \label{full_vertical}
@@ -790,7 +794,7 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \end{center}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Vertical.png}
 \label{normal_vertical}
@@ -804,12 +808,61 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \subsection{Two Accelerometer}
 \subsubsection{High Frequency}
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{FullRotation_Dual.png}
+\label{full_Dual}
+\caption{Dual accelerometers with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Dual.png}
+\label{normal_dual}
+\caption{Dual accelerometers at pendulum's natural frequency}
+\end{center}
+\end{figure}
+
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Rate Gyro}
 \subsubsection{High Frequency}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{FullRotation_Gyro.png}
+\label{full_gyro}
+\caption{Rate gyro with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Gyro.png}
+\label{normal_gyro}
+\caption{Rate gyro at pendulum's natural frequency}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{FullRotation_Gyro45.png}
+\label{full_gyro45}
+\caption{4.5 Rate gyro with high-speed, full rotation of pendulum}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{NormalMass_Gyro45.png}
+\label{normal_gyro45}
+\caption{4.5 Rate gyro at pendulum's natural frequency}
+\end{center}
+\end{figure}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
