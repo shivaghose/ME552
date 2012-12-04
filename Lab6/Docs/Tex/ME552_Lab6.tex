@@ -322,8 +322,8 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
         Fitting Error $(V)$  & - & $2.642681\e{-5}$  & - & $2.774354\e{-4}$ \\
         \hline
     \end{tabular}
-\label{ParamID_T}
 \caption{Fitting error denotes average error per sample.  Note that the bias voltage and sensitivities quoted in the data sheet are for a supply voltage of 3.0 V, while we are using a supply voltage of 3.295 V}
+\label{ParamID_T}
 \end{center}
 \end{table}
 
@@ -332,16 +332,16 @@ We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{YaxisAccel_Calib.png}
-\label{YaccelCalib}
 \caption{Expected vs Measured Voltages for the Y axis accelerometer}
+\label{YaccelCalib}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{ZaxisAccel_Calib.png}
-\label{ZaccelCalib}
 \caption{Expected vs Measured Voltages for the Z axis accelerometer}
+\label{ZaccelCalib}
 \end{center}
 \end{figure}
 
@@ -375,8 +375,8 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
 		\hline
 	\end{tabular}
-\label{ParamID_DatasheetGyro}
 \caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
+\label{ParamID_DatasheetGyro}
 \end{center}
 \end{table}
 
@@ -392,8 +392,8 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 	Fitting Error $(rad)$ &  $3.358 \e{-4}$ & $4.206 \e{-4}$ & 2.814 \e{-4} & 2.050 \e{-4}\\
         \hline
     \end{tabular}
-\label{ParamID_TGyro}
 \caption{Gyro Sensitivity at a variety of frequencies within the full scale range.}  
+\label{ParamID_TGyro}
 \end{center}
 \end{table}
 
@@ -404,8 +404,8 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 \begin{figure}
 \begin{center}
 \includegraphics[width = 13cm]{rateGyroCalibResultsS8_636380.png}
-\label{gyroCalib}
 \caption{Actual Angle vs Fitted Angle from integrating rate gyro output for Natural Frequency 1 trial}
+\label{gyroCalib}
 \end{center}
 \end{figure}
 
@@ -414,6 +414,17 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Horizontal Accelerometer}
+
+For all tests (in this low frequency section and all others), the Inertial Measurement Unit (IMU) breakout board was mounted as shown in figure \ref{sensorMount}. The IMU board was mounted on a small breadboard which was then attached to the side of the pendulum's shaft collar using double-sided tape. Mounting on the side was required to get the proper orientation to use one of the rate gyros. The flat face of the breadboard allowed us to minimize angular misalignment of the IMU. The position was arranged to minimize the distance of the sensor chips from the pendulum's axis of rotation. Washers were then attached to the opposite side of the shaft collar to counter-balance the breadboard, causing the pendulum to hang vertically. However, in some tests the stiffness of the wires caused a slight angular offset of the pendulum. Connections to one row of the IMU's pins were made through the breadboard, while the other row was accessed with female jumper wires.\\ 
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{SensorMounting.png}
+\caption{Physical mounting of the IMU}
+\label{sensorMount}
+\end{center}
+\end{figure}
+
 
 \subsubsection{Angle Measurement}
 
@@ -478,8 +489,8 @@ The following data was collected for a fixed vertical pendulum, $\alpha = 0$.  I
         $\mu_{\theta} \, (rad)$      & 0            &  -1.219912 \e{-5}     \\
         \hline
     \end{tabular}
-\label{Noise_horizontal_T}
 \caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage and bias were measured in another trial.}}
+\label{Noise_horizontal_T}
 \end{center}
 \end{table}
 
@@ -570,8 +581,8 @@ $$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma
         $\mu_{\theta} \, (rad)$      & 0.0530713            & 0.09371065      \\
         \hline
     \end{tabular}
-\label{Noise_vertical_T}
 \caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}}
+\label{Noise_vertical_T}
 \end{center}
 \end{table}
 
@@ -669,8 +680,8 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
         $\mu_{\theta} \, (rad)$      & 0            & -0.002390427      \\
         \hline
     \end{tabular}
-\label{Noise_dual_T}
 \caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.}
+\label{Noise_dual_T}
 \end{center}
 \end{table}
 
@@ -726,16 +737,16 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
         $\mu_{\theta} \, (rad)$               &  0.002894257     \\
         \hline
     \end{tabular}
-\label{Noise_horizontal_T}
 \caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.}
+\label{Noise_horizontal_T}
 \end{center}
 \end{table}
 
 \begin{figure}
 \begin{center}
 \includegraphics[width = 12cm]{rateGyro_Static.png}
-\label{static_Gyro}
 \caption{Rate Gyro Angle estimate with static pendulum at $\theta = 0$}
+\label{static_Gyro}
 \end{center}
 \end{figure}
 
@@ -757,8 +768,8 @@ The three filtering methods used with the accelerometers had similar performance
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{Example_Kalman_Lag.png}
-\label{kalman_lag}
 \caption{Comparison of filtering methods during high-speed, full rotation of pendulum}
+\label{kalman_lag}
 \end{center}
 \end{figure}
 
@@ -773,16 +784,16 @@ Figure \ref{normal_horizontal} shows one test of the pendulum oscillating natura
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Horizontal.png}
-\label{full_horizontal}
 \caption{Horizontal accelerometer with high-speed, full rotation of pendulum}
+\label{full_horizontal}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Horizontal.png}
-\label{normal_horizontal}
 \caption{Horizontal accelerometer at pendulum's natural frequency}
+\label{normal_horizontal}
 \end{center}
 \end{figure}
 
@@ -800,9 +811,9 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{HorizontalBode.png}
-\label{horizontalBode}
+\includegraphics[width = 14cm]{HorizontalBode.png}
 \caption{Horizontal accelerometer's frequency response}
+\label{horizontalBode}
 \end{center}
 \end{figure}
 
@@ -819,8 +830,8 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 	10.0358 & -4.4619 & -64.1289 & 39.6921 \\
         \hline
     \end{tabular}
-\label{horizontal_tableA}
 \caption{Horizontal accelerometer performance measures - A}  
+\label{horizontal_tableA}
 \end{center}
 \end{table}
 
@@ -837,8 +848,8 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 	10.0358 & 0.677 & 1.524 & 12.739 \\
         \hline
     \end{tabular}
-\label{horizontal_tableB}
 \caption{Horizontal accelerometer performance measures - B}  
+\label{horizontal_tableB}
 \end{center}
 \end{table}
 
@@ -858,16 +869,16 @@ Figure \ref{normal_horizontal} shows one test of the pendulum oscillating natura
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Vertical.png}
-\label{full_vertical}
 \caption{Vertical accelerometer with high-speed, full rotation of pendulum}
+\label{full_vertical}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Vertical.png}
-\label{normal_vertical}
 \caption{Vertical accelerometer at pendulum's natural frequency}
+\label{normal_vertical}
 \end{center}
 \end{figure}
 
@@ -876,9 +887,9 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{VerticalBode.png}
-\label{verticalBode}
+\includegraphics[width = 14cm]{VerticalBode.png}
 \caption{Vertical accelerometer's frequency response}
+\label{verticalBode}
 \end{center}
 \end{figure}
 
@@ -896,8 +907,8 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 	10.0358 & 9.7344 & -93.9352 & 213.6681 \\
         \hline
     \end{tabular}
-\label{vertical_tableA}
 \caption{Vertical accelerometer performance measures - A}  
+\label{vertical_tableA}
 \end{center}
 \end{table}
 
@@ -914,8 +925,8 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 	10.0358 & 0.537 & 13.48 & 19.255 \\
         \hline
     \end{tabular}
-\label{Vertical_tableB}
 \caption{Vertical accelerometer performance measures - B}  
+\label{Vertical_tableB}
 \end{center}
 \end{table}
 
@@ -933,16 +944,16 @@ Figure \ref{normal_dual} shows one test of the pendulum oscillating naturally. T
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Dual.png}
-\label{full_Dual}
 \caption{Dual accelerometers with high-speed, full rotation of pendulum}
+\label{full_Dual}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Dual.png}
-\label{normal_dual}
 \caption{Dual accelerometers at pendulum's natural frequency}
+\label{normal_dual}
 \end{center}
 \end{figure}
 
@@ -950,9 +961,9 @@ Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 f
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{DualBode.png}
-\label{dualBode}
+\includegraphics[width = 14cm]{DualBode.png}
 \caption{Dual accelerometers' frequency response}
+\label{dualBode}
 \end{center}
 \end{figure}
 
@@ -970,8 +981,8 @@ Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 f
 	10.0358 & -4.8405 & -79.4837 & 42.2778 \\
         \hline
     \end{tabular}
-\label{dual_tableA}
 \caption{Dual accelerometer performance measures - A}  
+\label{dual_tableA}
 \end{center}
 \end{table}
 
@@ -988,8 +999,8 @@ Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 f
 	10.0358 & 1.214 & 1.572 & 13.5295 \\
         \hline
     \end{tabular}
-\label{dual_tableB}
 \caption{Dual accelerometer performance measures - B}  
+\label{dual_tableB}
 \end{center}
 \end{table}
 
@@ -1009,56 +1020,56 @@ Figures \ref{normal_gyro} and \ref{normal_gyro45} show tests of the pendulum osc
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Gyro.png}
-\label{full_gyro}
 \caption{Rate gyro with high-speed, full rotation of pendulum}
+\label{full_gyro}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{FullRotation_Gyro45.png}
-\label{full_gyro45}
 \caption{4.5 Rate gyro with high-speed, full rotation of pendulum}
+\label{full_gyro45}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Gyro.png}
-\label{normal_gyro}
 \caption{Rate gyro at pendulum's natural frequency}
+\label{normal_gyro}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{NormalMass_Gyro45.png}
-\label{normal_gyro45}
 \caption{4.5 Rate gyro at pendulum's natural frequency}
+\label{normal_gyro45}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{Example_Horizontal_Noise.png}
-\label{horizontalNoise}
 \caption{Typical voltage noise of the horizontal acceleromter}
+\label{horizontalNoise}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 12cm]{Example_Gyro_Noise.png}
-\label{gyroNoise}
 \caption{Voltage noise of the rate gyro}
+\label{gyroNoise}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{Example_Gyro_AngleNoise.png}
-\label{gyroAngleNoise}
+\includegraphics[width = 13cm]{Example_Gyro_AngleNoise.png}
 \caption{At the point of maximum voltage noise from the rate gyro, angular output shows no noise compared to the encoder}
+\label{gyroAngleNoise}
 \end{center}
 \end{figure}
 
@@ -1066,17 +1077,17 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{GyroBode.png}
-\label{gyroBode}
+\includegraphics[width = 14cm]{GyroBode.png}
 \caption{Rate gyro's frequency response}
+\label{gyroBode}
 \end{center}
 \end{figure}
 
 \begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 12cm]{Gyro45Bode.png}
-\label{gyro45Bode}
+\includegraphics[width = 14cm]{Gyro45Bode.png}
 \caption{4.5 gyro's frequency response}
+\label{gyro45Bode}
 \end{center}
 \end{figure}
 
@@ -1093,8 +1104,8 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 	10.0358& 165 & -0.0440 & 2.7097 & 0.4544 \\
         \hline
     \end{tabular}
-\label{gyro_tableA}
 \caption{Rate gyro performance measures - A}  
+\label{gyro_tableA}
 \end{center}
 \end{table}
 
@@ -1111,8 +1122,8 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 	10.0358 & 0.098 & 0 & 5.882 \\
         \hline
     \end{tabular}
-\label{gyro_tableB}
 \caption{Rate gyro performance measures - B}  
+\label{gyro_tableB}
 \end{center}
 \end{table}
 
@@ -1129,8 +1140,8 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 	10.0358 & 13& -0.8756 & 1.8064 & 8.4680 \\
         \hline
     \end{tabular}
-\label{gyro45_tableA}
 \caption{4.5 Rate gyro performance measures - A}  
+\label{gyro45_tableA}
 \end{center}
 \end{table}
 
@@ -1147,8 +1158,8 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 	10.0358 & 1.3827 & 0 & 35.955 \\
         \hline
     \end{tabular}
-\label{gyro45_tableB}
 \caption{4.5 Rate gyro performance measures - B}  
+\label{gyro45_tableB}
 \end{center}
 \end{table}
 
@@ -1159,17 +1170,17 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 \section{Sensor Fusion}
 
 \subsection{Construction}
-We make use of the all three inertial sensors discussed in the previous sections, the horizontal and vertical accelerometers and the rate gyro.  Using both accelerometers eliminates sign ambiguities to provide angle measurements for a full 360 degrees, but it suffers from poor performance at higher angular rates because of dynamic effects.  To overcome this issue we use the rate-gryo which suffers from poor performance at lower angular rates, but is able to provide accurate angles at higher rates.  By combining these sensors we can achieve performance across a broader range of frequencies and angles than by using a single sensor alone.  
+We make use of the all three inertial sensors discussed in the previous sections: the horizontal and vertical accelerometers and the rate gyro.  Using both accelerometers eliminates sign ambiguities to provide angle measurements for a full 360 degrees, but it suffers from poor performance at higher angular rates because of dynamic effects.  To overcome this issue we use the rate-gryo which suffers from poor performance at lower angular rates, but is able to provide accurate angles at higher rates.  By combining these sensors we can achieve performance across a broader range of frequencies and angles than by using a single sensor alone.  
 
 As in the set up that we have used for the entire lab, the Y-axis of the accelerometer points in the vertical direction at $\theta = 0$ while the Z-axis points in the horizontal direction, while the X-axis of the gyro is parallel to the axis of the encoder and perpendicular to the Y and Z axes of the accelerometer.  
 
 \subsection{Filter Design}
 
-We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometer and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
+We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometers and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
 
 \subsection{Block Diagram}
 
-For encoder angle $\alpha$, we have already shown that the pair of accelerometers provide an estimate $\theta$ and the rate gyro provides $\dot{\theta}$.  Applying a low pass filter to $\theta$ and a high pass filter to $\dot{\theta}$ yields the following two expressions which can be added to obtain $\theta$ which is approximately equal to $\alpha$.  
+For encoder angle $\alpha$, we have already shown that the pair of accelerometers provide an estimate of $\theta$ and the rate gyro provides $\dot{\theta}$.  Applying a low pass filter to $\theta$ and a high pass filter to $\dot{\theta}$ yields the following two expressions which can be added to obtain $\theta$, which is approximately equal to $\alpha$.  
 
 $$ \theta \frac{1}{\tau s + 1} = \frac{\theta}{\tau s + 1} $$
 $$ \dot{\theta} \frac{\tau}{\tau s + 1} = \theta s \frac{\tau}{\tau s + 1} = \theta \frac{\tau s}{\tau s + 1} $$
@@ -1178,8 +1189,8 @@ $$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \
 \begin{figure}
 \begin{center}
 \includegraphics[width = 14cm]{fusion_BlockDiagram.png}
-\label{fusion_Block}
 \caption{Block Digram for Sensor Fusion}
+\label{fusion_Block}
 \end{center}
 \end{figure}
 
