@@ -146,7 +146,7 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \subsection{Configuration}
 
-Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the X axis of the rate gyro (standard and X4.5). We also connected the auto-zero and temperature sensor pins. We are not using the X axis of the accelerometer, the Y axis of the rate gyro (standard and Y4.5), the self-test, or the VRef pins. We used an Arduino Uno as a voltage regulator to provide the encoder with 5V and the IMU with 3.3V.m the Arduino itself was powered from a wall outlet via an AC-to-DC converter.   \\
+Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder, shown later in figure \ref{sensorMount}.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the X axis of the rate gyro (standard and X4.5). We also connected the auto-zero and temperature sensor pins. We are not using the X axis of the accelerometer, the Y axis of the rate gyro (standard and Y4.5), the self-test, or the VRef pins. We used an Arduino Uno as a voltage regulator to provide the encoder with 5V and the IMU with 3.3V.m the Arduino itself was powered from a wall outlet via an AC-to-DC converter.   \\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -155,12 +155,6 @@ Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The 
 \label{wiring}
 \end{center}
 \end{figure}
-
-\xxx{Confirm that the wiring diagram is correct specifically whether we are using the high or low sensitivity outputs.}
-
-\xxx{Still missing gyro details}
-
-\xxx{We may want a picture of each axis including gyro}
 
 \clearpage
 
@@ -189,13 +183,18 @@ Figures \ref{accelPins} and \ref{accelFunc} show the arrangement of the pins on 
 These pins are not connected to the accelerometer's internal circuitry. They are not functional, but they can be connected to ground (the COM pins).\\
 
 \textbf{ Pin 2 - ST}\\
-This pin is for the self-test feature of the accelerometer. When the pin is set high by applying the supply voltage an electrostatic force is applied to the accelerometer axes. This results in a known change in the voltage output from each axis. If the change is not seen in the output, this is an indication that there is a problem with the accelerometer. The pin can be connected to ground or left unconnected when not needed. THe PCB provides a connection for this pin, which we did not use.\\
+This pin is for the self-test feature of the accelerometer. When the pin is set high by applying the supply voltage, an electrostatic force is applied to the accelerometer axes. This results in a known change in the voltage output from each axis. If the change is not seen in the output, this is an indication that there is a problem with the accelerometer. The pin can be connected to ground or left unconnected when not needed. The sparkfun PCB provides a connection for this pin, which we did not use.\\
 
 \textbf{Pins 3, 5, 6, and 7 - COM}\\
 These pins connect various elements of the accelerometer chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the COM pins. We connected this to the ground terminal of the Arduino.\\
 
 \textbf{Pins 8, 10, and 12 - Z$_{out}$, Y$_{out}$, and X$_{out}$ (respectively)}\\ 
-Analog voltage output of the 3 axes of the accelerometer. The accelerometer outputs voltage corresponding to acceleration in the each direction with a range of $\pm$ 3g according to equation \ref{ParamID_EQ1}. The Z axis accelerometer nominally has greater noise density and lower bandwidth compared to the X and Y axes, which are nominally equal. The PCB provides connections for these pins. We connected pins 8 and 10 to the NI breakout board to read with LabView, but did not use pin 12 because that axis (X) was oriented along the shaft's axis of rotation.\\
+Analog voltage output of the 3 axes of the accelerometer. Each axis outputs voltage proportional to acceleration in that direction with a range of $\pm$ 3g according to equation \ref{Accel_EQ}.  According to the data-sheet, the Z axis accelerometer has greater noise density and lower bandwidth compared to the X and Y axes, which function identically. These parameters are noted in table \ref{ParamID_AccelT}.  The PCB provides connections for these pins. We connected pins 8 and 10 to the NI breakout board to read with LabView.  Pin 12 was left unconnected because the X-axis of the accelerometer is parallel to the axis of rotation of the encoder making it useless for reading angles.\\
+
+\begin{equation}
+V_{out} = V_{bias} + \Sens \ddot{u} \quad V_{bias} \approx \frac{V_{supply}}{2}
+\label{Accel_EQ}
+\end{equation}
 
 \textbf{Pins 14 and 15 - V$_s$}\\
 Supply voltage for the accelerometer. The accelerometer has a functional supply range of 1.8 V to 3.6 V, with a maximum range of -0.3 V to 3.6 V (based on operation reasonably safe from damage, not functional operation). The accelerometer is ratiometric with typical performance values given based on a V$_s$ of 3 V. Because the output is ratiometric, it is important to use a regulated power supply providing constant voltage. The PCB provides a connection for these pins, which we connected to the 3.3 V terminal of an Arduino Uno.\\ 
@@ -220,7 +219,12 @@ Figures \ref{gyroPins} and \ref{gyroFunc} show the arrangement of the pins on th
 \end{figure}
 
 \textbf{Pins 1 and 20 - X-OUT and Y-OUT (respectively)}\\
-Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage proportional to the angular rate about the X and Y axes. The outputs are not ratiometric and have a nominal full scale range of $\pm$500$^{\circ}$ and sensitivity of 2 $\frac{mV}{^{\circ}/s}$. A low-pass filter is provided internally. The PCB provides connections to these pins. We connected X-OUT to the NI breakout board to read with LabView, but did not connect Y-OUT because our setup did not rotate about that axis.\\
+Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage proportional to the angular rate about the X and Y axes according to equation \ref{RateGyro_EQ}. The outputs are not ratiometric and have a nominal full scale range of $\pm$500$^{\circ}$ and sensitivity of 2 $\frac{mV}{^{\circ}/s}$.  A low-pass filter is provided internally.  Additional parameters are described in table \ref{ParamID_DatasheetGyro}.  The PCB provides connections to these pins. We connected X-OUT to the NI breakout board to read with LabView, but did not connect Y-OUT because our setup did not rotate about that axis.\\
+
+\begin{equation}
+V_{out} = ZeroRate + \Sens_{Gyro} \dot{\theta} 
+\label{RateGyro_EQ}
+\end{equation}
 
 \textbf{Pins 2, 8, 26, 27, and 28 - GND}\\
 These pins connect various elements of the gyro chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the GND pins. We connected this to the ground terminal of the Arduino.\\
@@ -288,10 +292,12 @@ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z}
 \end{center}
 \end{figure}
 
-We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \xxx{not the right table?} \\
+We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \\
+
+The expected variance in voltage was computed using the bandwidth and noise density values given by the data-sheet for each axis according to the following equation.
 
 
-$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+$$\sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 
 \begin{table}
 \begin{center}
@@ -305,6 +311,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 		$\sigma^2 \,Z_{out} \, (V^2)$ & $6.48 \e{-7}$ \\[0.1cm] \hline
 		
 	\end{tabular}
+\caption{Accelerometer Parameters and derived voltage variances.}
 \label{ParamID_AccelT}
 \end{center}
 \end{table}
@@ -357,11 +364,9 @@ However even of the time period of a few seconds, we encountered several difficu
 
 $$V_{out} = A t + B + \Sens_{Gyro} \dot{\theta} $$
 
-Both $A$ and $B$ vary with time and other variables, such as temperature, so $B$, the zero rate of the gyro is determined on line and A is neglected, so their values for this particular run are irrelevant.  
+Both $A$ and $B$ vary with time and other variables, such as temperature, so $B$, the zero rate of the gyro is determined on-line and A is neglected, so their values for this particular run are irrelevant.  
 
-Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as described in the data sheet.  Noise density was computed from the total RMS noise value in the data sheet using the following formula, which was also then used to compute the expected noise over the lower bandwidth.
-
-$$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
+Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as described in the data sheet.  Noise density was computed from the total RMS noise value in the data sheet using the previously given formula, which was also then used to compute the expected noise over the lower bandwidth.
 
 \begin{table}
 \begin{center}
@@ -372,7 +377,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
 		Total RMS Noise $(mV \, rms)$ & 0.8 \\ 
 		Noise Density $\left( \sfrac{V}{\sqrt{Hz}}\right)$ & 2.0 \e{-5} \\ 
 		Bandwidth $(Hz)$ & 140 \\ 
-		$\sigma \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
+		$\sigma^2 \, \left( V^2 \right)$ & 8.96 \e{-8} \\ 
 		\hline
 	\end{tabular}
 \caption{Performance parameters for the IDG-500 obtained from the data sheet.  \emph{Note that Noise Density and $\sigma^2$ were derived from data sheet values.}}
@@ -388,7 +393,7 @@ $$sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
         ~   & Natural Frequency 1 & Natural Frequency 2 & Manual 1 & Manual 2\\ \hline
 	Data Set Frequency (Hz)  & 1.41  & 1.76 & 2.42 & 5.13\\
         $\Sens_{Gyro} \, \left( \sfrac{V s}{rad} \right)$  & 0.115803  & 0.11672 & 0.11358 & 0.114821\\
-	$\sigma \, \left( V^2 \right)$  & $3.773 \e{-6}$ & $4.1077\e{-6}$ & 4.7680 \e{-6} & 4.1615\e{-5}\\
+	$\sigma^2 \, \left( V^2 \right)$  & $3.773 \e{-6}$ & $4.1077\e{-6}$ & 4.7680 \e{-6} & 4.1615\e{-5}\\
 	Fitting Error $(rad)$ &  $3.358 \e{-4}$ & $4.206 \e{-4}$ & 2.814 \e{-4} & 2.050 \e{-4}\\
         \hline
     \end{tabular}
@@ -459,7 +464,9 @@ The relationship between sensor output voltage and angle is non-linear, but we a
 
 $$ V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \sin(0) + \Sens_{Z} g \cos(0) \left(\theta - 0\right) = V_{Zbias} + \Sens_{Z} g \theta $$
 
-For the horizontal accelerometer, we expect the sensitivity to be $\Sens_{Z} g$. 
+$$ \theta \approx \frac{V_{Z}(\theta) - V_{Zbias}}{S_Z g}  \quad \Sens_\theta \approx \frac{1}{\Sens_Z g}$$
+
+For the horizontal accelerometer, we expect the sensitivity to be $\sfrac{1}{\Sens_{Z} g}$. 
 
 \subsubsection{Noise}
 
@@ -529,6 +536,10 @@ $$\theta = \left\{
 However linearizing about $\theta = 0$ for the accelerometer in the vertical configuration is not particularly successful,  yielding a relationship that does not depend on $\theta$ at all.  This result is expected from our earlier assessment of the angle ambiguity between positive values of $\theta$ and negative values.  
 
 $$V_{Y}(\theta) \approx V_{Ybias} + \Sens_{Y} g \cos(0) - \Sens_{Y} g \sin(0) (\theta - 0) = V_{Ybias} + \Sens_{Y} g $$
+
+$$ \Sens_\theta \approx 0 $$
+
+In this case the output voltage of the sensor does not depend on the angle $\theta$ so we have effectively 0 sensitivity. 
 
 \subsubsection{Noise}
 
@@ -617,7 +628,7 @@ $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{
 Sensitivity of our angle measurement, $\theta$ is simply given by the partial derivatives, shown in equations \ref{dualAccel_partialVY} and \ref{dualAccel_partialVZ} of our expression for $\theta$ shown in equation \ref{dualAccel_EQ}.
 
 \begin{equation}
-\theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z})
+\theta = \tan^{-1} \left( \frac{\Sens_{Y} \left( V_{Z} - V_{Zbias}\right)}{\Sens_{Z} \left( V_{Y} - V_{Ybias}\right)} \right) = f(V_{Y},V_{Z}) \approx f(V_{Y0},V_{Z0}) + \frac{\partial f}{\partial V_{Y}} \left( V_Y - V_{Y0} \right) + \frac{\partial f}{\partial V_Z} \left( V_Z - V_{Z0}\right)  
 \label{dualAccel_EQ}
 \end{equation}
 
@@ -632,10 +643,11 @@ Sensitivity of our angle measurement, $\theta$ is simply given by the partial de
 \end{equation}
 
 For $\theta \approx 0$, the sensitivity to the Y axis drops to 0 and the sensitivity to the Z axis is given by the same expression as before. 
+Yielding the same sensitivity as the horizontal accelerometer alone.
 
-\xxx{do they want sensitivity from V to $\theta$ or the other way around}
+$$ V_{Z0} = V_{Zbias}  \quad  V_{Y0} = V_{Ybias} + \Sens_{Y} g  \quad \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partial V_Z} = \frac{1}{\Sens_{Z} g}$$
 
-$$ \frac{\partial f}{\partial V_{Y}} \approx 0  \quad \frac{\partial f }{\partial V_Z} = \frac{1}{\Sens_{Z} g}$$
+$$ \theta \approx \frac{V_{Z}(\theta) - V_{Zbias}}{S_Z g}  \quad \Sens_\theta \approx \frac{1}{\Sens_Z g}$$
 
 \subsubsection{Noise}
 
@@ -926,7 +938,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
         \hline
     \end{tabular}
 \caption{Vertical accelerometer performance measures - B}  
-\label{Vertical_tableB}
+\label{vertical_tableB}
 \end{center}
 \end{table}
 
