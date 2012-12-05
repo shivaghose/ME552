@@ -196,6 +196,7 @@ V_{out} = V_{bias} + \Sens \ddot{u} \quad V_{bias} \approx \frac{V_{supply}}{2}
 \label{Accel_EQ}
 \end{equation}
 
+
 \textbf{Pins 14 and 15 - V$_s$}\\
 Supply voltage for the accelerometer. The accelerometer has a functional supply range of 1.8 V to 3.6 V, with a maximum range of -0.3 V to 3.6 V (based on operation reasonably safe from damage, not functional operation). The accelerometer is ratiometric with typical performance values given based on a V$_s$ of 3 V. Because the output is ratiometric, it is important to use a regulated power supply providing constant voltage. The PCB provides a connection for these pins, which we connected to the 3.3 V terminal of an Arduino Uno.\\ 
 
@@ -225,6 +226,7 @@ Analog output voltage of the X and Y axes of the gyro. The gyro outputs voltage 
 V_{out} = ZeroRate + \Sens_{Gyro} \dot{\theta} 
 \label{RateGyro_EQ}
 \end{equation}
+
 
 \textbf{Pins 2, 8, 26, 27, and 28 - GND}\\
 These pins connect various elements of the gyro chip to ground. The PCB provides a connection for ground from the power supply and internally connects this to all of the GND pins. We connected this to the ground terminal of the Arduino.\\
@@ -257,7 +259,7 @@ A precision reference output which is nominally 1.35 V. Ideally VREF will be a c
 Provides an output voltage from a temperature sensor within the gyro chip. Output is proportional to temperature with a nominal bias voltage of 1.25 V and a sensitivity of 4 mV/$^{\circ}$C. The PCB provides a connection to this pin which we connected to the NI breakout board and read in LabView (though we did not end up using the data).\\
 
 \textbf{Pin 24 - AZ}\\
-This pin is an input to an auto-zero funciton for the X and Y axis gyros. When activated, the auto-zero resets the zero-rate output to be equal to VREF. The auto-zero is typically used when the gyro is not moving to prevent steady-state drift and is supposed to increase the usable range of the high sensitivity outputs (X4.5OUT and Y4.5OUT). The auto-zero is intiated by setting the pin high with a pulse between 2 and 1500 $\mu$s. The PCB provides a connection to this pin with we connected to a digital output of the NI breakout board. In our LabView VI we boolean momentary switch to this output so the user could activate the auto-zero, but this was rarely used.\\ 
+This pin is an input to an auto-zero funciton for the X and Y axis gyros. When activated, the auto-zero resets the zero-rate output to be equal to VREF. The auto-zero is typically used when the gyro is not moving to prevent steady-state drift and is supposed to increase the usable range of the high sensitivity outputs (X4.5OUT and Y4.5OUT). The auto-zero is intiated by setting the pin high with a pulse between 2 and 1500 $\mu$s. The PCB provides a connection to this pin with we connected to a digital output of the NI breakout board. In our LabView VI we connected a boolean momentary switch to this output so the user could activate the auto-zero, but this was rarely used.\\ 
 
 \section{Modeling Assumptions}
 % there is probably more stuff
@@ -292,7 +294,7 @@ V_{Y} = V_{Ybias} + \Sens_{Y} g \cos(\theta) \quad V_{Z} = V_{Zbias} + \Sens_{Z}
 \end{center}
 \end{figure}
 
-We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T} \\
+We measured the bias voltage of each axis by fixing the accelerometer such that the axis was perpendicular to the force of gravity and recording the voltage output.  We obtained the bias voltage by averaging these voltages, and we also obtained a measure of noise along each axis by computing the variance of the obtained voltages.  We then conducted a simple experiment where the accelerometer was rotated at slow speeds throughout a complete circle while both axis voltage outputs and encoder angle measurements were recorded.  The equations in \ref{ParamID_EQ2} are linear in the sensitivity values, so we obtained each value through simple least squares regression.  These results are shown in table \ref{ParamID_T}. \\
 
 The expected variance in voltage was computed using the bandwidth and noise density values given by the data-sheet for each axis according to the following equation.
 
@@ -329,7 +331,7 @@ $$\sigma = rms \, Noise = Noise \, Density \sqrt{BW * 1.6} $$
         Fitting Error $(V)$  & - & $2.642681\e{-5}$  & - & $2.774354\e{-4}$ \\
         \hline
     \end{tabular}
-\caption{Fitting error denotes average error per sample.  Note that the bias voltage and sensitivities quoted in the data sheet are for a supply voltage of 3.0 V, while we are using a supply voltage of 3.295 V}
+\caption{Fitting error denotes average error per sample.  Note that the bias voltage and sensitivities quoted in the data sheet are for a supply voltage of 3.0 V, while we are using a supply voltage of 3.295 V}.
 \label{ParamID_T}
 \end{center}
 \end{table}
@@ -356,11 +358,11 @@ We see that as reported in the data sheet, the Z-axis is noisier than the Y-axis
 
 % note that these calibration results were obtained from the natural frequency with the normal pendulum
 
-A rate gyro gives outputs a voltage proportional to the angular rate about the sensitive axis of the gyro with some offset, the Zero Rate which is not ratiometric.  
+A rate gyro outputs a voltage proportional to the angular rate about the sensitive axis of the gyro with some offset, the Zero Rate which is not ratiometric.  
 
 $$V_{out} = ZeroRate + \Sens_{Gyro} \dot{\theta} $$
 
-However even of the time period of a few seconds, we encountered several difficulties in trying to apply such a model.  First of all, the rate gyro's response is limited to higher frequencies requiring us to use an oscillating calibration run at the natural frequency of our pendulum sensor set up, of approximately 1.41 Hz.  The data was trimmed to only include the region of the response of a high enough frequency to be within the bandwidth of the sensor.  Secondly, even over this shorter calibration run, the Zero Rate was no constant.  To overcome these difficulties, we fit a slightly more complex model to obtain a good value for the sensitivity.
+However even for a time period of a few seconds, we encountered several difficulties in trying to apply such a model.  First of all, the rate gyro's response is limited to higher frequencies requiring us to use an oscillating calibration run at the natural frequency of our pendulum sensor set up, of approximately 1.41 Hz.  The data was trimmed to only include the region of the response of a high enough frequency to be within the bandwidth of the sensor.  Secondly, even over this shorter calibration run, the Zero Rate was not constant.  To overcome these difficulties, we fit a slightly more complex model to obtain a good value for the sensitivity.
 
 $$V_{out} = A t + B + \Sens_{Gyro} \dot{\theta} $$
 
@@ -574,7 +576,7 @@ Then all that is left to do is to linearize the arccosine about this new mean:
 
 $$ \frac{d}{dx} \cos^-1(0.99859205) = -\frac{1}{\sqrt{1 - 0.99859205^2}} = -18.85143028 $$
 
-\emph{Because the function is highly nonlinear in this region, the variance estimate is not going to particularly accurate.}  
+\emph{Because the function is highly nonlinear in this region, the variance estimate is not going to be particularly accurate.}  
 
 Finally the variance can be obtained:
 
@@ -604,7 +606,7 @@ The trial verifies our suspicions that the mean would not be 0, and in fact in t
 
 \subsubsection{Angle Measurement}
 
-We can overcome the aliasing issue  presented in the two configuration by using both the horizontal and vertical, the Z and Y axis, simultaneously.  
+We can overcome the aliasing issue  presented in the two previous configurations by using both the horizontal and vertical, the Z and Y axis, simultaneously.  
 
 $$ \cos(\theta) = \frac{V_Y-V_{Ybias}}{\Sens_{Y} g} \quad \sin(\theta) = \frac{V_{Z} - V_{Zbias}}{\Sens_{Z} g} $$
 
@@ -703,7 +705,7 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 
 \subsubsection{Angle Measurement}
 
-As mentioned earlier, the output voltage of the rate gyro is assumed to be linearly related to the the angular velocity about the sensitive axis of the gyro as shown in the equation repeated below.  The Zero Rate and the sensitivity of the gyro are assumed to be time invariant.  Solving for $\dot{\theta}$ yields:
+As mentioned earlier, the output voltage of the rate gyro is assumed to be linearly related to the angular velocity about the sensitive axis of the gyro as shown in the equation repeated below.  The Zero Rate and the sensitivity of the gyro are assumed to be time invariant.  Solving for $\dot{\theta}$ yields:
 
 $$V_{Gyro}(t) = ZeroRate_{Gyro} + \Sens_{Gyro} \dot{\theta}(t) $$
 
