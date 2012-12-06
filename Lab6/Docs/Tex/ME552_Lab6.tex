@@ -783,14 +783,16 @@ We looked at how the various filters performed and compared their performance al
 
 \item Response Time
 \end{itemize}
-As with any system there was a fine balance between low steady state noise and response time. Filters that could heavily suppress noise at steady state showed heavy lag when run.\\
+As with any system there was a fine balance between low steady state noise and response time. Filters that could heavily suppress noise at steady state showed heavy lag when run. For the individual sensors we tried t arrive at a compromise where we could achieve sufficient noise suppression and took a hit on the lag aspect of the system. For complimentary filtering on the other hand, we tuned the system to have lower lag and settled for steady state noise. All these parameters were tuned subjectively, but for each filter and filter combination, a wide range of filter combinations were tried out and tested.\\
 
-At at glance, the filtering results for high frequency noise can be seen in figure \ref{ss_noise_filtering}. We tuned the filters to get minimal steady state variance, while not lagging the input signal by more than 0.03 seconds. The phase lag was arbitrarily decided upon. Each subsection further looks into how each filter was implemented, while the appendix has the matlab code of the implementation\footnote{See Appendix: lab6Filters.m for inidvidual filter implementation}. 
+At at glance, the filtering results for high frequency noise can be seen in figure \ref{ss_noise_filtering}. We tuned the filters to get minimal steady state variance, while not lagging the input signal by more than 0.03 seconds. The phase lag was arbitrarily decided upon. Each subsection further looks into how each filter was implemented, while the appendix has the matlab code of the implementation\footnote{See Appendix: lab6Filters.m for individual filter implementation}. While working with data offline, it is important to ensure that the filtering processes are causal- i.e. they do not access information that would normally be unavailable to them.\\
+
+Each filter was designed to use a different algorithm, the most interesting being the Kalman filter which uses posterior prediction to account for system and sensor noise. This was an interesting implementation for us as the filter is very different from any other filter we have used in the various lab experiments conducted. It is explained in detail under the Kalman Filter subsection.
 
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 16cm]{ss_noise_filtering.png}
-\caption{High frequency noise suppression by the three filters.}
+\caption{High frequency noise suppression by the three filters - while tuning each filter, we we looked to minimize the steady state noise while trying to keep the peaks of the filtered data as close to the real peaks as possible. The Data has a steady-state variance of 0.02 V, after filtering, the variance is reduced by almost $10^4$  in every case.}
 \label{ss_noise_filtering}
 \end{center}
 \end{figure}
@@ -798,7 +800,9 @@ At at glance, the filtering results for high frequency noise can be seen in figu
 \clearpage
 
 \subsection{Low Pass Filter}
-Algorithm:
+The low pass filter rejects the high frequency component of a signal. It acts as a high inertia-damper to the signal. It has a transfer function given by: 
+$$H(s) = \frac{1}{s\tau + 1}$$
+Where $\tau$ represents the corner frequency. Digitally, it can be implemented through the following algorithm:
 \begin{verbatim}
 double lowPass(double x[], double dt, double tau){
    double output[x.length];
@@ -809,6 +813,9 @@ double lowPass(double x[], double dt, double tau){
    return output
 }
 \end{verbatim}
+
+The Bode plot of the digital low pass filter can be seen in figure \ref{bode_LPF}. As you can see, its response is similar to a physical low pass filter. While generating the Bode plots, we assumed perfect
+
 
 \begin{figure}[hbt]
 \begin{center}
