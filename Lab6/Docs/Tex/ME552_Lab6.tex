@@ -263,10 +263,12 @@ This pin is an input to an auto-zero funciton for the X and Y axis gyros. When a
 
 \section{Modeling Assumptions}
 % there is probably more stuff
+While working with the system we made the following assumptions:
 \begin{itemize}
 \item{Assume that outputs of each axis of the accelerometer and the gyro are independent of one another}
 \item{Assume zero bias of each accelerometer axis is stationary} % we may eliminate this assumption if we do online calibration
 \item{$g = 9.81 \, \left( \sfrac{m^2}{s}\right) $}
+\item The noise in the system is independent and identically distributed.
 \end{itemize}
 
 \section{Parameter Identification}
@@ -768,6 +770,128 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 %%%%%%%%%%%%%%%%%%%
 
 \section{Filter Results}
+We implemented four digital filters for our system to suppress the noise in our data:
+\begin{enumerate}
+\item Low Pass Filter
+\item High Pass Filter
+\item Moving Average Filter
+\item Kalman Filter
+\end{enumerate}
+We looked at how the various filters performed and compared their performance along the following criteria:
+\begin{itemize}
+\item Steady State Output Variance
+
+\item Response Time
+\end{itemize}
+As with any system there was a fine balance between low steady state noise and response time. Filters that could heavily suppress noise at steady state showed heavy lag when run.\\
+
+At at glance, the filtering results for high frequency noise can be seen in figure \ref{ss_noise_filtering}. We tuned the filters to get minimal steady state variance, while not lagging the input signal by more than 0.03 seconds. The phase lag was arbitrarily decided upon. Each subsection further looks into how each filter was implemented, while the appendix has the matlab code of the implementation\footnote{See Appendix: lab6Filters.m for inidvidual filter implementation}. 
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 16cm]{ss_noise_filtering.png}
+\caption{High frequency noise suppression by the three filters.}
+\label{ss_noise_filtering}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsection{Low Pass Filter}
+Algorithm:
+\begin{verbatim}
+double lowPass(double x[], double dt, double tau){
+   double output[x.length];
+   double alpha = dt / (tau + dt);
+   output[0] = x[0];
+   for (int i= 1; i < x.length; i++)
+       output[i] = alpha * x[i] + (1-alpha) * output[i-1];
+   return output
+}
+\end{verbatim}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{bode_LPF}
+\caption{Bode plot of the Low Pass Filter}
+\label{bode_LPF}
+\end{center}
+\end{figure}
+
+\clearpage
+
+
+
+\subsection{Moving Average Filter}
+Algorithm:
+\begin{verbatim}
+double movAvg(double x[], int windowSize){
+   double output[x.length];   
+   for (int i= 0; i < x.length; i++){
+        if(i <= MAvgWindowSize)
+            output[i] = sum(x[0] to x[i])/(i+1);
+        else
+            output[i] = sum(x[i-MAvgWindowSize] to x[i])/(MAvgWindowSize+1);
+   }
+   return output
+}
+\end{verbatim}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{bode_MAvgF}
+\caption{Bode plot of the Moving Average Filter}
+\label{bode_MAvgF}
+\end{center}
+\end{figure}
+ 
+\clearpage
+
+\subsection{Kalman Filter}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{bode_KF}
+\caption{Bode plot of the Kalman Filter}
+\label{bode_KF}
+\end{center}
+\end{figure}
+
+
+\clearpage
+
+\subsection{High Pass Filter}
+Algorithm:
+\begin{verbatim}
+double highPass(double x[], double dt, double tau){
+   double output[x.length];
+   double alpha = tau / (tau + dt);
+   output[0] = x[0];
+   for (int i= 1; i < ; i++)
+       output[i] = alpha * (output[i-1] + x[i] - x[i-1]);
+   return output
+}
+\end{verbatim}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{bode_HPF}
+\caption{Bode plot of the High Pass Filter}
+\label{bode_HPF}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\subsection{Sensor Fusion:- Filter Perspective}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{bode_SensorFusion}
+\caption{Bode plot of the Sensor Fusion scheme}
+\label{bode_SF}
+\end{center}
+\end{figure}
 
 \clearpage
 %%%%%%%%%%%%%%%%%%%
