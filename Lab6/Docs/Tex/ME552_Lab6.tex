@@ -421,10 +421,9 @@ Assuming that the bandwidth of the DAQ and sensor system is 140 $(Hz)$ as descri
 \clearpage
 \section{Low Frequency Characterization}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Horizontal Accelerometer}
-
 For all tests (in this low frequency section and all others), the Inertial Measurement Unit (IMU) breakout board was mounted as shown in figure \ref{sensorMount}. The IMU board was mounted on a small breadboard which was then attached to the side of the pendulum's shaft collar using double-sided tape. Mounting on the side was required to get the proper orientation to use one of the rate gyros. The flat face of the breadboard allowed us to minimize angular misalignment of the IMU. The position was arranged to minimize the distance of the sensor chips from the pendulum's axis of rotation. Washers were then attached to the opposite side of the shaft collar to counter-balance the breadboard, causing the pendulum to hang vertically. However, in some tests the stiffness of the wires caused a slight angular offset of the pendulum. Connections to one row of the IMU's pins were made through the breadboard, while the other row was accessed with female jumper wires.\\ 
+
+Since the range of measurement for each sensing scheme was of interest, we made the pendulum slowly move in a full circle twice in both clockwise or counter clockwise directions. All angles were normalized into 0-360 deg region. For the resulting data, the angular velocity was assumed constant, so that its frequency was approximately equal to 0.05 Hz. To get cleaner measurements, three types of filters, (1) Kalman filter, (2) low-pass filter, and (3) moving-average filter, were tested. Figure~\ref{Filters_ZoomIn} shows the trajectory comparison of all filtering approaches. The low-pass filter and the moving average seem to have similar performance in terms of phase lag; thus, the low-pass filter was used for the following analyses due to its simplicity. Theroretically the upper limit of time constant could not exceed 0.5 considering the constraint of phase lag needed to be less than 10 deg. $\tau$ was initially set to 0.05.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
@@ -434,6 +433,16 @@ For all tests (in this low frequency section and all others), the Inertial Measu
 \end{center}
 \end{figure}
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{Filters_ZoomIn.png}
+\caption{Comparison of Filtering Approaches In Low-Frequency Region}
+\label{Filters_ZoomIn}
+\end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Horizontal Accelerometer}
 
 \subsubsection{Angle Measurement}
 
@@ -458,8 +467,31 @@ $$\theta = \left\{
 	\end{array} \right. $$
 
 %%%%%%
-% Need real Data for part i
-\xxx{still need the real results here?}
+Figure~\ref{Z_TimeDomain} shows the time domain plots from the optical encoder and the horizontal accelerometer. Figure~\ref{Z_ErrorPercentage} and Figure~\ref{Z_AbsError} show the percent errors and absolute errors with respect to angluar positions, respectively. Based on these results, the acceptable range of angular displacement is between $0^\circ$ - $63.8^\circ$, and $293.9^\circ$ - $360^\circ$. Compared to the theoretical values ( $0^\circ$ - $90^\circ$, and $270^\circ$ - $360^\circ$), the acutal range is smaller. It is reasonbale since the sensitivity at $90^\circ$ and $270^\circ$ goes to zero, and therefore the measurements around those regions are inaccurate. \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Z_TimeDomain.png}
+\caption{Angular Position vs. Time}
+\label{Z_TimeDomain}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Z_ErrorPercentage.png}
+\caption{\% Error Percentage of Angular Position vs. Time}
+\label{Z_ErrorPercentage}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Z_AbsError.png}
+\caption{Absolute Error of Angular Position vs. Time}
+\label{Z_AbsError}
+\end{center}
+\end{figure}
 %%%%%%
 
 \subsubsection{Sensitivity}
@@ -470,7 +502,23 @@ $$ V_{Z}(\theta) \approx V_{Zbias} + \Sens_{Z} g \sin(0) + \Sens_{Z} g \cos(0) \
 
 $$ \theta \approx \frac{V_{Z}(\theta) - V_{Zbias}}{S_Z g}  \quad \Sens_\theta \approx \frac{1}{\Sens_Z g}$$
 
-For the horizontal accelerometer, we expect the sensitivity to be $\sfrac{1}{\Sens_{Z} g}$. 
+For the horizontal accelerometer, we expect the sensitivity to be $\sfrac{1}{\Sens_{Z} g}$.  Figure~\ref{Z_Vol_vs_Angle} and Figure~\ref{Z_Sensibility} show the sensitivity and output voltages with respect to angular positions, respectively. It can be observed that the sensitivity function seems to be the derivative of arccosine function. The maximum is 5.82 mV at $0^\circ$ or $360^\circ$, and the sensitivity decreases to 0 when the measured angle closes to $90^\circ$ and $270^\circ$.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 8.5cm]{Z_Vol_vs_Angle.png}
+\caption{Z-Output Voltage vs. Angular Position}
+\label{Z_Vol_vs_Angle}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 8.5cm]{Z_Sensibility.png}
+\caption{Sensitivity vs. Angular Position}
+\label{Z_Sensibility}
+\end{center}
+\end{figure}
 
 \subsubsection{Noise}
 
@@ -505,6 +553,16 @@ The following data was collected for a fixed vertical pendulum, $\alpha = 0$.  I
 \end{center}
 \end{table}
 
+Figure~\ref{Z_Peak2peak} shows the real behavior of fluctuation based on a fixed angle. The peak to peak noise level is approximately 1.83$^{\circ}$.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Z_Peak2peak.png}
+\caption{Angular Position vs. Time}
+\label{Z_Peak2peak}
+\end{center}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Vertical Accelerometer}
 
@@ -530,10 +588,32 @@ $$\theta = \left\{
 		-\pi & {\bf{if} } \, \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} < -1
 	\end{array} \right. $$
 
-%%%%%%%
-% Real Results
-\xxx{still need the real results here}
-%%%%%%%
+
+Figure~\ref{Y_TimeDomain} shows the time domain plots from the optical encoder and the horizontal accelerometer. Figure~\ref{Y_ErrorPercentage} and Figure~\ref{Y_AbsError} show the percent errors and absolute errors with respect to angluar positions, respectively. Based on these results, the acceptable range of angular displacement is between $54.8^\circ$ - $194^\circ$ (1st circle), or $183^\circ$ - $24.25^\circ$ (2nd circle). Compared to the theoretical values ( $0^\circ$ - $180^\circ$), the actual range is smaller as expected since the sensitivity at $0^\circ$ and $180^\circ$ goes to zero; thus, the measurements near that region are inaccurate. Although the error around $180^\circ$ seems acceptable, the measured angles from the accelerometer are saturated at $180^\circ$. \\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{Y_TimeDomain.png}
+\caption{Angular Position vs. Time}
+\label{Y_TimeDomain}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Y_ErrorPercentage.png}
+\caption{\%Error Percentage of Angular Position vs. Time}
+\label{Y_ErrorPercentage}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Y_AbsError.png}
+\caption{Absolute Error of Angular Position vs. Time}
+\label{Y_AbsError}
+\end{center}
+\end{figure}
 
 \subsubsection{Sensitivity}
 
@@ -543,7 +623,23 @@ $$V_{Y}(\theta) \approx V_{Ybias} + \Sens_{Y} g \cos(0) - \Sens_{Y} g \sin(0) (\
 
 $$ \Sens_\theta \approx 0 $$
 
-In this case the output voltage of the sensor does not depend on the angle $\theta$ so we have effectively 0 sensitivity. 
+In this case the output voltage of the sensor does not depend on the angle $\theta$ so we have effectively 0 sensitivity. Figure~\ref{Y_Vol_vs_Angle} and Figure~\ref{Y_Sensibility} show the sensitivity and output voltages with respect to angular positions, respectively. It can be observed that the sensitivity function seems to be the derivative of arcsine function. The maximum is 5.80 mV at $90^\circ$, and the sensitivity decreases to 0 when the measured angle closes to $0^\circ$ or $180^\circ$.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{Y_Vol_vs_Angle.png}
+\caption{Y-Output Voltage vs. Angular Position}
+\label{Y_Vol_vs_Angle}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 10cm]{Y_Sensibility.png}
+\caption{Sensitivity vs. Angular Position}
+\label{Y_Sensibility}
+\end{center}
+\end{figure}
 
 \subsubsection{Noise}
 
@@ -601,7 +697,17 @@ $$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma
 \end{center}
 \end{table}
 
-The trial verifies our suspicions that the mean would not be 0, and in fact in the trial, the variance was greater, than in our measurements causing the mean angle to be further from 0 than expected. 
+The trial verifies our suspicions that the mean would not be 0, and in fact in the trial, the variance was greater, than in our measurements causing the mean angle to be further from 0 than expected. \\
+
+Figure ~\ref{Y_Peak2peak} shows the real behavior of fluctuation based on a fixed angle. The peak to peak noise level is approximately 1.29$^{\circ}$.\\
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Y_Peak2peak.png}
+\caption{Angular Position vs. Time}
+\label{Y_Peak2peak}
+\end{center}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Two Accelerometers}
@@ -620,13 +726,33 @@ Using the atan2 function avoids the quadrant ambiguities present in the ordinary
 
 $$\theta = \text{atan2}\big( \Sens_{Y} \left( V_{Z} - V_{Zbias}\right),  \Sens_{Z} \left( V_{Y} - V_{Ybias}\right) \big)$$
 
-\xxx{Signal Conditioning?}
+Figure~\ref{Dual_TimeDomain} shows the time domain plots from the optical encoder and the dual accelerometers. Figure~\ref{Dual_ErrorPercentage} and Figure~\ref{Dual_AbsError} show the percent errors and absolute errors with respect to angluar positions, respectively. Based on these results, the acceptable range of angular displacement is between $0^\circ$ - $360^\circ$ (1st circle), or $360^\circ$ - $0^\circ$ (2nd circle). The theoretical values ( $0^\circ$ - $360^\circ$) and the actual range are almost identical, and the measurement of a full circle can be achieved. 
 
-%%%%%%%
-% Still need real results
-\xxx{Real Results here}
-%%%%%%%
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Dual_TimeDomain.png}
+\caption{Angular Position vs. Time}
+\label{Dual_TimeDomain}
+\end{center}
+\end{figure}
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Dual_ErrorPercentage.png}
+\caption{\% Error Percentage of Angular Position vs. Time}
+\label{Dual_ErrorPercentage}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Dual_AbsError.png}
+\caption{Absolute Error of Angular Position vs. Time}
+\label{Dual_AbsError}
+\end{center}
+\end{figure}
+
+\clearpage
 \subsubsection{Sensitivity}
 
 Sensitivity of our angle measurement, $\theta$ is simply given by the partial derivatives, shown in equations \ref{dualAccel_partialVY} and \ref{dualAccel_partialVZ} of our expression for $\theta$ shown in equation \ref{dualAccel_EQ}.
@@ -653,6 +779,17 @@ $$ V_{Z0} = V_{Zbias}  \quad  V_{Y0} = V_{Ybias} + \Sens_{Y} g  \quad \frac{\par
 
 $$ \theta \approx \frac{V_{Z}(\theta) - V_{Zbias}}{S_Z g}  \quad \Sens_\theta \approx \frac{1}{\Sens_Z g}$$
 
+Figure~\ref{Dual_Sensibility} plots the sensitivity when the angular displacement changes. The result is simply the combination of both horizontal and vertical sensitivity functions. 
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Dual_Sensibility.png}
+\caption{Sensitivity vs. Angular Position}
+\label{Dual_Sensibility}
+\end{center}
+\end{figure}
+
+\clearpage
 \subsubsection{Noise}
 
 Determining the expected noise is a bit more complicated for functions of several variables and requires a bit more math, shown below.   
@@ -701,6 +838,15 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 \end{center}
 \end{table}
 
+Figure ~\ref{Dual_Peak2peak} shows the real behavior of fluctuation based on a fixed angle. The peak to peak noise level is approximately 1.84$^{\circ}$.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Dual_Peak2peak.png}
+\caption{Angular Position vs. Time}
+\label{Dual_Peak2peak}
+\end{center}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Rate Gyro}
@@ -718,16 +864,44 @@ Integrating the expression for $\dot{\theta}$ yields $\theta$, and this integral
 $$ \theta(t) = \int_0^t \dot{\theta}(\tau) d\tau = \int_0^t \frac{V_{Gyro}(\tau) - ZeroRate_{Gyro}}{\Sens_{Gyro}} d\tau$$
 $$ \theta(t) \approx \sum_{i=1}^n \left(\frac{t(i) - t(i-1)}{ \Sens_{Gyro}} \right) \left( \frac{V_{Gyro}(i) + V_{Gyro}(i - 1)}{2} - ZeroRate_{Gyro} \right) $$
 
-%%%%%
-% results here
-\xxx{need results here}
-%%%%%
+Figure~\ref{Gyro_TimeDomain} shows the time domain plots from the optical encoder and the horizontal accelerometer. Figure~\ref{Gyro_ErrorPercentage} and Figure~\ref{Gyro_AbsError} show the percent errors and absolute errors with respect to angluar positions, respectively. Based on these results, the acceptable range of angular displacement is between $0^\circ$ - $360^\circ$ (1st circle), or $360^\circ$ - $0^\circ$ (2nd circle). Similar to the approach of two accelerometers. the rate-gyro can measure a full circle from $0^\circ$ - $360^\circ$ with even better performance in terms of the magnitude errors.\\
 
-\xxx{Signal Conditioning}
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Gyro_TimeDomain.png}
+\caption{Angular Position vs. Time}
+\label{Gyro_TimeDomain}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Gyro_ErrorPercentage.png}
+\caption{\% Error Percentage of Angular Position vs. Time}
+\label{Gyro_ErrorPercentage}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Gyro_AbsError.png}
+\caption{Absolute Error of Angular Position vs. Time}
+\label{Gyro_AbsError}
+\end{center}
+\end{figure}
+
 
 \subsubsection{Sensitivity}
 
 As described above, there is no linear relationship between the voltage reported by the rate gyro and the angular position of the pendulum.  
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width =12cm]{Gyro_Vol_vs_Angle.png}
+\caption{Output Voltage vs. Angular Position}
+\label{Gyro_Vol_vs_Angle}
+\end{center}
+\end{figure}
 
 \subsubsection{Noise}
 
@@ -763,6 +937,14 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
 \includegraphics[width = 12cm]{rateGyro_Static.png}
 \caption{Rate Gyro Angle estimate with static pendulum at $\theta = 0$}
 \label{static_Gyro}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 13cm]{Gyro_Peak2peak.png}
+\caption{Angular Position vs. Time}
+\label{Gyro_Peak2peak}
 \end{center}
 \end{figure}
 
@@ -922,7 +1104,7 @@ The three filtering methods used with the accelerometers had similar performance
 
 \subsubsection{High Frequency}
 
-Figure \ref{full_horizontal} shows the angular range of the horizontal accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of $\pm$90$^{\circ}$ and is capable of distinguishing direction of rotation, but in this case the encoder was outputting 0 to 2$\pi$, leading to  some disagreement. Had the encoder been outputting -$\pi$ to $\pi$, there would be more agreement within the accelerometer's range.\\
+Figure \ref{full_horizontal} shows the angular range of the horizontal accelerometer when the pendulum undergoes a full rotation at high speed. The acclerometer was capable of an ouput range of $\pm$90$^{\circ}$ and is capable of distinguishing direction of rotation, but in this case the encoder was outputting 0$^{\circ}$ to 360$^{\circ}$, leading to some disagreement. Had the encoder been outputting -180$^{\circ}$ to 180$^{\circ}$, there would be more agreement within the accelerometer's range.\\
 
 Figure \ref{normal_horizontal} shows one test of the pendulum oscillating naturally. The horizontal accelerometer's magnitude was under 10\% for all tests up to 1.7606 Hz, but the phase lag was never below 10$^{\circ}$. The smallest lag was 23.6469$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 6.955$^{\circ}$, which may have been caused by the pendulum not being perfectly vertical when the tests began.\\ 
 
@@ -1082,7 +1264,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 \subsection{Two Accelerometers}
 \subsubsection{High Frequency}
 
-Figure \ref{full_Dual} shows the angular range using the atan2 function with two accelerometers. The accelerometer was capable of an ouput range from 0$^{\circ}$to 359.6$^{\circ}$, following the encoder through the full rotation. However, while this method can cover a full circle, the user has too choose whether they want it output as 0 to 2$\pi$ or -$\pi$ to $\pi$. In this case we chose 0 to 2$\pi$, which results in step changes when the pendulum is oscillating near 0. For the natural and forced oscillation tests, we chose instead to use -$\pi$ to $\pi$ to cover the full range of the pendulum's motion. \\
+Figure \ref{full_Dual} shows the angular range using the atan2 function with two accelerometers. The accelerometer was capable of an ouput range from 0$^{\circ}$to 359.6$^{\circ}$, following the encoder through the full rotation. However, while this method can cover a full circle, the user has too choose whether they want it output as 0$^{\circ}$ to 360$^{\circ}$ or -180$^{\circ}$ to 180$^{\circ}$. In this case we chose 0$^{\circ}$ to 360$^{\circ}$, which results in step changes when the pendulum is oscillating near 0. For the natural and forced oscillation tests, we chose instead to use -180$^{\circ}$ to 180$^{\circ}$ to cover the full range of the pendulum's motion. \\
 
 Figure \ref{normal_dual} shows one test of the pendulum oscillating naturally. The dual encoder method matches the magnitude well in both directions, but there is still some steady-state error . Like the previous accelerometers, the magnitude was under 10\% for all tests up to 1.7606 Hz, but the phase lag was never below 10$^{\circ}$. Because it depends on the output of the two accelerometers, it makes sense that the magnitude and phase are similar, but this method gives better range. The smallest lag was 22.89$^{\circ}$ at 1.3902 Hz. The average steady-state error was 6.6766$^{\circ}$, which is less than the two individual accelerometers.\\ 
 
