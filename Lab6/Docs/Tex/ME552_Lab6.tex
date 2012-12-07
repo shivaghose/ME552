@@ -1719,6 +1719,81 @@ $$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \
 
 \subsection{Experimental Evaluation}
 
+The sensor fusion was run on different data sets and the results can be seen in figures \ref{SF_out_7} through \ref{SF_out_4}. The outputs highlight places where the sensor fusion works well, finding a good compromise between both the gyro and the accelerometer to get a much more accurate estimate of the true angle. Figures \ref{SF_out_5} and \ref{SF_out_4}, show us high frequency cases where senor fusion experiences a constant offset, while \ref{SF_out_1} shows us a case where very slow movement can throw the set up off. We also see that as time progresses, the gyro drift slowly starts introducing an offset.\\
+
+Figure \ref{SF_out_7} shows us how the configuration we chose works best overall under various conditions. We see minimal lag and drift. This is also the data set we used to verify our tuning on.
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_7.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_7}
+\end{center}
+\end{figure}
+
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_8.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_8}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_1.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_1}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_6.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_6}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_2.png}
+\caption{Output for Sensor Fusion}
+\label{fusion_Block}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_3.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_3}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_5.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_5}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 11cm]{SF_out_4.png}
+\caption{Output for Sensor Fusion}
+\label{SF_out_4}
+\end{center}
+\end{figure}
+
 \clearpage
 
 \section{Appendix}
