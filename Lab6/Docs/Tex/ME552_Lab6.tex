@@ -997,7 +997,7 @@ Each filter was designed to use a different algorithm, the most interesting bein
 \subsection{Low Pass Filter}
 The low pass filter rejects the high frequency component of a signal. It acts as a high inertia-damper to the signal. It has a transfer function given by: 
 $$H(s) = \frac{1}{s\tau + 1}$$
-Where $\tau$ represents \xxx{the inverse of} the corner frequency. Digitally, it can be implemented through the following algorithm:
+Where $\tau$ represents the inverse of the corner frequency. Digitally, it can be implemented through the following algorithm:
 \begin{verbatim}
 double lowPass(double x[], double dt, double tau){
    double output[x.length];
@@ -1250,7 +1250,7 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 
 Figure \ref{full_vertical} shows the angular range of the vertical accelerometer when the pendulum undergoes a full rotation at high speed. The accelerometer was capable of an ouput range of 0$^{\circ}$to 152.4$^{\circ}$. However, it is not capable of distinguishing direction of rotation (ie. it can't distinguish positive from negative angles from the intial vertical position). \\
 
-Figure \ref{normal_horizontal} shows one test of the pendulum oscillating naturally. In this case, the magnitude of angle output matched the encoder decently, but because it can't distinguish negative angles, it isn't accurate for anything but magnitude. The magnitude was under 10\% for all tests up to 1.7606 Hz (though it tended to be slightly greater than for the horizontal accelerometer), but the phase lag was never below 10$^{\circ}$ (at 5.4772 Hz the phase lag is only 9.8590$^{\circ}$, but this is likely a misleading result caused by the noise from manually shaking the pendulum). The smallest lag was 20.7696$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 9.479$^{\circ}$. This is greater than with the horizontal accelerometer and is likely caused by the pendulum not being perfectly vertical at the start of the test, and greater observed noise in the anglular output.\\ 
+Figure \ref{normal_horizontal} shows one test of the pendulum oscillating naturally. In this case, the magnitude of angle output matched the encoder decently, but because it can't distinguish negative angles, it isn't accurate for anything but magnitude. The magnitude was under 10\% for all tests up to 1.7606 Hz (though it tended to be slightly greater than for the horizontal accelerometer), but the phase lag was never below 10$^{\circ}$ (at 5.4772 Hz the phase lag is only 9.8590$^{\circ}$, but this is likely a misleading result caused by the noise from manually shaking the pendulum). The smallest lag was 20.7696$^{\circ}$ at 1.3902 Hz. Also, the average steady-state error was 9.479$^{\circ}$. This is greater than with the horizontal accelerometer and is likely caused by the pendulum not being perfectly vertical at the start of the test, and greater observed noise in the angular output.\\ 
 
 \begin{figure}[hbt]
 \begin{center}
