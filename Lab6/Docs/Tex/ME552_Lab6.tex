@@ -1241,11 +1241,14 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
-%TODO
 
-Figure~\ref{Z_Horizontal_Dist2} shows the angular measurements from the horizontal accelerometer compared to those from the encoder when both arms move. Figure~\ref{Z_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm has large impact on the measurements. The accelerometer measured much more displacement than the actual one. Despite the fact that therotically the measurement range can reach $\pm$ 90 degrees, the overall magnitude error is large. If the frequency is assumed 2 Hz (constant angular velocity), then the phase lag is equal to $25.56^\circ$, close to the theoretical value $30^\circ$. It suggests that the disturbance has an insignificant effect on the phase behavior. For the noise/resolution and steady-state error, the measurements seem similar to those without the disturbance.\\ 
+Figure~\ref{Z_Horizontal_Dist2} shows the angular measurements from the horizontal accelerometer compared to those from the encoder when both arms move. Figure~\ref{Z_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm has large impact on the measurements. The accelerometer measured much more displacement than the actual one. Despite the fact that theoretically the measurement range can reach $\pm$ 90 degrees, the overall magnitude error is large. If the frequency is assumed 2 Hz (constant angular velocity), then the phase lag is equal to $25.56^\circ$, close to the theoretical value $30^\circ$. It suggests that the disturbance has an insignificant effect on the phase behavior. For the noise/resolution and steady-state error, the measurements seem similar to those without the disturbance.\\ 
 
-Considering the system cannot be assumed static but dynamic, one major reason may be because additional acceleration is also included in the measurements. The relationship between the output voltage and the angle displacement can be expressed as follows: $V_{out}$ = $V_{bias}$ + S$\left ( -a_{o}cos\Theta + r\ddot\Theta - gsin\Theta\right)$. The movement of the horizontal arm introduces large portion of $-a_{o}cos\Theta$, extremely degrading the measured performance. The horizontal accelerometer seems most vulnerable to disturbances because its measured axis is on the same plane as the horizontal arm. 
+Considering the system cannot be assumed static but dynamic, one major reason may be because additional acceleration is also included in the measurements. The relationship between the output voltage and the angle displacement can be expressed as follows: 
+
+$$V_{out} = V_{bias} + \Sens \left ( -a_{0}cos\theta + r\ddot\theta - gsin\theta\right)$$
+
+ The movement of the horizontal arm introduces the disturbance the $a_0$ term, degrading the measured performance. The horizontal accelerometer seems most vulnerable to disturbances because its measured axis is on the same plane as the horizontal arm for $\theta = 0, \pi$.
 
 \begin{figure}[hbt]
 \begin{center}
@@ -1267,9 +1270,9 @@ Considering the system cannot be assumed static but dynamic, one major reason ma
 
 %$$ \frac{X(s)}{A(s)} = \frac{m}{m s^2  + k} $$
 
-%According to the data sheet, the unfiltered bandwidth of the Z axis is approximately 550 Hz, but the filter at 50 Hz ensures that the high frequency loss of sensitivity will not be relevant.  Our horizontal disturbances were of relatively low frequencies, $< 10 \, Hz$, ensuring that the accelerometer is still sensitive.  This extra acceleration along the horizontal axis is indistinguishable form gravity, meaning that for greater horizontal accelerations, $\theta$ will tend to $\pm \sfrac{\pi}{2}$.  Our saturation signal conditioning means for large enough external disturbances, the system will simply saturate at $\pm \sfrac{\pi}{2}$ depending on the direction of acceleration. \\
+According to the data sheet, the unfiltered bandwidth of the Z axis is approximately 550 Hz, but the filter at 50 Hz ensures that the high frequency loss of sensitivity will not be relevant.  Our horizontal disturbances were of relatively low frequencies, $< 10 \, Hz$, ensuring that the accelerometer is still sensitive.  This extra acceleration along the horizontal axis is indistinguishable form gravity, meaning that for greater horizontal accelerations, $\theta$ will tend to $\pm \sfrac{\pi}{2}$ Our saturation signal conditioning means for large enough external disturbances, the system will simply saturate at $\pm \sfrac{\pi}{2}$ depending on the direction of acceleration, as illustrated in figure \ref{Z_Horizontal_Dist2} \\
 
-%Our horizontal disturbances, were osscilatory, so we would expect to see an extra sinusoid imposed on the output voltage of the horizontal accelerometer.  This effect decreases for real angles tending towards $\pm \sfrac{pi}{2}$ however we loose angle sensitivity anyway, so at this point our ability to measure angles is already compromised.  
+Our horizontal disturbances, especially in figure \ref{Z_PenduumFixed_Dist} were osscilatory, so we would expect to see an extra sinusoid imposed on the output voltage of the horizontal accelerometer.  This effect decreases for real angles tending towards $\pm \sfrac{pi}{2}$ however we loose angle sensitivity anyway, so at this point our ability to measure angles is already compromised.  \\
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 
@@ -1347,14 +1350,13 @@ In this vertical configuration we observe large inaccuracies in both magnitude a
 \end{table}
 
 
-\subsubsection{High Frequency with Horizontal Arm Disturbance}
+\subsubsection{High Frequency with Horizontal Arm Disturbance} 
 
-%We would expect to only see inaccuracies in this angle measurement similar to those described for the horizontal accelerometer for values of $\theta$ away from 0 and $\pi$ radians.  In the purely vertical configuration, the acceleration of the accelerometer is not along the sensitive axis, so we would expect to see minimal effects increasing to a maximum for $\theta = \pm \sfrac{\pi}{2}$. 
+Figure~\ref{Y_Vertical_Dist2} shows the angular measurements from the vertical accelerometer compared to those om the encoder when both arms move. Figure~\ref{Y_PendulumFixed_Dist} show the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm has a large impact on the measurements. The steady-state error goes up to $50^\circ$. Due to the low-pass filter with a higher frequency input, the overall magnitude error is large, and the accelerometer measures much less displacement than the actual one. For the noise/resolution, there seems to be more oscillations than the reference displacement.\\ 
 
-Figure~\ref{Y_Vertical_Dist2} shows the angular measurements from the vertical accelerometer compared to those om the encoder when both arms move. Figure~\ref{Y_PendulumFixed_Dist} show the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm 
-has large impace on the measurements. The steady-state error goes up to $50^\circ$. Due to the low-pass filter with a higher frequency input, the overall magnitude error is large, and the accelerometer measures much less displacement than the actual one. For the noise/resolution, there seems to be more oscillations than the reference displacement.\\ 
+Compared to the horizontal accelerometer, the vertical one seems to have smaller magnitude error but much larger steady-state error. Based on the same argument, since the direction of extra acceleration is perpendicular to the measured axis of the vertical accelerometer, the disturbance would have less influence. On the other hand, considering we cannot avoid the imperfect installation of the IMU, and there are package alignment error and inter-axis alignment error, the misalignment creates a bias angle, resulting in steady-state error. It magnitude may increase as the disturbance becomes stronger.  \\
 
-Compared to the horizontal accelerometer, the vertical one seems to have smaller magnitude error but much larger steady-state error. Based on the same argument, since the direction of extra acceleration is perpendicular to the measured axis of the vertical accelerometer, the disturbance would have less influence. On the other hand, considering we cannot avoid the imperfect installation of the IMU, and there are package alignment error and interaxis alignment error, the misalignment creates a bias angle, resulting in steady-state error. It magnitude may increase as the disturbance becomes stronger.  
+As illustrated in \ref{Y_PendulumFixed_Dist}, in the purely vertical configuration, the acceleration of the accelerometer is not along the sensitive axis, so we would expect to see minimal effects increasing to a maximum for $\theta = \pm \sfrac{\pi}{2}$.
 
 \begin{figure}[hbt]
 \begin{center}
@@ -1372,7 +1374,6 @@ Compared to the horizontal accelerometer, the vertical one seems to have smaller
 \end{center}
 \end{figure}
 
-%TODO
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Two Accelerometers}
@@ -1449,9 +1450,10 @@ Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 f
 
 %Combining the information of two accelerometers allows us to measure angles.  As shown earlier, in this formulation, the sensitivity is shifted from one axis of the accelerometer to the other as the real angle of the system changes.  However this shift of sensitivity ensures that the system is vulnerable to external disturbances introduced by movement of the horizontal arm regardless of the real angle of the system.  As described earlier in the section describing the horizontal accelerometer configuration, the external disturbance will manifest itself as additional acceleration along the horizontal direction, and some component of this will be transmitted to the accelerometer proportional to the angle between that axis and horizontal.  
 
-Figure~\ref{Dual_Dist2} shows the angular measurements from the combination of two accelerometers compared to thos om the encoder when both arms move. Figure~\ref{Dual_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm affects the magnitude error. More displacement is measured that the actual one. In particular, we can observe the effect of extra acceleration based on the experimental data with the fixed pendulum. For the noise/resolution, phase lag and steady-state error, the measurements seem similar to those without the disturbance.\\
+Figure~\ref{Dual_Dist2} shows the angular measurements from the combination of two accelerometers compared to those on the encoder when both arms move. Figure~\ref{Dual_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm affects the magnitude error. More displacement is measured that the actual one. In particular, we can observe the effect of extra acceleration based on the experimental data with the fixed pendulum. For the noise/resolution, phase lag and steady-state error, the measurements seem similar to those without the disturbance.\\
 
-By the combination of two accelerometers, both undesired behavior including additional acceleration and the misalignment seems to be mitigated for the first scheme. However, with the fixed pendulum, the behavior of oscillations is still large. It is reasonable because the horizontal accelerometer dominates the sensibility at 0 deg.   
+
+Interestingly, when the pendulum was allowed to swing freely in response to the motion of the horizontal arm, shown in figure \ref{Dual_Dist2}, the disturbances induced along the vertical axis and horizontal axis of the accelerometer seem to cancel each other out.  This is likely due to atan2 using the ratio of the two terms to compute the angle, rather than their absolute magnitude.  When the pendulum was held in the vertical position, as explained earlier, the effective sensitivity to the vertical axis drops to zero, and as we observed in the purely horizontal accelerometer case, the measurement is dominated by additional acceleration on the horizontal accelerometer.  
       
 \begin{figure}[hbt]
 \begin{center}
@@ -1628,11 +1630,13 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
 
-%The rate gyro functions in a fundamentally different way from the accelerometers and therefore may not be as vulnerable to disturbances introduced by the horizontal arm.  
+The rate gyro functions in a fundamentally different way from the accelerometers and therefore is not be as vulnerable to disturbances introduced by the horizontal arm.  Where $\omega$ is the angular velocity of the pendulum, $r$ is the distance from the axis of rotation to the rate gyro's proof mass.  $a_0$ is the acceleration of the system, and $v_{ref}$ is the reference velocity introduced by the excitation of the proof mass.
 
-%$$ a = a_0 + \vec{a} \times \vec{r} + \vec{\omega} \times \left(  \vec{\omega} \times \vec{r} \right) + 2 \vec{\omega} \times \vec{v_{ref}} $$
+$$ a = a_0 + \vec{a} \times \vec{r} + \vec{\omega} \times \left(  \vec{\omega} \times \vec{r} \right) + 2 \vec{\omega} \times \vec{v_{ref}} $$
 
-Figure~\ref{Gyro_Dist2} shows the angular measurements from the rate-gyro compared to thos om the encoder when both arms move. Figure~\ref{Gyro_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm seems to have minor effects on the measurements. The only issue is still the angle drift. The other characteristics are all similar to the original ones with the fixed horizontal arm.
+Depending on the orientation of the pickup direction, their may be the potential for centrifugal forces, based on the radius from the axis of rotation of the horizontal arm to the proof mass, to disturb the proof mass along the pickup direction, however internal filtering to isolate just the excitation frequency from the measured position should all but eliminate this effect unless the external disturbance approaches this excitation frequency.  This is very very unlikely given that the resonant frequency of the system is approximately 24 kHz.  
+
+Figure~\ref{Gyro_Dist2} shows the angular measurements from the rate-gyro compared to those of the encoder when both arms move. Figure~\ref{Gyro_PendulumFixed_Dist} shows the comparison of time plots with the pendulum fixed. The results indicate the disturbance from the horizontal arm seems to have minor effects on the measurements. The only issue is still the angle drift caused by drift in the zero rate of the gyro. The overall performance seems unaffected by the presence of this external disturbance.
 
 \begin{figure}[hbt]
 \begin{center}
