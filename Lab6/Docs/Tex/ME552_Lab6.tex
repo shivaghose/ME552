@@ -1118,7 +1118,7 @@ Another use of the Kalman filter is to combine accelerometer and gyroscopic data
 
 
 \subsection{High Pass Filter}
-Algorithm:
+The high pass filters suppresses low-frequency noise. It is used in conjunction with Gyroscope to suppress low-frequency transients. Digitally, it is implemented as the following algorithm:
 \begin{verbatim}
 double highPass(double x[], double dt, double tau){
    double output[x.length];
@@ -1130,6 +1130,8 @@ double highPass(double x[], double dt, double tau){
 }
 \end{verbatim}
 
+The Bode plot can be seen in figure \ref{bode_HPF}.
+
 \begin{figure}[hbt]
 \begin{center}
 \includegraphics[width = 10cm]{bode_HPF}
@@ -1140,17 +1142,6 @@ double highPass(double x[], double dt, double tau){
 
 \clearpage
 
-\subsection{Sensor Fusion:- Filter Perspective}
-
-\begin{figure}[hbt]
-\begin{center}
-\includegraphics[width = 12cm]{bode_SensorFusion}
-\caption{Bode plot of the Sensor Fusion scheme}
-\label{bode_SF}
-\end{center}
-\end{figure}
-
-\clearpage
 %%%%%%%%%%%%%%%%%%%
 
 
@@ -1571,8 +1562,46 @@ As in the set up that we have used for the entire lab, the Y-axis of the acceler
 
 \subsection{Filter Design}
 
-We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometers and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  First order filters were selected to avoid excessive phase lead at low frequencies and excessive phase lag at higher frequencies.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
+We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometers and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  First order filters were selected to avoid excessive phase lead at low frequencies and excessive phase lag at higher frequencies.  Both filters have a cut off frequency of 2 Hz. The Bode plot for the system can be seen in figure \ref{SF_bode_2}.\\
 
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{SF_bode_2}
+\caption{Bode plot of the Sensor Fusion scheme}
+\label{SF_bode_2}
+\end{center}
+\end{figure}
+
+Filter tuning was initiated at $\tau = 0.1$ and went up all the way to $\tau = 5$. At each point we looked at dynamic response as well as response to slow movement response. Figures \ref{SF_output_bad_low} though \ref{SF_output_good} show some extreme cases and the ideal tuning.\\
+
+$\tau$ determines how much we rely on the Gyroscope and howmuch we rely on the accelerometers. Low $\tau$, as seen in figure \ref{SF_output_bad_low}, results in bad tracking during fast motion (initial spikes in the mid-left portion of the plot), but good behavior during slow displacements (right side of the plot).  High $\tau$, as seen in figure \ref{SF_output_bad_high}, results in good tracking during fast motion, but the Gyro drift heavily affects the output during slow movement. We settled on $\tau = 2$ which gave us the best overall performance in both regions of the data set. This can be seen in figure \ref{SF_output_good}.
+
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 14cm]{SF_output_bad}
+\caption{Output of the Sensor Fusion scheme for $\tau$ = 0.1}
+\label{SF_output_bad_low}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{SF_output_bad_high}
+\caption{Output of the Sensor Fusion scheme for $\tau$ = 10}
+\label{SF_output_bad_high}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt]
+\begin{center}
+\includegraphics[width = 12cm]{SF_output_good}
+\caption{Output of the Sensor Fusion scheme for $\tau$ = 2}
+\label{SF_output_good}
+\end{center}
+\end{figure}
+
+\clearpage
 \subsection{Block Diagram}
 
 For encoder angle $\alpha$, we have already shown that the pair of accelerometers provide an estimate of $\theta$ and the rate gyro provides $\dot{\theta}$.  Applying a low pass filter to $\theta$ and a high pass filter to $\dot{\theta}$ yields the following two expressions which can be added to obtain $\theta$, which is approximately equal to $\alpha$.  
@@ -1581,9 +1610,9 @@ $$ \theta \frac{1}{\tau s + 1} = \frac{\theta}{\tau s + 1} $$
 $$ \dot{\theta} \frac{\tau}{\tau s + 1} = \theta s \frac{\tau}{\tau s + 1} = \theta \frac{\tau s}{\tau s + 1} $$
 $$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \left(\frac{1}{\tau s + 1} + \frac{\tau s}{\tau s + 1}  \right) = \theta \approx \alpha $$
 
-\begin{figure}
+\begin{figure}[hbt]
 \begin{center}
-\includegraphics[width = 14cm]{fusion_BlockDiagram.png}
+\includegraphics[width = 14cm]{SF_block.png}
 \caption{Block Digram for Sensor Fusion}
 \label{fusion_Block}
 \end{center}
