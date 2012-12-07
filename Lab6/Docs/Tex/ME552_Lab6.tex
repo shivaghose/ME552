@@ -546,6 +546,8 @@ The following data was collected for a fixed vertical pendulum, $\alpha = 0$.  I
         $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716            & 0.0169008      \\ 
         $\mu_{V_{Z}} \, (V)$       & 1.671451851            &  1.701057      \\ 
         $\mu_{\theta} \, (rad)$      & 0            &  -1.219912 \e{-5}     \\
+        Peak to Peak $(V)$ & ~ & 0.143 \\
+        Peak to Peak $(rad)$ & ~ & 0.4528 \\
         \hline
     \end{tabular}
 \caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage and bias were measured in another trial.}}
@@ -690,9 +692,11 @@ What has happened, is that the above calculation neglected the effects of our ea
 	$\sigma^2_{\theta} \, (rad^2)$ &  0.004875171          &  0.009754764     \\ 
 	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.95268     \\
         $\mu_{\theta} \, (rad)$      & 0.05982302            & 0.09371065      \\
+        Peak to Peak Noise (V) & ~  & 0.042 \\
+        Peak to Peak Noise (rad) & ~ & 0.354 \\
         \hline
     \end{tabular}
-\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}  Noise values are for unfiltered data.}
 \label{Noise_vertical_T}
 \end{center}
 \end{table}
@@ -831,9 +835,12 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.619099      \\ 
         $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716             &  0.01647518     \\ 
         $\mu_{\theta} \, (rad)$      & 0            & -0.002390427      \\
+        Peak to Peak $V_Z \, (V)$ &  ~ & 0.143 \\
+        Peak to Peak $V_Y \, (V)$ & ~  & 0.042 \\
+        Peak to Peak $(rad)$ & ~ & 0.4443 \\
         \hline
     \end{tabular}
-\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.}
+\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.  Noise for unfiltered data.}
 \label{Noise_dual_T}
 \end{center}
 \end{table}
@@ -925,9 +932,11 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
         $\mu_{V_{Gyro}} \, (V)$                &  1.360523703     \\ 
 	$ ZeroRate_{Gyro} \, (V)$ 	     &  1.360478444 \\
         $\mu_{\theta} \, (rad)$               &  0.002894257     \\
+	Peak to Peak $(V)$ &   0.013 \\
+        Peak to Peak $(rad)$ & $1.665 \e{-4}$ \\
         \hline
     \end{tabular}
-\caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.}
+\caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.  Noise given for unfiltered data.}
 \label{Noise_horizontal_T}
 \end{center}
 \end{table}
