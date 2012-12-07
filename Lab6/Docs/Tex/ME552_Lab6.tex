@@ -547,6 +547,8 @@ The following data was collected for a fixed vertical pendulum, $\alpha = 0$.  I
         $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716            & 0.0169008      \\ 
         $\mu_{V_{Z}} \, (V)$       & 1.671451851            &  1.701057      \\ 
         $\mu_{\theta} \, (rad)$      & 0            &  -1.219912 \e{-5}     \\
+        Peak to Peak $(V)$ & ~ & 0.143 \\
+        Peak to Peak $(rad)$ & ~ & 0.4528 \\
         \hline
     \end{tabular}
 \caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the horizontal accelerometer alone. \emph{Note that the theoretical variance of voltage and bias were measured in another trial.}}
@@ -658,28 +660,28 @@ As we would expect, this appears identical to the equation for noise of the hori
 
 $$ \theta \approx 0 \quad \sigma^2_{\theta} \approx \frac{\sigma^2_{V_{Y}}}{(\Sens_{Y} g)^2 - (V_{Ybias} + \Sens_{Y} g - V_{Ybias})^2} = \infty$$
 
-What has happened, is that the above calculation neglected the effects of our earlier signal conditioning.  While the expected voltage is $V_{Ybias} + \Sens_Y g$.  The expected value of the quantity within the arccosine is not 1.  Because of the saturation conditioning used to prevent arccosine from failing, the actual distribution is no longer Gaussian, and most importantly is not symmetric about 0 which leads to the relatively large deviation from the expected mean of desired mean of 0.  Instead the expectation is given by:
+What has happened, is that the above calculation neglected the effects of our earlier signal conditioning.  While the expected voltage is $V_{Ybias} + \Sens_Y g$.  The expected value of the quantity within the arccosine is not 1.  Because of the saturation conditioning used to prevent arccosine from failing, the actual distribution is no longer Gaussian, and most importantly is not symmetric about 0 which leads to the relatively large deviation from the expected mean of desired mean of 0.  Analytially calculating the mean and variance of this distribution would be troublesome, so rather than use the variance projection techniques utilized earlier, we instead used a simple numerical technique.  We drew samples of the sensor voltage in the vertical configuration using our estimates of the Y-axis sensor bias voltage, the voltage noise, sensitivity, and acceleration due to gravity.  Then we applied our signal conditioning technique, and calculated $\theta$ from these samples, and with these samples of $\theta$ estimated their mean and variance, shown in table \ref{Noise_vertical_T}.  The matlab code utilized is shown in the appendix.s\\
 
-$$ E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right] \approx 0.5 \cdot 1 + 0.5 \cdot \big(1 - \sigma_{V_Y} \sqrt{\sfrac{2}{\pi}} \big) = 0.99859205 $$
+%$$ E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right] \approx 0.5 \cdot 1 + 0.5 \cdot \big(1 - \sigma_{V_Y} \sqrt{\sfrac{2}{\pi}} \big) = 0.99859205 $$
 
-$$ E\left[ \cos^{-1} \left(  E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right]  \right)  \right] = 0.0530713 \, (rad) $$
+%$$ E\left[ \cos^{-1} \left(  E \left[ \frac{V_{Y} - V_{Ybias}}{\Sens_{Y} g} \right]  \right)  \right] = 0.0530713 \, (rad) $$
 
-The variance of this sort of distribution is given by: 
+%The variance of this sort of distribution is given by: 
 
 % think I'm a bit off in this calculation, I didn't quite take into account the fact that it isn't just a half gaussian, we've got that spike at 1, http://en.wikipedia.org/wiki/Half-normal_distribution
 % what I have is a clipped normal distribution
-\xxx{verify this one calculation, it seems a little bit off - - - - - - -   V}
-$$ \sigma_{arg1}^2 = \frac{\sigma^2_{V_Y}}{(\Sens_Y g)^2} = 1.11939534 \e{-4} \quad \sigma_{arg2}^2 = \sigma_{arg}^2 \left(1 - \frac{2}{\pi} \right) = 4.06766136 \e{-5}$$
+%\xxx{verify this one calculation, it seems a little bit off - - - - - - -   V}
+%$$ \sigma_{arg1}^2 = \frac{\sigma^2_{V_Y}}{(\Sens_Y g)^2} = 1.11939534 \e{-4} \quad \sigma_{arg2}^2 = \sigma_{arg}^2 \left(1 - \frac{2}{\pi} \right) = 4.06766136 \e{-5}$$
 
-Then all that is left to do is to linearize the arccosine about this new mean:
+%Then all that is left to do is to linearize the arccosine about this new mean:
 
-$$ \frac{d}{dx} \cos^-1(0.99859205) = -\frac{1}{\sqrt{1 - 0.99859205^2}} = -18.85143028 $$
+%$$ \frac{d}{dx} \cos^-1(0.99859205) = -\frac{1}{\sqrt{1 - 0.99859205^2}} = -18.85143028 $$
 
-\emph{Because the function is highly nonlinear in this region, the variance estimate is not going to be particularly accurate.}  
+%\emph{Because the function is highly nonlinear in this region, the variance estimate is not going to be particularly accurate.}  
 
-Finally the variance can be obtained:
+%Finally the variance can be obtained:
 
-$$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma_{arg2}^2 = 0.01445551 $$
+%$$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma_{arg2}^2 = 0.01445551 $$
 
 % comparison to real data here
 \begin{table}
@@ -688,17 +690,19 @@ $$ \sigma_{\theta}^2 = \left( \frac{d}{dx} \cos^-1(0.99859205) \right) ^2 \sigma
         \hline
         ~                   & Theoretical  & Actual \\ \hline
         $\sigma^2_{V_{Y}} \, (V^2)$    & 1.24553\e{-5}  & 5.807739 \e{-5}      \\ 
-	$\sigma^2_{\theta} \, (rad^2)$ & 0.01445551           &  0.009754764     \\ 
+	$\sigma^2_{\theta} \, (rad^2)$ &  0.004875171          &  0.009754764     \\ 
 	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.95268     \\
-        $\mu_{\theta} \, (rad)$      & 0.0530713            & 0.09371065      \\
+        $\mu_{\theta} \, (rad)$      & 0.05982302            & 0.09371065      \\
+        Peak to Peak Noise (V) & ~  & 0.042 \\
+        Peak to Peak Noise (rad) & ~ & 0.354 \\
         \hline
     \end{tabular}
-\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}}
+\caption{Comparison of theoretical noise in $\theta$ with measured noise in $\theta$ for the Y axis accelerometer alone. \emph{Note that the theoretical variance of voltage and expectation was calculated from sensitivity and bias voltage measured in another trial.}  Noise values are for unfiltered data.}
 \label{Noise_vertical_T}
 \end{center}
 \end{table}
 
-The trial verifies our suspicions that the mean would not be 0, and in fact in the trial, the variance was greater, than in our measurements causing the mean angle to be further from 0 than expected. \\
+This experiment verifies our suspicions that the mean would not be 0, and the estimated mean and variance were quite similar to the observed values, and the difference between them can largely be attributed to the difference in variance measured in trial run, and the variance in this particular trial. \\
 
 Figure ~\ref{Y_Peak2peak} shows the real behavior of fluctuation based on a fixed angle. The peak to peak noise level is approximately 1.29$^{\circ}$.\\
 
@@ -832,9 +836,12 @@ $$ \sigma^2_{\theta} \approx \left(0\right)^2 \sigma^2_{V_{Y}} + \left(\frac{1}{
 	$\mu_{V_{Y}} \, (V)$       & 1.95100270            & 1.619099      \\ 
         $\sigma^2_{\theta} \, (rad^2)$ & 0.01674716             &  0.01647518     \\ 
         $\mu_{\theta} \, (rad)$      & 0            & -0.002390427      \\
+        Peak to Peak $V_Z \, (V)$ &  ~ & 0.143 \\
+        Peak to Peak $V_Y \, (V)$ & ~  & 0.042 \\
+        Peak to Peak $(rad)$ & ~ & 0.4443 \\
         \hline
     \end{tabular}
-\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.}
+\caption{Comparison of expected noise and actual noise for $\theta = 0$ using both accelerometer axes.  Noise for unfiltered data.}
 \label{Noise_dual_T}
 \end{center}
 \end{table}
@@ -926,9 +933,11 @@ The following trial was conducted for a fixed vertical pendulum angle, $\alpha =
         $\mu_{V_{Gyro}} \, (V)$                &  1.360523703     \\ 
 	$ ZeroRate_{Gyro} \, (V)$ 	     &  1.360478444 \\
         $\mu_{\theta} \, (rad)$               &  0.002894257     \\
+	Peak to Peak $(V)$ &   0.013 \\
+        Peak to Peak $(rad)$ & $1.665 \e{-4}$ \\
         \hline
     \end{tabular}
-\caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.}
+\caption{Observed Rate Gyro noise and resulting angle estimate for fixed $\theta = 0$.  Noise given for unfiltered data.}
 \label{Noise_horizontal_T}
 \end{center}
 \end{table}
@@ -1562,7 +1571,7 @@ As in the set up that we have used for the entire lab, the Y-axis of the acceler
 
 \subsection{Filter Design}
 
-We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometers and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
+We use a 1st order low pass filter applied to the angle, $\theta$ output by the the pair of accelerometers and a 1st order high pass filter applied to the rate, $\dot{\theta}$ output by the rate gyro.  First order filters were selected to avoid excessive phase lead at low frequencies and excessive phase lag at higher frequencies.  Both filters have a cut off frequency of \xxx{FREQUENCY $\approx$ 1 Hz} \xxx{describe tuning} 
 
 \subsection{Block Diagram}
 
@@ -1581,5 +1590,10 @@ $$ \theta \frac{1}{\tau s + 1} + \dot{\theta} \frac{\tau}{\tau s + 1} = \theta \
 \end{figure}
 
 \subsection{Experimental Evaluation}
+
+\section{Appendix}
+
+\subsection{Numerical Vertical Mean and Variance Estimation}
+\verbatiminput{simulation.m}
 
 \end{document}
