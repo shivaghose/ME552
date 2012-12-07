@@ -146,7 +146,7 @@ and that I have read and understood the X50 Lab Rules.\\
 
 \subsection{Configuration}
 
-Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder, shown later in figure \ref{sensorMount}.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we will be making use of the Y and Z axes of the accelerometer and the X axis of the rate gyro (standard and X4.5). We also connected the auto-zero and temperature sensor pins. We are not using the X axis of the accelerometer, the Y axis of the rate gyro (standard and Y4.5), the self-test, or the VRef pins. We used an Arduino Uno as a voltage regulator to provide the encoder with 5V and the IMU with 3.3V.m the Arduino itself was powered from a wall outlet via an AC-to-DC converter.   \\
+Figure \ref{wiring} shows the wiring diagram of the inertial sensor system. The accelerometer is mounted to a breadboard fixed to the the shaft clamp on the encoder such that the plane of the sensor PCB is perpendicular to the plane of axis of rotation of the encoder, shown later in figure \ref{sensorMount}.  This is necessary because of the limited number of axes available on the rate gyro.  For this assignment we made use of the Y and Z axes of the accelerometer and the X axis of the rate gyro (standard and X4.5). We also connected the auto-zero and temperature sensor pins. We did not use the X axis of the accelerometer, the Y axis of the rate gyro (standard and Y4.5), the self-test, or the VRef pins. We used an Arduino Uno as a voltage regulator to provide the encoder with 5V and the IMU with 3.3V.m the Arduino itself was powered from a wall outlet via an AC-to-DC converter.   \\
 
 \begin{figure}[hbt]
 \begin{center}
@@ -250,7 +250,7 @@ Supply voltage for the gyro. The gyro has a functional supply range of 2.7 V to 
 These pins are reserved and are not connected.\\
 
 \textbf{Pin 12 - CPOUT}\\
-Provides an internal connection from ground to a charge pump regulator via a 0.1 $\mu$F capacitor. A charge pump is used for DC/DC regulation and can boost voltages without needing an inductor. \xxx{Might need more explanation here}\\
+Provides an internal connection from ground to a charge pump regulator via a 0.1 $\mu$F capacitor. A charge pump is used for DC/DC regulation and can boost voltages without needing an inductor.\\
 
 \textbf{Pin 22 - VREF}\\
 A precision reference output which is nominally 1.35 V. Ideally VREF will be a constant 1.35 V and is used with the auto-zero function to reset the zero-rate output to its nominal value of 1.35 V in the event of steady-state drift. The PCB provides a connection to this pin which we did not use.\\
@@ -1241,7 +1241,7 @@ V_{out} = V_{bis} + S(-a_0 cos(\theta) + r\ddot{\theta} - g sin(\theta))
 
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
-
+%TODO
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 
@@ -1318,6 +1318,7 @@ Figure \ref{verticalBode} shows the experimentally derived bode plot for the ver
 
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
+%TODO
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Two Accelerometers}
@@ -1391,7 +1392,7 @@ Figure \ref{dualBode} shows the experimentally derived bode plot for the atan2 f
 \end{table}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
-
+%TODO
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 \subsection{Rate Gyro}
@@ -1550,7 +1551,7 @@ Figures \ref{gyroBode} and \ref{gyro45Bode} show the experimentally derived bode
 \end{table}
 
 \subsubsection{High Frequency with Horizontal Arm Disturbance}
-
+%TODO
 \clearpage
 %%%%%%%%%%%%%%%%%%%%%
 \section{Sensor Fusion}
